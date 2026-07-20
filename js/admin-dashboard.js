@@ -1,170 +1,58 @@
-import {db} from "./firebase-config.js";
-
-
+import { db } from "./firebase-config.js";
 import {
+    collection,
+    getDocs,
+    doc,
+    setDoc,
+    serverTimestamp
+} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
-collection,
-getDocs
+// 1. STATS LOADER (Synchronous & Accurate)
+async function loadStats() {
+    try {
+        const products = await getDocs(collection(db, "products"));
+        const users = await getDocs(collection(db, "users"));
 
+        let ordersCount = 0;
+        let points = 0;
+
+        // Loop through all users
+        for (const userDoc of users.docs) {
+            const data = userDoc.data();
+            points += data.points || 0;
+
+            // Get total orders count
+            const orders = await getDocs(collection(db, "users", userDoc.id, "orders"));
+            ordersCount += orders.size;
+        }
+
+        // Update UI
+        const prodEl = document.getElementById("product-count");
+        const userEl = document.getElementById("user-count");
+        const pointEl = document.getElementById("points-count");
+        const orderEl = document.getElementById("order-count");
+
+        if (prodEl) prodEl.innerText = products.size;
+        if (userEl) userEl.innerText = users.size;
+        if (pointEl) pointEl.innerText = points;
+        if (orderEl) orderEl.innerText = ordersCount;
+
+    } catch (error) {
+        console.error("Error loading stats:", error);
+    }
 }
-
-from
-
-"https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
-
-
-
-
-
-
-async function loadStats(){
-
-
-
-try{
-
-
-
-const products =
-await getDocs(
-collection(db,"products")
-);
-
-
-
-const users =
-await getDocs(
-collection(db,"users")
-);
-
-
-
-
-
-let ordersCount = 0;
-
-let points = 0;
-
-
-
-
-
-users.forEach(user=>{
-
-
-let data =
-user.data();
-
-
-
-points +=
-data.points || 0;
-
-
-
-});
-
-
-
-
-
-users.forEach(async(user)=>{
-
-
-const orders =
-await getDocs(
-
-collection(
-db,
-"users",
-user.id,
-"orders"
-
-)
-
-);
-
-
-ordersCount += orders.size;
-
-
-
-});
-
-
-
-
-
-
-
-document.getElementById(
-"product-count"
-).innerHTML =
-products.size;
-
-
-
-
-document.getElementById(
-"user-count"
-).innerHTML =
-users.size;
-
-
-
-
-document.getElementById(
-"points-count"
-).innerHTML =
-points;
-
-
-
-
-setTimeout(()=>{
-
-
-document.getElementById(
-"order-count"
-).innerHTML =
-ordersCount;
-
-
-
-},1000);
-
-
-
-
-
-}
-
-catch(error){
-
-
-console.log(error);
-
-
-}
-
-
-
-}
-
-
-
 
 loadStats();
-// --- FARAZ ADMIN: FIREBASE COMPATIBLE VOUCHER GENERATOR ---
 
+// 2. FIREBASE V10 COMPATIBLE VOUCHER GENERATOR
 window.addEventListener('DOMContentLoaded', () => {
     const genButton = document.getElementById('admin-gen-btn');
-    
+
     if (genButton) {
-        genButton.addEventListener('click', () => {
+        genButton.addEventListener('click', async () => {
             const diamondInput = document.getElementById('admin-diamond-input');
             const outputBox = document.getElementById('admin-code-output');
-            
+
             if (!diamondInput) return;
             const amount = parseInt(diamondInput.value);
 
@@ -173,33 +61,32 @@ window.addEventListener('DOMContentLoaded', () => {
                 return;
             }
 
-            // 1. Unique Code String generate karein
+            // 1. Generate unique code
             const randomStamp = Math.random().toString(36).substring(2, 6).toUpperCase();
             const newGeneratedCode = `FZ-${amount}-${randomStamp}`;
 
-            // 2. Firebase Firestore me "vouchers" collection ke andar save karein
-            firebase.firestore().collection("vouchers").doc(newGeneratedCode).set({
-                amount: amount,
-                createdAt: firebase.firestore.FieldValue.serverTimestamp()
-            })
-            .then(() => {
-                // UI safe display updates
+            try {
+                // 2. Save in Firebase Firestore "vouchers" collection using Modular v10 syntax
+                await setDoc(doc(db, "vouchers", newGeneratedCode), {
+                    amount: amount,
+                    createdAt: serverTimestamp()
+                });
+
+                // 3. Display in UI
                 if (outputBox) {
                     outputBox.innerText = newGeneratedCode;
                     outputBox.style.display = "block";
                 }
 
-                // Clipboard copy tool
-                navigator.clipboard.writeText(newGeneratedCode).then(() => {
-                    alert(`⚡ Live Firebase Code Generated!\n\nCode: ${newGeneratedCode}\nWorth: 💎 ${amount}\n\nCopied & Saved online!`);
-                });
-                
+                // 4. Copy to Clipboard
+                await navigator.clipboard.writeText(newGeneratedCode);
+                alert(`⚡ Live Firebase Code Generated!\n\nCode: ${newGeneratedCode}\nWorth: 💎 ${amount}\n\nCopied & Saved online!`);
+
                 diamondInput.value = "";
-            })
-            .catch((error) => {
+            } catch (error) {
                 console.error("Firebase write error: ", error);
                 alert("⛔ Admin Error: Firebase database se connection nahi ho paya.");
-            });
+            }
         });
     }
 });
