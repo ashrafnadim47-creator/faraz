@@ -1,153 +1,68 @@
 /* ==========================================================================
-   🔥 FARAZ STORE v2.0 - PREMIUM ADMIN DASHBOARD CSS (CYBERPUNK GLASS)
+   🔥 FARAZ STORE v2.0 - ADMIN DASHBOARD MOBILE FIX
    ========================================================================== */
 
 .admin-container {
     min-height: 100vh;
     display: flex;
-    background: radial-gradient(circle at top left, #1e1b4b 0%, #020617 70%);
+    background: #020617;
     font-family: 'Plus Jakarta Sans', sans-serif;
-    box-sizing: border-box;
 }
 
-/* SIDEBAR NAVIGATION */
+/* ADMIN SIDEBAR CONTAINER */
 .admin-sidebar {
     width: 280px;
     min-height: 100vh;
     padding: 30px 20px;
-    background: rgba(15, 23, 42, 0.9);
+    background: rgba(15, 23, 42, 0.95);
     border-right: 1px solid rgba(255, 255, 255, 0.08);
-    backdrop-filter: blur(16px);
-    -webkit-backdrop-filter: blur(16px);
     display: flex;
     flex-direction: column;
-    gap: 16px;
+    gap: 12px; /* Links ke beech me proper gap */
     box-sizing: border-box;
 }
 
-.admin-sidebar h2 {
-    font-family: 'Orbitron', sans-serif;
-    font-size: 24px;
-    font-weight: 900;
-    margin-bottom: 20px;
-    background: linear-gradient(135deg, #00e5ff, #a855f7);
-    -webkit-background-clip: text;
-    background-clip: text;
-    color: transparent;
-    text-shadow: 0 0 15px rgba(0, 229, 255, 0.3);
-}
-
+/* SIDEBAR LINKS FIX (Overlapping Stop Rule) */
 .admin-sidebar a {
+    position: relative !important; /* Forces elements to unstack */
+    display: flex !important;
+    align-items: center;
+    gap: 10px;
+    width: 100%;
     padding: 14px 18px;
     border-radius: 14px;
-    background: rgba(30, 41, 59, 0.5);
+    background: rgba(30, 41, 59, 0.6);
     color: #e2e8f0;
     text-decoration: none;
     font-weight: 700;
     font-size: 14px;
     border: 1px solid rgba(255, 255, 255, 0.05);
+    box-sizing: border-box;
     transition: all 0.25s ease;
 }
 
-.admin-sidebar a:hover,
-.admin-sidebar a.active {
+.admin-sidebar a:hover {
     background: linear-gradient(135deg, #2563eb, #7c3aed);
     color: #ffffff;
     border-color: #00e5ff;
-    transform: translateX(6px);
-    box-shadow: 0 4px 20px rgba(37, 99, 235, 0.3);
 }
 
+/* LOGOUT BUTTON */
 #logout-btn,
 .admin-logout-btn {
-    margin-top: auto;
+    margin-top: 15px;
+    width: 100%;
     padding: 14px;
     border-radius: 14px;
     background: rgba(239, 68, 68, 0.15);
     border: 1px solid #ef4444;
     color: #ef4444;
     font-weight: 800;
-    font-size: 13px;
     cursor: pointer;
     text-transform: uppercase;
-    transition: all 0.25s ease;
 }
 
-#logout-btn:hover,
-.admin-logout-btn:hover {
-    background: #ef4444;
-    color: #ffffff;
-    box-shadow: 0 0 20px rgba(239, 68, 68, 0.4);
-}
-
-/* MAIN CONTENT ARENA */
-.admin-main {
-    flex: 1;
-    padding: 40px;
-    box-sizing: border-box;
-}
-
-.admin-main h1 {
-    font-family: 'Orbitron', sans-serif;
-    font-size: 36px;
-    font-weight: 900;
-    color: #00e5ff;
-    margin-bottom: 8px;
-    text-shadow: 0 0 15px rgba(0, 229, 255, 0.3);
-}
-
-.admin-main p {
-    color: #94a3b8;
-    font-size: 14px;
-}
-
-/* STATS GRID CARDS */
-.stats {
-    margin-top: 35px;
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-    gap: 20px;
-}
-
-.stat-card {
-    padding: 28px 20px;
-    text-align: center;
-    background: rgba(15, 23, 42, 0.85);
-    border-radius: 24px;
-    border: 1px solid rgba(255, 255, 255, 0.08);
-    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.6);
-    backdrop-filter: blur(14px);
-    -webkit-backdrop-filter: blur(14px);
-    transition: all 0.3s ease;
-}
-
-.stat-card:hover {
-    transform: translateY(-6px);
-    border-color: #00e5ff;
-    box-shadow: 0 20px 45px rgba(0, 0, 0, 0.8), 0 0 25px rgba(0, 229, 255, 0.2);
-}
-
-.stat-card h2 {
-    font-family: 'Orbitron', sans-serif;
-    font-size: 36px;
-    font-weight: 900;
-    color: #00e5ff;
-    margin: 0;
-}
-
-.stat-card h3 {
-    margin: 12px 0 6px 0;
-    color: #ffcc00;
-    font-size: 15px;
-    text-transform: uppercase;
-}
-
-.stat-card p {
-    color: #94a3b8;
-    font-size: 12px;
-}
-
-/* 📱 MOBILE RESPONSIVE TUNING */
+/* 📱 MOBILE RESPONSIVE SPECIFIC FIX */
 @media (max-width: 900px) {
     .admin-container {
         flex-direction: column;
@@ -157,18 +72,12 @@
         width: 100%;
         min-height: auto;
         padding: 20px 16px;
+        display: flex;
+        flex-direction: column; /* Mobile me ek ke neeche ek arrange karne ke liye */
+        gap: 10px;
     }
 
     .admin-main {
-        padding: 22px 16px;
-    }
-
-    .admin-main h1 {
-        font-size: 26px;
-    }
-
-    .stats {
-        grid-template-columns: 1fr;
-        gap: 14px;
+        padding: 20px 16px;
     }
 }
