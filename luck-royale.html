@@ -1,137 +1,289 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Luck Royale | Garena Faraz Store</title>
+    <title>Faraz Store | Gaming & Shopping</title>
+    <meta name="description" content="Faraz Store - Gaming products, accessories, electronics and premium online shopping">
+    <meta name="keywords" content="Faraz Store, Gaming, Electronics, Accessories, Shopping">
+    <meta name="theme-color" content="#111827">
+    <link rel="icon" href="favicon.ico">
+    <!-- CSS Links -->
     <link rel="stylesheet" href="css/global.css">
-    <link rel="stylesheet" href="css/luck-royale.css">
+    <link rel="stylesheet" href="css/header.css">
+    <link rel="stylesheet" href="css/home.css">
+    <link rel="stylesheet" href="css/footer.css">
+    <link rel="stylesheet" href="css/responsive.css">
+    <link rel="stylesheet" href="css/admin-product.css">
+    <link rel="stylesheet" href="css/floating.css">
 </head>
+
 <body>
 
-    <div class="ff-interface-wrapper">
-        
-        <!-- LEFT PANEL: TABS MENU -->
-        <div class="ff-navigation-panel">
-            <div class="ff-panel-title">LUCK ROYALE</div>
-            
-            <div class="ff-menu-item active" data-event="mystical-ring">
-                <div class="ff-item-indicator"></div>
-                <span>MYSTICAL RING</span>
-            </div>
-            <div class="ff-menu-item" data-event="wall-royale">
-                <div class="ff-item-indicator"></div>
-                <span>WALL STORE</span>
-            </div>
-            <div class="ff-menu-item" data-event="diwali-ring">
-                <div class="ff-item-indicator"></div>
-                <span>DIWALI RING</span>
-            </div>
-
-            <!-- 🎡 NEW/OLD LINKED TAB: Faded Wheel redirection route -->
-            <div class="ff-menu-item faded-link-tab" data-url="faded-wheel.html">
-                <div class="ff-item-indicator"></div>
-                <span>🎡 FADED WHEEL</span>
-            </div>
-
-            <!-- Token Counter Indicator -->
-            <div class="token-status-box">
-                <img src="https://img.icons8.com/flat-round/64/token.png" alt="Token">
-                <span id="user-token-balance">0</span>
-            </div>
-
-            <button class="ff-exchange-trigger-btn" id="open-exchange-btn">🔀 EXCHANGE STORE</button>
-            <button class="ff-close-gate" onclick="location.href='index.html'">✕ EXIT</button>
+    <!-- HEADER -->
+    <header class="header">
+        <div class="logo-area">
+            <a href="index.html" class="logo">FARAZ STORE</a>
         </div>
 
-        <!-- CENTER PANEL: SPINNING ROTATION MATRIX -->
-        <div class="ff-main-stage">
-            <h1 class="ff-stage-title" id="event-title-display">MYSTICAL RING</h1>
-            
-            <div class="ff-circle-arena">
-                <div class="ff-ring-glow-border"></div>
-                
-                <!-- The dynamic item nodes layout wrapper -->
-                <div class="ff-slots-container" id="wheel-slots-grid"></div>
-                
-                <!-- CENTER HUB -->
-                <div class="ff-center-hub">
-                    <div class="ff-hub-logo">SPIN</div>
-                </div>
-            </div>
+        <!-- MOBILE MENU BUTTON -->
+        <button id="menu-btn" class="menu-btn">☰</button>
 
-            <!-- Bottom Control Deck for Spins -->
-            <div class="ff-action-deck">
-                <button class="ff-deck-btn normal-spin" id="btn-spin-1">
-                    <span class="btn-primary-text">1 SPIN</span>
-                    <span class="btn-sub-text">💎 10</span>
-                </button>
-                <button class="ff-deck-btn grand-spin" id="btn-spin-10">
-                    <span class="btn-primary-text">10+1 SPINS</span>
-                    <span class="btn-sub-text">💎 100</span>
-                </button>
-            </div>
+        <!-- SEARCH -->
+        <div class="search-container">
+            <input id="searchBox" type="text" placeholder="Search Products...">
+            <button id="search-icon-btn">🔍</button>
         </div>
 
-        <!-- ⚡ FIXED NODE: RIGHT SIDE REWARDS SHOWCASE PANEL (This was missing!) -->
-        <div class="ff-rewards-sidebar">
-            <div class="ff-reward-header">ITEM PREVIEW</div>
-            <div class="ff-vertical-reward-stack" id="right-column-prizes">
-                <!-- JavaScript automatically injects the big preview card here -->
-            </div>
+        <!-- HEADER ICONS -->
+        <div class="icons">
+            <a href="luck-royale.html" title="Luck Royale" style="font-size: 20px;">🎰</a>
+            <a href="wishlist.html" title="Wishlist">❤️</a>
+            <a href="cart.html" title="Cart">🛒</a>
+            <a href="profile.html" title="Profile">👤</a>
+            <a href="settings.html" title="Settings">⚙️</a>
+            <button onclick="location.href='topup.html'" style="background: #00e5ff; color: #000; font-weight: bold; border-radius: 5px; padding: 10px 15px; border: none; cursor: pointer;">
+                💎 Buy Diamonds
+            </button>
         </div>
+    </header>
 
+    <!-- MOBILE SIDEBAR -->
+    <div id="sidebar">
+        <button id="close-sidebar">✖</button>
+        <div class="sidebar-logo">FARAZ STORE</div>
+        <a href="index.html">🏠 Home</a>
+        <a href="luck-royale.html" style="color: #ffcc00; font-weight: bold;">👑 Luck Royale (Spin & Win)</a>
+        <a href="products.html">🛒 Products</a>
+        <a href="categories.html">📂 Categories</a>
+        <a href="wishlist.html">❤️ Wishlist</a>
+        <a href="orders.html">📦 Orders</a>
+        <a href="leaderboard.html">🏆 Leaderboard</a>
+        <a href="contact.html">📞 Contact</a>
+        <a href="profile.html">👤 Profile</a>
     </div>
 
-   <!-- ==========================================================================
-       💎 DYNAMIC POPUP 1: FREE FIRE STYLE FULLSCREEN EXCHANGE STORE
-       ========================================================================== -->
-    <div class="royale-modal-overlay" id="exchange-modal" style="display: none;">
-        <div class="exchange-fullscreen-card">
-            
-            <!-- Top Header Bar with User Current Token Count -->
-            <div class="exchange-top-bar">
-                <div class="ex-title">🛒 REDEEM TOKEN STORE</div>
-                <div class="ex-wallet">
-                    <img src="https://img.icons8.com/flat-round/64/token.png" alt="Token">
-                    <span id="exchange-wallet-tokens">0</span>
-                </div>
-                <button class="ex-close-cross" id="close-exchange-btn">✕</button>
+    <!-- HERO SECTION -->
+    <section class="hero">
+        <div class="hero-content">
+            <div class="offer-badge">🔥 Premium Gaming Store</div>
+            <h1>Gaming Power<br>+<br>Smart Shopping</h1>
+            <p>Gaming accessories, electronics and premium products at one place.</p>
+            <div class="hero-buttons">
+                <button class="primary-btn" onclick="location.href='products.html'">🚀 Explore Store</button>
+                <button class="order-btn" onclick="location.href='luck-royale.html'" style="background: linear-gradient(135deg, #ff0055, #ffcc00); color: #fff;">🎰 Luck Royale</button>
             </div>
-
-            <!-- Main Body Layout Split: Side Tabs + Rewards Grid -->
-            <div class="exchange-main-body">
-                
-                <!-- Inner Shop Navigation Menu -->
-                <div class="exchange-side-nav">
-                    <div class="ex-nav-btn active" data-shop="grand">💎 GRAND REWARDS</div>
-                    <div class="ex-nav-btn" data-shop="crates">📦 LOOT CRATES</div>
-                </div>
-
-                <!-- Active Dynamic Rewards Matrix Grid -->
-                <div class="exchange-content-grid" id="exchange-items-renderer">
-                    <!-- Java script automatic item boxes render maps here -->
-                </div>
-
-            </div>
-
         </div>
+
+        <div class="hero-card">
+            <div class="circle">🎮</div>
+            <h2>FARAZ STORE</h2>
+            <p>Next Level Shopping Experience</p>
+            <div class="hero-stats">
+                <div><h3>500+</h3><p>Products</p></div>
+                <div><h3>24/7</h3><p>Support</p></div>
+                <div><h3>100%</h3><p>Quality</p></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 🎰 SPECIAL LUCK ROYALE BANNER SECTION -->
+    <section class="home-section">
+        <div class="flash-card" style="background: linear-gradient(135deg, #2d124d 0%, #0f1118 100%); border: 2px solid #ffcc00; text-align: center; padding: 25px; border-radius: 16px;">
+            <div class="sale-badge" style="background: #ffcc00; color: #000; font-weight: bold;">LIMITED EVENT</div>
+            <h2 style="color: #ffcc00; font-size: 26px; margin: 15px 0 10px 0;">👑 LUCK ROYALE & RING EVENTS</h2>
+            <p style="color: #cbd5e1; margin-bottom: 20px;">Spin the wheel, collect tokens, and win exclusive prizes & bundles!</p>
+            <button onclick="location.href='luck-royale.html'" style="background: linear-gradient(45deg, #ff0055, #ffcc00); color: #fff; font-weight: bold; padding: 12px 30px; border-radius: 25px; font-size: 16px; border: none; cursor: pointer; box-shadow: 0 4px 15px rgba(255,0,85,0.4);">
+                🚀 Enter Luck Royale Event
+            </button>
+        </div>
+    </section>
+
+    <!-- FLASH SALE SECTION -->
+    <section class="flash-sale home-section">
+        <div class="section-title">
+            <h2>⚡ Flash Sale</h2>
+            <p>Limited time premium offers</p>
+        </div>
+        <div class="flash-card">
+            <div class="sale-badge">50% OFF</div>
+            <h3>Mega Discount Up To 50% OFF 🔥</h3>
+            <p>Grab your favourite gaming and shopping products before the offer ends.</p>
+            <div class="sale-timer" id="sale-timer">24:00:00</div>
+            <button onclick="location.href='product.html'">🛒 Shop Now</button>
+        </div>
+    </section>
+
+    <!-- CATEGORIES SECTION -->
+    <section class="categories home-section" id="categories">
+        <div class="section-title">
+            <h2>🛒 Categories</h2>
+            <p>Explore different collections</p>
+        </div>
+        <div class="category-grid">
+            <div class="category-box" data-cat="fashion"><div class="category-icon">👕</div><h3>Fashion</h3><p>Style Collection</p></div>
+            <div class="category-box" data-cat="electronics"><div class="category-icon">📱</div><h3>Electronics</h3><p>Latest Gadgets</p></div>
+            <div class="category-box" data-cat="gaming"><div class="category-icon">🎮</div><h3>Gaming</h3><p>Gaming Gear</p></div>
+            <div class="category-box" data-cat="home"><div class="category-icon">🏠</div><h3>Home</h3><p>Useful Products</p></div>
+        </div>
+    </section>
+
+    <!-- FIREBASE PRODUCTS SECTION -->
+    <section class="products home-section">
+        <div class="section-title">
+            <h2>🔥 New Products</h2>
+            <p>Latest products from Faraz Store</p>
+        </div>
+        <div id="home-products" class="product-grid">
+            <div class="loading">Loading Products...</div>
+        </div>
+    </section>
+
+    <!-- RECENTLY VIEWED -->
+    <section class="home-section">
+        <div class="section-title">
+            <h2>👀 Recently Viewed</h2>
+            <p>Products you checked recently</p>
+        </div>
+        <div id="recent-products" class="product-grid"></div>
+    </section>
+
+    <!-- TRENDING PRODUCTS -->
+    <section class="trending home-section">
+        <div class="section-title">
+            <h2>🚀 Trending Now</h2>
+            <p>Most popular products</p>
+        </div>
+        <div class="trend-grid">
+            <div class="trend-card">
+                <div class="trend-icon">🎧</div>
+                <h3>Gaming Headset</h3>
+                <p>Pro gaming experience</p>
+                <button class="trend-btn" onclick="location.href='product.html'">🚀 View Products</button>
+            </div>
+            <div class="trend-card">
+                <div class="trend-icon">⌨️</div>
+                <h3>Gaming Keyboard</h3>
+                <p>RGB performance gear</p>
+                <button class="trend-btn" onclick="location.href='product.html'">🚀 View Products</button>
+            </div>
+            <div class="trend-card">
+                <div class="trend-icon">🖱️</div>
+                <h3>Gaming Mouse</h3>
+                <p>Fast & accurate control</p>
+                <button class="trend-btn" onclick="location.href='product.html'">🚀 View Products</button>
+            </div>
+            <div class="trend-card">
+                <div class="trend-icon">📱</div>
+                <h3>Smart Gadgets</h3>
+                <p>Latest technology</p>
+                <button class="trend-btn" onclick="location.href='product.html'">🚀 View Products</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- DAILY DEALS -->
+    <section class="deals home-section">
+        <div class="deal-box">
+            <h2>🎁 Daily Deals</h2>
+            <p>Special offers updated every day.</p>
+            <button onclick="location.href='product.html'">Explore Deals</button>
+        </div>
+    </section>
+
+    <!-- SOCIAL SECTION -->
+    <section class="home-section">
+        <div class="social-card">
+            <h2>🌐 Follow Faraz Store</h2>
+            <p>Stay updated with new products, offers and events.</p>
+            <div class="social-links">
+                <a href="https://www.youtube.com/@TK_RUSH" target="_blank">▶ YouTube</a>
+                <a href="https://www.instagram.com/faraz_anjum_000" target="_blank">📷 Instagram</a>
+                <a href="#">👍 Facebook</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- LEADERBOARD -->
+    <section class="home-section">
+        <div class="leaderboard-card">
+            <h2>🏆 Top Players</h2>
+            <div id="leaderboard">Loading Users...</div>
+            <button onclick="location.href='leaderboard.html'">View Full Leaderboard</button>
+        </div>
+    </section>
+
+    <!-- CUSTOMER REVIEWS -->
+    <section class="reviews home-section">
+        <div class="section-title">
+            <h2>⭐ Customer Reviews</h2>
+            <p>What users say about Faraz Store</p>
+        </div>
+        <div class="review-grid">
+            <div class="review-card"><h3>⭐⭐⭐⭐⭐</h3><p>Amazing products and smooth shopping experience.</p><h4>- Faraz User</h4></div>
+            <div class="review-card"><h3>⭐⭐⭐⭐⭐</h3><p>Fast delivery and good quality products.</p><h4>- Gaming Customer</h4></div>
+            <div class="review-card"><h3>⭐⭐⭐⭐</h3><p>Great gaming collection.</p><h4>- Store Member</h4></div>
+        </div>
+    </section>
+
+    <!-- FAQ -->
+    <section class="faq home-section">
+        <div class="section-title">
+            <h2>❓ FAQ</h2>
+        </div>
+        <div class="faq-box">
+            <h3>How can I order products?</h3>
+            <p>Select product → Add to cart → Checkout.</p>
+        </div>
+        <div class="faq-box">
+            <h3>How can I track my order?</h3>
+            <p>Open My Orders section from your profile.</p>
+        </div>
+        <div class="faq-box">
+            <h3>Is payment secure?</h3>
+            <p>Yes, Faraz Store provides secure shopping.</p>
+        </div>
+    </section>
+
+    <!-- FEATURES -->
+    <section class="features">
+        <div><div class="feature-icon">🚚</div><h3>Fast Delivery</h3><p>Track your orders easily</p></div>
+        <div><div class="feature-icon">🔒</div><h3>Secure Shopping</h3><p>Safe payment system</p></div>
+        <div><div class="feature-icon">⭐</div><h3>Premium Quality</h3><p>Best products collection</p></div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="footer">
+        <h2>FARAZ STORE</h2>
+        <p>Gaming + Shopping Experience</p>
+        <div class="footer-links">
+            <a href="index.html">Home</a>
+            <a href="luck-royale.html">Luck Royale</a>
+            <a href="product.html">Products</a>
+            <a href="orders.html">Orders</a>
+            <a href="contact.html">Contact</a>
+        </div>
+        <div class="social">Instagram | YouTube | Facebook</div>
+        <p class="copy">© 2026 Faraz Store. All Rights Reserved.</p>
+    </footer>
+
+    <!-- 👑 FLOATING BUTTONS MATRIX -->
+    <div class="floating-box">
+        <a href="luck-royale.html" class="royale-link">👑 LUCK ROYALE</a>
+        <a href="spin.html" class="float-btn spin-btn">🎰</a>
+        <a href="missions.html" class="float-btn mission-btn">🎯</a>
+        <a href="https://www.instagram.com/faraz_anjum_000" class="float-btn insta-btn" target="_blank">📷</a>
+        <a href="https://www.youtube.com/@TK_RUSH" class="float-btn youtube-btn" target="_blank">▶️</a>
+        <a href="admin-login.html" class="admin-btn">👑 <span>Admin</span></a>
     </div>
 
-    <!-- 🎉 DYNAMIC POPUP 2: CONGRATULATIONS CELEBRATION EFFECT -->
-    <div class="congratulations-overlay" id="congratulations-popup" style="display: none;">
-        <div class="congrats-glow-burst"></div>
-        <div class="congrats-card">
-            <h1 class="congrats-banner">CONGRATULATIONS!</h1>
-            <p class="congrats-sub">UNLOCKED EXCLUSIVE REWARD</p>
-            <div class="unlocked-reward-display">
-                <img id="congrats-item-img" src="" alt="Reward">
-                <h2 id="congrats-item-name">ITEM</h2>
-            </div>
-            <button class="congrats-close-btn" id="congrats-dismiss-btn">OK</button>
-        </div>
-    </div>
-
-    <script type="module" src="js/luck-royale.js"></script>
+    <!-- SCRIPTS -->
+    <script src="js/menu.js"></script>
+    <script type="module" src="js/home.js"></script>
+    <script type="module" src="js/cart-page.js"></script>
+    <script type="module" src="js/wishlist.js"></script>
+    <script type="module" src="js/recent.js"></script>
 </body>
+
 </html>
