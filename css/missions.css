@@ -1,0 +1,55 @@
+body{
+
+font-family:Arial;
+
+background:#d407a8;
+
+text-align:center;
+
+}
+
+
+
+.mission-box{
+
+display:grid;
+
+grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+
+gap:20px;
+
+padding:30px;
+
+}
+
+
+
+.mission-box div{
+
+background:rgb(88, 24, 24);
+
+padding:25px;
+
+border-radius:20px;
+
+box-shadow:0 5px 20px #0b17bd;
+
+}
+
+
+
+button{
+
+padding:12px 25px;
+
+background:#673ab7;
+
+color:rgb(8, 252, 252);
+
+border:none;
+
+border-radius:10px;
+
+cursor:pointer;
+
+}

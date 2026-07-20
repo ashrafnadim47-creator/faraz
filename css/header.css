@@ -1,0 +1,535 @@
+/* ==================================
+   FARAZ STORE v2.0
+   COMPLETE HEADER CSS
+================================== */
+
+
+/* HEADER */
+
+.header{
+
+    width:100%;
+
+    height:80px;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:space-between;
+
+    padding:0 5%;
+
+    position:sticky;
+
+    top:0;
+
+    z-index:1000;
+
+    background:rgba(15,23,42,.90);
+
+    backdrop-filter:blur(15px);
+
+    border-bottom:1px solid rgba(255,255,255,.1);
+
+}
+
+
+
+
+/* LOGO */
+
+
+.logo{
+
+    font-size:28px;
+
+    font-weight:900;
+
+    letter-spacing:2px;
+
+    background:linear-gradient(
+    135deg,
+    #38bdf8,
+    #8b5cf6
+    );
+
+    -webkit-background-clip:text;
+
+    background-clip:text;
+
+    -webkit-text-fill-color:transparent;
+
+}
+
+
+
+
+
+.logo span{
+
+    color:#38bdf8;
+
+}
+
+
+
+
+
+
+
+/* MENU BUTTON */
+
+
+#menu-btn,
+.menu-btn{
+
+
+    display:none;
+
+    background:#1e293b;
+
+    color:white;
+
+    border:none;
+
+    width:42px;
+
+    height:42px;
+
+    border-radius:12px;
+
+    font-size:22px;
+
+    cursor:pointer;
+
+}
+
+
+
+
+
+
+
+/* NAVBAR */
+
+
+.navbar{
+
+
+    display:flex;
+
+    align-items:center;
+
+    gap:25px;
+
+}
+
+
+
+.navbar a{
+
+
+    color:#e2e8f0;
+
+    font-weight:600;
+
+    transition:.3s;
+
+}
+
+
+
+.navbar a:hover{
+
+
+    color:#38bdf8;
+
+}
+
+
+
+
+
+
+
+/* SEARCH */
+
+
+.search-container{
+
+
+    width:35%;
+
+    display:flex;
+
+    align-items:center;
+
+    background:#1e293b;
+
+    border-radius:30px;
+
+    overflow:hidden;
+
+    border:1px solid #334155;
+
+}
+
+
+
+
+.search-container input{
+
+
+    width:100%;
+
+    padding:12px 18px;
+
+    background:none;
+
+    border:none;
+
+    outline:none;
+
+    color:white;
+
+}
+
+
+
+
+
+.search-container button{
+
+
+    padding:12px 18px;
+
+    background:linear-gradient(
+    135deg,
+    #2563eb,
+    #7c3aed
+    );
+
+    color:white;
+
+}
+
+
+
+
+
+
+
+/* ICONS */
+
+
+.icons,
+.header-buttons{
+
+
+    display:flex;
+
+    align-items:center;
+
+    gap:12px;
+
+}
+
+
+
+
+.icons a,
+.header-buttons button{
+
+
+    width:42px;
+
+    height:42px;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    border-radius:50%;
+
+    background:#1e293b;
+
+    color:white;
+
+    font-size:19px;
+
+    border:none;
+
+    cursor:pointer;
+
+    transition:.3s;
+
+}
+
+
+
+
+.icons a:hover,
+.header-buttons button:hover{
+
+
+    transform:translateY(-4px);
+
+    background:linear-gradient(
+    135deg,
+    #2563eb,
+    #7c3aed
+    );
+
+}
+
+
+
+
+
+
+
+/* SIDEBAR */
+
+
+#sidebar{
+
+
+    position:fixed;
+
+    top:0;
+
+    left:-320px;
+
+    width:280px;
+
+    height:100vh;
+
+    background:#020617;
+
+    z-index:3000;
+
+    padding:25px;
+
+    display:flex;
+
+    flex-direction:column;
+
+    gap:18px;
+
+    transition:.4s;
+
+    box-shadow:10px 0 30px rgba(0,0,0,.5);
+
+}
+
+
+
+
+#sidebar.active{
+
+    left:0;
+
+}
+
+
+
+
+
+#close-sidebar{
+
+
+    align-self:flex-end;
+
+    width:40px;
+
+    height:40px;
+
+    border-radius:50%;
+
+    background:#1e293b;
+
+    color:white;
+
+}
+
+
+
+
+
+#sidebar a{
+
+
+    padding:14px;
+
+    border-radius:12px;
+
+    background:#111827;
+
+    color:white;
+
+    transition:.3s;
+
+}
+
+
+
+
+#sidebar a:hover{
+
+
+    background:linear-gradient(
+    135deg,
+    #2563eb,
+    #7c3aed
+    );
+
+    transform:translateX(8px);
+
+}
+
+
+
+
+
+
+
+
+/* MOBILE HEADER */
+
+
+@media(max-width:900px){
+
+
+
+.header{
+
+
+    height:70px;
+
+    padding:0 20px;
+
+}
+
+
+
+
+#menu-btn,
+.menu-btn{
+
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+}
+
+
+
+
+.navbar{
+
+
+    display:none;
+
+}
+
+
+
+
+.search-container{
+
+
+    display:none;
+
+}
+
+
+
+
+
+.logo{
+
+
+    font-size:22px;
+
+}
+
+
+
+
+.icons a,
+.header-buttons button{
+
+
+    width:36px;
+
+    height:36px;
+
+    font-size:16px;
+
+}
+
+
+
+}
+
+
+
+
+
+
+
+@media(max-width:500px){
+
+
+
+.header{
+
+
+    padding:0 12px;
+
+}
+
+
+
+
+.logo{
+
+
+    font-size:18px;
+
+}
+
+
+
+
+.icons,
+.header-buttons{
+
+
+    gap:5px;
+
+}
+
+
+
+
+.icons a,
+.header-buttons button{
+
+
+    width:34px;
+
+    height:34px;
+
+}
+
+
+
+
+}

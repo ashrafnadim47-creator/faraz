@@ -1,0 +1,722 @@
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+
+html{
+    scroll-behavior:smooth;
+}
+
+
+body{
+
+    font-family:
+    "Segoe UI",
+    Arial,
+    sans-serif;
+
+    background:#020617;
+
+    color:#e2e8f0;
+
+    overflow-x:hidden;
+
+}
+
+
+
+a{
+
+    text-decoration:none;
+
+    color:inherit;
+
+}
+
+
+
+button{
+
+    cursor:pointer;
+
+    border:none;
+
+    outline:none;
+
+    font-family:inherit;
+
+}
+
+
+
+input,
+textarea,
+select{
+
+    font-family:inherit;
+
+}
+
+
+
+/* =====================
+   PREMIUM COLORS
+===================== */
+
+
+:root{
+
+    --primary:#38bdf8;
+
+    --secondary:#8b5cf6;
+
+    --dark:#020617;
+
+    --card:#111827;
+
+    --soft:#1e293b;
+
+    --text:#e2e8f0;
+
+    --muted:#94a3b8;
+
+    --success:#22c55e;
+
+}
+
+
+
+
+
+
+
+/* =====================
+   SCROLL BAR
+===================== */
+
+
+::-webkit-scrollbar{
+
+    width:8px;
+
+}
+
+
+::-webkit-scrollbar-track{
+
+    background:#020617;
+
+}
+
+
+::-webkit-scrollbar-thumb{
+
+    background:
+    linear-gradient(
+    #38bdf8,
+    #8b5cf6
+    );
+
+    border-radius:20px;
+
+}
+
+
+
+
+
+
+
+/* =====================
+   COMMON BUTTON
+===================== */
+
+
+.primary-btn,
+.order-btn,
+.checkout-btn,
+.place-order-btn{
+
+
+    padding:14px 28px;
+
+    border-radius:30px;
+
+    color:white;
+
+    font-weight:700;
+
+
+    background:
+
+    linear-gradient(
+    135deg,
+    #2563eb,
+    #7c3aed
+    );
+
+
+    transition:.3s;
+
+}
+
+
+
+
+
+.primary-btn:hover,
+.order-btn:hover,
+.checkout-btn:hover,
+.place-order-btn:hover{
+
+
+    transform:translateY(-4px);
+
+    box-shadow:
+
+    0 10px 30px
+    rgba(56,189,248,.35);
+
+}
+
+
+
+
+
+
+
+/* =====================
+   SECTION STYLE
+===================== */
+
+
+.home-section,
+.cart-section,
+.checkout-section{
+
+
+    width:90%;
+
+    max-width:1200px;
+
+    margin:50px auto;
+
+
+}
+
+
+
+
+
+.home-section h2,
+.cart-section h1,
+.checkout-section h1{
+
+
+    text-align:center;
+
+    margin-bottom:30px;
+
+    font-size:35px;
+
+    font-weight:900;
+
+
+    background:
+
+    linear-gradient(
+    135deg,
+    #38bdf8,
+    #8b5cf6
+    );
+
+
+    -webkit-background-clip:text;
+
+    background-clip:text;
+
+
+    color:transparent;
+
+
+}
+
+
+
+
+
+
+
+/* =====================
+   CARD DESIGN
+===================== */
+
+
+.card,
+.product-card,
+.category-box,
+.cart-item,
+.summary-box,
+.checkout-item,
+.user-card,
+.order-card{
+
+
+    background:
+
+    rgba(17,24,39,.85);
+
+
+    border:
+
+    1px solid
+    rgba(255,255,255,.08);
+
+
+    border-radius:25px;
+
+
+    backdrop-filter:blur(10px);
+
+
+    transition:.3s;
+
+
+}
+
+
+
+
+
+.card:hover,
+.product-card:hover,
+.category-box:hover{
+
+
+    transform:translateY(-8px);
+
+
+    box-shadow:
+
+    0 15px 40px
+    rgba(0,0,0,.4);
+
+
+}
+
+
+
+
+
+
+
+/* =====================
+   INPUT STYLE
+===================== */
+
+
+input,
+textarea,
+select{
+
+
+    width:100%;
+
+    padding:14px;
+
+    margin:10px 0;
+
+    border-radius:15px;
+
+    border:1px solid #334155;
+
+    background:#0f172a;
+
+    color:white;
+
+}
+
+
+input:focus,
+textarea:focus{
+
+
+    border-color:#38bdf8;
+
+    outline:none;
+
+
+}
+
+
+
+
+
+
+
+/* =====================
+   LOADING
+===================== */
+
+
+.loading{
+
+
+    text-align:center;
+
+    padding:40px;
+
+    font-size:20px;
+
+    color:#38bdf8;
+
+}
+
+
+
+
+
+
+
+/* =====================
+   IMAGE
+===================== */
+
+
+img{
+
+
+    max-width:100%;
+
+    display:block;
+
+    object-fit:cover;
+
+}
+
+
+
+
+
+/* =====================
+   MOBILE BASE
+===================== */
+
+
+@media(max-width:600px){
+
+
+.home-section,
+.cart-section,
+.checkout-section{
+
+
+    width:95%;
+
+}
+
+
+h1{
+
+    font-size:28px;
+
+}
+
+
+}
+/* ==========================================================================
+   🔥 FIXED PREMIUM ADMIN LOGIN PAGE STYLING (MATCHING DASHBOARD VIBE)
+   ========================================================================== */
+
+/* Fullscreen Center Placement Framework */
+.admin-login-page {
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: #020617; /* Same deep dark theme as your dashboard */
+    padding: 20px;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', Roboto, sans-serif;
+}
+
+/* Centralized Glass Card - Bada aur clean size lock kiya */
+.admin-login-card {
+    width: 100%;
+    max-width: 460px; /* Perfect wide dashboard form width */
+    background: rgba(17, 24, 39, 0.95); /* Dashboard grid card theme matches */
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 24px;
+    padding: 45px 35px;
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5), 0 0 30px rgba(139, 92, 246, 0.1);
+    box-sizing: border-box;
+    text-align: center;
+    transition: transform 0.3s;
+}
+
+/* Header Text styling sync with dashboard gradient colors */
+.admin-login-header h1 {
+    font-size: 30px;
+    font-weight: 800;
+    margin: 0 0 8px 0;
+    color: #ffffff;
+    letter-spacing: 1px;
+}
+
+.admin-login-header h1 span {
+    background: linear-gradient(135deg, #38bdf8, #8b5cf6);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+}
+
+.admin-login-header p {
+    color: #94a3b8;
+    font-size: 12px;
+    font-weight: 700;
+    margin: 0 0 35px 0;
+    letter-spacing: 2px;
+}
+
+/* Structural Form fields handling */
+.admin-input-group {
+    margin-bottom: 24px;
+    text-align: left;
+}
+
+.admin-input-group label {
+    display: block;
+    color: #38bdf8; /* Cyan blue accent from sidebar typography link */
+    font-size: 13px;
+    font-weight: 600;
+    margin-bottom: 8px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+/* Input Boxes ko bada aur fully touch friendly kiya */
+.admin-login-card input {
+    width: 100%;
+    padding: 15px 18px;
+    font-size: 16px; /* Essential lock for mobile input auto-zoom crashes */
+    background: #1e293b; /* Same color block as your dashboard buttons */
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    border-radius: 12px;
+    color: #e2e8f0;
+    box-sizing: border-box;
+    outline: none;
+    transition: border-color 0.25s, box-shadow 0.25s;
+}
+
+.admin-login-card input:focus {
+    border-color: #8b5cf6; /* Turns premium purple on click focus */
+    box-shadow: 0 0 12px rgba(139, 92, 246, 0.3);
+}
+
+/* High-priority full width Dashboard authorization action button */
+.admin-submit-btn {
+    width: 100%;
+    padding: 16px;
+    font-size: 16px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    border: none;
+    border-radius: 14px;
+    background: linear-gradient(135deg, #2563eb, #7c3aed); /* Matching hover effect gradient of sidebar links */
+    color: #ffffff;
+    cursor: pointer;
+    margin-top: 10px;
+    box-shadow: 0 8px 24px rgba(124, 58, 237, 0.3);
+    transition: transform 0.1s, filter 0.2s;
+}
+
+.admin-submit-btn:hover {
+    filter: brightness(1.1);
+}
+
+.admin-submit-btn:active {
+    transform: scale(0.98);
+}
+
+/* Back Link options */
+.admin-back-shop-link {
+    display: inline-block;
+    margin-top: 25px;
+    color: #64748b;
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: 600;
+    transition: color 0.2s;
+}
+
+.admin-back-shop-link:hover {
+    color: #e2e8f0;
+}
+
+/* ==========================================================================
+   📱 MOBILE VIEW OPTIMIZATIONS (For screens 600px wide or smaller)
+   ========================================================================== */
+@media (max-width: 600px) {
+    .admin-login-card {
+        padding: 35px 20px;
+        margin: 10px;
+        border-radius: 18px;
+    }
+
+    .admin-login-header h1 {
+        font-size: 25px;
+    }
+
+    .admin-login-card input {
+        padding: 14px 16px;
+    }
+}
+/* ==========================================================================
+   🌐 PREMIUM CYAN NEON INTERFACE FOR USER LOGIN (STARTING PAGE)
+   ========================================================================== */
+
+/* Fullscreen flex standard for main store login */
+.user-login-page {
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: #0b0f19; /* Pure dark gaming environment */
+    padding: 20px;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', Roboto, sans-serif;
+}
+
+/* Centralized Glass Card - Size perfectly wide and readable */
+.user-login-card {
+    width: 100%;
+    max-width: 450px; /* Exact uniform premium width */
+    background: rgba(17, 24, 39, 0.95);
+    border: 1px solid rgba(0, 229, 255, 0.2); /* Glowing Cyan border element */
+    border-radius: 24px;
+    padding: 45px 35px;
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.6), 0 0 30px rgba(0, 229, 255, 0.1);
+    box-sizing: border-box;
+    text-align: center;
+}
+
+/* Header Branding Typography */
+.user-login-header h1 {
+    font-size: 32px;
+    font-weight: 800;
+    margin: 0 0 8px 0;
+    color: #ffffff;
+    letter-spacing: 1px;
+}
+
+.user-login-header h1 span {
+    background: linear-gradient(135deg, #00e5ff, #00aacc); /* Neon cyan gradient */
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+}
+
+.user-login-header p {
+    color: #9ca3af;
+    font-size: 13px;
+    font-weight: 600;
+    margin: 0 0 35px 0;
+    letter-spacing: 1px;
+}
+
+/* User Input Form Groups structure */
+.user-input-group {
+    margin-bottom: 24px;
+    text-align: left;
+}
+
+.user-input-group label {
+    display: block;
+    color: #00e5ff; /* Cyan active text highlight */
+    font-size: 13px;
+    font-weight: 600;
+    margin-bottom: 8px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+/* Input elements styling */
+.user-login-card input {
+    width: 100%;
+    padding: 15px 18px;
+    font-size: 16px; /* Safeguard lock against auto-zoom crashes on mobile screen triggers */
+    background: #111827;
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    border-radius: 12px;
+    color: #e2e8f0;
+    box-sizing: border-box;
+    outline: none;
+    transition: border-color 0.25s, box-shadow 0.25s;
+}
+
+.user-login-card input:focus {
+    border-color: #00e5ff;
+    box-shadow: 0 0 12px rgba(0, 229, 255, 0.3);
+}
+
+/* High-priority full width main store login action button */
+.user-submit-btn {
+    width: 100%;
+    padding: 16px;
+    font-size: 16px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    border: none;
+    border-radius: 14px;
+    background: linear-gradient(135deg, #00e5ff, #00aacc);
+    color: #0b0f19;
+    cursor: pointer;
+    margin-top: 10px;
+    box-shadow: 0 8px 24px rgba(0, 229, 255, 0.25);
+    transition: transform 0.1s, filter 0.2s;
+}
+
+.user-submit-btn:hover {
+    filter: brightness(1.1);
+}
+
+.user-submit-btn:active {
+    transform: scale(0.98);
+}
+
+/* Footer Register links and navigation options */
+.user-login-footer-links {
+    margin-top: 25px;
+    font-size: 14px;
+    color: #64748b;
+}
+
+.user-login-footer-links a {
+    color: #00e5ff;
+    text-decoration: none;
+    font-weight: 600;
+    transition: color 0.2s;
+}
+
+.user-login-footer-links a:hover {
+    color: #ffffff;
+}
+
+/* ==========================================================================
+   📱 MOBILE SPECIFIC RESPONSIVE OVERRIDES
+   ========================================================================== */
+@media (max-width: 600px) {
+    .user-login-card {
+        padding: 35px 20px;
+        margin: 15px;
+        border-radius: 18px;
+    }
+
+    .user-login-header h1 {
+        font-size: 26px;
+    }
+}

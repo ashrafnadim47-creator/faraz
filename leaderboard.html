@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Global Leaderboard | Faraz Store</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Roboto, sans-serif;
+        }
+        body {
+            background: radial-gradient(circle, #1f2330 0%, #0b0c10 100%);
+            color: #fff;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+        .leaderboard-box {
+            width: 100%;
+            max-width: 500px;
+            background: linear-gradient(180deg, #161922 0%, #0f1118 100%);
+            border: 2px solid #3d435c;
+            border-radius: 16px;
+            padding: 25px;
+            box-shadow: 0 15px 40px rgba(0,0,0,0.8);
+        }
+        .board-header {
+            text-align: center;
+            border-bottom: 2px solid #ffcc00;
+            padding-bottom: 15px;
+            margin-bottom: 20px;
+        }
+        .board-header h1 {
+            color: #ffcc00;
+            font-size: 26px;
+            letter-spacing: 2px;
+            text-shadow: 0 0 10px rgba(255, 204, 0, 0.3);
+        }
+        .rank-list {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        .rank-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: #232736;
+            padding: 12px 18px;
+            border-radius: 8px;
+            border: 1px solid #3d435c;
+            transition: transform 0.2s;
+        }
+        .rank-row:hover {
+            transform: scale(1.02);
+            border-color: #ffcc00;
+        }
+        .user-meta {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        .rank-number {
+            font-weight: 900;
+            font-size: 16px;
+            width: 25px;
+        }
+        /* Top 3 Special Colors */
+        .rank-1 { color: #ffd700; text-shadow: 0 0 8px #ffd700; }
+        .rank-2 { color: #c0c0c0; text-shadow: 0 0 8px #c0c0c0; }
+        .rank-3 { color: #cd7f32; text-shadow: 0 0 8px #cd7f32; }
+        
+        .user-name {
+            font-weight: 600;
+        }
+        .diamond-count {
+            color: #00e5ff;
+            font-weight: bold;
+        }
+        .back-btn {
+            width: 100%;
+            background: transparent;
+            border: 1px solid #3d435c;
+            color: #cbd5e1;
+            padding: 10px;
+            border-radius: 6px;
+            cursor: pointer;
+            margin-top: 20px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="leaderboard-box">
+        <div class="board-header">
+            <h1>🏆 TOP DIAMONDS</h1>
+        </div>
+
+        <div class="rank-list" id="leaderboard-target">
+            <!-- Dynamic Users Data hooks here -->
+        </div>
+
+        <button class="back-btn" onclick="location.href='index.html'">Return to Shop</button>
+    </div>
+
+    <script>
+        window.addEventListener('DOMContentLoaded', () => {
+            const boardTarget = document.getElementById('leaderboard-target');
+            
+            // Dummy Global Data Engine for demonstration
+            // Real setup me Firebase query (orderBy("diamonds", "desc")) isko automatic chalaegi
+            let globalPlayers = [
+                { name: "Faraz (You)", diamonds: parseInt(localStorage.getItem('fw_persist_wallet') || "0") },
+                { name: "Aman_FF", diamonds: 450 },
+                { name: "Rahul_Gamer", diamonds: 310 },
+                { name: "Sahil_Store", diamonds: 120 },
+                { name: "Rohit_King", diamonds: 50 }
+            ];
+
+            // ⚡ SHORTING LOGIC: Jiske paas sabse zyada diamond, wo sabse upar!
+            globalPlayers.sort((a, b) => b.diamonds - a.diamonds);
+
+            // Render Output Loop
+            boardTarget.innerHTML = globalPlayers.map((player, idx) => {
+                let rankClass = "";
+                if (idx === 0) rankClass = "rank-1";
+                if (idx === 1) rankClass = "rank-2";
+                if (idx === 2) rankClass = "rank-3";
+
+                return `
+                    <div class="rank-row">
+                        <div class="user-meta">
+                            <span class="rank-number ${rankClass}">#${idx + 1}</span>
+                            <span class="user-name">${player.name}</span>
+                        </div>
+                        <span class="diamond-count">💎 ${player.diamonds}</span>
+                    </div>
+                `;
+            }).join('');
+        });
+    </script>
+</body>
+</html>

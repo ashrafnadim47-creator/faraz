@@ -1,0 +1,365 @@
+/* =====================================
+   FARAZ STORE v2.0
+   PREMIUM PROFILE CSS
+===================================== */
+
+
+
+.profile-section{
+
+
+    min-height:90vh;
+
+
+    padding:50px 5%;
+
+
+    display:flex;
+
+
+    justify-content:center;
+
+
+    align-items:center;
+
+
+}
+
+
+
+
+
+.profile-card{
+
+
+    width:450px;
+
+
+    padding:40px;
+
+
+    text-align:center;
+
+
+    background:
+
+
+    rgba(17,24,39,.9);
+
+
+    border-radius:35px;
+
+
+    border:
+
+
+    1px solid rgba(255,255,255,.1);
+
+
+    box-shadow:
+
+
+    0 25px 70px rgba(0,0,0,.45);
+
+
+}
+
+
+
+
+
+
+.profile-avatar{
+
+
+    width:130px;
+
+
+    height:130px;
+
+
+    margin:auto;
+
+
+    display:flex;
+
+
+    align-items:center;
+
+
+    justify-content:center;
+
+
+    border-radius:50%;
+
+
+    font-size:60px;
+
+
+    background:
+
+
+    linear-gradient(
+    135deg,
+    #2563eb,
+    #7c3aed
+    );
+
+
+    box-shadow:
+
+
+    0 0 40px rgba(56,189,248,.4);
+
+
+}
+
+
+
+
+
+
+
+.profile-card h1{
+
+
+    margin-top:25px;
+
+
+    font-size:32px;
+
+
+    background:
+
+
+    linear-gradient(
+    135deg,
+    #38bdf8,
+    #8b5cf6
+    );
+
+
+    -webkit-background-clip:text;
+
+
+    background-clip:text;
+
+
+    color:transparent;
+
+
+}
+
+
+
+
+
+
+
+.profile-info{
+
+
+    margin-top:30px;
+
+
+    text-align:left;
+
+
+}
+
+
+
+
+
+.profile-info div{
+
+
+    padding:18px;
+
+
+    margin:15px 0;
+
+
+    border-radius:20px;
+
+
+    background:#0f172a;
+
+
+    color:#cbd5e1;
+
+
+}
+
+
+
+
+
+
+
+.profile-info span{
+
+
+    color:#38bdf8;
+
+
+    font-weight:bold;
+
+
+}
+
+
+
+
+
+
+
+.points-card{
+
+
+    margin-top:25px;
+
+
+    padding:25px;
+
+
+    border-radius:25px;
+
+
+    background:
+
+
+    linear-gradient(
+    135deg,
+    #facc15,
+    #f97316
+    );
+
+
+    color:#111;
+
+
+}
+
+
+
+.points-card h2{
+
+
+    font-size:35px;
+
+
+}
+
+
+
+
+
+
+
+
+.profile-buttons{
+
+
+    margin-top:30px;
+
+
+    display:flex;
+
+
+    flex-direction:column;
+
+
+    gap:15px;
+
+
+}
+
+
+
+
+
+
+
+.profile-buttons button{
+
+
+    padding:15px;
+
+
+    border-radius:30px;
+
+
+    background:
+
+
+    linear-gradient(
+    135deg,
+    #2563eb,
+    #7c3aed
+    );
+
+
+    color:white;
+
+
+    font-weight:bold;
+
+
+}
+
+
+
+
+
+
+
+
+.profile-buttons .logout{
+
+
+    background:
+
+
+    linear-gradient(
+    135deg,
+    #dc2626,
+    #ef4444
+    );
+
+
+}
+
+
+
+
+
+
+
+@media(max-width:600px){
+
+
+.profile-card{
+
+
+    width:90%;
+
+
+    padding:25px;
+
+
+}
+
+
+
+.profile-card h1{
+
+
+    font-size:28px;
+
+
+}
+
+
+
+}

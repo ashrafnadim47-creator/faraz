@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Luck Royale | Garena Faraz Store</title>
+    <link rel="stylesheet" href="css/global.css">
+    <link rel="stylesheet" href="css/luck-royale.css">
+</head>
+<body>
+
+    <div class="ff-interface-wrapper">
+        
+        <!-- LEFT PANEL: TABS MENU -->
+        <div class="ff-navigation-panel">
+            <div class="ff-panel-title">LUCK ROYALE</div>
+            
+            <div class="ff-menu-item active" data-event="mystical-ring">
+                <div class="ff-item-indicator"></div>
+                <span>MYSTICAL RING</span>
+            </div>
+            <div class="ff-menu-item" data-event="wall-royale">
+                <div class="ff-item-indicator"></div>
+                <span>WALL STORE</span>
+            </div>
+            <div class="ff-menu-item" data-event="diwali-ring">
+                <div class="ff-item-indicator"></div>
+                <span>DIWALI RING</span>
+            </div>
+
+            <!-- 🎡 NEW/OLD LINKED TAB: Faded Wheel redirection route -->
+            <div class="ff-menu-item faded-link-tab" data-url="faded-wheel.html">
+                <div class="ff-item-indicator"></div>
+                <span>🎡 FADED WHEEL</span>
+            </div>
+
+            <!-- Token Counter Indicator -->
+            <div class="token-status-box">
+                <img src="https://img.icons8.com/flat-round/64/token.png" alt="Token">
+                <span id="user-token-balance">0</span>
+            </div>
+
+            <button class="ff-exchange-trigger-btn" id="open-exchange-btn">🔀 EXCHANGE STORE</button>
+            <button class="ff-close-gate" onclick="location.href='index.html'">✕ EXIT</button>
+        </div>
+
+        <!-- CENTER PANEL: SPINNING ROTATION MATRIX -->
+        <div class="ff-main-stage">
+            <h1 class="ff-stage-title" id="event-title-display">MYSTICAL RING</h1>
+            
+            <div class="ff-circle-arena">
+                <div class="ff-ring-glow-border"></div>
+                
+                <!-- The dynamic item nodes layout wrapper -->
+                <div class="ff-slots-container" id="wheel-slots-grid"></div>
+                
+                <!-- CENTER HUB -->
+                <div class="ff-center-hub">
+                    <div class="ff-hub-logo">SPIN</div>
+                </div>
+            </div>
+
+            <!-- Bottom Control Deck for Spins -->
+            <div class="ff-action-deck">
+                <button class="ff-deck-btn normal-spin" id="btn-spin-1">
+                    <span class="btn-primary-text">1 SPIN</span>
+                    <span class="btn-sub-text">💎 10</span>
+                </button>
+                <button class="ff-deck-btn grand-spin" id="btn-spin-10">
+                    <span class="btn-primary-text">10+1 SPINS</span>
+                    <span class="btn-sub-text">💎 100</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- ⚡ FIXED NODE: RIGHT SIDE REWARDS SHOWCASE PANEL (This was missing!) -->
+        <div class="ff-rewards-sidebar">
+            <div class="ff-reward-header">ITEM PREVIEW</div>
+            <div class="ff-vertical-reward-stack" id="right-column-prizes">
+                <!-- JavaScript automatically injects the big preview card here -->
+            </div>
+        </div>
+
+    </div>
+
+   <!-- ==========================================================================
+       💎 DYNAMIC POPUP 1: FREE FIRE STYLE FULLSCREEN EXCHANGE STORE
+       ========================================================================== -->
+    <div class="royale-modal-overlay" id="exchange-modal" style="display: none;">
+        <div class="exchange-fullscreen-card">
+            
+            <!-- Top Header Bar with User Current Token Count -->
+            <div class="exchange-top-bar">
+                <div class="ex-title">🛒 REDEEM TOKEN STORE</div>
+                <div class="ex-wallet">
+                    <img src="https://img.icons8.com/flat-round/64/token.png" alt="Token">
+                    <span id="exchange-wallet-tokens">0</span>
+                </div>
+                <button class="ex-close-cross" id="close-exchange-btn">✕</button>
+            </div>
+
+            <!-- Main Body Layout Split: Side Tabs + Rewards Grid -->
+            <div class="exchange-main-body">
+                
+                <!-- Inner Shop Navigation Menu -->
+                <div class="exchange-side-nav">
+                    <div class="ex-nav-btn active" data-shop="grand">💎 GRAND REWARDS</div>
+                    <div class="ex-nav-btn" data-shop="crates">📦 LOOT CRATES</div>
+                </div>
+
+                <!-- Active Dynamic Rewards Matrix Grid -->
+                <div class="exchange-content-grid" id="exchange-items-renderer">
+                    <!-- Java script automatic item boxes render maps here -->
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+
+    <!-- 🎉 DYNAMIC POPUP 2: CONGRATULATIONS CELEBRATION EFFECT -->
+    <div class="congratulations-overlay" id="congratulations-popup" style="display: none;">
+        <div class="congrats-glow-burst"></div>
+        <div class="congrats-card">
+            <h1 class="congrats-banner">CONGRATULATIONS!</h1>
+            <p class="congrats-sub">UNLOCKED EXCLUSIVE REWARD</p>
+            <div class="unlocked-reward-display">
+                <img id="congrats-item-img" src="" alt="Reward">
+                <h2 id="congrats-item-name">ITEM</h2>
+            </div>
+            <button class="congrats-close-btn" id="congrats-dismiss-btn">OK</button>
+        </div>
+    </div>
+
+    <script type="module" src="js/luck-royale.js"></script>
+</body>
+</html>

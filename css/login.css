@@ -1,0 +1,290 @@
+/* =====================================
+   FARAZ STORE v2.0
+   PREMIUM LOGIN CSS
+===================================== */
+
+
+
+body{
+
+
+    min-height:100vh;
+
+
+    display:flex;
+
+
+    align-items:center;
+
+
+    justify-content:center;
+
+
+    background:
+
+
+    linear-gradient(
+    135deg,
+    #020617,
+    #111827
+    );
+
+
+}
+
+
+
+
+
+
+.auth-box{
+
+
+    width:400px;
+
+
+    padding:45px;
+
+
+    background:
+
+
+    rgba(17,24,39,.9);
+
+
+    border-radius:35px;
+
+
+    border:
+
+
+    1px solid rgba(255,255,255,.1);
+
+
+    box-shadow:
+
+
+    0 25px 70px rgba(0,0,0,.5);
+
+
+    text-align:center;
+
+
+}
+
+
+
+
+
+
+.auth-box h1{
+
+
+    font-size:38px;
+
+
+    margin-bottom:30px;
+
+
+    background:
+
+
+    linear-gradient(
+    135deg,
+    #38bdf8,
+    #8b5cf6
+    );
+
+
+    -webkit-background-clip:text;
+
+
+    background-clip:text;
+
+
+    color:transparent;
+
+
+}
+
+
+
+
+
+
+
+.auth-box input{
+
+
+    width:100%;
+
+
+    padding:15px;
+
+
+    margin:12px 0;
+
+
+    border-radius:20px;
+
+
+    background:#020617;
+
+
+    color:white;
+
+
+    border:
+
+
+    1px solid #334155;
+
+
+    outline:none;
+
+
+    font-size:16px;
+
+
+}
+
+
+
+
+
+.auth-box input:focus{
+
+
+    border-color:#38bdf8;
+
+
+}
+
+
+
+
+
+
+
+.auth-box button{
+
+
+    width:100%;
+
+
+    margin-top:20px;
+
+
+    padding:15px;
+
+
+    border-radius:30px;
+
+
+    background:
+
+
+    linear-gradient(
+    135deg,
+    #2563eb,
+    #7c3aed
+    );
+
+
+    color:white;
+
+
+    font-size:18px;
+
+
+    font-weight:bold;
+
+
+    transition:.3s;
+
+
+}
+
+
+
+
+
+.auth-box button:hover{
+
+
+    transform:translateY(-4px);
+
+
+    box-shadow:
+
+
+    0 10px 30px rgba(37,99,235,.4);
+
+
+}
+
+
+
+
+
+
+
+.auth-box p{
+
+
+    margin-top:25px;
+
+
+    color:#94a3b8;
+
+
+}
+
+
+
+
+
+.auth-box a{
+
+
+    color:#38bdf8;
+
+
+    font-weight:bold;
+
+
+}
+
+
+
+
+
+
+
+@media(max-width:500px){
+
+
+
+.auth-box{
+
+
+    width:90%;
+
+
+    padding:30px;
+
+
+}
+
+
+
+.auth-box h1{
+
+
+    font-size:32px;
+
+
+}
+
+
+}

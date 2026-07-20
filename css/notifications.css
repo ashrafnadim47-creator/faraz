@@ -1,0 +1,45 @@
+.notification-page,
+.admin-orders{
+
+padding:40px;
+
+}
+
+
+
+.notification-card,
+.order-card{
+
+background:#111827;
+
+padding:25px;
+
+border-radius:20px;
+
+margin:20px auto;
+
+max-width:700px;
+
+}
+
+
+
+.notify-box{
+
+background:#0f172a;
+
+padding:15px;
+
+border-radius:15px;
+
+margin:15px 0;
+
+}
+
+
+
+.notify-box h3{
+
+color:#00e5ff;
+
+}

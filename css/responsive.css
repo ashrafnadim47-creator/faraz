@@ -1,0 +1,604 @@
+/* =====================================
+   FARAZ STORE v2.0
+   COMPLETE RESPONSIVE CSS
+===================================== */
+
+
+/* =========================
+   LARGE TABLET
+========================= */
+
+@media(max-width:1100px){
+
+
+.header{
+    padding:0 30px;
+}
+
+
+.search-container{
+    width:35%;
+}
+
+
+.hero{
+    width:92%;
+}
+
+
+.hero-content h1{
+    font-size:55px;
+}
+
+
+.category-grid{
+    grid-template-columns:repeat(3,1fr);
+}
+
+
+.product-grid{
+    grid-template-columns:repeat(3,1fr);
+}
+
+
+.features{
+    grid-template-columns:repeat(3,1fr);
+}
+
+
+}
+
+
+
+
+
+/* =========================
+   TABLET
+========================= */
+
+
+@media(max-width:900px){
+
+
+
+.header{
+
+    height:70px;
+    padding:0 20px;
+
+}
+
+
+
+
+.navbar{
+
+    display:none;
+
+}
+
+
+
+
+.menu-btn{
+
+    display:block;
+
+}
+
+
+
+
+
+.search-container{
+
+    display:none;
+
+}
+
+
+
+
+
+.icons{
+
+    gap:10px;
+
+}
+
+
+
+
+
+.icons a{
+
+    width:38px;
+    height:38px;
+
+}
+
+
+
+
+
+.hero{
+
+    flex-direction:column;
+    text-align:center;
+    padding:40px 20px;
+
+}
+
+
+
+
+
+.hero-content{
+
+    width:100%;
+
+}
+
+
+
+
+
+.hero-content h1{
+
+    font-size:45px;
+
+}
+
+
+
+
+
+.hero-card{
+
+    width:90%;
+    margin-top:30px;
+
+}
+
+
+
+
+
+.hero-buttons{
+
+    justify-content:center;
+
+}
+
+
+
+
+
+.category-grid,
+.product-grid,
+.trend-grid,
+.review-grid{
+
+
+    grid-template-columns:repeat(2,1fr);
+
+
+}
+
+
+
+
+
+.features{
+
+
+    grid-template-columns:1fr;
+
+}
+
+
+
+
+
+.checkout-container{
+
+
+    grid-template-columns:1fr;
+
+}
+
+
+
+
+
+.cart-item{
+
+
+    flex-direction:column;
+    text-align:center;
+
+}
+
+
+
+
+
+.admin-container{
+
+
+    flex-direction:column;
+
+}
+
+
+
+
+
+.admin-sidebar{
+
+
+    width:100%;
+
+}
+
+
+
+
+}
+
+
+
+
+/* =========================
+   MOBILE
+========================= */
+
+
+@media(max-width:600px){
+
+
+
+body{
+
+    overflow-x:hidden;
+
+}
+
+
+
+
+.header{
+
+    height:65px;
+    padding:0 12px;
+
+}
+
+
+
+
+
+.logo{
+
+    font-size:18px;
+
+}
+
+
+
+
+
+.icons{
+
+    gap:5px;
+
+}
+
+
+
+
+
+.icons a{
+
+    width:34px;
+    height:34px;
+    font-size:16px;
+
+}
+
+
+
+
+
+.hero{
+
+
+    width:100%;
+    border-radius:0;
+
+}
+
+
+
+
+
+.hero-content h1{
+
+
+    font-size:34px;
+
+
+}
+
+
+
+
+.hero-content p{
+
+
+    font-size:14px;
+
+
+}
+
+
+
+
+
+.hero-buttons{
+
+
+    flex-direction:column;
+    gap:15px;
+
+}
+
+
+
+
+
+.primary-btn,
+.order-btn{
+
+
+    width:220px;
+
+}
+
+
+
+
+
+.circle{
+
+
+    width:120px;
+    height:120px;
+    font-size:55px;
+
+}
+
+
+
+
+
+.category-grid,
+.product-grid,
+.trend-grid,
+.review-grid{
+
+
+    grid-template-columns:1fr;
+
+
+}
+
+
+
+
+
+.category-box,
+.product-card,
+.review-card,
+.trend-card{
+
+
+    width:100%;
+
+}
+
+
+
+
+
+.flash-card{
+
+
+    margin:10px;
+
+}
+
+
+
+
+
+.footer-links{
+
+
+    flex-direction:column;
+
+}
+
+
+
+
+
+.cart-section,
+.checkout-section{
+
+
+    padding:20px 10px;
+
+}
+
+
+
+
+
+.checkout-left,
+.checkout-right{
+
+
+    width:100%;
+
+}
+
+
+
+
+
+.summary-box{
+
+
+    margin-top:20px;
+
+}
+
+
+
+
+
+.admin-main{
+
+
+    padding:15px;
+
+}
+
+
+
+
+
+.admin-sidebar a{
+
+
+    display:block;
+
+}
+
+
+
+
+
+}
+
+
+
+
+/* =========================
+   SMALL MOBILE
+========================= */
+
+
+@media(max-width:380px){
+
+
+
+.logo{
+
+    font-size:16px;
+
+}
+
+
+
+
+.icons a{
+
+
+    display:none;
+
+}
+
+
+
+
+.icons a:last-child{
+
+
+    display:flex;
+
+}
+
+
+
+
+.hero-content h1{
+
+
+    font-size:28px;
+
+}
+
+
+
+
+.primary-btn,
+.order-btn{
+
+
+    width:190px;
+
+}
+
+
+
+
+.product-card{
+
+
+    padding:15px;
+
+}
+
+
+
+
+
+h1{
+
+    font-size:25px;
+
+}
+
+
+
+}
+
+
+
+
+
+/* =========================
+   LANDSCAPE MOBILE
+========================= */
+
+
+@media(max-height:500px) and (max-width:900px){
+
+
+.header{
+
+    position:relative;
+
+}
+
+
+.hero{
+
+    padding-top:20px;
+
+}
+
+
+}

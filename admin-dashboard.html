@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+<title>Admin Dashboard | Faraz Store</title>
+
+<link rel="stylesheet" href="css/global.css">
+<link rel="stylesheet" href="css/admin-dashboard.css">
+
+</head>
+
+
+<body>
+
+
+<div class="admin-container">
+
+
+
+<aside class="admin-sidebar">
+
+
+<h2>
+🔥 Faraz Store
+</h2>
+
+
+<a href="admin-dashboard.html">
+🏠 Dashboard
+</a>
+
+
+<a href="admin-products.html">
+📦 Products
+</a>
+
+
+<a href="admin-orders.html">
+🛒 Orders
+</a>
+
+
+<a href="admin-users.html">
+👥 Users
+</a>
+
+
+<button id="logout-btn">
+
+Logout
+
+</button>
+
+
+</aside>
+
+
+
+
+
+
+
+<main class="admin-main">
+
+
+<h1>
+Admin Dashboard 👑
+</h1>
+
+
+<p>
+Welcome Admin
+</p>
+
+
+
+
+
+<div class="stats">
+
+
+
+<div class="stat-card">
+
+<h2>
+📦
+</h2>
+
+<h3>
+Products
+</h3>
+
+<p id="product-count">
+0
+</p>
+
+</div>
+
+
+
+
+
+<div class="stat-card">
+
+<h2>
+🛒
+</h2>
+
+<h3>
+Orders
+</h3>
+
+<p id="order-count">
+0
+</p>
+
+</div>
+
+<!-- FARAZ STORE: VOUCHER GENERATOR SECTION -->
+<div class="admin-voucher-card" style="background: linear-gradient(180deg, #232736 0%, #191424 100%); border: 2px solid #a855f7; border-radius: 12px; padding: 20px; margin: 20px 0; color: #fff;">
+    <h3 style="color: #a855f7; margin-bottom: 5px; text-transform: uppercase; border-left: 4px solid #a855f7; padding-left: 8px; font-size: 16px;">
+        🛠️ Faded Wheel Voucher Generator
+    </h3>
+    <p style="font-size: 12px; color: #94a3b8; margin-bottom: 15px;">
+        Generate unique single-use codes for diamonds. The code will copy to your clipboard automatically.
+    </p>
+    
+    <div style="display: flex; gap: 10px; margin-bottom: 15px;">
+        <input type="number" id="admin-diamond-input" placeholder="Enter Diamonds Amount (e.g. 100)" style="flex: 1; padding: 12px; border-radius: 6px; border: 1px solid #4b5563; background: #0f1118; color: #fff; font-weight: bold; text-align: center; outline: none;">
+        <!-- HTML me button ko badal kar bas ye line likho -->
+<button id="admin-gen-btn" style="background: linear-gradient(180deg, #e9d5ff 0%, #a855f7 100%); color: #fff; border: none; padding: 12px 20px; font-weight: bold; border-radius: 6px; cursor: pointer; text-transform: uppercase;">
+    Generate Code
+</button>
+    </div>
+    
+    <!-- Code Output Box -->
+    <div id="admin-code-output" style="display: none; background: #0f1118; border: 1px dashed #a855f7; padding: 12px; text-align: center; font-family: monospace; font-size: 16px; color: #c084fc; font-weight: bold; border-radius: 4px; letter-spacing: 1px;"></div>
+</div>
+
+
+
+
+<div class="stat-card">
+
+<h2>
+👥
+</h2>
+
+<h3>
+Users
+</h3>
+
+<p id="user-count">
+0
+</p>
+
+</div>
+
+
+
+
+
+<div class="stat-card">
+
+<h2>
+⭐
+</h2>
+
+<h3>
+Points
+</h3>
+
+<p id="points-count">
+0
+</p>
+
+</div>
+
+
+
+
+</div>
+
+
+
+</main>
+
+
+</div>
+
+
+
+
+
+<script type="module" src="js/admin-guard.js"></script>
+
+<script type="module" src="js/admin-dashboard.js"></script>
+
+<script type="module" src="js/admin-logout.js"></script>
+
+
+</body>
+
+</html>

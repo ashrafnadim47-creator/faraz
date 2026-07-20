@@ -1,0 +1,423 @@
+/* =====================================
+   FARAZ STORE v2.0
+   PREMIUM ADMIN DASHBOARD CSS
+===================================== */
+
+
+
+.admin-container{
+
+
+    min-height:100vh;
+
+
+    display:flex;
+
+
+    background:#020617;
+
+
+}
+
+
+
+
+
+
+
+/* SIDEBAR */
+
+
+.admin-sidebar{
+
+
+    width:280px;
+
+
+    min-height:100vh;
+
+
+    padding:30px;
+
+
+    background:
+
+
+    linear-gradient(
+    180deg,
+    #111827,
+    #020617
+    );
+
+
+    border-right:
+
+
+    1px solid rgba(255,255,255,.1);
+
+
+    display:flex;
+
+
+    flex-direction:column;
+
+
+    gap:20px;
+
+
+}
+
+
+
+
+
+
+
+.admin-sidebar h2{
+
+
+    font-size:28px;
+
+
+    margin-bottom:30px;
+
+
+    background:
+
+
+    linear-gradient(
+    135deg,
+    #38bdf8,
+    #8b5cf6
+    );
+
+
+    -webkit-background-clip:text;
+
+
+    background-clip:text;
+
+
+    color:transparent;
+
+
+}
+
+
+
+
+
+
+
+.admin-sidebar a{
+
+
+    padding:15px 20px;
+
+
+    border-radius:18px;
+
+
+    background:#1e293b;
+
+
+    color:#e2e8f0;
+
+
+    transition:.3s;
+
+
+}
+
+
+
+
+
+.admin-sidebar a:hover{
+
+
+    background:
+
+
+    linear-gradient(
+    135deg,
+    #2563eb,
+    #7c3aed
+    );
+
+
+    transform:translateX(8px);
+
+
+}
+
+
+
+
+
+
+
+#logout-btn{
+
+
+    margin-top:auto;
+
+
+    padding:15px;
+
+
+    border-radius:25px;
+
+
+    background:
+
+
+    linear-gradient(
+    135deg,
+    #dc2626,
+    #ef4444
+    );
+
+
+    color:white;
+
+
+    font-weight:bold;
+
+
+}
+
+
+
+
+
+
+
+/* MAIN */
+
+
+.admin-main{
+
+
+    flex:1;
+
+
+    padding:40px;
+
+
+}
+
+
+
+
+
+
+
+.admin-main h1{
+
+
+    font-size:45px;
+
+
+    margin-bottom:10px;
+
+
+}
+
+
+
+
+
+
+
+.admin-main p{
+
+
+    color:#94a3b8;
+
+
+}
+
+
+
+
+
+
+
+/* STATS */
+
+
+.stats{
+
+
+    margin-top:40px;
+
+
+    display:grid;
+
+
+    grid-template-columns:
+
+
+    repeat(3,1fr);
+
+
+    gap:25px;
+
+
+}
+
+
+
+
+
+
+
+.stat-card{
+
+
+    padding:35px;
+
+
+    text-align:center;
+
+
+    background:
+
+
+    rgba(17,24,39,.9);
+
+
+    border-radius:30px;
+
+
+    border:
+
+
+    1px solid rgba(255,255,255,.1);
+
+
+    transition:.3s;
+
+
+}
+
+
+
+
+
+
+
+.stat-card:hover{
+
+
+    transform:translateY(-8px);
+
+
+}
+
+
+
+
+
+
+
+.stat-card h2{
+
+
+    font-size:45px;
+
+
+}
+
+
+
+
+
+
+
+.stat-card h3{
+
+
+    margin:15px;
+
+
+    color:#38bdf8;
+
+
+}
+
+
+
+
+
+
+
+.stat-card p{
+
+
+    color:#94a3b8;
+
+
+}
+
+
+
+
+
+
+
+/* MOBILE */
+
+
+@media(max-width:900px){
+
+
+
+.admin-container{
+
+
+    flex-direction:column;
+
+
+}
+
+
+
+
+
+.admin-sidebar{
+
+
+    width:100%;
+
+
+    min-height:auto;
+
+
+}
+
+
+
+
+.admin-main{
+
+
+    padding:25px;
+
+
+}
+
+
+
+.stats{
+
+
+    grid-template-columns:1fr;
+
+
+}
+
+
+
+}

@@ -1,0 +1,297 @@
+/* =====================================
+   FARAZ STORE v2.0
+   PREMIUM FOOTER CSS
+===================================== */
+
+
+
+.footer{
+
+
+    width:100%;
+
+    margin-top:70px;
+
+    padding:50px 5% 25px;
+
+
+    background:
+
+    linear-gradient(
+    135deg,
+    #020617,
+    #111827
+    );
+
+
+    border-top:
+
+    1px solid rgba(255,255,255,.1);
+
+
+    text-align:center;
+
+
+}
+
+
+
+
+
+.footer h2{
+
+
+    font-size:35px;
+
+    font-weight:900;
+
+
+    background:
+
+    linear-gradient(
+    135deg,
+    #38bdf8,
+    #8b5cf6
+    );
+
+
+    -webkit-background-clip:text;
+
+    background-clip:text;
+
+
+    color:transparent;
+
+
+}
+
+
+
+
+
+.footer p{
+
+
+    margin:15px 0;
+
+    color:#94a3b8;
+
+    font-size:16px;
+
+
+}
+
+
+
+
+
+.footer-links{
+
+
+    display:flex;
+
+    justify-content:center;
+
+    gap:25px;
+
+    flex-wrap:wrap;
+
+    margin:25px 0;
+
+
+}
+
+
+
+
+
+.footer-links a{
+
+
+    padding:12px 25px;
+
+    border-radius:25px;
+
+
+    background:#1e293b;
+
+
+    color:#e2e8f0;
+
+
+    transition:.3s;
+
+
+}
+
+
+
+
+
+.footer-links a:hover{
+
+
+    background:
+
+    linear-gradient(
+    135deg,
+    #2563eb,
+    #7c3aed
+    );
+
+
+    transform:translateY(-5px);
+
+
+}
+
+
+
+
+
+
+
+/* SOCIAL */
+
+
+.social{
+
+
+    margin:25px 0;
+
+
+    display:flex;
+
+    justify-content:center;
+
+    gap:20px;
+
+
+}
+
+
+
+
+
+.social a{
+
+
+    width:45px;
+
+    height:45px;
+
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+
+    border-radius:50%;
+
+
+    background:#1e293b;
+
+
+    font-size:20px;
+
+
+    transition:.3s;
+
+
+}
+
+
+
+
+
+.social a:hover{
+
+
+    background:#2563eb;
+
+    transform:translateY(-5px);
+
+
+}
+
+
+
+
+
+
+
+.copy{
+
+
+    margin-top:30px;
+
+    padding-top:20px;
+
+
+    border-top:
+
+    1px solid rgba(255,255,255,.1);
+
+
+    font-size:14px !important;
+
+
+    color:#64748b !important;
+
+
+}
+
+
+
+
+
+
+
+@media(max-width:600px){
+
+
+.footer{
+
+
+    padding:40px 20px 20px;
+
+
+}
+
+
+
+.footer h2{
+
+
+    font-size:28px;
+
+
+}
+
+
+
+.footer-links{
+
+
+    flex-direction:column;
+
+    align-items:center;
+
+
+}
+
+
+
+.footer-links a{
+
+
+    width:200px;
+
+
+}
+
+
+
+}

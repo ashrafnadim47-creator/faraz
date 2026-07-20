@@ -1,0 +1,234 @@
+/* ===========================
+   FARAZ STORE TRACKING PAGE
+=========================== */
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+body{
+    background:#0dc6cc;
+    font-family:Arial,Helvetica,sans-serif;
+}
+
+.tracking-page{
+    max-width:900px;
+    margin:40px auto;
+    padding:20px;
+}
+
+.tracking-header{
+    text-align:center;
+    margin-bottom:30px;
+}
+
+.tracking-header h1{
+    font-size:34px;
+    margin-bottom:10px;
+}
+
+.tracking-header p{
+    color:#777;
+}
+
+.loading-card{
+    background:#13e60c;
+    border-radius:18px;
+    padding:40px;
+    text-align:center;
+    box-shadow:0 10px 30px rgba(0,0,0,.1);
+}
+
+.loader{
+    width:60px;
+    height:60px;
+    border:6px solid #5a09db;
+    border-top:6px solid #4CAF50;
+    border-radius:50%;
+    margin:auto;
+    animation:spin 1s linear infinite;
+}
+
+@keyframes spin{
+    to{
+        transform:rotate(360deg);
+    }
+}
+
+.track-card{
+    background:#8107f3;
+    border-radius:20px;
+    padding:25px;
+    box-shadow:0 15px 40px rgba(0,0,0,.12);
+}
+
+.status{
+    color:#0a9d3f;
+    font-weight:bold;
+}
+
+/* Progress */
+
+.progress{
+    width:100%;
+    height:14px;
+    background:#441414;
+    border-radius:30px;
+    margin:25px 0;
+    overflow:hidden;
+}
+
+.progress-fill{
+    height:100%;
+    border-radius:30px;
+    background:linear-gradient(90deg,#00c853,#00e676);
+    transition:.8s;
+}
+
+/* Truck */
+
+.truck-section{
+    margin:40px 0;
+}
+
+.truck-box{
+    position:relative;
+    height:90px;
+}
+
+.road{
+    position:absolute;
+    top:50px;
+    width:100%;
+    height:8px;
+    background:#555;
+    border-radius:20px;
+}
+
+.warehouse{
+    position:absolute;
+    left:0;
+    top:5px;
+    font-size:34px;
+}
+
+.home{
+    position:absolute;
+    right:0;
+    top:5px;
+    font-size:34px;
+}
+
+.truck{
+    position:absolute;
+    top:2px;
+    font-size:40px;
+    transition:left .8s ease;
+    animation:bounce .8s infinite alternate;
+}
+
+@keyframes bounce{
+
+    from{
+        transform:translateY(0);
+    }
+
+    to{
+        transform:translateY(-6px);
+    }
+
+}
+
+/* Timeline */
+
+.timeline{
+    margin-top:35px;
+}
+
+.step{
+    display:flex;
+    align-items:center;
+    gap:15px;
+    margin-bottom:18px;
+    padding:14px;
+    border-radius:12px;
+    background:#b0ce07;
+    border-left:5px solid #ccc;
+}
+
+.step.active{
+    border-left:5px solid #00c853;
+    background:#264929;
+    font-weight:bold;
+}
+
+/* Map */
+
+.map-card{
+    margin-top:30px;
+    background:#d40aa8;
+    border-radius:18px;
+    padding:20px;
+    border:1px solid #138ebe;
+}
+
+.point{
+    margin:15px 0;
+    padding:12px;
+    border-radius:10px;
+    background:rgb(8, 165, 212);
+    border-left:5px solid #0bcfcf;
+}
+
+.point.done{
+    background:#04470a;
+    border-left-color:#00c853;
+    font-weight:bold;
+}
+
+/* Delivery */
+
+.delivery-card{
+    margin-top:30px;
+    background:#330323;
+    border-radius:18px;
+    padding:20px;
+    border:1px solid #913d3d;
+}
+
+.delivery-card h3{
+    margin-bottom:15px;
+}
+
+.delivery-card p{
+    margin:10px 0;
+}
+
+/* Mobile */
+
+@media(max-width:768px){
+
+.tracking-page{
+    padding:15px;
+}
+
+.tracking-header h1{
+    font-size:28px;
+}
+
+.track-card{
+    padding:18px;
+}
+
+.truck{
+    font-size:34px;
+}
+
+.warehouse,
+.home{
+    font-size:28px;
+}
+
+}

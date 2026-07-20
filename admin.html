@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+
+<title>Faraz Store Admin Panel</title>
+
+<link rel="stylesheet" href="style.css">
+
+</head>
+
+<body class="admin-page">
+
+<header class="admin-header">
+
+<h1>👑 Faraz Store Admin Panel</h1>
+
+<div class="admin-buttons">
+
+<a href="index.html" class="admin-home-btn">
+🏠 Home
+</a>
+
+<button class="admin-logout-btn" onclick="logout()">
+🚪 Logout
+</button>
+
+</div>
+
+</header>
+
+
+<div class="dashboard">
+
+<div class="stat-box">
+
+<h2>📦 Total Orders</h2>
+
+<h1 id="totalOrders">0</h1>
+
+</div>
+
+<div class="stat-box">
+
+<h2>💰 Total Sales</h2>
+
+<h1 id="totalSales">₹0</h1>
+
+</div>
+
+<div class="stat-box">
+
+<h2>🟡 Processing</h2>
+
+<h1 id="processingOrders">0</h1>
+
+</div>
+
+<div class="stat-box">
+
+<h2>🟢 Delivered</h2>
+
+<h1 id="deliveredOrders">0</h1>
+
+</div>
+
+</div>
+
+
+<div id="adminOrders"></div>
+
+<script type="module" src="admin.js"></script>
+
+</body>
+
+</html>

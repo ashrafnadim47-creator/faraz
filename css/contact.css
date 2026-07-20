@@ -1,0 +1,167 @@
+/* =====================================
+   FARAZ STORE v2.0
+   PREMIUM CONTACT CSS
+===================================== */
+
+
+.contact-section{
+
+    min-height:90vh;
+
+    padding:60px 5%;
+
+}
+
+
+
+.contact-box{
+
+    max-width:700px;
+
+    margin:auto;
+
+    padding:40px;
+
+    text-align:center;
+
+
+    background:
+
+    rgba(17,24,39,.9);
+
+
+    border-radius:35px;
+
+    border:1px solid rgba(255,255,255,.1);
+
+}
+
+
+
+
+.contact-box h1{
+
+    font-size:45px;
+
+    margin-bottom:20px;
+
+
+    background:
+    linear-gradient(
+    135deg,
+    #38bdf8,
+    #8b5cf6
+    );
+
+
+    -webkit-background-clip:text;
+
+    background-clip:text;
+
+    color:transparent;
+
+}
+
+
+
+
+.contact-box p{
+
+    color:#94a3b8;
+
+    margin:15px;
+
+}
+
+
+
+
+
+.contact-box input,
+.contact-box textarea{
+
+    background:#020617;
+
+    color:white;
+
+    border:1px solid #334155;
+
+}
+
+
+
+
+
+.contact-box button{
+
+    margin-top:20px;
+
+    padding:15px 35px;
+
+    border-radius:30px;
+
+    background:
+
+    linear-gradient(
+    135deg,
+    #2563eb,
+    #7c3aed
+    );
+
+    color:white;
+
+    font-weight:bold;
+
+}
+
+
+
+
+
+.contact-info{
+
+    margin-top:30px;
+
+    display:flex;
+
+    justify-content:center;
+
+    gap:20px;
+
+    flex-wrap:wrap;
+
+}
+
+
+
+.contact-info div{
+
+    padding:20px;
+
+    background:#1e293b;
+
+    border-radius:20px;
+
+}
+
+
+
+@media(max-width:600px){
+
+
+.contact-box{
+
+    padding:25px;
+
+}
+
+
+
+.contact-box h1{
+
+    font-size:32px;
+
+}
+
+
+}

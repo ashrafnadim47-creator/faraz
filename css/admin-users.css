@@ -1,0 +1,39 @@
+.user-admin-card{
+
+background:#111827;
+
+color:white;
+
+padding:25px;
+
+margin:20px;
+
+border-radius:20px;
+
+}
+
+
+
+.user-admin-card input{
+
+padding:10px;
+
+border-radius:10px;
+
+border:none;
+
+}
+
+
+
+.user-admin-card button{
+
+padding:10px 15px;
+
+border:none;
+
+border-radius:10px;
+
+cursor:pointer;
+
+}
