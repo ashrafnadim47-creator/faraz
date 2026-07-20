@@ -1,81 +1,71 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Users Management | Faraz Store Admin</title>
+    <meta name="description" content="Manage registered user accounts and customer points">
+    <meta name="theme-color" content="#020617">
+    <link rel="icon" href="favicon.ico">
 
-<title>Admin Users | Faraz Store</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700;900&family=Plus+Jakarta+Sans:wght@500;700;800&display=swap" rel="stylesheet">
 
-<link rel="stylesheet" href="css/global.css">
-<link rel="stylesheet" href="css/admin-users.css">
-
+    <!-- CSS Links -->
+    <link rel="stylesheet" href="css/global.css">
+    <link rel="stylesheet" href="css/admin-product.css">
+    <link rel="stylesheet" href="css/admin-users.css">
 </head>
 
+<body class="admin-page-bg">
 
-<body>
+    <div class="admin-container">
 
+        <!-- 👑 SIDEBAR NAVIGATION -->
+        <aside class="admin-sidebar glassmorphism">
+            <div class="sidebar-brand">
+                <h2>🔥 FARAZ STORE</h2>
+                <p>ADMIN CONTROL PANEL</p>
+            </div>
 
-<div class="admin-container">
+            <nav class="admin-nav-links">
+                <a href="admin-dashboard.html" class="admin-nav-item">🏠 Dashboard Overview</a>
+                <a href="admin-products.html" class="admin-nav-item">📦 Product Inventory</a>
+                <a href="admin-orders.html" class="admin-nav-item">🛒 Order Management</a>
+                <a href="admin-users.html" class="admin-nav-item active">👥 Registered Users</a>
+            </nav>
 
+            <button onclick="location.href='admin-login.html'" class="admin-logout-btn">
+                🚪 Logout Admin
+            </button>
+        </aside>
 
-<aside class="admin-sidebar">
+        <!-- 👥 MAIN CONTENT ARENA -->
+        <main class="admin-main">
+            <header class="admin-header" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px;">
+                <div>
+                    <h1 style="font-family: 'Orbitron', sans-serif; font-size: 24px; color: #00e5ff; margin: 0;">👥 Registered Users Management</h1>
+                    <p style="color: var(--muted); font-size: 13px; margin-top: 4px;">View customer profiles and reward points</p>
+                </div>
+                <button class="nav-btn-back" onclick="location.href='index.html'">← Back to Main Shop</button>
+            </header>
 
-<h2>
-🔥 Faraz Store
-</h2>
+            <!-- USER CARDS CONTAINER -->
+            <div id="user-list" class="glassmorphism" style="padding: 25px; border-radius: 20px;">
+                <div class="loading-state">
+                    <div class="spinner"></div>
+                    <p>Loading Customer Profiles...</p>
+                </div>
+            </div>
+        </main>
 
+    </div>
 
-<a href="admin-dashboard.html">
-🏠 Dashboard
-</a>
-
-
-<a href="admin-products.html">
-📦 Products
-</a>
-
-
-<a href="admin-orders.html">
-🛒 Orders
-</a>
-
-
-<a href="admin-users.html">
-👥 Users
-</a>
-
-
-</aside>
-
-
-
-
-<main class="admin-main">
-
-
-<h1>
-👥 Users Management
-</h1>
-
-
-
-<div id="user-list">
-
-Loading Users...
-
-</div>
-
-
-
-</main>
-
-
-</div>
-
-
-
-
-<script type="module" src="js/admin-users.js"></script>
-
+    <!-- SCRIPT MODULE -->
+    <script type="module" src="js/admin-users.js"></script>
 
 </body>
 

@@ -1,365 +1,157 @@
-/* =====================================
-   FARAZ STORE v2.0
-   PREMIUM PROFILE CSS
-===================================== */
+/* ==========================================================================
+   🔥 FARAZ STORE v2.0 - ULTRA PREMIUM PROFILE CSS
+   ========================================================================== */
 
-
-
-.profile-section{
-
-
-    min-height:90vh;
-
-
-    padding:50px 5%;
-
-
-    display:flex;
-
-
-    justify-content:center;
-
-
-    align-items:center;
-
-
+.profile-section {
+    min-height: 90vh;
+    padding: 40px 5%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-sizing: border-box;
 }
 
-
-
-
-
-.profile-card{
-
-
-    width:450px;
-
-
-    padding:40px;
-
-
-    text-align:center;
-
-
-    background:
-
-
-    rgba(17,24,39,.9);
-
-
-    border-radius:35px;
-
-
-    border:
-
-
-    1px solid rgba(255,255,255,.1);
-
-
-    box-shadow:
-
-
-    0 25px 70px rgba(0,0,0,.45);
-
-
+.profile-card {
+    width: 100%;
+    max-width: 480px;
+    padding: 35px 25px;
+    text-align: center;
+    background: rgba(15, 23, 42, 0.85);
+    border-radius: 28px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 25px 60px rgba(0, 0, 0, 0.7), 0 0 30px rgba(0, 229, 255, 0.15);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
 }
 
-
-
-
-
-
-.profile-avatar{
-
-
-    width:130px;
-
-
-    height:130px;
-
-
-    margin:auto;
-
-
-    display:flex;
-
-
-    align-items:center;
-
-
-    justify-content:center;
-
-
-    border-radius:50%;
-
-
-    font-size:60px;
-
-
-    background:
-
-
-    linear-gradient(
-    135deg,
-    #2563eb,
-    #7c3aed
-    );
-
-
-    box-shadow:
-
-
-    0 0 40px rgba(56,189,248,.4);
-
-
+.profile-avatar {
+    width: 120px;
+    height: 120px;
+    margin: 0 auto 20px auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    font-size: 50px;
+    background: linear-gradient(135deg, #2563eb, #7c3aed);
+    border: 3px solid #00e5ff;
+    box-shadow: 0 0 30px rgba(0, 229, 255, 0.4);
+    overflow: hidden;
 }
 
-
-
-
-
-
-
-.profile-card h1{
-
-
-    margin-top:25px;
-
-
-    font-size:32px;
-
-
-    background:
-
-
-    linear-gradient(
-    135deg,
-    #38bdf8,
-    #8b5cf6
-    );
-
-
-    -webkit-background-clip:text;
-
-
-    background-clip:text;
-
-
-    color:transparent;
-
-
+.profile-avatar img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
 }
 
-
-
-
-
-
-
-.profile-info{
-
-
-    margin-top:30px;
-
-
-    text-align:left;
-
-
+.profile-card h1 {
+    font-family: 'Orbitron', 'Segoe UI', sans-serif;
+    font-size: 28px;
+    font-weight: 900;
+    background: linear-gradient(135deg, #00e5ff, #a855f7);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    margin: 0;
 }
 
-
-
-
-
-.profile-info div{
-
-
-    padding:18px;
-
-
-    margin:15px 0;
-
-
-    border-radius:20px;
-
-
-    background:#0f172a;
-
-
-    color:#cbd5e1;
-
-
+.profile-info {
+    margin-top: 25px;
+    text-align: left;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
 }
 
-
-
-
-
-
-
-.profile-info span{
-
-
-    color:#38bdf8;
-
-
-    font-weight:bold;
-
-
+.profile-info div {
+    padding: 16px 20px;
+    border-radius: 16px;
+    background: rgba(30, 41, 59, 0.6);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    color: #cbd5e1;
+    font-size: 14px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 }
 
-
-
-
-
-
-
-.points-card{
-
-
-    margin-top:25px;
-
-
-    padding:25px;
-
-
-    border-radius:25px;
-
-
-    background:
-
-
-    linear-gradient(
-    135deg,
-    #facc15,
-    #f97316
-    );
-
-
-    color:#111;
-
-
+.profile-info span {
+    color: #00e5ff;
+    font-weight: 800;
 }
 
-
-
-.points-card h2{
-
-
-    font-size:35px;
-
-
+.points-card {
+    margin-top: 20px;
+    padding: 20px;
+    border-radius: 20px;
+    background: linear-gradient(135deg, rgba(255, 204, 0, 0.15), rgba(249, 115, 22, 0.15));
+    border: 1px solid #ffcc00;
+    box-shadow: 0 0 20px rgba(255, 204, 0, 0.2);
+    text-align: center;
 }
 
-
-
-
-
-
-
-
-.profile-buttons{
-
-
-    margin-top:30px;
-
-
-    display:flex;
-
-
-    flex-direction:column;
-
-
-    gap:15px;
-
-
+.points-card h2 {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 32px;
+    font-weight: 900;
+    color: #ffcc00;
+    margin-top: 5px;
+    text-shadow: 0 0 10px rgba(255, 204, 0, 0.4);
 }
 
-
-
-
-
-
-
-.profile-buttons button{
-
-
-    padding:15px;
-
-
-    border-radius:30px;
-
-
-    background:
-
-
-    linear-gradient(
-    135deg,
-    #2563eb,
-    #7c3aed
-    );
-
-
-    color:white;
-
-
-    font-weight:bold;
-
-
+.profile-buttons {
+    margin-top: 25px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
 }
 
-
-
-
-
-
-
-
-.profile-buttons .logout{
-
-
-    background:
-
-
-    linear-gradient(
-    135deg,
-    #dc2626,
-    #ef4444
-    );
-
-
+.profile-buttons button {
+    width: 100%;
+    padding: 14px;
+    border-radius: 14px;
+    background: linear-gradient(135deg, #2563eb, #7c3aed);
+    color: #ffffff;
+    font-weight: 800;
+    font-size: 14px;
+    border: none;
+    cursor: pointer;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    transition: all 0.25s ease;
 }
 
-
-
-
-
-
-
-@media(max-width:600px){
-
-
-.profile-card{
-
-
-    width:90%;
-
-
-    padding:25px;
-
-
+.profile-buttons button:hover {
+    filter: brightness(1.15);
+    transform: translateY(-2px);
 }
 
-
-
-.profile-card h1{
-
-
-    font-size:28px;
-
-
+.profile-buttons .logout {
+    background: rgba(239, 68, 68, 0.15);
+    border: 1px solid #ef4444;
+    color: #ef4444;
 }
 
+.profile-buttons .logout:hover {
+    background: #ef4444;
+    color: #ffffff;
+}
 
+/* 📱 Responsive Adjustments */
+@media (max-width: 600px) {
+    .profile-card {
+        padding: 25px 18px;
+        border-radius: 20px;
+    }
 
+    .profile-card h1 {
+        font-size: 24px;
+    }
+
+    .profile-avatar {
+        width: 100px;
+        height: 100px;
+        font-size: 40px;
+    }
 }

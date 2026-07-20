@@ -1,4 +1,6 @@
+# Faraz Store Search Engine Crawling Rules
 User-agent: *
 Allow: /
 
+# Sitemap Location
 Sitemap: https://faraz-eta.vercel.app/sitemap.xml

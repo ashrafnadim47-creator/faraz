@@ -1,199 +1,118 @@
-.leader-page{
+/* ==========================================================================
+   🔥 FARAZ STORE v2.0 - GLOBAL LEADERBOARD CSS (CYBERPUNK GLASS)
+   ========================================================================== */
 
-
-min-height:100vh;
-
-display:flex;
-
-justify-content:center;
-
-align-items:center;
-
-padding:30px;
-
-background:#050816;
-
-
+.leader-page {
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 30px 15px;
+    background: radial-gradient(circle at top center, #1e1b4b 0%, #020617 75%);
+    box-sizing: border-box;
+    font-family: 'Plus Jakarta Sans', sans-serif;
 }
 
-
-
-.leader-card{
-
-
-width:500px;
-
-max-width:95%;
-
-background:#111827;
-
-padding:35px;
-
-border-radius:25px;
-
-text-align:center;
-
-box-shadow:
-0 10px 40px rgba(0,0,0,.4);
-
-
+.leader-card {
+    width: 520px;
+    max-width: 95%;
+    background: rgba(15, 23, 42, 0.85);
+    padding: 35px 25px;
+    border-radius: 28px;
+    text-align: center;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 25px 60px rgba(0, 0, 0, 0.8), 0 0 30px rgba(255, 204, 0, 0.15);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
 }
 
-
-
-
-.leader-card h1{
-
-
-color:white;
-
-font-size:32px;
-
-
+.leader-card h1 {
+    color: #ffcc00;
+    font-family: 'Orbitron', sans-serif;
+    font-size: 28px;
+    font-weight: 900;
+    letter-spacing: 1px;
+    text-shadow: 0 0 15px rgba(255, 204, 0, 0.4);
+    margin-bottom: 8px;
 }
 
-
-
-.leader-card p{
-
-
-color:#cbd5e1;
-
-
+.leader-card p {
+    color: #cbd5e1;
+    font-size: 14px;
 }
 
-
-
-
-
-#leaders{
-
-
-margin-top:25px;
-
-
+#leaders {
+    margin-top: 25px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
 }
 
-
-
-
-
-.user-card{
-
-
-background:#0f172a;
-
-color:white;
-
-margin:15px 0;
-
-padding:20px;
-
-border-radius:18px;
-
-display:flex;
-
-flex-direction:column;
-
-gap:8px;
-
-border:
-
-1px solid rgba(255,255,255,.1);
-
-
+.user-card {
+    background: rgba(30, 41, 59, 0.6);
+    color: #ffffff;
+    margin: 0;
+    padding: 16px 20px;
+    border-radius: 18px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    transition: all 0.25s ease;
 }
 
-
-
-
-
-.user-card strong{
-
-
-color:#38bdf8;
-
-
+.user-card:hover {
+    transform: translateY(-3px);
+    border-color: #00e5ff;
+    box-shadow: 0 8px 25px rgba(0, 229, 255, 0.15);
 }
 
-
-
-
-.leader-avatar{
-
-
-width:60px;
-
-height:60px;
-
-border-radius:50%;
-
-margin:auto;
-
-object-fit:cover;
-
-
+.user-card strong {
+    color: #00e5ff;
+    font-family: 'Orbitron', sans-serif;
+    font-size: 15px;
 }
 
-
-
-
-
-.vip-box{
-
-
-margin-top:30px;
-
-padding:25px;
-
-border-radius:20px;
-
-
-background:
-
-linear-gradient(
-135deg,
-#facc15,
-#f97316
-);
-
-
-color:#111;
-
-
+.leader-avatar {
+    width: 55px;
+    height: 55px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid #00e5ff;
+    box-shadow: 0 0 15px rgba(0, 229, 255, 0.3);
 }
 
-
-
-.vip-box h2{
-
-
-margin:0;
-
+.vip-box {
+    margin-top: 30px;
+    padding: 22px;
+    border-radius: 20px;
+    background: linear-gradient(135deg, rgba(250, 204, 21, 0.2), rgba(249, 115, 22, 0.2));
+    border: 1px solid #ffcc00;
+    box-shadow: 0 0 25px rgba(255, 204, 0, 0.25);
+    color: #ffffff;
+    text-align: center;
 }
 
-
-
-
-@media(max-width:600px){
-
-
-.leader-card{
-
-
-padding:25px;
-
-
+.vip-box h2 {
+    margin: 0;
+    font-family: 'Orbitron', sans-serif;
+    font-size: 22px;
+    color: #ffcc00;
+    text-shadow: 0 0 10px rgba(255, 204, 0, 0.5);
 }
 
+@media (max-width: 600px) {
+    .leader-card {
+        padding: 22px 16px;
+        border-radius: 20px;
+    }
 
-.leader-card h1{
+    .leader-card h1 {
+        font-size: 22px;
+    }
 
-
-font-size:24px;
-
-
-}
-
-
+    .user-card {
+        padding: 12px 14px;
+    }
 }

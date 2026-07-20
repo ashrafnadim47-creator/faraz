@@ -1,88 +1,81 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>XP Exchange Store | Faraz Store</title>
+    <meta name="description" content="Exchange your earned XP points for VIP badges and exclusive discount coupons.">
+    <meta name="theme-color" content="#020617">
+    <link rel="icon" href="favicon.ico">
 
-<title>XP Exchange | Faraz Store</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700;900&family=Plus+Jakarta+Sans:wght@500;700;800&display=swap" rel="stylesheet">
 
-<link rel="stylesheet" href="css/xp-exchange.css">
-
+    <!-- CSS Links -->
+    <link rel="stylesheet" href="css/global.css">
+    <link rel="stylesheet" href="css/xp-exchange.css">
 </head>
 
+<body class="xp-page-bg">
 
-<body>
+    <div class="exchange-container glassmorphism">
 
+        <!-- HEADER -->
+        <header class="exchange-header">
+            <button class="nav-btn-back" onclick="location.href='index.html'">← Back to Shop</button>
+            <h1 class="exchange-title">⭐ XP EXCHANGE STORE</h1>
+            <p class="exchange-subtext">Trade your experience points for rewards and coupons</p>
+        </header>
 
-<div class="exchange-container">
+        <!-- XP BALANCE CARD -->
+        <div class="xp-box glassmorphism">
+            <span class="xp-label">Your Experience Points:</span>
+            <div class="xp-value-wrapper">
+                <span class="xp-icon">⭐</span>
+                <span id="xp-count" class="xp-number">0</span>
+                <span class="xp-unit">XP</span>
+            </div>
+        </div>
 
+        <!-- REWARDS GRID -->
+        <div class="rewards-grid">
 
-<h1>⭐ XP Exchange Store</h1>
+            <!-- DISCOUNT COUPON REWARD -->
+            <div class="reward-card glassmorphism">
+                <div class="reward-badge">COUPON</div>
+                <div class="reward-icon">🎟️</div>
+                <h2>10% Discount Coupon</h2>
+                <p class="reward-desc">Get an instant 10% discount on your next store checkout.</p>
+                <div class="cost-tag">Cost: <span>1,000 XP</span></div>
+                <button class="exchange-action-btn" onclick="exchangeReward(1000, '10OFF')">
+                    Exchange Reward
+                </button>
+            </div>
 
+            <!-- VIP BADGE REWARD -->
+            <div class="reward-card glassmorphism vip-glow">
+                <div class="reward-badge badge-vip">PREMIUM</div>
+                <div class="reward-icon">🏆</div>
+                <h2>VIP Membership Badge</h2>
+                <p class="reward-desc">Unlock special VIP badge status on your profile & leaderboard.</p>
+                <div class="cost-tag">Cost: <span>5,000 XP</span></div>
+                <button class="exchange-action-btn vip-btn" onclick="exchangeReward(5000, 'VIP')">
+                    Exchange VIP Badge
+                </button>
+            </div>
 
-<div class="xp-box">
+        </div>
 
-Your XP:
-<span id="xp-count">0</span>
+        <!-- STATUS MESSAGE DISPLAY -->
+        <p id="message" class="status-message"></p>
 
-</div>
+    </div>
 
-
-
-<div class="reward-card">
-
-
-<h2>🎟️ 10% Discount Coupon</h2>
-
-<p>
-Cost: 1000 XP
-</p>
-
-
-<button onclick="exchangeReward(1000,'10OFF')">
-
-Exchange
-
-</button>
-
-
-</div>
-
-
-
-
-
-<div class="reward-card">
-
-
-<h2>🏆 VIP Badge</h2>
-
-<p>
-Cost: 5000 XP
-</p>
-
-
-<button onclick="exchangeReward(5000,'VIP')">
-
-Exchange
-
-</button>
-
-
-</div>
-
-
-
-
-<p id="message"></p>
-
-
-
-</div>
-
-
-
-<script type="module" src="js/xp-exchange.js"></script>
-
+    <!-- SCRIPT MODULE -->
+    <script type="module" src="js/xp-exchange.js"></script>
 
 </body>
 

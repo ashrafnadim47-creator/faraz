@@ -1,14 +1,19 @@
+/* ==========================================================================
+   🔥 FARAZ STORE v2.0 - FADED WHEEL EVENT CSS (CYBERPUNK GLASSMORPHIC)
+   ========================================================================== */
+
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    font-family: 'Segoe UI', Roboto, sans-serif;
+    font-family: 'Plus Jakarta Sans', 'Segoe UI', Roboto, sans-serif;
     user-select: none;
+    -webkit-user-select: none;
 }
 
 body {
-    background: radial-gradient(circle, #1f2330 0%, #0b0c10 100%);
-    color: #fff;
+    background: radial-gradient(circle at top center, #1e1b4b 0%, #020617 75%);
+    color: #ffffff;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -16,56 +21,85 @@ body {
     padding: 15px;
 }
 
+/* Main Container Card */
 .faded-wheel-container {
     width: 100%;
     max-width: 680px;
-    background: linear-gradient(180deg, #161922 0%, #0f1118 100%);
-    border: 3px solid #2d3245;
-    border-radius: 16px;
+    background: rgba(15, 23, 42, 0.85);
+    border: 2px solid rgba(255, 255, 255, 0.1);
+    border-radius: 20px;
     padding: 24px;
-    box-shadow: 0 15px 40px rgba(0,0,0,0.8);
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.8), 0 0 30px rgba(0, 229, 255, 0.15);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
 }
 
+/* Header Area */
 .wheel-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    border-bottom: 2px solid #ffcc00;
+    border-bottom: 2px dashed rgba(255, 204, 0, 0.3);
     padding-bottom: 12px;
     margin-bottom: 15px;
 }
 
 .wheel-header h1 {
+    font-family: 'Orbitron', sans-serif;
     color: #ffcc00;
     font-size: 24px;
+    font-weight: 900;
     letter-spacing: 2px;
-    text-shadow: 0 0 10px rgba(255, 204, 0, 0.3);
+    text-shadow: 0 0 12px rgba(255, 204, 0, 0.4);
+}
+
+.fun-notice {
+    color: #ef4444;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-top: 4px;
+    font-weight: 800;
+    text-shadow: 0 0 6px rgba(239, 68, 68, 0.4);
 }
 
 .wallet-display {
-    background: #1c1f2b;
-    padding: 6px 14px;
+    background: #0f172a;
+    padding: 8px 16px;
     border-radius: 20px;
-    border: 1px solid #3d435c;
+    border: 1px solid #334155;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.wallet-label {
+    font-size: 12px;
+    color: #94a3b8;
+    font-weight: 700;
 }
 
 .wallet-amount {
     color: #00e5ff;
-    font-weight: bold;
+    font-weight: 900;
+    font-family: 'Orbitron', sans-serif;
+    font-size: 14px;
 }
 
+/* Status Alert Box */
 .status-alert-box {
     background: rgba(255, 204, 0, 0.08);
     border: 1px dashed rgba(255, 204, 0, 0.4);
     color: #ffcc00;
     text-align: center;
-    padding: 10px;
+    padding: 10px 14px;
     font-size: 13px;
-    border-radius: 6px;
+    border-radius: 10px;
     margin-bottom: 18px;
-    font-weight: 500;
+    font-weight: 700;
 }
 
+/* Grid Arena Layout */
 .faded-grid {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
@@ -73,10 +107,11 @@ body {
     margin-bottom: 18px;
 }
 
+/* Grid Item Card */
 .grid-item {
-    background: #232736;
-    border: 2px solid #3d435c;
-    border-radius: 10px;
+    background: rgba(30, 41, 59, 0.6);
+    border: 2px solid rgba(255, 255, 255, 0.08);
+    border-radius: 12px;
     aspect-ratio: 1;
     display: flex;
     flex-direction: column;
@@ -91,34 +126,38 @@ body {
 
 .grid-item:hover:not(.removed):not(.won) {
     border-color: #ffcc00;
-    background: #2a2f42;
-    transform: scale(1.02);
+    background: rgba(51, 65, 85, 0.8);
+    transform: scale(1.03);
+    box-shadow: 0 4px 15px rgba(255, 204, 0, 0.2);
 }
 
 .grid-item img {
-    max-width: 60%;
-    max-height: 60%;
+    max-width: 65%;
+    max-height: 65%;
     object-fit: contain;
     margin-bottom: 6px;
+    filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.5));
 }
 
 .item-title {
     font-size: 10px;
     color: #cbd5e1;
     text-align: center;
-    font-weight: 500;
+    font-weight: 700;
+    line-height: 1.2;
 }
 
 .premium-prize {
     border-color: #a855f7;
-    box-shadow: inset 0 0 8px rgba(168, 85, 247, 0.3);
+    box-shadow: inset 0 0 12px rgba(168, 85, 247, 0.4);
 }
 
+/* Center Terminal Button */
 .center-action-terminal {
     grid-column: span 2;
-    background: #271414;
-    border: 2px solid #5c1d1d;
-    border-radius: 10px;
+    background: rgba(15, 23, 42, 0.9);
+    border: 2px solid rgba(255, 204, 0, 0.3);
+    border-radius: 12px;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -126,14 +165,15 @@ body {
 }
 
 #main-action-trigger {
-    width: 90%;
-    height: 80%;
-    background: linear-gradient(180deg, #ffe57f 0%, #ffc107 100%);
-    color: #000;
-    border: 1px solid #ffb300;
-    border-radius: 6px;
-    font-weight: 800;
-    font-size: 15px;
+    width: 95%;
+    height: 85%;
+    background: linear-gradient(135deg, #ffe57f 0%, #ffc107 100%);
+    color: #020617;
+    border: none;
+    border-radius: 8px;
+    font-family: 'Orbitron', sans-serif;
+    font-weight: 900;
+    font-size: 14px;
     text-transform: uppercase;
     cursor: pointer;
     box-shadow: 0 4px 15px rgba(255, 193, 7, 0.4);
@@ -141,20 +181,29 @@ body {
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    transition: all 0.2s ease;
+}
+
+#main-action-trigger:hover:not(:disabled) {
+    filter: brightness(1.15);
+    transform: translateY(-2px);
 }
 
 #main-action-trigger:disabled {
-    background: #3a3d4a;
-    color: #71717a;
-    border-color: #4b4e5c;
+    background: #334155;
+    color: #94a3b8;
+    border-color: #475569;
     box-shadow: none;
     cursor: not-allowed;
+    transform: none;
 }
 
+/* State Overlays */
 .grid-item.to-remove {
     border-color: #ef4444;
-    background: rgba(239, 68, 68, 0.1);
+    background: rgba(239, 68, 68, 0.15);
 }
+
 .grid-item.to-remove::before {
     content: "REMOVE";
     position: absolute;
@@ -162,121 +211,135 @@ body {
     font-size: 8px;
     background: #ef4444;
     color: white;
-    padding: 2px 5px;
+    padding: 2px 6px;
     border-radius: 4px;
-    font-weight: bold;
+    font-weight: 900;
 }
 
 .grid-item.removed::after {
     content: "REMOVED";
     position: absolute;
     inset: 0;
-    background: rgba(11, 12, 16, 0.9);
-    color: #dc2626;
-    font-weight: 800;
-    font-size: 12px;
+    background: rgba(2, 6, 23, 0.92);
+    color: #ef4444;
+    font-weight: 900;
+    font-size: 11px;
     display: flex;
     justify-content: center;
     align-items: center;
+    letter-spacing: 0.5px;
 }
 
 .grid-item.won::after {
     content: "✓ OWNED";
     position: absolute;
     inset: 0;
-    background: rgba(0, 0, 0, 0.8);
+    background: rgba(2, 6, 23, 0.88);
     color: #22c55e;
-    font-weight: 800;
-    font-size: 12px;
+    font-weight: 900;
+    font-size: 11px;
     display: flex;
     justify-content: center;
     align-items: center;
     border: 2px solid #22c55e;
-    border-radius: 8px;
+    border-radius: 10px;
 }
 
 .grid-item.active-chase {
     border-color: #ffcc00;
-    box-shadow: 0 0 20px #ffcc00;
-    background: #413923;
-    transform: scale(1.05);
+    box-shadow: 0 0 25px #ffcc00;
+    background: rgba(255, 204, 0, 0.2);
+    transform: scale(1.06);
     z-index: 10;
 }
 
+/* Rules Footer */
 .rules-footer {
-    background: #0b0c10;
+    background: #0f172a;
     border-left: 4px solid #ffcc00;
-    padding: 10px;
+    padding: 10px 14px;
     font-size: 11px;
     color: #94a3b8;
     text-align: center;
-    line-height: 1.4;
+    line-height: 1.5;
+    border-radius: 0 8px 8px 0;
 }
 
-/* --- CONGRATULATIONS WINDOW OVERLAY --- */
+/* Congratulations Modal Overlay */
 .congrats-modal-overlay {
     position: fixed;
     inset: 0;
-    background: rgba(0,0,0,0.92);
+    background: rgba(2, 6, 23, 0.92);
     display: flex;
     justify-content: center;
     align-items: center;
     z-index: 99999;
+    backdrop-filter: blur(10px);
 }
 
 .congrats-card {
-    background: linear-gradient(180deg, #1e2230 0%, #0d0f14 100%);
-    border: 3px solid #ffcc00;
-    border-radius: 16px;
-    padding: 40px;
+    background: rgba(15, 23, 42, 0.95);
+    border: 2px solid #ffcc00;
+    border-radius: 20px;
+    padding: 35px 25px;
     text-align: center;
     width: 90%;
-    max-width: 440px;
-    box-shadow: 0 0 40px rgba(255,204,0,0.4);
+    max-width: 420px;
+    box-shadow: 0 0 40px rgba(255, 204, 0, 0.4);
+    animation: popupGlow 0.4s ease-out;
+}
+
+@keyframes popupGlow {
+    from { transform: scale(0.7); opacity: 0; }
+    to { transform: scale(1); opacity: 1; }
 }
 
 .congrats-title {
+    font-family: 'Orbitron', sans-serif;
     color: #ffcc00;
-    font-size: 32px;
+    font-size: 26px;
     font-weight: 900;
-    letter-spacing: 3px;
+    letter-spacing: 2px;
     margin-bottom: 5px;
-    text-shadow: 0 0 10px rgba(255,204,0,0.6);
+    text-shadow: 0 0 12px rgba(255, 204, 0, 0.5);
 }
 
 .congrats-card img {
-    width: 130px;
-    height: 130px;
+    width: 120px;
+    height: 120px;
     object-fit: contain;
     margin: 20px 0;
     animation: pulseGlow 2s infinite ease-in-out;
 }
 
+@keyframes pulseGlow {
+    0%, 100% { transform: scale(1); filter: drop-shadow(0 0 6px rgba(255, 204, 0, 0.3)); }
+    50% { transform: scale(1.08); filter: drop-shadow(0 0 20px rgba(255, 204, 0, 0.7)); }
+}
+
 .congrats-btn {
-    background: linear-gradient(180deg, #ffe57f 0%, #ffc107 100%);
+    background: linear-gradient(135deg, #ffe57f 0%, #ffc107 100%);
+    color: #020617;
     border: none;
-    padding: 10px 35px;
-    font-weight: 800;
+    padding: 12px 35px;
+    font-family: 'Orbitron', sans-serif;
+    font-weight: 900;
+    font-size: 14px;
     border-radius: 20px;
     cursor: pointer;
-    box-shadow: 0 4px 10px rgba(255, 193, 7, 0.3);
+    box-shadow: 0 4px 15px rgba(255, 193, 7, 0.4);
+    transition: all 0.2s ease;
 }
 
-@keyframes pulseGlow {
-    0%, 100% { transform: scale(1); filter: drop-shadow(0 0 5px rgba(255,204,0,0.2)); }
-    50% { transform: scale(1.06); filter: drop-shadow(0 0 20px rgba(255,204,0,0.6)); }
+.congrats-btn:hover {
+    filter: brightness(1.15);
 }
 
+/* Mobile Responsiveness */
 @media (max-width: 480px) {
+    .faded-wheel-container { padding: 16px; border-radius: 16px; }
     .faded-grid { gap: 8px; }
     .item-title { font-size: 8px; }
-}
-.fun-notice {
-    color: #ef4444; /* Red color jisse sabko saaf dikhe */
-    font-size: 12px;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    margin-top: 4px;
-    font-weight: bold;
-    text-shadow: 0 0 5px rgba(239, 68, 68, 0.3);
+    .wheel-header h1 { font-size: 18px; }
+    .wallet-display { padding: 6px 10px; }
 }

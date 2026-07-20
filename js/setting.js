@@ -1,48 +1,27 @@
-window.darkMode=function(){
+// ==========================================
+// 🎨 UNIFIED STORE THEME MANAGER
+// ==========================================
 
-document.body.classList.add("dark");
+window.darkMode = function () {
+    document.body.classList.add("dark");
+    document.body.classList.add("dark-mode");
+    localStorage.setItem("theme", "dark");
+};
 
-localStorage.setItem(
-"theme",
-"dark"
-);
-
-}
-
-
-
-window.lightMode=function(){
-
-document.body.classList.remove("dark");
-
-
-localStorage.setItem(
-"theme",
-"light"
-);
-
-
-}
-
-
-
-
-if(localStorage.getItem("theme")=="dark"){
-
-document.body.classList.add("dark");
-
-}
-function lightMode(){
+window.lightMode = function () {
+    document.body.classList.remove("dark");
     document.body.classList.remove("dark-mode");
-    localStorage.setItem("theme","light");
-}
+    localStorage.setItem("theme", "light");
+};
 
-function darkMode(){
-    document.body.classList.add("dark-mode");
-    localStorage.setItem("theme","dark");
-}
-
-// Page load par saved theme apply
-if(localStorage.getItem("theme") === "dark"){
-    document.body.classList.add("dark-mode");
-}
+// Initialize Saved Theme Preference on Load
+(function applySavedTheme() {
+    const savedTheme = localStorage.getItem("theme");
+    if (savedTheme === "dark") {
+        document.body.classList.add("dark");
+        document.body.classList.add("dark-mode");
+    } else if (savedTheme === "light") {
+        document.body.classList.remove("dark");
+        document.body.classList.remove("dark-mode");
+    }
+})();

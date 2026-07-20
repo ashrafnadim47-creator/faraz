@@ -1,48 +1,99 @@
 <!DOCTYPE html>
-
-<html>
+<html lang="en">
 
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Store Settings | Faraz Store</title>
+    <meta name="description" content="Customize your Faraz Store app experience, theme, and notifications.">
+    <meta name="theme-color" content="#020617">
+    <link rel="icon" href="favicon.ico">
 
-<title>Settings | Faraz Store</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700;900&family=Plus+Jakarta+Sans:wght@500;700;800&display=swap" rel="stylesheet">
 
-<link rel="stylesheet" href="css/global.css">
-
+    <!-- CSS Links -->
+    <link rel="stylesheet" href="css/global.css">
+    <link rel="stylesheet" href="css/settings.css">
 </head>
 
+<body class="settings-page-bg">
 
-<body>
+    <main class="settings-container glassmorphism">
 
+        <!-- HEADER -->
+        <header class="settings-header">
+            <button class="nav-btn-back" onclick="location.href='index.html'">← Back to Shop</button>
+            <h1 class="settings-title">⚙️ APP SETTINGS</h1>
+            <p class="settings-subtitle">Customize theme, sound & preference options</p>
+        </header>
 
-<div class="settings-card">
+        <!-- THEME SETTINGS SECTION -->
+        <section class="settings-section">
+            <h2 class="section-heading">🎨 Theme & Display</h2>
+            <div class="theme-buttons-grid">
+                <button class="theme-btn dark-btn" onclick="darkMode()">
+                    <span class="btn-icon">🌙</span> Dark Mode
+                </button>
+                <button class="theme-btn light-btn" onclick="lightMode()">
+                    <span class="btn-icon">☀️</span> Light Mode
+                </button>
+            </div>
+        </section>
 
+        <!-- PREFERENCES SECTION -->
+        <section class="settings-section">
+            <h2 class="section-heading">🔔 Preferences & Controls</h2>
+            
+            <div class="setting-item">
+                <div class="setting-info">
+                    <h3>🔊 Sound Effects</h3>
+                    <p>Play audio during Lucky Spin & Wheel events</p>
+                </div>
+                <label class="toggle-switch">
+                    <input type="checkbox" id="sound-toggle" checked>
+                    <span class="slider"></span>
+                </label>
+            </div>
 
-<h1>
-⚙️ Settings
-</h1>
+            <div class="setting-item">
+                <div class="setting-info">
+                    <h3>📩 Push Notifications</h3>
+                    <p>Receive order updates & limited deal alerts</p>
+                </div>
+                <label class="toggle-switch">
+                    <input type="checkbox" id="notif-toggle" checked>
+                    <span class="slider"></span>
+                </label>
+            </div>
+        </section>
 
+        <!-- QUICK ACCESS SECTION -->
+        <section class="settings-section">
+            <h2 class="section-heading">👤 Account & App Data</h2>
+            
+            <div class="action-buttons-group">
+                <button class="setting-action-btn" onclick="location.href='profile.html'">
+                    👤 Manage Account Profile
+                </button>
+                <button class="setting-action-btn danger-btn" onclick="localStorage.clear(); alert('🧹 App Cache Cleared!'); location.reload();">
+                    🧹 Clear Local Cache & Reset
+                </button>
+            </div>
+        </section>
 
-<button onclick="darkMode()">
+        <!-- APP INFO FOOTER -->
+        <footer class="app-info-footer">
+            <p class="version-text">Faraz Store v2.0 (Cyberpunk Edition)</p>
+            <p class="copy-text">© 2026 Faraz Store. All Rights Reserved.</p>
+        </footer>
 
-🌙 Dark Mode
+    </main>
 
-</button>
-
-
-
-<button onclick="lightMode()">
-
-☀️ Light Mode
-
-</button>
-
-
-
-</div>
-
-
-<script src="js/setting.js"></script>
-
+    <!-- SCRIPT INTEGRATION -->
+    <script src="js/setting.js"></script>
 
 </body>
 

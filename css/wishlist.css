@@ -1,372 +1,10 @@
-/* =====================================
-   FARAZ STORE v2.0
-   PREMIUM WISHLIST CSS
-===================================== */
-
-
-
-.wishlist-section{
-
-
-    min-height:90vh;
-
-
-    padding:50px 5%;
-
-
-}
-
-
-
-
-
-.wishlist-section h1{
-
-
-    text-align:center;
-
-
-    font-size:42px;
-
-
-    margin-bottom:40px;
-
-
-}
-
-
-
-
-
-
-
-#wishlist-box{
-
-
-    display:grid;
-
-
-    grid-template-columns:
-
-
-    repeat(4,1fr);
-
-
-    gap:25px;
-
-
-}
-
-
-
-
-
-
-
-.wishlist-card{
-
-
-    padding:25px;
-
-
-    text-align:center;
-
-
-    background:
-
-
-    rgba(17,24,39,.9);
-
-
-    border-radius:30px;
-
-
-    border:
-
-
-    1px solid rgba(255,255,255,.1);
-
-
-    transition:.3s;
-
-
-}
-
-
-
-
-
-.wishlist-card:hover{
-
-
-    transform:translateY(-8px);
-
-
-    box-shadow:
-
-
-    0 20px 50px rgba(0,0,0,.4);
-
-
-}
-
-
-
-
-
-
-
-.wishlist-card .product-image{
-
-
-    height:220px;
-
-
-    width:100%;
-
-
-    border-radius:25px;
-
-
-    overflow:hidden;
-
-
-    background:#020617;
-
-
-    display:flex;
-
-
-    align-items:center;
-
-
-    justify-content:center;
-
-
-    margin-bottom:20px;
-
-
-}
-
-
-
-
-
-
-
-.wishlist-card .product-image img{
-
-
-    width:100%;
-
-
-    height:100%;
-
-
-    object-fit:cover;
-
-
-}
-
-
-
-
-
-
-
-.wishlist-card h3{
-
-
-    font-size:22px;
-
-
-    margin:15px 0;
-
-
-}
-
-
-
-
-
-.wishlist-card p{
-
-
-    color:#38bdf8;
-
-
-    font-size:22px;
-
-
-    font-weight:bold;
-
-
-}
-
-
-
-
-
-
-
-.wishlist-card button{
-
-
-    width:100%;
-
-
-    margin-top:12px;
-
-
-    padding:13px;
-
-
-    border-radius:25px;
-
-
-    color:white;
-
-
-    font-weight:bold;
-
-
-}
-
-
-
-
-
-
-
-.wishlist-card button:first-of-type{
-
-
-    background:
-
-
-    linear-gradient(
-    135deg,
-    #2563eb,
-    #7c3aed
-    );
-
-
-}
-
-
-
-
-
-.wishlist-card button:last-of-type{
-
-
-    background:
-
-
-    linear-gradient(
-    135deg,
-    #dc2626,
-    #ef4444
-    );
-
-
-}
-
-
-
-
-
-
-
-.wishlist-card button:hover{
-
-
-    transform:translateY(-4px);
-
-
-}
-
-
-
-
-
-
-
-@media(max-width:1000px){
-
-
-
-#wishlist-box{
-
-
-    grid-template-columns:
-
-
-    repeat(3,1fr);
-
-
-}
-
-
-
-}
-
-
-
-
-
-@media(max-width:700px){
-
-
-
-#wishlist-box{
-
-
-    grid-template-columns:
-
-
-    repeat(2,1fr);
-
-
-}
-
-
-
-}
-
-
-
-
-
-@media(max-width:450px){
-
-
-
-#wishlist-box{
-
-
-    grid-template-columns:1fr;
-
-
-}
-
-
-
-
-.wishlist-section h1{
-
-
-    font-size:32px;
-
-
-}
-
-
-
-}
-/* --- RESPONSIVE LAYOUT HEIGHT CORRECTION --- */
+/* ==========================================================================
+   🔥 FARAZ STORE v2.0 - ULTRA PREMIUM WISHLIST CSS
+   ========================================================================== */
+
+/* Page Wrapper & Layout Structure */
 .wishlist-wrapper {
-    min-height: calc(100vh - 160px); /* Adjusts automatic spacing based on header/footer */
+    min-height: calc(100vh - 160px);
     padding: 40px 20px;
     box-sizing: border-box;
     display: flex;
@@ -382,21 +20,172 @@
 
 .section-title-box {
     text-align: center;
-    margin-bottom: 30px;
+    margin-bottom: 35px;
 }
 
 .section-title-box h1 {
-    font-size: 2rem;
-    color: #fff;
-    margin-bottom: 5px;
+    font-family: 'Orbitron', 'Segoe UI', sans-serif;
+    font-size: 32px;
+    font-weight: 900;
+    color: #ff0055;
+    text-shadow: 0 0 15px rgba(255, 0, 85, 0.4);
+    margin-bottom: 8px;
 }
 
-/* Mobile responsive padding overrides */
+.section-title-box p {
+    color: #94a3b8;
+    font-size: 14px;
+}
+
+/* Wishlist Product Grid */
+#wishlist-box {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 22px;
+}
+
+/* Glassmorphic Wishlist Card */
+.wishlist-card {
+    padding: 22px;
+    text-align: center;
+    background: rgba(17, 24, 39, 0.85);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 24px;
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.wishlist-card:hover {
+    transform: translateY(-8px);
+    border-color: rgba(255, 0, 85, 0.4);
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.6), 0 0 20px rgba(255, 0, 85, 0.2);
+}
+
+/* Card Image Box */
+.wishlist-card .product-image {
+    height: 200px;
+    width: 100%;
+    border-radius: 18px;
+    overflow: hidden;
+    background: #020617;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 16px;
+}
+
+.wishlist-card .product-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.3s ease;
+}
+
+.wishlist-card:hover .product-image img {
+    transform: scale(1.05);
+}
+
+/* Typography */
+.wishlist-card h3 {
+    font-size: 17px;
+    font-weight: 800;
+    color: #ffffff;
+    margin: 10px 0 6px 0;
+}
+
+.wishlist-card p {
+    color: #00e5ff;
+    font-size: 20px;
+    font-weight: 900;
+    margin-bottom: 15px;
+}
+
+/* Card Action Buttons */
+.wishlist-card .card-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-top: auto;
+}
+
+.wishlist-card button {
+    width: 100%;
+    padding: 12px;
+    border-radius: 14px;
+    color: #ffffff;
+    font-weight: 800;
+    font-size: 13px;
+    border: none;
+    cursor: pointer;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    transition: all 0.25s ease;
+}
+
+.wishlist-card .btn-cart {
+    background: linear-gradient(135deg, #2563eb, #7c3aed);
+    box-shadow: 0 4px 15px rgba(37, 99, 235, 0.3);
+}
+
+.wishlist-card .btn-cart:hover {
+    filter: brightness(1.15);
+    transform: translateY(-2px);
+}
+
+.wishlist-card .btn-remove {
+    background: rgba(239, 68, 68, 0.15);
+    border: 1px solid #ef4444;
+    color: #ef4444;
+}
+
+.wishlist-card .btn-remove:hover {
+    background: #ef4444;
+    color: #ffffff;
+    transform: translateY(-2px);
+}
+
+/* ==========================================================================
+   📱 RESPONSIVE BREAKPOINTS
+   ========================================================================== */
+@media (max-width: 1100px) {
+    #wishlist-box {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+
 @media (max-width: 768px) {
     .wishlist-wrapper {
         padding: 20px 10px;
     }
     .section-title-box h1 {
-        font-size: 1.5rem;
+        font-size: 24px;
+    }
+    #wishlist-box {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 12px;
+    }
+    .wishlist-card {
+        padding: 15px;
+    }
+    .wishlist-card .product-image {
+        height: 150px;
+    }
+}
+
+@media (max-width: 450px) {
+    #wishlist-box {
+        grid-template-columns: repeat(2, 1fr); /* Clean 2-column mobile feel */
+        gap: 10px;
+    }
+    .wishlist-card h3 {
+        font-size: 14px;
+    }
+    .wishlist-card p {
+        font-size: 16px;
     }
 }

@@ -1,4 +1,7 @@
-// --- CONFIGURATION MANAGEMENT METRIC ---
+// ==========================================================================
+// 🔥 FARAZ STORE v2.0 - FADED WHEEL LOGIC ENGINE
+// ==========================================================================
+
 let localSelected = [];
 let localRemoved = [];
 let localWon = [];
@@ -6,9 +9,9 @@ let executionRunning = false;
 
 const progressiveCosts = [9, 19, 39, 69, 99, 149, 199, 499];
 let spinPointer = 0;
-let mockWalletDiamonds = 0; // Online Firebase document se dynamically control hoga
+let mockWalletDiamonds = 0;
 
-// DOM Elements Link setup
+// DOM Elements Link
 const domItems = document.querySelectorAll('.faded-grid .grid-item');
 const actionControl = document.getElementById('main-action-trigger');
 const alertBar = document.getElementById('status-message');
@@ -19,88 +22,77 @@ const soundWin = document.getElementById('victory-audio');
 
 // --- BOOTSTRAP INITIALIZATION ENGINE ---
 window.addEventListener('DOMContentLoaded', () => {
-    // Local memory fallback state load karein
     initializeLocalPersistenceEngine();
-    
-    // Asli Real-time Firebase Firestore triggers connect karein
+
     try {
         if (typeof firebase !== 'undefined' && firebase.apps && firebase.apps.length > 0) {
             initializeWithFirebase();
         } else {
-            console.log("Running safely in Local Sandbox Mode.");
+            console.log("Running in Sandbox Local Mode.");
         }
-    } catch(e) {
-        console.log("Firebase fallback activated safely.");
+    } catch (e) {
+        console.log("Firebase fallback activated.");
     }
 });
 
-// SYSTEM A: FIREBASE NODE SCRIPT DATA ENGINE (Real Cloud Sync)
+// SYSTEM A: FIREBASE REALTIME CLOUD SYNC
 function initializeWithFirebase() {
     try {
         const db = firebase.firestore();
         const auth = firebase.auth();
 
-        if(!auth) return;
+        if (!auth) return;
 
-        // Firebase Auth listener tracks current state changes
         auth.onAuthStateChanged((user) => {
             if (user) {
-                // Realtime data fetch using onSnapshot matrix hook
                 db.collection("users").doc(user.uid).onSnapshot((doc) => {
                     if (doc.exists) {
                         const cloudData = doc.data();
-                        
-                        // Cloud sync override triggers
+
                         mockWalletDiamonds = cloudData.diamonds ?? 0;
                         localRemoved = cloudData.removed ?? [];
                         localWon = cloudData.won ?? [];
                         spinPointer = cloudData.spinCount ?? 0;
-                        
-                        // UI Refresh dynamically
-                        if(walletText) walletText.innerText = `💎 ${mockWalletDiamonds}`;
-                        
-                        // States visual refresh matrix
+
+                        if (walletText) walletText.innerText = `💎 ${mockWalletDiamonds.toLocaleString()}`;
+
                         domItems.forEach(el => el.classList.remove('removed', 'won', 'to-remove'));
-                        localRemoved.forEach(idx => { if(domItems[idx]) domItems[idx].classList.add('removed'); });
-                        localWon.forEach(idx => { if(domItems[idx]) domItems[idx].classList.add('won'); });
-                        
+                        localRemoved.forEach(idx => { if (domItems[idx]) domItems[idx].classList.add('removed'); });
+                        localWon.forEach(idx => { if (domItems[idx]) domItems[idx].classList.add('won'); });
+
                         determineActiveStateMode();
                     }
                 }, (error) => {
-                    console.error("Firestore sync fail stream:", error);
+                    console.error("Firestore sync stream error:", error);
                 });
-            } else {
-                console.log("No authenticated user active. Local state rules apply.");
             }
         });
-    } catch(err) {
+    } catch (err) {
         console.log("Firebase operational nodes isolated smoothly.");
     }
 }
 
-// SYSTEM B: ANTI-REFRESH COOKIE LOCAL STORAGE ENGINE
+// SYSTEM B: LOCAL PERSISTENCE FALLBACK ENGINE
 function initializeLocalPersistenceEngine() {
     const savedRemoved = localStorage.getItem('fw_persist_removed');
     const savedWon = localStorage.getItem('fw_persist_won');
     const savedPointer = localStorage.getItem('fw_persist_pointer');
     const savedWallet = localStorage.getItem('fw_persist_wallet');
 
-    if (savedWallet !== null) mockWalletDiamonds = parseInt(savedWallet);
-    if (savedPointer !== null) spinPointer = parseInt(savedPointer);
+    if (savedWallet !== null) mockWalletDiamonds = parseInt(savedWallet, 10);
+    if (savedPointer !== null) spinPointer = parseInt(savedPointer, 10);
     if (savedRemoved) localRemoved = JSON.parse(savedRemoved);
     if (savedWon) localWon = JSON.parse(savedWon);
 
     syncSystemUILayout();
 }
 
-// UI RENDER STABILIZER
 function syncSystemUILayout() {
-    if(walletText) walletText.innerText = `💎 ${mockWalletDiamonds}`;
-    
-    // UI states layout mapping
+    if (walletText) walletText.innerText = `💎 ${mockWalletDiamonds.toLocaleString()}`;
+
     domItems.forEach(el => el.classList.remove('removed', 'won', 'to-remove'));
-    localRemoved.forEach(idx => { if(domItems[idx]) domItems[idx].classList.add('removed'); });
-    localWon.forEach(idx => { if(domItems[idx]) domItems[idx].classList.add('won'); });
+    localRemoved.forEach(idx => { if (domItems[idx]) domItems[idx].classList.add('removed'); });
+    localWon.forEach(idx => { if (domItems[idx]) domItems[idx].classList.add('won'); });
 
     attachInteractiveListeners();
     determineActiveStateMode();
@@ -109,12 +101,12 @@ function syncSystemUILayout() {
 function attachInteractiveListeners() {
     domItems.forEach(item => {
         item.onclick = () => {
-            const index = parseInt(item.getAttribute('data-index'));
+            const index = parseInt(item.getAttribute('data-index'), 10);
             evaluateSelectionLayer(index, item);
         };
     });
 
-    if(actionControl) {
+    if (actionControl) {
         actionControl.onclick = () => {
             if (executionRunning) return;
             if (localRemoved.length < 2) {
@@ -126,7 +118,7 @@ function attachInteractiveListeners() {
     }
 }
 
-// --- REMOVE SELECTION CONTROL PANEL ---
+// REMOVE SELECTION CONTROL
 function evaluateSelectionLayer(targetIdx, element) {
     if (localRemoved.length === 2 || localWon.includes(targetIdx) || executionRunning) return;
 
@@ -141,7 +133,7 @@ function evaluateSelectionLayer(targetIdx, element) {
         }
     }
 
-    if(actionControl) {
+    if (actionControl) {
         if (localSelected.length < 2) {
             actionControl.innerText = `REMOVE (${localSelected.length}/2)`;
             actionControl.disabled = true;
@@ -155,75 +147,72 @@ function evaluateSelectionLayer(targetIdx, element) {
 function commitRemovalProcess() {
     localRemoved = [...localSelected];
     localSelected = [];
-    
+
     localStorage.setItem('fw_persist_removed', JSON.stringify(localRemoved));
-    
+
     try {
         if (typeof firebase !== 'undefined' && firebase.apps && firebase.apps.length > 0 && firebase.auth().currentUser) {
             const uid = firebase.auth().currentUser.uid;
             firebase.firestore().collection("users").doc(uid).update({ removed: localRemoved });
         }
-    } catch(e) {}
-    
+    } catch (e) {}
+
     syncSystemUILayout();
 }
 
 function determineActiveStateMode() {
     if (localRemoved.length < 2) return;
 
-    let pricePoint = progressiveCosts[spinPointer];
+    const pricePoint = progressiveCosts[spinPointer];
     if (spinPointer >= progressiveCosts.length || localWon.length >= 8) {
-        if(alertBar) alertBar.innerText = "Congratulations! Pool cleared successfully.";
-        if(actionControl) {
+        if (alertBar) alertBar.innerText = "🎉 Congratulations! All prize items cleared.";
+        if (actionControl) {
             actionControl.innerText = "COMPLETED";
             actionControl.disabled = true;
         }
         return;
     }
-    if(alertBar) alertBar.innerText = "Pool ready! Click SPIN to draw your reward.";
-    if(actionControl) {
+    if (alertBar) alertBar.innerText = "Pool ready! Click SPIN to draw your reward.";
+    if (actionControl) {
         actionControl.innerText = `SPIN (💎 ${pricePoint})`;
         actionControl.disabled = false;
     }
 }
 
-// --- SECURITY PAYMENT MATRIX MODULE (Firebase Connected Logic) ---
+// BALANCE VERIFICATION & EXECUTION TRIGGER
 function verifyBalanceSheet() {
-    let targetedCost = progressiveCosts[spinPointer];
+    const targetedCost = progressiveCosts[spinPointer];
 
-    // Check if user balance is short
     if (mockWalletDiamonds < targetedCost) {
-        if(alertBar) alertBar.innerText = `⚠️ Low Diamond Balance! Redirecting to Top-Up Desk...`;
-        
-        // ⚡ BLOCK FAKE MONEY: Direct user to your secure voucher page!
+        if (alertBar) alertBar.innerText = `⚠️ Low Diamond Balance! Redirecting to Top-Up Desk...`;
+
         setTimeout(() => {
-            alert("❌ Insufficient Diamonds!\n\nPlease purchase voucher codes from Faraz Admin and redeem them on the next page.");
-            window.location.href = "topup.html"; // Redirect pointer to secure gate
+            alert("❌ Insufficient Diamonds!\n\nPlease purchase top-up vouchers and redeem them on the next page.");
+            window.location.href = "topup.html";
         }, 500);
         return;
     }
 
-    // Process local and cloud wallet balance deductions
     mockWalletDiamonds -= targetedCost;
     localStorage.setItem('fw_persist_wallet', mockWalletDiamonds.toString());
-    if(walletText) walletText.innerText = `💎 ${mockWalletDiamonds}`;
-    
+    if (walletText) walletText.innerText = `💎 ${mockWalletDiamonds.toLocaleString()}`;
+
     try {
         if (typeof firebase !== 'undefined' && firebase.apps && firebase.apps.length > 0 && firebase.auth().currentUser) {
             const uid = firebase.auth().currentUser.uid;
-            firebase.firestore().collection("users").doc(uid).update({ 
-                diamonds: mockWalletDiamonds 
+            firebase.firestore().collection("users").doc(uid).update({
+                diamonds: mockWalletDiamonds
             });
         }
-    } catch(e) {}
+    } catch (e) {}
 
     executeWheelSpin();
 }
 
-// --- SAFE RUNTIME WHEEL CHASE LOOP ---
+// WHEEL ANIMATION & CHASE LOOP
 function executeWheelSpin() {
     executionRunning = true;
-    if(actionControl) actionControl.disabled = true;
+    if (actionControl) actionControl.disabled = true;
 
     let accessiblePool = [];
     for (let i = 0; i < 10; i++) {
@@ -232,8 +221,7 @@ function executeWheelSpin() {
         }
     }
 
-    // iPhone cap configuration ceiling check
-    let globalIphoneWinCounter = parseInt(localStorage.getItem('sys_global_iphone_count') || "0");
+    let globalIphoneWinCounter = parseInt(localStorage.getItem('sys_global_iphone_count') || "0", 10);
     if (globalIphoneWinCounter >= 2) {
         accessiblePool = accessiblePool.filter(id => id !== 0);
     }
@@ -245,10 +233,12 @@ function executeWheelSpin() {
     const targetCyclesThreshold = 20 + Math.floor(Math.random() * 8);
 
     try {
-        soundTick.currentTime = 0;
-        soundTick.loop = true;
-        soundTick.play().catch(e => console.log("Audio block override."));
-    } catch(e){}
+        if (soundTick) {
+            soundTick.currentTime = 0;
+            soundTick.loop = true;
+            soundTick.play().catch(() => {});
+        }
+    } catch (e) {}
 
     const runtimeClock = setInterval(() => {
         domItems.forEach(el => el.classList.remove('active-chase'));
@@ -257,28 +247,30 @@ function executeWheelSpin() {
             activeTickIndex = (activeTickIndex + 1) % 10;
         }
 
-        if(domItems[activeTickIndex]) {
+        if (domItems[activeTickIndex]) {
             domItems[activeTickIndex].classList.add('active-chase');
         }
-        
-        let previousTick = activeTickIndex;
+
+        const previousTick = activeTickIndex;
         activeTickIndex = (activeTickIndex + 1) % 10;
         computedCycles++;
 
         if (computedCycles >= targetCyclesThreshold && previousTick === selectedWinnerIndex) {
             clearInterval(runtimeClock);
-            
+
             try {
-                soundTick.pause();
-                soundTick.currentTime = 0;
-            } catch(e){}
+                if (soundTick) {
+                    soundTick.pause();
+                    soundTick.currentTime = 0;
+                }
+            } catch (e) {}
 
             setTimeout(() => {
                 domItems[selectedWinnerIndex].classList.remove('active-chase');
                 domItems[selectedWinnerIndex].classList.add('won');
-                
+
                 localWon.push(selectedWinnerIndex);
-                spinPointer++; 
+                spinPointer++;
 
                 if (selectedWinnerIndex === 0) {
                     globalIphoneWinCounter++;
@@ -288,7 +280,6 @@ function executeWheelSpin() {
                 localStorage.setItem('fw_persist_won', JSON.stringify(localWon));
                 localStorage.setItem('fw_persist_pointer', spinPointer.toString());
 
-                // Update Firebase ledger document snapshots instantly
                 try {
                     if (typeof firebase !== 'undefined' && firebase.apps && firebase.apps.length > 0 && firebase.auth().currentUser) {
                         const uid = firebase.auth().currentUser.uid;
@@ -297,14 +288,15 @@ function executeWheelSpin() {
                             spinCount: spinPointer
                         });
                     }
-                } catch(e) {}
+                } catch (e) {}
 
                 try {
-                    soundWin.currentTime = 0;
-                    soundWin.play().catch(()=>{});
-                } catch(e){}
+                    if (soundWin) {
+                        soundWin.currentTime = 0;
+                        soundWin.play().catch(() => {});
+                    }
+                } catch (e) {}
 
-                // ⚡ CORE INTEGRATION TIMING FIXED: Order data sent to Firebase BEFORE loading popup box!
                 const itemTitleText = domItems[selectedWinnerIndex].querySelector('.item-title')?.innerText || "Special Rare Reward";
                 sendPrizeToOrdersDatabase(selectedWinnerIndex, itemTitleText);
 
@@ -315,7 +307,7 @@ function executeWheelSpin() {
     }, 100);
 }
 
-// --- CONGRATULATIONS OVERLAY SYSTEM ---
+// CONGRATULATIONS OVERLAY
 function triggerGrandCongratulations(winnerIndex) {
     const itemReference = domItems[winnerIndex];
     const imageSource = itemReference.querySelector('img').src;
@@ -328,52 +320,49 @@ function triggerGrandCongratulations(winnerIndex) {
     modalOverlay.innerHTML = `
         <div class="congrats-card">
             <div class="congrats-title">CONGRATULATIONS!</div>
-            <p style="color: #94a3b8; font-size: 13px; text-transform: uppercase;">Rare reward unlocked</p>
+            <p style="color: #94a3b8; font-size: 12px; text-transform: uppercase;">Rare reward unlocked</p>
             <img src="${imageSource}" alt="Reward">
-            <h2 style="color: #fff; margin-bottom: 25px; font-size: 20px;">${itemTitleText}</h2>
-            <button class="congrats-btn" id="close-congrats-modal">EQUIP / OK</button>
+            <h2 style="color: #fff; margin-bottom: 25px; font-size: 18px;">${itemTitleText}</h2>
+            <button class="congrats-btn" id="close-congrats-modal">CLAIM REWARD</button>
         </div>
     `;
 
     document.body.appendChild(modalOverlay);
     document.getElementById('close-congrats-modal').onclick = () => {
-        document.getElementById('dynamic-congrats-popup').remove();
-        determineActiveStateMode(); 
+        const popup = document.getElementById('dynamic-congrats-popup');
+        if (popup) popup.remove();
+        determineActiveStateMode();
     };
 }
 
-// --- PENDING ORDER GENERATION ENGINE (FIREBASE CONNECTED) ---
+// AUTOMATIC ORDER GENERATION
 function sendPrizeToOrdersDatabase(winnerIndex, itemTitleText) {
     try {
         if (typeof firebase !== 'undefined' && firebase.apps && firebase.apps.length > 0 && firebase.auth().currentUser) {
             const user = firebase.auth().currentUser;
             const db = firebase.firestore();
 
-            // 1. Unique Order ID generate karein
             const orderId = "ORD-" + Math.floor(100000 + Math.random() * 900000);
-            
-            // 2. Order ka data structure matrix taiyar karein
+
             const orderData = {
                 orderId: orderId,
                 userId: user.uid,
-                userEmail: user.email || "Unknown User",
+                userEmail: user.email || "Customer",
                 productName: itemTitleText,
                 productIndex: winnerIndex,
                 price: "FREE (Faded Wheel)",
-                status: "Pending", // Admin isko baad me "Delivered" ya "Success" kar sakta hai
+                status: "Pending",
                 timestamp: firebase.firestore.FieldValue.serverTimestamp()
             };
 
-            // 3. Firebase Firestore ke "orders" collection me save karein
             db.collection("orders").doc(orderId).set(orderData)
-            .then(() => {
-                console.log(`🛒 Order auto-generated successfully: ${orderId}`);
-            })
-            .catch((error) => {
-                console.error("Error creating auto-order: ", error);
-            });
+                .then(() => {
+                    console.log(`🛒 Order generated: ${orderId}`);
+                })
+                .catch((error) => {
+                    console.error("Error creating auto-order:", error);
+                });
         } else {
-            // Local Sandbox Fallback (Agar database connect na ho)
             let localOrders = JSON.parse(localStorage.getItem('fw_local_orders_db') || "[]");
             localOrders.push({
                 orderId: "LOCAL-" + Date.now(),
@@ -383,7 +372,7 @@ function sendPrizeToOrdersDatabase(winnerIndex, itemTitleText) {
             });
             localStorage.setItem('fw_local_orders_db', JSON.stringify(localOrders));
         }
-    } catch(e) {
-        console.log("Order bypass catch block triggered safely.");
+    } catch (e) {
+        console.log("Order generation fallback active.");
     }
 }

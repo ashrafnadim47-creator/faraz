@@ -1,27 +1,39 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login | Faraz Store</title>
+    <title>Customer Login | Faraz Store</title>
+    <meta name="description" content="Sign in to your Faraz Store account to manage orders, wishlist, and top-ups.">
+    <meta name="theme-color" content="#0b0f19">
+    <link rel="icon" href="favicon.ico">
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700;900&family=Plus+Jakarta+Sans:wght@500;700;800&display=swap" rel="stylesheet">
+
+    <!-- CSS Links -->
     <link rel="stylesheet" href="css/global.css">
     <link rel="stylesheet" href="css/login.css">
 </head>
+
 <body>
 
-    <!-- Premium Fullscreen Flex Wrapper for User Login -->
+    <!-- Fullscreen Flex Wrapper for User Login -->
     <section class="user-login-page">
         
-        <div class="user-login-card">
+        <div class="user-login-card glassmorphism">
             <div class="user-login-header">
                 <h1>⚡ FARAZ <span>STORE</span></h1>
                 <p>CUSTOMER ACCESS PORTAL</p>
             </div>
 
-            <!-- Form Groups Input Field Blocks -->
+            <!-- Form Input Fields -->
             <div class="user-input-group">
                 <label for="email">Email Address</label>
-                <input id="email" type="email" placeholder="Enter your email" autocomplete="off">
+                <input id="email" type="email" placeholder="Enter your email address" autocomplete="off">
             </div>
 
             <div class="user-input-group">
@@ -29,22 +41,23 @@
                 <input id="password" type="password" placeholder="••••••••">
             </div>
 
-            <!-- Full-width Neon Action Login Trigger -->
+            <!-- Action Submit Trigger -->
             <button id="login-btn" class="user-submit-btn">
                 Sign In
             </button>
 
-            <!-- Footer Redirection Links Layout -->
-            <p class="user-login-footer-links">
-                New to the store? 
-                <a href="signup.html">Create Account</a>
-            </p>
+            <!-- Navigation Redirection Links -->
+            <div class="user-login-footer-links">
+                <p>New to the store? <a href="signup.html">Create Account</a></p>
+                <a href="index.html" style="display: inline-block; margin-top: 12px; color: #94a3b8; font-size: 12px;">← Return to Home Shop</a>
+            </div>
         </div>
 
     </section>
 
-    <!-- Core auth tracking module engine -->
+    <!-- Core Auth Tracking Module Engine -->
     <script type="module" src="js/auth.js"></script>
 
 </body>
+
 </html>

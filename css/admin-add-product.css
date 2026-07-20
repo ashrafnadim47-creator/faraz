@@ -1,147 +1,98 @@
-*{
-margin:0;
-padding:0;
-box-sizing:border-box;
-font-family:Arial, sans-serif;
+/* ==========================================================================
+   🔥 FARAZ STORE v2.0 - ADMIN ADD PRODUCT FORM CSS
+   ========================================================================== */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Plus Jakarta Sans', Arial, sans-serif;
 }
 
-
-body{
-
-background:#f5f5f5;
-
-min-height:100vh;
-
-display:flex;
-
-justify-content:center;
-
-align-items:center;
-
+body {
+    background: radial-gradient(circle at top left, #1e1b4b 0%, #020617 70%);
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
 }
 
-
-
-.admin-box{
-
-width:95%;
-
-max-width:500px;
-
-background:white;
-
-padding:30px;
-
-border-radius:20px;
-
-box-shadow:0 10px 30px rgba(0,0,0,0.1);
-
+.admin-box {
+    width: 95%;
+    max-width: 520px;
+    background: rgba(15, 23, 42, 0.85);
+    padding: 35px 30px;
+    border-radius: 24px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 25px 60px rgba(0, 0, 0, 0.8), 0 0 30px rgba(0, 229, 255, 0.12);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
 }
 
-
-
-h1{
-
-text-align:center;
-
-margin-bottom:25px;
-
-color:#222;
-
+.admin-box h1 {
+    text-align: center;
+    margin-bottom: 25px;
+    font-family: 'Orbitron', sans-serif;
+    font-size: 24px;
+    color: #00e5ff;
+    text-shadow: 0 0 15px rgba(0, 229, 255, 0.3);
 }
 
-
-
-.form-box{
-
-display:flex;
-
-flex-direction:column;
-
-gap:15px;
-
+.form-box {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
 }
-
-
 
 input,
-textarea{
-
-
-width:100%;
-
-padding:14px;
-
-border:1px solid #ddd;
-
-border-radius:12px;
-
-font-size:16px;
-
-outline:none;
-
+textarea {
+    width: 100%;
+    padding: 13px 16px;
+    background: #020617;
+    border: 1px solid #334155;
+    border-radius: 12px;
+    font-size: 14px;
+    color: #ffffff;
+    outline: none;
+    transition: all 0.25s ease;
 }
 
-
-
-textarea{
-
-height:120px;
-
-resize:none;
-
+textarea {
+    min-height: 110px;
+    resize: vertical;
 }
-
-
 
 input:focus,
-textarea:focus{
-
-border-color:#ff6600;
-
+textarea:focus {
+    border-color: #00e5ff;
+    box-shadow: 0 0 15px rgba(0, 229, 255, 0.25);
 }
 
-
-
-button{
-
-
-padding:15px;
-
-border:none;
-
-border-radius:12px;
-
-background:#ff6600;
-
-color:white;
-
-font-size:18px;
-
-font-weight:bold;
-
-cursor:pointer;
-
-transition:.3s;
-
+button {
+    padding: 14px;
+    border: none;
+    border-radius: 12px;
+    background: linear-gradient(135deg, #2563eb, #7c3aed);
+    color: #ffffff;
+    font-family: 'Orbitron', sans-serif;
+    font-size: 14px;
+    font-weight: 800;
+    cursor: pointer;
+    transition: all 0.25s ease;
+    text-transform: uppercase;
 }
 
-
-
-button:hover{
-
-background:#e55b00;
-
+button:hover {
+    filter: brightness(1.15);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(37, 99, 235, 0.4);
 }
 
-
-
-#message{
-
-text-align:center;
-
-font-weight:bold;
-
-margin-top:10px;
-
+#message {
+    text-align: center;
+    font-weight: 800;
+    font-size: 13px;
+    margin-top: 10px;
+    min-height: 20px;
 }

@@ -1,315 +1,96 @@
-/* =====================================
-   FARAZ STORE v2.0
-   PREMIUM ADMIN ORDERS CSS
-===================================== */
+/* ==========================================================================
+   🔥 FARAZ STORE v2.0 - ADMIN ORDERS MANAGEMENT CSS
+   ========================================================================== */
 
-
-
-.admin-orders-section{
-
-
-    padding:40px;
-
-
-    min-height:90vh;
-
-
+.admin-orders-section {
+    padding: 40px;
+    min-height: 90vh;
+    box-sizing: border-box;
 }
 
-
-
-
-
-.admin-orders-section h1{
-
-
-    font-size:42px;
-
-
-    margin-bottom:35px;
-
-
-    color:#f8fafc;
-
-
+.admin-orders-section h1 {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 36px;
+    margin-bottom: 30px;
+    color: #00e5ff;
+    text-shadow: 0 0 15px rgba(0, 229, 255, 0.3);
 }
 
-
-
-
-
-
-
-#admin-order-list{
-
-
-    display:flex;
-
-
-    flex-direction:column;
-
-
-    gap:25px;
-
-
+#admin-order-list {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
 }
 
-
-
-
-
-
-
-.order-card{
-
-
-    padding:30px;
-
-
-    background:
-
-
-    rgba(17,24,39,.9);
-
-
-    border-radius:30px;
-
-
-    border:
-
-
-    1px solid rgba(255,255,255,.1);
-
-
-    box-shadow:
-
-
-    0 15px 40px rgba(0,0,0,.35);
-
-
-    transition:.3s;
-
-
+.order-card {
+    padding: 25px;
+    background: rgba(15, 23, 42, 0.85);
+    border-radius: 20px;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    transition: all 0.3s ease;
 }
 
-
-
-
-
-
-
-.order-card:hover{
-
-
-    transform:translateY(-5px);
-
-
+.order-card:hover {
+    transform: translateY(-4px);
+    border-color: rgba(0, 229, 255, 0.3);
 }
 
-
-
-
-
-
-
-.order-card h3{
-
-
-    font-size:24px;
-
-
-    color:#38bdf8;
-
-
-    margin-bottom:15px;
-
-
+.order-card h3 {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 20px;
+    color: #00e5ff;
+    margin-bottom: 12px;
 }
 
-
-
-
-
-
-
-.order-card p{
-
-
-    color:#cbd5e1;
-
-
-    margin:12px 0;
-
-
-    font-size:17px;
-
-
+.order-card p {
+    color: #cbd5e1;
+    margin: 10px 0;
+    font-size: 14px;
+    line-height: 1.5;
 }
 
-
-
-
-
-.order-card p:nth-child(3){
-
-
-    color:#22c55e;
-
-
-    font-weight:bold;
-
-
+.order-card button {
+    margin-top: 15px;
+    padding: 12px 26px;
+    border-radius: 12px;
+    background: linear-gradient(135deg, #16a34a, #22c55e);
+    color: #ffffff;
+    font-family: 'Orbitron', sans-serif;
+    font-size: 13px;
+    font-weight: 800;
+    border: none;
+    cursor: pointer;
+    transition: all 0.25s ease;
 }
 
-
-
-
-
-
-
-.order-card button{
-
-
-    margin-top:20px;
-
-
-    padding:14px 30px;
-
-
-    border-radius:25px;
-
-
-    background:
-
-
-    linear-gradient(
-    135deg,
-    #16a34a,
-    #22c55e
-    );
-
-
-    color:white;
-
-
-    font-weight:bold;
-
-
-    transition:.3s;
-
-
+.order-card button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(34, 197, 94, 0.35);
 }
-
-
-
-
-
-
-
-.order-card button:hover{
-
-
-    transform:translateY(-4px);
-
-
-    box-shadow:
-
-
-    0 10px 25px rgba(34,197,94,.3);
-
-
-}
-
-
-
-
-
-
-
 
 /* STATUS COLORS */
+.status-pending { color: #eab308; font-weight: 800; }
+.status-shipped { color: #38bdf8; font-weight: 800; }
+.status-delivered { color: #22c55e; font-weight: 800; }
 
+/* 📱 MOBILE RESPONSIVE */
+@media (max-width: 700px) {
+    .admin-orders-section {
+        padding: 20px 12px;
+    }
 
-.status-pending{
+    .admin-orders-section h1 {
+        font-size: 26px;
+    }
 
+    .order-card {
+        padding: 18px;
+    }
 
-    color:#facc15;
-
-
-}
-
-
-
-.status-shipped{
-
-
-    color:#38bdf8;
-
-
-}
-
-
-
-.status-delivered{
-
-
-    color:#22c55e;
-
-
-}
-
-
-
-
-
-
-
-
-/* MOBILE */
-
-
-@media(max-width:700px){
-
-
-
-.admin-orders-section{
-
-
-    padding:20px;
-
-
-}
-
-
-
-.admin-orders-section h1{
-
-
-    font-size:32px;
-
-
-}
-
-
-
-.order-card{
-
-
-    padding:20px;
-
-
-}
-
-
-
-.order-card button{
-
-
-    width:100%;
-
-
-}
-
-
-
+    .order-card button {
+        width: 100%;
+    }
 }

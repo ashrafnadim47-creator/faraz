@@ -1,39 +1,68 @@
-.user-admin-card{
+/* ==========================================================================
+   🔥 FARAZ STORE v2.0 - ADMIN USERS CARD & MANAGEMENT CSS
+   ========================================================================== */
 
-background:#111827;
-
-color:white;
-
-padding:25px;
-
-margin:20px;
-
-border-radius:20px;
-
+.user-admin-card {
+    background: rgba(15, 23, 42, 0.85);
+    color: #ffffff;
+    padding: 22px 25px;
+    margin: 16px 0;
+    border-radius: 20px;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.6), 0 0 20px rgba(0, 229, 255, 0.08);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    transition: all 0.25s ease;
 }
 
-
-
-.user-admin-card input{
-
-padding:10px;
-
-border-radius:10px;
-
-border:none;
-
+.user-admin-card:hover {
+    border-color: rgba(0, 229, 255, 0.3);
+    transform: translateY(-2px);
 }
 
+.user-admin-card input {
+    padding: 11px 16px;
+    border-radius: 12px;
+    border: 1px solid #334155;
+    background: #020617;
+    color: #ffffff;
+    outline: none;
+    font-size: 13px;
+    transition: all 0.25s ease;
+}
 
+.user-admin-card input:focus {
+    border-color: #00e5ff;
+    box-shadow: 0 0 12px rgba(0, 229, 255, 0.2);
+}
 
-.user-admin-card button{
+.user-admin-card button {
+    padding: 11px 20px;
+    border: none;
+    border-radius: 12px;
+    background: linear-gradient(135deg, #2563eb, #7c3aed);
+    color: #ffffff;
+    font-family: 'Orbitron', sans-serif;
+    font-weight: 800;
+    font-size: 12px;
+    cursor: pointer;
+    text-transform: uppercase;
+    transition: all 0.25s ease;
+}
 
-padding:10px 15px;
+.user-admin-card button:hover {
+    filter: brightness(1.15);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(37, 99, 235, 0.35);
+}
 
-border:none;
-
-border-radius:10px;
-
-cursor:pointer;
-
+/* 📱 MOBILE RESPONSIVE */
+@media (max-width: 600px) {
+    .user-admin-card {
+        padding: 16px;
+        margin: 12px 0;
+    }
 }

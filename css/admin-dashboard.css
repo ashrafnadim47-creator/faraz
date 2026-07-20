@@ -1,214 +1,174 @@
 /* ==========================================================================
-   🔥 FIXED RESPONSIVE ADMIN DASHBOARD CSS (DESKTOP + MOBILE PERFECT FIT)
+   🔥 FARAZ STORE v2.0 - PREMIUM ADMIN DASHBOARD CSS (CYBERPUNK GLASS)
    ========================================================================== */
 
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    font-family: 'Segoe UI', Roboto, sans-serif;
-}
-
-body {
-    background: #020617;
-    color: #e2e8f0;
-    min-height: 100vh;
-    overflow-x: hidden;
-}
-
-/* Main Layout Container */
 .admin-container {
-    display: flex;
     min-height: 100vh;
-    width: 100%;
+    display: flex;
+    background: radial-gradient(circle at top left, #1e1b4b 0%, #020617 70%);
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    box-sizing: border-box;
 }
 
-/* 1. Sidebar Styling (Desktop Default) */
+/* SIDEBAR NAVIGATION */
 .admin-sidebar {
-    width: 240px;
-    background: #0f172a;
-    border-right: 1px solid rgba(255, 255, 255, 0.1);
-    padding: 20px 15px;
+    width: 280px;
+    min-height: 100vh;
+    padding: 30px 20px;
+    background: rgba(15, 23, 42, 0.9);
+    border-right: 1px solid rgba(255, 255, 255, 0.08);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
     display: flex;
     flex-direction: column;
-    gap: 12px;
-    flex-shrink: 0;
+    gap: 16px;
+    box-sizing: border-box;
 }
 
 .admin-sidebar h2 {
-    color: #38bdf8;
-    font-size: 20px;
-    margin-bottom: 10px;
+    font-family: 'Orbitron', sans-serif;
+    font-size: 24px;
+    font-weight: 900;
+    margin-bottom: 20px;
+    background: linear-gradient(135deg, #00e5ff, #a855f7);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    text-shadow: 0 0 15px rgba(0, 229, 255, 0.3);
 }
 
 .admin-sidebar a {
-    color: #94a3b8;
+    padding: 14px 18px;
+    border-radius: 14px;
+    background: rgba(30, 41, 59, 0.5);
+    color: #e2e8f0;
     text-decoration: none;
-    padding: 12px 15px;
-    border-radius: 10px;
-    font-weight: 600;
-    transition: all 0.2s;
-    display: block;
+    font-weight: 700;
+    font-size: 14px;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    transition: all 0.25s ease;
 }
 
-.admin-sidebar a:hover, .admin-sidebar a.active {
-    background: #1e293b;
-    color: #38bdf8;
+.admin-sidebar a:hover,
+.admin-sidebar a.active {
+    background: linear-gradient(135deg, #2563eb, #7c3aed);
+    color: #ffffff;
+    border-color: #00e5ff;
+    transform: translateX(6px);
+    box-shadow: 0 4px 20px rgba(37, 99, 235, 0.3);
 }
 
-.admin-sidebar button#logout-btn {
+#logout-btn,
+.admin-logout-btn {
     margin-top: auto;
-    padding: 12px;
-    background: #ef4444;
-    color: #fff;
-    border: none;
-    border-radius: 10px;
-    font-weight: bold;
+    padding: 14px;
+    border-radius: 14px;
+    background: rgba(239, 68, 68, 0.15);
+    border: 1px solid #ef4444;
+    color: #ef4444;
+    font-weight: 800;
+    font-size: 13px;
     cursor: pointer;
+    text-transform: uppercase;
+    transition: all 0.25s ease;
 }
 
-/* 2. Main Content Section */
+#logout-btn:hover,
+.admin-logout-btn:hover {
+    background: #ef4444;
+    color: #ffffff;
+    box-shadow: 0 0 20px rgba(239, 68, 68, 0.4);
+}
+
+/* MAIN CONTENT ARENA */
 .admin-main {
     flex: 1;
-    padding: 25px;
-    width: 100%;
-    overflow-y: auto;
+    padding: 40px;
+    box-sizing: border-box;
 }
 
 .admin-main h1 {
-    font-size: 28px;
-    color: #fff;
-    margin-bottom: 5px;
+    font-family: 'Orbitron', sans-serif;
+    font-size: 36px;
+    font-weight: 900;
+    color: #00e5ff;
+    margin-bottom: 8px;
+    text-shadow: 0 0 15px rgba(0, 229, 255, 0.3);
 }
 
 .admin-main p {
     color: #94a3b8;
     font-size: 14px;
-    margin-bottom: 25px;
 }
 
-/* 3. Grid Stats Matrix */
+/* STATS GRID CARDS */
 .stats {
+    margin-top: 35px;
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
     gap: 20px;
 }
 
 .stat-card {
-    background: #111827;
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    border-radius: 16px;
-    padding: 20px;
+    padding: 28px 20px;
     text-align: center;
-    box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+    background: rgba(15, 23, 42, 0.85);
+    border-radius: 24px;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    transition: all 0.3s ease;
+}
+
+.stat-card:hover {
+    transform: translateY(-6px);
+    border-color: #00e5ff;
+    box-shadow: 0 20px 45px rgba(0, 0, 0, 0.8), 0 0 25px rgba(0, 229, 255, 0.2);
 }
 
 .stat-card h2 {
-    font-size: 32px;
-    margin-bottom: 5px;
+    font-family: 'Orbitron', sans-serif;
+    font-size: 36px;
+    font-weight: 900;
+    color: #00e5ff;
+    margin: 0;
 }
 
 .stat-card h3 {
-    font-size: 14px;
-    color: #94a3b8;
+    margin: 12px 0 6px 0;
+    color: #ffcc00;
+    font-size: 15px;
     text-transform: uppercase;
-    letter-spacing: 1px;
 }
 
 .stat-card p {
-    font-size: 26px;
-    font-weight: bold;
-    color: #38bdf8;
-    margin-top: 8px;
-    margin-bottom: 0;
+    color: #94a3b8;
+    font-size: 12px;
 }
 
-/* 4. Voucher Generator Card */
-.admin-voucher-card {
-    grid-column: 1 / -1; /* Spans full row */
-    background: linear-gradient(180deg, #1e1b2e 0%, #111827 100%) !important;
-    border: 2px solid #a855f7 !important;
-    border-radius: 16px !important;
-    padding: 20px !important;
-    margin: 10px 0 !important;
-}
-
-/* ==========================================================================
-   📱 MOBILE & TABLET RESPONSIVE FIX (Fixes squished layout on phone)
-   ========================================================================== */
-@media (max-width: 768px) {
+/* 📱 MOBILE RESPONSIVE TUNING */
+@media (max-width: 900px) {
     .admin-container {
-        flex-direction: column; /* Stacks sidebar on top of main content */
+        flex-direction: column;
     }
 
     .admin-sidebar {
         width: 100%;
-        border-right: none;
-        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-        padding: 12px 15px;
-        flex-direction: row;
-        flex-wrap: wrap;
-        justify-content: space-between;
-        align-items: center;
-        gap: 6px;
-    }
-
-    .admin-sidebar h2 {
-        width: 100%;
-        font-size: 18px;
-        margin-bottom: 4px;
-    }
-
-    .admin-sidebar a {
-        padding: 8px 10px;
-        font-size: 12px;
-        background: #1e293b;
-        border-radius: 8px;
-    }
-
-    .admin-sidebar button#logout-btn {
-        margin-top: 0;
-        padding: 8px 10px;
-        font-size: 12px;
+        min-height: auto;
+        padding: 20px 16px;
     }
 
     .admin-main {
-        padding: 15px;
+        padding: 22px 16px;
     }
 
     .admin-main h1 {
-        font-size: 22px;
+        font-size: 26px;
     }
 
-    /* 2 columns layout for stats cards on mobile */
     .stats {
-        grid-template-columns: repeat(2, 1fr);
-        gap: 10px;
-    }
-
-    .stat-card {
-        padding: 12px 8px;
-    }
-
-    .stat-card h2 { font-size: 22px; }
-    .stat-card h3 { font-size: 11px; }
-    .stat-card p { font-size: 18px; }
-
-    /* Voucher Card Mobile Fix */
-    .admin-voucher-card {
-        padding: 15px !important;
-    }
-
-    .admin-voucher-card div[style*="display: flex"] {
-        flex-direction: column !important; /* Stack input and generate button */
-        gap: 10px !important;
-    }
-
-    .admin-voucher-card input {
-        width: 100% !important;
-    }
-
-    .admin-voucher-card button {
-        width: 100% !important;
+        grid-template-columns: 1fr;
+        gap: 14px;
     }
 }

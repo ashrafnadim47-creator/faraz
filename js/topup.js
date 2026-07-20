@@ -11,7 +11,9 @@ import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.2/f
 
 let currentUserId = "";
 
-// Auth & Wallet Balance Listener
+// ==========================================
+// 🔑 AUTH & WALLET BALANCE REALTIME LISTENER
+// ==========================================
 onAuthStateChanged(auth, (user) => {
     if (user) {
         currentUserId = user.uid;
@@ -21,14 +23,18 @@ onAuthStateChanged(auth, (user) => {
             if (docSnap.exists()) {
                 const data = docSnap.data();
                 if (balanceDisplay) {
-                    balanceDisplay.innerText = `💎 ${data.diamonds ?? 0}`;
+                    balanceDisplay.innerText = `💎 ${(data.diamonds ?? 0).toLocaleString()}`;
                 }
             }
         });
+    } else {
+        currentUserId = "";
     }
 });
 
-// DOM Load Bindings
+// ==========================================
+// ⚡ DOM EVENT BINDINGS
+// ==========================================
 window.addEventListener("DOMContentLoaded", () => {
     const modalOverlay = document.getElementById("redeem-popup-window");
     const modalDetails = document.getElementById("modal-product-details");
@@ -59,11 +65,12 @@ window.addEventListener("DOMContentLoaded", () => {
         });
     }
 
-    // Claim Button Click Action
+    // Claim Button Trigger
     if (claimBtn) {
         claimBtn.addEventListener("click", () => {
             if (!currentUserId) {
-                alert("Please log in to your account first!");
+                alert("🔒 Please log in to your account first!");
+                location.href = "login.html";
                 return;
             }
             const code = voucherInput ? voucherInput.value : "";
@@ -72,49 +79,68 @@ window.addEventListener("DOMContentLoaded", () => {
     }
 });
 
-// Voucher Redeem Function Logic
+// ==========================================
+// 🎟️ VOUCHER REDEEM ENGINE
+// ==========================================
 export async function redeemVoucherCode(userId, inputCode) {
-    if (!inputCode) {
-        alert("Please enter a valid voucher code!");
+    if (!inputCode || !inputCode.trim()) {
+        alert("❌ Please enter a valid voucher code!");
         return;
     }
 
     const cleanCode = inputCode.trim().toUpperCase();
     const voucherRef = doc(db, "vouchers", cleanCode);
+    const claimBtn = document.getElementById("claim-reward-btn");
+
+    if (claimBtn) {
+        claimBtn.disabled = true;
+        claimBtn.innerText = "Processing...";
+    }
 
     try {
         const voucherSnap = await getDoc(voucherRef);
 
         if (!voucherSnap.exists()) {
-            alert("❌ Invalid Code! Please check your code again.");
+            alert("❌ Invalid Code! Please check your code and try again.");
             return;
         }
 
         const voucherData = voucherSnap.data();
 
-        if (voucherData.used === true) {
-            alert("⚠️ This voucher code has already been used or expired!");
+        if (voucherData.used === true || voucherData.status === "used") {
+            alert("⚠️ This voucher code has already been redeemed or expired!");
             return;
         }
 
         const userRef = doc(db, "users", userId);
+
+        // Update User Diamond Balance
         await updateDoc(userRef, {
-            diamonds: increment(voucherData.amount)
+            diamonds: increment(voucherData.amount || 0)
         });
 
+        // Mark Voucher as Used
         await updateDoc(voucherRef, {
             used: true,
+            status: "used",
             usedBy: userId,
             usedAt: serverTimestamp()
         });
 
-        alert(`🎉 Success! 💎 ${voucherData.amount} Diamonds added to your account!`);
-        
+        alert(`🎉 Success! 💎 ${voucherData.amount} Diamonds added to your wallet!`);
+
         const modalOverlay = document.getElementById("redeem-popup-window");
+        const voucherInput = document.getElementById("popup-voucher-input");
         if (modalOverlay) modalOverlay.style.display = "none";
+        if (voucherInput) voucherInput.value = "";
 
     } catch (error) {
         console.error("Redeem Error:", error);
-        alert("❌ Failed to redeem code. Please try again.");
+        alert("❌ Failed to redeem code. Please check network connection.");
+    } finally {
+        if (claimBtn) {
+            claimBtn.disabled = false;
+            claimBtn.innerText = "Claim Reward";
+        }
     }
 }

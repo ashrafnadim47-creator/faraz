@@ -1,15 +1,18 @@
 /* ==========================================================================
-   🎮 PURE FREE FIRE INTERFACE STYLE MAP V3.0 WITH ROTATION ANIMATIONS
+   🔥 FARAZ STORE v2.0 - LUCK ROYALE & SPIN ARENA STYLING
    ========================================================================== */
+
 body {
     margin: 0;
     padding: 0;
-    background: #050508;
+    background: #03000a;
     color: #ffffff;
-    font-family: 'Impact', 'Arial Black', sans-serif;
+    font-family: 'Orbitron', 'Plus Jakarta Sans', sans-serif;
     overflow: hidden;
+    user-select: none;
 }
 
+/* Fullscreen Interface Grid */
 .ff-interface-wrapper {
     display: flex;
     width: 100vw;
@@ -19,124 +22,174 @@ body {
 
 /* --- LEFT SIDE NAVIGATION PANEL --- */
 .ff-navigation-panel {
-    width: 240px;
-    background: rgba(10, 10, 18, 0.7);
-    backdrop-filter: blur(15px);
+    width: 250px;
+    background: rgba(10, 10, 18, 0.85);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
     border-right: 2px solid #eab308;
-    padding: 20px 10px;
+    padding: 20px 12px;
     display: flex;
     flex-direction: column;
-    gap: 12px;
+    gap: 14px;
     box-sizing: border-box;
+    z-index: 10;
 }
 
 .ff-panel-title {
-    font-size: 26px;
+    font-size: 22px;
+    font-weight: 900;
     color: #eab308;
     text-shadow: 0 0 12px rgba(234, 179, 8, 0.4);
     text-align: center;
-    padding-bottom: 15px;
-    border-bottom: 2px dashed rgba(255, 255, 255, 0.1);
+    padding-bottom: 14px;
+    border-bottom: 2px dashed rgba(255, 255, 255, 0.15);
+    letter-spacing: 1px;
+}
+
+.ff-menu-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
 }
 
 .ff-menu-item {
     position: relative;
-    padding: 14px 16px;
+    padding: 12px 14px;
     background: #111827;
-    border-radius: 6px;
-    font-size: 14px;
-    letter-spacing: 1px;
+    border-radius: 8px;
+    font-size: 12px;
+    font-weight: 800;
+    letter-spacing: 0.5px;
     cursor: pointer;
     display: flex;
     align-items: center;
-    transition: all 0.2s ease;
+    transition: all 0.25s ease;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.ff-menu-item:hover {
+    background: #1f2937;
+    border-color: #eab308;
 }
 
 .ff-item-indicator {
     position: absolute;
-    left: 0; top: 0; bottom: 0; width: 4px;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 4px;
     background: #4b5563;
+    border-top-left-radius: 8px;
+    border-bottom-left-radius: 8px;
 }
 
 .ff-menu-item.active {
     background: linear-gradient(90deg, #a21caf 0%, #6366f1 100%);
     box-shadow: 0 0 15px rgba(162, 28, 175, 0.4);
+    border-color: transparent;
 }
 
-.ff-menu-item.active .ff-item-indicator { background: #eab308; }
+.ff-menu-item.active .ff-item-indicator {
+    background: #eab308;
+}
 
 .token-status-box {
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 10px;
+    gap: 12px;
     background: #1e293b;
-    padding: 10px;
-    border-radius: 8px;
-    margin-top: 15px;
-    font-size: 18px;
-    border: 1px solid #334155;
+    padding: 10px 14px;
+    border-radius: 12px;
+    margin-top: 10px;
+    border: 1px solid rgba(0, 229, 255, 0.3);
 }
-.token-status-box img { width: 30px; height: 30px; }
+
+.token-status-box img {
+    width: 28px;
+    height: 28px;
+    object-fit: contain;
+}
 
 .ff-exchange-trigger-btn {
     background: linear-gradient(135deg, #eab308, #ca8a04);
-    color: #000;
+    color: #020617;
     border: none;
     padding: 12px;
     font-weight: 900;
-    border-radius: 6px;
+    font-size: 13px;
+    border-radius: 10px;
     cursor: pointer;
-    margin-top: 10px;
+    box-shadow: 0 4px 15px rgba(234, 179, 8, 0.3);
+    transition: all 0.25s ease;
+}
+
+.ff-exchange-trigger-btn:hover {
+    filter: brightness(1.15);
+    transform: translateY(-2px);
 }
 
 .ff-close-gate {
     margin-top: auto;
     background: #ef4444;
     border: none;
-    color: white;
+    color: #ffffff;
     padding: 12px;
-    font-weight: bold;
-    border-radius: 6px;
+    font-weight: 800;
+    font-size: 12px;
+    border-radius: 10px;
     cursor: pointer;
+    transition: background 0.2s;
 }
 
-/* --- CENTER PANEL & SPINNING WHEEL --- */
+.ff-close-gate:hover {
+    background: #dc2626;
+}
+
+/* --- CENTER MAIN STAGE & SPIN ARENA --- */
 .ff-main-stage {
     flex: 1;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: space-between;
-    padding: 25px 10px;
+    padding: 25px 15px;
+    position: relative;
 }
 
-.ff-stage-title { font-size: 42px; margin: 0; text-shadow: 0 5px 15px rgba(0,0,0,0.8); }
+.ff-stage-title {
+    font-size: 32px;
+    font-weight: 900;
+    margin: 0;
+    color: #eab308;
+    text-shadow: 0 4px 20px rgba(234, 179, 8, 0.5);
+    letter-spacing: 1px;
+}
 
 .ff-circle-arena {
     position: relative;
-    width: 400px;
-    height: 400px;
+    width: 380px;
+    height: 380px;
     display: flex;
     align-items: center;
     justify-content: center;
 }
 
-/* ⚡ WHEEL TRANSITION ANIMATION LOCK */
+/* ⚡ WHEEL DEPARTURE & DECELERATION FRICTION */
 .ff-slots-container {
     position: absolute;
     width: 100%;
     height: 100%;
-    transition: transform 4s cubic-bezier(0.1, 0.8, 0.1, 1); /* Real casino slow deceleration friction */
+    transition: transform 4s cubic-bezier(0.1, 0.8, 0.1, 1);
 }
 
 .ff-card-node {
     position: absolute;
-    width: 76px;
-    height: 76px;
+    width: 72px;
+    height: 72px;
     background: radial-gradient(circle, #374151 0%, #1f2937 100%);
     border: 2px solid #4b5563;
-    border-radius: 14px;
+    border-radius: 16px;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -146,158 +199,126 @@ body {
     font-weight: 800;
     text-align: center;
     transform: translate(-50%, -50%);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+    transition: border-color 0.2s;
 }
 
 .ff-card-node.grand-item {
     border-color: #eab308;
     background: radial-gradient(circle, #7c2d12 0%, #431407 100%);
-    box-shadow: 0 0 15px rgba(234, 179, 8, 0.4);
+    box-shadow: 0 0 18px rgba(234, 179, 8, 0.5);
 }
-.ff-card-node img { width: 44px; height: 44px; object-fit: contain; }
+
+.ff-card-node img {
+    width: 40px;
+    height: 40px;
+    object-fit: contain;
+}
 
 .ff-center-hub {
     position: absolute;
-    width: 80px;
-    height: 80px;
+    width: 76px;
+    height: 76px;
     background: radial-gradient(circle, #dc2626 0%, #991b1b 100%);
-    border: 3px solid #fff;
+    border: 3px solid #ffffff;
     border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
-    box-shadow: 0 0 25px rgba(220, 38, 38, 0.6);
+    box-shadow: 0 0 25px rgba(220, 38, 38, 0.7);
     z-index: 10;
-    cursor: pointer;
-    font-size: 18px;
+    font-size: 22px;
 }
 
-/* Control deck buttons */
-.ff-action-deck { display: flex; gap: 30px; }
+/* Control Deck Buttons */
+.ff-action-deck {
+    display: flex;
+    gap: 20px;
+}
+
 .ff-deck-btn {
-    width: 165px; padding: 12px 0; border: 2px solid #fff; border-radius: 30px; cursor: pointer;
-    display: flex; flex-direction: column; align-items: center;
-}
-.ff-deck-btn.normal-spin { background: linear-gradient(180deg, #06b6d4 0%, #0891b2 100%); border-color: #22d3ee; }
-.ff-deck-btn.grand-spin { background: linear-gradient(180deg, #ea580c 0%, #c2410c 100%); border-color: #f97316; }
-.btn-primary-text { font-size: 18px; color: #fff; }
-.btn-sub-text { font-size: 13px; color: #fef08a; }
-
-/* ==========================================
-   🚨 POPUPS & GLASSMORPHISM MODAL OVERLAYS
-   ========================================== */
-.royale-modal-overlay, .congratulations-overlay {
-    position: fixed;
-    inset: 0;
-    background: rgba(0, 0, 0, 0.85);
-    z-index: 99999;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    backdrop-filter: blur(8px);
-}
-
-/* Exchange layout menu box */
-.exchange-card {
-    width: 90%;
-    max-width: 500px;
-    background: #111827;
-    border: 2px solid #eab308;
-    border-radius: 16px;
-    padding: 25px;
-    box-sizing: border-box;
-}
-.exchange-header { font-size: 22px; text-align: center; color: #eab308; margin-bottom: 20px; }
-.exchange-list { display: flex; flex-direction: column; gap: 15px; max-height: 300px; overflow-y: auto; }
-.exchange-item-row {
-    display: flex;
-    align-items: center;
-    gap: 15px;
-    background: #1f2937;
-    padding: 12px;
-    border-radius: 10px;
-}
-.exchange-item-row img { width: 50px; height: 50px; }
-.item-info { flex: 1; }
-.item-info h3 { margin: 0; font-size: 16px; }
-.item-info p { margin: 4px 0 0 0; font-size: 11px; color: #9ca3af; font-family: sans-serif; }
-.claim-exchange-btn {
-    background: #eab308; color: #000; border: none; padding: 10px 14px; font-weight: bold; border-radius: 6px; cursor: pointer;
-}
-.close-modal-action-btn {
-    width: 100%; margin-top: 20px; padding: 12px; background: #374151; border: none; color: #fff; border-radius: 8px; cursor: pointer;
-}
-
-/* 🎉 CONGRATULATIONS PREMIUM POPUP EFFECT RULES */
-.congrats-card {
-    text-align: center;
-    position: relative;
-    z-index: 2;
-    animation: scaleUpReveal 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-}
-.congrats-banner {
-    font-size: 56px;
-    background: linear-gradient(180deg, #fff200 0%, #ff5100 100%);
-    -webkit-background-clip: text;
-    background-clip: text;
-    color: transparent;
-    margin: 0;
-    letter-spacing: 3px;
-    filter: drop-shadow(0 0 20px rgba(255, 81, 0, 0.6));
-}
-.congrats-sub { font-size: 16px; color: #38bdf8; letter-spacing: 4px; margin: 5px 0 30px 0; }
-.unlocked-reward-display {
+    width: 160px;
+    padding: 10px 0;
+    border: 2px solid #ffffff;
+    border-radius: 25px;
+    cursor: pointer;
     display: flex;
     flex-direction: column;
     align-items: center;
-    margin-bottom: 40px;
-}
-.unlocked-reward-display img {
-    width: 150px; height: 150px; object-fit: contain;
-    filter: drop-shadow(0 0 30px rgba(255,255,255,0.4));
-    animation: rotateFloating 4s linear infinite;
-}
-.unlocked-reward-display h2 { font-size: 28px; margin: 15px 0 0 0; color: #fff; }
-.congrats-close-btn {
-    padding: 12px 50px; font-size: 18px; font-weight: bold; background: #fff; color: #000; border: none; border-radius: 25px; cursor: pointer;
-    box-shadow: 0 0 15px #fff;
+    gap: 2px;
+    transition: transform 0.2s, filter 0.2s;
 }
 
-/* Keyframes animations matrices */
-@keyframes scaleUpReveal { 0% { transform: scale(0.5); opacity: 0; } 100% { transform: scale(1); opacity: 1; } }
-@keyframes rotateFloating { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
-/* ==========================================================================
-   ⚡ NEW GRAPHIC SHOWCASE CARD DECK FOR ITEMS
-   ========================================================================== */
+.ff-deck-btn:hover {
+    transform: translateY(-3px);
+    filter: brightness(1.15);
+}
+
+.ff-deck-btn.normal-spin {
+    background: linear-gradient(180deg, #06b6d4 0%, #0891b2 100%);
+    border-color: #22d3ee;
+    box-shadow: 0 4px 15px rgba(6, 182, 212, 0.4);
+}
+
+.ff-deck-btn.grand-spin {
+    background: linear-gradient(180deg, #ea580c 0%, #c2410c 100%);
+    border-color: #f97316;
+    box-shadow: 0 4px 15px rgba(234, 88, 12, 0.4);
+}
+
+.btn-primary-text {
+    font-size: 16px;
+    font-weight: 900;
+    color: #ffffff;
+}
+
+.btn-sub-text {
+    font-size: 11px;
+    color: #fef08a;
+    font-weight: 700;
+}
+
+/* --- RIGHT PANEL SHOWCASE CARD --- */
+.ff-right-panel {
+    width: 260px;
+    padding: 25px 15px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-sizing: border-box;
+}
+
+.right-showcase-container {
+    width: 100%;
+}
+
 .ff-showcase-card {
     width: 100%;
     background: linear-gradient(180deg, #1f2937 0%, #111827 100%);
     border: 2px solid #374151;
-    border-radius: 16px;
-    padding: 20px 10px;
+    border-radius: 20px;
+    padding: 25px 15px;
     box-sizing: border-box;
     text-align: center;
-    position: relative;
     display: flex;
     flex-direction: column;
     align-items: center;
     gap: 15px;
-    box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.6);
 }
 
-/* Grand prizes glow animation */
 .ff-showcase-card.epic-glow {
     border-color: #eab308;
-    box-shadow: 0 0 20px rgba(234, 179, 8, 0.25);
+    box-shadow: 0 0 25px rgba(234, 179, 8, 0.35);
 }
 
 .ff-item-badge {
-    font-size: 11px;
+    font-size: 10px;
     background: #eab308;
-    color: #000;
-    padding: 4px 10px;
+    color: #020617;
+    padding: 4px 12px;
     border-radius: 20px;
     font-weight: 900;
-    letter-spacing: 0.5px;
 }
 
 .ff-item-image-wrap {
@@ -306,7 +327,7 @@ body {
     display: flex;
     align-items: center;
     justify-content: center;
-    background: rgba(255, 255, 255, 0.03);
+    background: rgba(255, 255, 255, 0.04);
     border-radius: 50%;
     padding: 10px;
 }
@@ -315,44 +336,62 @@ body {
     width: 100%;
     height: 100%;
     object-fit: contain;
-    filter: drop-shadow(0 5px 15px rgba(0,0,0,0.5));
+    filter: drop-shadow(0 5px 15px rgba(0, 0, 0, 0.6));
 }
 
 .ff-item-display-title {
-    font-size: 18px;
-    color: #fff;
+    font-size: 16px;
+    color: #ffffff;
     margin: 0;
-    letter-spacing: 0.5px;
-    font-family: sans-serif;
-    font-weight: bold;
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-weight: 800;
 }
 
 .ff-item-status-text {
     font-size: 11px;
     color: #9ca3af;
     margin: 0;
-    font-family: sans-serif;
+    font-family: 'Plus Jakarta Sans', sans-serif;
 }
+
 /* ==========================================================================
-   🛍️ PURE GAME OVERLAY TOKEN EXCHANGE MATRIX STYLING
+   🛍️ TOKEN EXCHANGE STORE FULLSCREEN MODAL
    ========================================================================== */
+.royale-modal-overlay,
+.congratulations-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(2, 6, 23, 0.88);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    z-index: 99999;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 15px;
+}
+
 .exchange-fullscreen-card {
-    width: 95vw;
-    height: 90vh;
+    width: 92vw;
+    height: 88vh;
     background: radial-gradient(circle at 50% 30%, #1e1e38 0%, #0a0a14 100%);
-    border: 3px solid #eab308;
-    border-radius: 20px;
-    box-shadow: 0 0 40px rgba(0, 0, 0, 0.8), inset 0 0 20px rgba(234, 179, 8, 0.2);
+    border: 2px solid #eab308;
+    border-radius: 24px;
+    box-shadow: 0 0 50px rgba(0, 0, 0, 0.9), inset 0 0 20px rgba(234, 179, 8, 0.2);
     display: flex;
     flex-direction: column;
     overflow: hidden;
-    animation: scaleUpReveal 0.3s cubic-bezier(0.165, 0.84, 0.44, 1);
+    animation: modal-appear 0.3s ease;
 }
 
-/* Top Navigation Status Header */
+@keyframes modal-appear {
+    from { transform: scale(0.9); opacity: 0; }
+    to { transform: scale(1); opacity: 1; }
+}
+
 .exchange-top-bar {
-    background: rgba(0, 0, 0, 0.4);
-    padding: 15px 25px;
+    background: rgba(0, 0, 0, 0.5);
+    padding: 16px 24px;
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -360,40 +399,42 @@ body {
 }
 
 .ex-title {
-    font-size: 24px;
+    font-size: 18px;
     color: #eab308;
-    text-shadow: 0 0 10px rgba(234, 179, 8, 0.4);
+    font-weight: 900;
     letter-spacing: 1px;
 }
 
 .ex-wallet {
     display: flex;
     align-items: center;
-    gap: 10px;
+    gap: 8px;
     background: #111827;
-    padding: 6px 20px;
+    padding: 6px 16px;
     border-radius: 20px;
     border: 1px solid #374151;
-    font-size: 18px;
-    font-weight: bold;
+    font-size: 15px;
+    font-weight: 800;
+    color: #ffffff;
 }
-.ex-wallet img { width: 24px; height: 24px; }
+
+.ex-wallet img {
+    width: 22px;
+    height: 22px;
+}
 
 .ex-close-cross {
     background: #ef4444;
     border: none;
-    color: white;
-    width: 35px;
-    height: 35px;
+    color: #ffffff;
+    width: 32px;
+    height: 32px;
     font-weight: bold;
-    font-size: 16px;
+    font-size: 14px;
     border-radius: 50%;
     cursor: pointer;
-    transition: transform 0.2s;
 }
-.ex-close-cross:hover { transform: scale(1.1); }
 
-/* Main Dynamic Panel Body Layout Split */
 .exchange-main-body {
     flex: 1;
     display: flex;
@@ -402,8 +443,8 @@ body {
 
 .exchange-side-nav {
     width: 200px;
-    background: rgba(0, 0, 0, 0.2);
-    border-right: 2px solid rgba(255, 255, 255, 0.05);
+    background: rgba(0, 0, 0, 0.25);
+    border-right: 1px solid rgba(255, 255, 255, 0.08);
     padding: 20px 10px;
     display: flex;
     flex-direction: column;
@@ -411,81 +452,79 @@ body {
 }
 
 .ex-nav-btn {
-    padding: 12px 15px;
+    padding: 12px 14px;
     background: #1f2937;
     color: #9ca3af;
-    border-radius: 8px;
+    border: none;
+    border-radius: 10px;
     cursor: pointer;
-    font-size: 13px;
+    font-size: 12px;
+    font-weight: 800;
     letter-spacing: 0.5px;
-    font-weight: bold;
     transition: all 0.2s;
 }
-.ex-nav-btn:hover { background: #374151; color: #fff; }
+
 .ex-nav-btn.active {
     background: linear-gradient(90deg, #ea580c 0%, #d97706 100%);
-    color: white;
-    box-shadow: 0 4px 12px rgba(234, 88, 12, 0.3);
+    color: #ffffff;
+    box-shadow: 0 4px 12px rgba(234, 88, 12, 0.35);
 }
 
-/* The 3-4 Column Grid Layout for Item Slots */
 .exchange-content-grid {
     flex: 1;
-    padding: 25px;
+    padding: 24px;
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
-    gap: 20px;
+    gap: 18px;
     overflow-y: auto;
-    box-sizing: border-box;
 }
 
-/* Individual Reward Shop Container Box */
 .ex-shop-node {
     background: radial-gradient(circle, #374151 0%, #111827 100%);
     border: 2px solid #4b5563;
-    border-radius: 14px;
-    padding: 15px 10px;
+    border-radius: 16px;
+    padding: 16px 12px;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: space-between;
     text-align: center;
     position: relative;
-    box-shadow: 0 8px 16px rgba(0,0,0,0.4);
-    transition: transform 0.2s;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.4);
 }
-.ex-shop-node:hover { transform: translateY(-5px); }
 
-.ex-shop-node.legendary-border { border-color: #eab308; }
+.ex-shop-node.legendary-border {
+    border-color: #eab308;
+}
 
 .ex-node-badge {
     position: absolute;
-    top: 8px; left: 8px;
+    top: 8px;
+    left: 8px;
     font-size: 9px;
-    background: rgba(0, 0, 0, 0.6);
+    background: rgba(0, 0, 0, 0.7);
     color: #eab308;
     padding: 2px 6px;
     border-radius: 4px;
-    font-family: sans-serif;
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-weight: 800;
 }
 
 .ex-node-img {
-    width: 85px;
-    height: 85px;
+    width: 80px;
+    height: 80px;
     object-fit: contain;
     margin: 15px 0 10px 0;
-    filter: drop-shadow(0 5px 10px rgba(0,0,0,0.5));
 }
 
 .ex-node-title {
-    font-size: 14px;
-    color: #fff;
-    margin: 0 0 10px 0;
-    font-family: sans-serif;
-    font-weight: bold;
+    font-size: 13px;
+    color: #ffffff;
+    margin-bottom: 10px;
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-weight: 800;
 }
 
-/* Bottom Price + Claim action row combo */
 .ex-node-action-panel {
     width: 100%;
     display: flex;
@@ -497,32 +536,128 @@ body {
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 5px;
-    font-size: 14px;
+    gap: 6px;
+    font-size: 13px;
     color: #fbbf24;
+    font-weight: 800;
 }
-.ex-node-cost img { width: 16px; height: 16px; }
+
+.ex-node-cost img {
+    width: 16px;
+    height: 16px;
+}
 
 .ex-node-claim-btn {
     width: 100%;
-    padding: 8px 0;
+    padding: 10px 0;
     background: linear-gradient(180deg, #22c55e 0%, #16a34a 100%);
-    color: white;
+    color: #ffffff;
     border: none;
     font-weight: 900;
     border-radius: 8px;
     cursor: pointer;
-    font-size: 12px;
+    font-size: 11px;
     letter-spacing: 0.5px;
-    box-shadow: 0 4px 10px rgba(22, 163, 74, 0.3);
-    transition: filter 0.2s;
 }
-.ex-node-claim-btn:hover { filter: brightness(1.1); }
 
-/* Mobile adaptations for full screen popup layouts */
-@media(max-width: 768px) {
-    .exchange-fullscreen-card { width: 98vw; height: 95vh; }
-    .exchange-main-body { flex-direction: column; }
-    .exchange-side-nav { width: 100%; flex-direction: row; overflow-x: auto; padding: 10px; }
-    .exchange-content-grid { padding: 15px; grid-template-columns: repeat(2, 1fr); gap: 10px; }
+/* ==========================================================================
+   🎉 CONGRATULATIONS POPUP
+   ========================================================================== */
+.congrats-card {
+    text-align: center;
+    animation: popup-appear 0.4s cubic-bezier(0.18, 0.89, 0.32, 1.28);
+}
+
+.congrats-banner {
+    font-size: 42px;
+    font-weight: 900;
+    background: linear-gradient(180deg, #fff200 0%, #ff5100 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    margin: 0;
+    letter-spacing: 2px;
+}
+
+.congrats-sub {
+    font-size: 14px;
+    color: #38bdf8;
+    letter-spacing: 3px;
+    margin: 5px 0 25px 0;
+}
+
+.unlocked-reward-display img {
+    width: 140px;
+    height: 140px;
+    object-fit: contain;
+    margin-bottom: 15px;
+}
+
+.unlocked-reward-display h2 {
+    font-size: 24px;
+    color: #ffffff;
+    margin-bottom: 25px;
+}
+
+.congrats-close-btn {
+    padding: 12px 40px;
+    font-size: 16px;
+    font-weight: 900;
+    background: #ffffff;
+    color: #020617;
+    border: none;
+    border-radius: 25px;
+    cursor: pointer;
+    box-shadow: 0 0 20px rgba(255, 255, 255, 0.5);
+}
+
+/* ==========================================================================
+   📱 MOBILE RESPONSIVE TUNING
+   ========================================================================== */
+@media (max-width: 900px) {
+    .ff-interface-wrapper {
+        flex-direction: column;
+        overflow-y: auto;
+    }
+
+    .ff-navigation-panel {
+        width: 100%;
+        height: auto;
+        border-right: none;
+        border-bottom: 2px solid #eab308;
+    }
+
+    .ff-menu-list {
+        flex-direction: row;
+        overflow-x: auto;
+    }
+
+    .ff-menu-item {
+        white-space: nowrap;
+    }
+
+    .ff-right-panel {
+        width: 100%;
+    }
+
+    .exchange-fullscreen-card {
+        width: 98vw;
+        height: 94vh;
+    }
+
+    .exchange-main-body {
+        flex-direction: column;
+    }
+
+    .exchange-side-nav {
+        width: 100%;
+        flex-direction: row;
+        overflow-x: auto;
+    }
+
+    .exchange-content-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 10px;
+        padding: 15px;
+    }
 }

@@ -1,48 +1,77 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manage Products | Faraz Store Admin</title>
+    <meta name="description" content="Admin inventory management for Faraz Store products catalog.">
+    <meta name="theme-color" content="#020617">
+    <link rel="icon" href="favicon.ico">
 
-<title>Admin Products | Faraz Store</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700;900&family=Plus+Jakarta+Sans:wght@500;700;800&display=swap" rel="stylesheet">
 
-<link rel="stylesheet" href="css/admin-product.css">
-
+    <!-- CSS Links -->
+    <link rel="stylesheet" href="css/global.css">
+    <link rel="stylesheet" href="css/admin-product.css">
 </head>
 
+<body class="admin-page-bg">
 
-<body>
+    <div class="admin-container">
 
+        <!-- 👑 SIDEBAR NAVIGATION -->
+        <aside class="admin-sidebar glassmorphism">
+            <div class="sidebar-brand">
+                <h2>🔥 FARAZ STORE</h2>
+                <p>ADMIN CONTROL PANEL</p>
+            </div>
 
-<div class="admin-container">
+            <nav class="admin-nav-links">
+                <a href="admin-dashboard.html" class="admin-nav-item">🏠 Dashboard Overview</a>
+                <a href="admin-products.html" class="admin-nav-item active">📦 Product Inventory</a>
+                <a href="admin-orders.html" class="admin-nav-item">🛒 Order Management</a>
+                <a href="admin-users.html" class="admin-nav-item">👥 Registered Users</a>
+            </nav>
 
+            <button onclick="location.href='index.html'" class="admin-logout-btn">
+                🏠 Main Shop
+            </button>
+        </aside>
 
-<header>
+        <!-- 🛒 MAIN CONTENT ARENA -->
+        <main class="admin-main">
+            <header class="admin-header" style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 15px; margin-bottom: 25px;">
+                <div>
+                    <h1 style="font-family: 'Orbitron', sans-serif; font-size: 24px; color: #00e5ff; margin: 0;">🛒 Manage Products</h1>
+                    <p style="color: var(--muted); font-size: 13px; margin-top: 4px;">View, edit, or delete store catalog items</p>
+                </div>
 
-<h1>🛒 Manage Products</h1>
+                <div style="display: flex; gap: 10px;">
+                    <a href="admin-add-product.html" style="text-decoration: none;">
+                        <button class="add-btn primary-btn" style="padding: 12px 20px; font-size: 13px; font-weight: 800; border-radius: 12px;">
+                            ➕ Add New Product
+                        </button>
+                    </a>
+                </div>
+            </header>
 
-<a href="admin-add-product.html">
-<button class="add-btn">➕ Add Product</button>
-</a>
+            <!-- PRODUCTS LIST CONTAINER -->
+            <section id="product-list" class="glassmorphism" style="padding: 25px; border-radius: 20px; min-height: 400px;">
+                <div class="loading-state">
+                    <div class="spinner"></div>
+                    <p>Loading Store Inventory...</p>
+                </div>
+            </section>
+        </main>
 
-</header>
+    </div>
 
-
-
-<section id="product-list">
-
-
-<h2>Loading Products...</h2>
-
-
-</section>
-
-
-</div>
-
-
-
-<script type="module" src="js/admin-products.js"></script>
-
+    <!-- SCRIPT MODULE -->
+    <script type="module" src="js/admin-products.js"></script>
 
 </body>
 

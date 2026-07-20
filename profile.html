@@ -2,120 +2,85 @@
 <html lang="en">
 
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Account Profile | Faraz Store</title>
+    <meta name="description" content="View your account details, wallet, diamonds, and orders at Faraz Store.">
+    <meta name="theme-color" content="#020617">
+    <link rel="icon" href="favicon.ico">
 
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700;900&family=Plus+Jakarta+Sans:wght@500;700;800&display=swap" rel="stylesheet">
 
-<title>My Profile | Faraz Store</title>
-
-<link rel="stylesheet" href="css/global.css">
-<link rel="stylesheet" href="css/profile.css">
-
+    <!-- CSS Links -->
+    <link rel="stylesheet" href="css/global.css">
+    <link rel="stylesheet" href="css/profile.css">
+    <link rel="stylesheet" href="css/responsive.css">
 </head>
 
+<body class="profile-page-bg">
 
-<body>
+    <section class="profile-section">
 
+        <div class="profile-card glassmorphism" style="position: relative; padding: 35px 25px; border-radius: 24px; max-width: 500px; width: 100%; margin: auto; text-align: center;">
+            
+            <!-- Logout Action Button -->
+            <button id="logout-btn" class="logout-btn-top" style="position: absolute; top: 20px; right: 20px; background: rgba(239, 68, 68, 0.15); border: 1px solid #ef4444; color: #ef4444; padding: 6px 14px; border-radius: 20px; font-weight: bold; cursor: pointer;">
+                🚪 Logout
+            </button>
 
-<section class="profile-section">
+            <!-- User Avatar & Details -->
+            <div class="profile-icon-wrapper" style="font-size: 55px; margin-bottom: 10px;">
+                👤
+            </div>
 
+            <h1 id="user-name" style="font-size: 24px; color: #ffffff; margin-bottom: 4px;">Loading Account...</h1>
+            <p id="user-email" style="color: #94a3b8; font-size: 14px; margin-bottom: 25px;"></p>
 
-<div class="profile-card">
+            <!-- 4-CARD STATS GRID -->
+            <div class="profile-info-grid" style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 14px; margin-bottom: 25px;">
+                
+                <div class="info-node glassmorphism" style="padding: 15px; border-radius: 16px; border: 1px solid rgba(255, 255, 255, 0.08);">
+                    <span style="font-size: 12px; color: #94a3b8; font-weight: 700;">📦 Orders</span>
+                    <h3 id="order-count" style="font-size: 22px; color: #38bdf8; margin-top: 4px;">0</h3>
+                </div>
 
-<button id="logout-btn">
-🚪 Logout
-</button>
-<div class="profile-icon">
-👤
-</div>
+                <div class="info-node glassmorphism" style="padding: 15px; border-radius: 16px; border: 1px solid rgba(255, 255, 255, 0.08);">
+                    <span style="font-size: 12px; color: #94a3b8; font-weight: 700;">⭐ Points</span>
+                    <h3 id="user-points" style="font-size: 22px; color: #ffcc00; margin-top: 4px;">0</h3>
+                </div>
 
+                <div class="info-node glassmorphism" style="padding: 15px; border-radius: 16px; border: 1px solid #00e5ff; background: rgba(0, 229, 255, 0.05);">
+                    <span style="font-size: 12px; color: #00e5ff; font-weight: 700;">💎 Diamonds</span>
+                    <h3 id="profile-diamonds" style="font-size: 22px; color: #00e5ff; margin-top: 4px;">0</h3>
+                </div>
 
-<h1 id="user-name">
-Loading...
-</h1>
+                <div class="info-node glassmorphism" style="padding: 15px; border-radius: 16px; border: 1px solid rgba(255, 255, 255, 0.08);">
+                    <span style="font-size: 12px; color: #94a3b8; font-weight: 700;">❤️ Wishlist</span>
+                    <h3 id="wish-count" style="font-size: 22px; color: #ff0055; margin-top: 4px;">0</h3>
+                </div>
 
+            </div>
 
-<p id="user-email">
-</p>
+            <!-- ACTION BUTTONS -->
+            <div style="display: flex; flex-direction: column; gap: 12px;">
+                <button class="primary-btn" onclick="location.href='orders.html'" style="width: 100%; font-size: 15px; padding: 12px;">
+                    📦 View My Orders
+                </button>
 
+                <button class="order-btn" onclick="location.href='index.html'" style="width: 100%; font-size: 15px; padding: 12px; background: #1e293b; border: 1px solid #334155;">
+                    🏠 Continue Shopping
+                </button>
+            </div>
 
-<div class="profile-info">
+        </div>
 
+    </section>
 
-<div>
-📦 Orders
-
-<h3 id="order-count">
-0
-</h3>
-
-</div>
-
-
-
-<div>
-⭐ Points
-
-<h3 id="user-points">
-0
-</h3>
-
-</div>
-<div class="profile-info">
-
-
-
-    <!-- NAYA DIAMONDS BOX ADD KAR DIYA -->
-    <div style="border: 1px solid #00e5ff; background: rgba(0, 229, 255, 0.05);">
-        💎 Diamonds
-        <h3 id="profile-diamonds" style="color: #00e5ff;">0</h3>
-    </div>
-
-    <div>
-        ❤️ Wishlist
-        <h3 id="wish-count">0</h3>
-    </div>
-
-</div>
-
-
-<div>
-❤️ Wishlist
-
-<h3 id="wish-count">
-0
-</h3>
-
-</div>
-
-
-</div>
-
-
-
-<button onclick="location.href='orders.html'">
-
-My Orders
-
-</button>
-
-
-
-<button onclick="location.href='index.html'">
-
-Continue Shopping
-
-</button>
-
-
-</div>
-
-
-</section>
-
-
-<script type="module" src="js/profile.js"></script>
-
+    <!-- SCRIPT MODULE -->
+    <script type="module" src="js/profile.js"></script>
 
 </body>
 

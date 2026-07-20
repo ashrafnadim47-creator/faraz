@@ -1,64 +1,75 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Faded Wheel Premium | Faraz Store</title>
-    <!-- Aapka main dashboard/website global link ho toh layout yahan include kar sakte hain -->
+    <title>Faded Wheel Event | Faraz Store</title>
+    <meta name="description" content="Spin the Faded Wheel and unlock exclusive grand rewards in Faraz Store!">
+    <meta name="theme-color" content="#03000a">
+    <link rel="icon" href="favicon.ico">
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700;900&family=Plus+Jakarta+Sans:wght@600;800&display=swap" rel="stylesheet">
+
+    <!-- CSS Links -->
+    <link rel="stylesheet" href="css/global.css">
     <link rel="stylesheet" href="faded-wheel.css">
 </head>
+
 <body>
 
-
-    <body>
-
-    <!-- MAIN CONTAINER (Ye wali line galti se hat gayi thi) -->
+    <!-- 🎮 MAIN FADED WHEEL EVENT ARENA -->
     <div class="faded-wheel-container">
-        
-        <div class="wheel-header">
+
+        <!-- HEADER -->
+        <header class="wheel-header">
             <div>
                 <h1>FADED WHEEL</h1>
-                <p class="fun-notice">This is only for fun</p>
+                <p class="fun-notice">This event is for entertainment & rewards</p>
             </div>
             <div class="wallet-display">
                 <span class="wallet-label">Balance:</span>
                 <span class="wallet-amount" id="user-diamonds">💎 Loading...</span>
             </div>
-        </div>
+        </header>
 
+        <!-- STATUS ALERT NOTIFIER -->
         <div class="status-alert-box" id="status-message">
             Tap 2 items you want to REMOVE from the prize pool
         </div>
 
-        <!-- 2x4 Grid System Matrix -->
+        <!-- 2x5 GRID MATRIX PRIZE ARENA -->
         <div class="faded-grid">
-            <!-- Index 0: GRAND PRIZE - iPhone 17 Pro (Global Max Limit: 2) -->
+            <!-- Index 0: GRAND PRIZE - iPhone 17 Pro Max -->
             <div class="grid-item premium-prize" data-index="0">
-                <img src="images/iphone17.png" alt="iPhone 17 Pro">
+                <img src="images/iphone17.png" alt="iPhone 17 Pro Max">
                 <div class="item-title">iPhone 17 Pro Max</div>
             </div>
-            
-            <!-- Index 1: Laptop -->
+
+            <!-- Index 1: Gaming Laptop -->
             <div class="grid-item" data-index="1">
                 <img src="images/laptop.png" alt="Gaming Laptop">
                 <div class="item-title">Gaming Laptop</div>
             </div>
 
-            <!-- Index 2: Camera -->
+            <!-- Index 2: DSLR Camera -->
             <div class="grid-item" data-index="2">
                 <img src="images/camera.png" alt="DSLR Camera">
                 <div class="item-title">DSLR Camera</div>
             </div>
 
-            <!-- Index 3: Smart Watch -->
+            <!-- Index 3: Smart Watch Pro -->
             <div class="grid-item" data-index="3">
                 <img src="images/smart-watch.png" alt="Smart Watch">
                 <div class="item-title">Smart Watch Pro</div>
             </div>
 
-            <!-- Index 4: Headphones -->
+            <!-- Index 4: Studio Headphones -->
             <div class="grid-item" data-index="4">
-                <img src="images/headphones.png" alt="Headphones">
+                <img src="images/headphones.png" alt="Studio Headphones">
                 <div class="item-title">Studio Headphones</div>
             </div>
 
@@ -67,52 +78,56 @@
                 <button id="main-action-trigger" disabled>REMOVE (0/2)</button>
             </div>
 
-            <!-- Index 5: Speaker -->
+            <!-- Index 5: Bluetooth Speaker -->
             <div class="grid-item" data-index="5">
-                <img src="images/speaker.png" alt="Speaker">
+                <img src="images/speaker.png" alt="Bluetooth Speaker">
                 <div class="item-title">Bluetooth Speaker</div>
             </div>
 
-            <!-- Index 6: Keyboard -->
+            <!-- Index 6: Mechanical Keyboard -->
             <div class="grid-item" data-index="6">
-                <img src="images/keyboard.png" alt="Keyboard">
+                <img src="images/keyboard.png" alt="Mechanical Keyboard">
                 <div class="item-title">Mechanical Keyboard</div>
             </div>
 
-            <!-- Index 7: Earbuds -->
+            <!-- Index 7: Wireless Earbuds -->
             <div class="grid-item" data-index="7">
-                <img src="images/earbuds.png" alt="Earbuds">
+                <img src="images/earbuds.png" alt="Wireless Earbuds">
                 <div class="item-title">Wireless Earbuds</div>
             </div>
 
-            <!-- Index 8: Powerbank -->
+            <!-- Index 8: Fast Powerbank -->
             <div class="grid-item" data-index="8">
                 <img src="images/powerbank.png" alt="Powerbank">
                 <div class="item-title">Fast Powerbank</div>
             </div>
 
-            <!-- Index 9: Charger -->
+            <!-- Index 9: Fast Charger -->
             <div class="grid-item" data-index="9">
-                <img src="images/charger.png" alt="Fast Charger">
+                <img src="images/charger.png" alt="65W Fast Charger">
                 <div class="item-title">65W Fast Charger</div>
             </div>
         </div>
 
-        <div class="rules-footer">
+        <!-- FOOTER RULES -->
+        <footer class="rules-footer">
             Prizes already obtained will not be repeated. Diamonds required will increase with each draw.
-        </div>
+        </footer>
+
     </div>
 
-    <!-- Sounds Systems for Authentic Free Fire Feel -->
+    <!-- AUDIO SFX FOR AUTHENTIC GAMEPLAY -->
     <audio id="tick-audio" src="https://assets.mixkit.co/active_storage/sfx/2568/2568-84.wav" preload="auto"></audio>
     <audio id="victory-audio" src="https://assets.mixkit.co/active_storage/sfx/2019/2019-84.wav" preload="auto"></audio>
 
-    <!-- Firebase Hooks Integration (Aapki config dynamic load hone ke baad auto connect karega) -->
+    <!-- FIREBASE COMPAT HOOKS & ENGINE SCRIPTS -->
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
-    
+
     <script src="firebase-config.js"></script>
     <script src="faded-wheel.js"></script>
+
 </body>
+
 </html>

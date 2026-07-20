@@ -1,73 +1,85 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Product | Faraz Store Admin</title>
+    <meta name="description" content="Update existing store product details and stock inventory.">
+    <meta name="theme-color" content="#020617">
+    <link rel="icon" href="favicon.ico">
 
-<title>Edit Product | Faraz Store</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700;900&family=Plus+Jakarta+Sans:wght@500;700;800&display=swap" rel="stylesheet">
 
-<link rel="stylesheet" href="css/admin-product.css">
-
+    <!-- CSS Links -->
+    <link rel="stylesheet" href="css/global.css">
+    <link rel="stylesheet" href="css/admin-product.css">
 </head>
 
+<body class="admin-page-bg">
 
-<body>
+    <div class="admin-container" style="max-width: 650px; margin: 30px auto; padding: 0 15px;">
 
+        <div class="admin-main glassmorphism" style="padding: 30px; border-radius: 24px;">
 
-<div class="admin-container">
+            <header style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px dashed rgba(255, 255, 255, 0.15); padding-bottom: 15px; margin-bottom: 25px;">
+                <div>
+                    <h1 style="font-family: 'Orbitron', sans-serif; font-size: 22px; color: #ffcc00; margin: 0;">✏️ Edit Product</h1>
+                    <p style="color: #94a3b8; font-size: 13px; margin-top: 4px;">Modify pricing, details, and stock count</p>
+                </div>
+                <button class="nav-btn-back" onclick="location.href='admin-products.html'">← Back</button>
+            </header>
 
+            <div class="edit-box" style="display: flex; flex-direction: column; gap: 14px;">
 
-<div class="admin-main">
+                <div>
+                    <label style="font-size: 12px; color: #94a3b8; font-weight: 700; display: block; margin-bottom: 4px;">PRODUCT NAME</label>
+                    <input id="name" type="text" placeholder="Product Name" style="width: 100%; padding: 12px 16px; border-radius: 12px; border: 1px solid #334155; background: #020617; color: #ffffff; outline: none;">
+                </div>
 
+                <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px;">
+                    <div>
+                        <label style="font-size: 12px; color: #94a3b8; font-weight: 700; display: block; margin-bottom: 4px;">PRICE (₹)</label>
+                        <input id="price" type="number" placeholder="Price (₹)" style="width: 100%; padding: 12px 16px; border-radius: 12px; border: 1px solid #334155; background: #020617; color: #ffffff; outline: none;">
+                    </div>
+                    <div>
+                        <label style="font-size: 12px; color: #94a3b8; font-weight: 700; display: block; margin-bottom: 4px;">AVAILABLE STOCK</label>
+                        <input id="stock" type="number" placeholder="Stock Quantity" style="width: 100%; padding: 12px 16px; border-radius: 12px; border: 1px solid #334155; background: #020617; color: #ffffff; outline: none;">
+                    </div>
+                </div>
 
-<h1>✏️ Edit Product</h1>
+                <div>
+                    <label style="font-size: 12px; color: #94a3b8; font-weight: 700; display: block; margin-bottom: 4px;">CATEGORY</label>
+                    <input id="category" type="text" placeholder="Category (e.g. Headset, Mobile, Keyboard)" style="width: 100%; padding: 12px 16px; border-radius: 12px; border: 1px solid #334155; background: #020617; color: #ffffff; outline: none;">
+                </div>
 
+                <div>
+                    <label style="font-size: 12px; color: #94a3b8; font-weight: 700; display: block; margin-bottom: 4px;">IMAGE URL</label>
+                    <input id="image" type="text" placeholder="https://example.com/image.png" style="width: 100%; padding: 12px 16px; border-radius: 12px; border: 1px solid #334155; background: #020617; color: #ffffff; outline: none;">
+                </div>
 
-<div class="edit-box">
+                <div>
+                    <label style="font-size: 12px; color: #94a3b8; font-weight: 700; display: block; margin-bottom: 4px;">DESCRIPTION</label>
+                    <textarea id="description" placeholder="Enter detailed product description..." rows="4" style="width: 100%; padding: 12px 16px; border-radius: 12px; border: 1px solid #334155; background: #020617; color: #ffffff; outline: none; resize: vertical;"></textarea>
+                </div>
 
+                <button id="update-product" class="primary-btn" style="padding: 14px; font-size: 15px; font-weight: 800; border-radius: 12px; margin-top: 10px;">
+                    💾 Update Product Specification
+                </button>
 
-<input id="name" placeholder="Product Name">
+                <p id="message" style="text-align: center; font-size: 13px; font-weight: 800; min-height: 20px;"></p>
 
+            </div>
 
-<input id="price" type="number" placeholder="Price">
+        </div>
 
+    </div>
 
-<input id="image" placeholder="Image URL">
-
-
-<input id="category" placeholder="Category">
-
-
-<input id="stock" type="number" placeholder="Stock Quantity">
-
-
-<textarea id="description" placeholder="Description"></textarea>
-
-
-
-<button id="update-product">
-
-💾 Update Product
-
-</button>
-
-
-
-<p id="message"></p>
-
-
-</div>
-
-
-</div>
-
-
-</div>
-
-
-
-
-<script type="module" src="js/admin-edit-product.js"></script>
-
+    <!-- SCRIPT MODULE -->
+    <script type="module" src="js/admin-edit-product.js"></script>
 
 </body>
 

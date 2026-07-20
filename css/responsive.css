@@ -1,631 +1,351 @@
-/* =====================================
-   FARAZ STORE v2.0
-   COMPLETE RESPONSIVE CSS
-===================================== */
+/* ==========================================================================
+   🔥 FARAZ STORE v2.0 - COMPLETE RESPONSIVE ENGINE (MOBILE & TABLET)
+   ========================================================================== */
 
+/* =========================================
+   1. LARGE TABLET & LAPTOPS (Max-width: 1100px)
+   ========================================= */
+@media (max-width: 1100px) {
+    .header {
+        padding: 0 25px;
+    }
 
-/* =========================
-   LARGE TABLET
-========================= */
+    .search-container {
+        width: 32%;
+    }
 
-@media(max-width:1100px){
+    .hero {
+        width: 92%;
+    }
 
+    .hero-content h1 {
+        font-size: 48px;
+    }
 
-.header{
-    padding:0 30px;
+    .category-grid,
+    .product-grid,
+    .trend-grid,
+    .review-grid {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 15px;
+    }
+
+    .features {
+        grid-template-columns: repeat(3, 1fr);
+    }
 }
 
+/* =========================================
+   2. TABLET & IPAD VIEW (Max-width: 900px)
+   ========================================= */
+@media (max-width: 900px) {
+    .header {
+        height: 70px;
+        padding: 0 20px;
+    }
 
-.search-container{
-    width:35%;
+    .search-container {
+        display: none; /* Hidden on tablet, accessible via menu/icon */
+    }
+
+    .menu-btn {
+        display: block !important;
+    }
+
+    .icons {
+        gap: 8px;
+    }
+
+    .icons a {
+        width: 36px;
+        height: 36px;
+        font-size: 16px;
+    }
+
+    .buy-diamonds-btn {
+        padding: 8px 12px !important;
+        font-size: 12px !important;
+    }
+
+    /* Hero Section Mobile Stack */
+    .hero {
+        flex-direction: column;
+        text-align: center;
+        padding: 35px 20px;
+    }
+
+    .hero-content {
+        width: 100%;
+    }
+
+    .hero-title {
+        font-size: 38px !important;
+    }
+
+    .hero-card {
+        width: 100%;
+        margin-top: 25px;
+    }
+
+    .hero-buttons {
+        justify-content: center;
+    }
+
+    /* Grids Adjustment */
+    .category-grid,
+    .trend-grid,
+    .review-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 15px;
+    }
+
+    .product-grid {
+        grid-template-columns: repeat(2, 1fr); /* Clean 2-column layout */
+        gap: 12px;
+    }
+
+    .features {
+        grid-template-columns: 1fr;
+    }
+
+    .checkout-container {
+        grid-template-columns: 1fr;
+    }
+
+    .cart-item {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    /* Admin Container Mobile Stacking */
+    .admin-container {
+        flex-direction: column;
+    }
+
+    .admin-sidebar {
+        width: 100%;
+    }
 }
 
+/* =========================================
+   3. MOBILE PHONES (Max-width: 600px)
+   ========================================= */
+@media (max-width: 600px) {
+    body {
+        overflow-x: hidden;
+    }
 
-.hero{
-    width:92%;
+    .header {
+        height: 65px;
+        padding: 0 12px;
+    }
+
+    .logo {
+        font-size: 16px !important;
+    }
+
+    .logo-icon {
+        font-size: 18px;
+    }
+
+    .icons {
+        gap: 4px;
+    }
+
+    .icons a {
+        width: 32px;
+        height: 32px;
+        font-size: 14px;
+    }
+
+    .buy-diamonds-btn {
+        padding: 6px 10px !important;
+        font-size: 11px !important;
+        border-radius: 8px !important;
+    }
+
+    /* Hero Section Phone View */
+    .hero {
+        width: 100%;
+        border-radius: 0;
+        padding: 25px 15px;
+    }
+
+    .hero-title {
+        font-size: 28px !important;
+        line-height: 1.2 !important;
+    }
+
+    .hero-subtext {
+        font-size: 13px;
+        margin-bottom: 20px;
+    }
+
+    .hero-buttons {
+        flex-direction: column;
+        gap: 12px;
+        width: 100%;
+    }
+
+    .primary-btn,
+    .order-btn {
+        width: 100% !important;
+        padding: 12px 20px !important;
+        font-size: 14px;
+    }
+
+    .circle {
+        width: 90px;
+        height: 90px;
+        font-size: 40px;
+    }
+
+    /* Luck Royale Banner Mobile Optimization */
+    .luck-royale-banner-card {
+        padding: 20px 15px !important;
+    }
+
+    .banner-title {
+        font-size: 20px !important;
+    }
+
+    .banner-subtext {
+        font-size: 12px !important;
+    }
+
+    .banner-action-btn {
+        width: 100%;
+        padding: 12px 18px !important;
+        font-size: 13px !important;
+    }
+
+    /* Native App Style 2-Column Product Grid */
+    .product-grid {
+        grid-template-columns: repeat(2, 1fr) !important;
+        gap: 10px !important;
+    }
+
+    .category-grid {
+        grid-template-columns: repeat(2, 1fr) !important;
+        gap: 10px !important;
+    }
+
+    .trend-grid,
+    .review-grid {
+        grid-template-columns: 1fr !important;
+    }
+
+    .category-box,
+    .product-card,
+    .review-card,
+    .trend-card {
+        width: 100%;
+        padding: 12px !important;
+    }
+
+    .product-card h3 {
+        font-size: 13px !important;
+    }
+
+    .product-card p {
+        font-size: 14px !important;
+    }
+
+    .product-card button {
+        padding: 6px 8px !important;
+        font-size: 11px !important;
+    }
+
+    .flash-card {
+        margin: 10px 0;
+        padding: 20px 15px;
+    }
+
+    .footer-links {
+        flex-direction: column;
+        gap: 12px;
+        align-items: center;
+    }
+
+    .cart-section,
+    .checkout-section {
+        padding: 15px 10px;
+    }
+
+    .checkout-left,
+    .checkout-right {
+        width: 100%;
+    }
+
+    .summary-box {
+        margin-top: 20px;
+    }
+
+    .admin-main {
+        padding: 12px;
+    }
 }
 
+/* =========================================
+   4. SMALL MOBILE SCREENS (Max-width: 380px)
+   ========================================= */
+@media (max-width: 380px) {
+    .logo-text {
+        display: none; /* Displays only fire icon on tiny screens */
+    }
 
-.hero-content h1{
-    font-size:55px;
+    .logo-icon {
+        font-size: 24px;
+    }
+
+    .hero-title {
+        font-size: 24px !important;
+    }
+
+    .product-card {
+        padding: 8px !important;
+    }
+
+    .buy-diamonds-btn {
+        padding: 5px 8px !important;
+        font-size: 10px !important;
+    }
 }
 
+/* =========================================
+   5. LANDSCAPE MOBILE VIEW
+   ========================================= */
+@media (max-height: 500px) and (max-width: 900px) {
+    .header {
+        position: relative;
+    }
 
-.category-grid{
-    grid-template-columns:repeat(3,1fr);
+    .hero {
+        padding-top: 20px;
+    }
 }
 
-
-.product-grid{
-    grid-template-columns:repeat(3,1fr);
-}
-
-
-.features{
-    grid-template-columns:repeat(3,1fr);
-}
-
-
-}
-
-
-
-
-
-/* =========================
-   TABLET
-========================= */
-
-
-@media(max-width:900px){
-
-
-
-.header{
-
-    height:70px;
-    padding:0 20px;
-
-}
-
-
-
-
-.navbar{
-
-    display:none;
-
-}
-
-
-
-
-.menu-btn{
-
-    display:block;
-
-}
-
-
-
-
-
-.search-container{
-
-    display:none;
-
-}
-
-
-
-
-
-.icons{
-
-    gap:10px;
-
-}
-
-
-
-
-
-.icons a{
-
-    width:38px;
-    height:38px;
-
-}
-
-
-
-
-
-.hero{
-
-    flex-direction:column;
-    text-align:center;
-    padding:40px 20px;
-
-}
-
-
-
-
-
-.hero-content{
-
-    width:100%;
-
-}
-
-
-
-
-
-.hero-content h1{
-
-    font-size:45px;
-
-}
-
-
-
-
-
-.hero-card{
-
-    width:90%;
-    margin-top:30px;
-
-}
-
-
-
-
-
-.hero-buttons{
-
-    justify-content:center;
-
-}
-
-
-
-
-
-.category-grid,
-.product-grid,
-.trend-grid,
-.review-grid{
-
-
-    grid-template-columns:repeat(2,1fr);
-
-
-}
-
-
-
-
-
-.features{
-
-
-    grid-template-columns:1fr;
-
-}
-
-
-
-
-
-.checkout-container{
-
-
-    grid-template-columns:1fr;
-
-}
-
-
-
-
-
-.cart-item{
-
-
-    flex-direction:column;
-    text-align:center;
-
-}
-
-
-
-
-
-.admin-container{
-
-
-    flex-direction:column;
-
-}
-
-
-
-
-
-.admin-sidebar{
-
-
-    width:100%;
-
-}
-
-
-
-
-}
-
-
-
-
-/* =========================
-   MOBILE
-========================= */
-
-
-@media(max-width:600px){
-
-
-
-body{
-
-    overflow-x:hidden;
-
-}
-
-
-
-
-.header{
-
-    height:65px;
-    padding:0 12px;
-
-}
-
-
-
-
-
-.logo{
-
-    font-size:18px;
-
-}
-
-
-
-
-
-.icons{
-
-    gap:5px;
-
-}
-
-
-
-
-
-.icons a{
-
-    width:34px;
-    height:34px;
-    font-size:16px;
-
-}
-
-
-
-
-
-.hero{
-
-
-    width:100%;
-    border-radius:0;
-
-}
-
-
-
-
-
-.hero-content h1{
-
-
-    font-size:34px;
-
-
-}
-
-
-
-
-.hero-content p{
-
-
-    font-size:14px;
-
-
-}
-
-
-
-
-
-.hero-buttons{
-
-
-    flex-direction:column;
-    gap:15px;
-
-}
-
-
-
-
-
-.primary-btn,
-.order-btn{
-
-
-    width:220px;
-
-}
-
-
-
-
-
-.circle{
-
-
-    width:120px;
-    height:120px;
-    font-size:55px;
-
-}
-
-
-
-
-
-.category-grid,
-.product-grid,
-.trend-grid,
-.review-grid{
-
-
-    grid-template-columns:1fr;
-
-
-}
-
-
-
-
-
-.category-box,
-.product-card,
-.review-card,
-.trend-card{
-
-
-    width:100%;
-
-}
-
-
-
-
-
-.flash-card{
-
-
-    margin:10px;
-
-}
-
-
-
-
-
-.footer-links{
-
-
-    flex-direction:column;
-
-}
-
-
-
-
-
-.cart-section,
-.checkout-section{
-
-
-    padding:20px 10px;
-
-}
-
-
-
-
-
-.checkout-left,
-.checkout-right{
-
-
-    width:100%;
-
-}
-
-
-
-
-
-.summary-box{
-
-
-    margin-top:20px;
-
-}
-
-
-
-
-
-.admin-main{
-
-
-    padding:15px;
-
-}
-
-
-
-
-
-.admin-sidebar a{
-
-
-    display:block;
-
-}
-
-
-
-
-
-}
-
-
-
-
-/* =========================
-   SMALL MOBILE
-========================= */
-
-
-@media(max-width:380px){
-
-
-
-.logo{
-
-    font-size:16px;
-
-}
-
-
-
-
-.icons a{
-
-
-    display:none;
-
-}
-
-
-
-
-.icons a:last-child{
-
-
-    display:flex;
-
-}
-
-
-
-
-.hero-content h1{
-
-
-    font-size:28px;
-
-}
-
-
-
-
-.primary-btn,
-.order-btn{
-
-
-    width:190px;
-
-}
-
-
-
-
-.product-card{
-
-
-    padding:15px;
-
-}
-
-
-
-
-
-h1{
-
-    font-size:25px;
-
-}
-
-
-
-}
-
-
-
-
-
-/* =========================
-   LANDSCAPE MOBILE
-========================= */
-
-
-@media(max-height:500px) and (max-width:900px){
-
-
-.header{
-
-    position:relative;
-
-}
-
-
-.hero{
-
-    padding-top:20px;
-
-}
-
-
-}
-
-/* 🚨 MOBILE SIDEBAR OVERLAY FIX */
+/* =========================================
+   6. MOBILE SIDEBAR OVERLAY & TOUCH FIX
+   ========================================= */
 #sidebar {
     position: fixed;
     top: 0;
-    left: -100%; /* Default hidden off-screen */
-    width: 260px;
+    left: -100%;
+    width: 280px;
     height: 100vh;
     background: #0f172a;
     z-index: 1000000;
-    transition: left 0.3s ease;
+    transition: left 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     pointer-events: auto;
+    box-shadow: 10px 0 30px rgba(0, 0, 0, 0.5);
 }
 
 #sidebar.active {
-    left: 0; /* Open state */
+    left: 0;
 }
 
-/* Base Buttons Clickability Force */
-header, section, .hero, .flash-sale, .products, footer {
-    position: relative;
-    z-index: 1;
-}
-
+/* Touch responsiveness optimization */
 button, a {
     touch-action: manipulation;
     -webkit-tap-highlight-color: transparent;

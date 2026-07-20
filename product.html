@@ -2,79 +2,84 @@
 <html lang="en">
 
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Products Catalog | Faraz Store</title>
+    <meta name="description" content="Explore gaming gear, accessories, and electronics on Faraz Store.">
+    <meta name="theme-color" content="#020617">
+    <link rel="icon" href="favicon.ico">
 
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700;900&family=Plus+Jakarta+Sans:wght@500;700;800&display=swap" rel="stylesheet">
 
-<title>Products | Faraz Store</title>
-
-<link rel="stylesheet" href="css/global.css">
-<link rel="stylesheet" href="css/header.css">
-<link rel="stylesheet" href="css/product.css">
-
+    <!-- CSS Links -->
+    <link rel="stylesheet" href="css/global.css">
+    <link rel="stylesheet" href="css/header.css">
+    <link rel="stylesheet" href="css/product.css">
+    <link rel="stylesheet" href="css/footer.css">
+    <link rel="stylesheet" href="css/responsive.css">
 </head>
-
 
 <body>
 
+    <!-- 🚀 HEADER -->
+    <header class="header">
+        <div class="logo-area">
+            <a href="index.html" class="logo">
+                <span>🔥</span> FARAZ <span class="gradient-text">STORE</span>
+            </a>
+        </div>
 
-<header class="header">
+        <nav class="navbar">
+            <a href="index.html">Home</a>
+            <a href="product.html" class="active">Products</a>
+            <a href="cart.html">Cart</a>
+            <a href="wishlist.html">Wishlist</a>
+            <a href="orders.html">Orders</a>
+        </nav>
 
-<div class="logo">
-FARAZ <span>STORE</span>
-</div>
+        <div class="header-buttons">
+            <button onclick="location.href='index.html'" title="Home">🏠</button>
+            <button onclick="location.href='wishlist.html'" title="Wishlist">❤️</button>
+            <button onclick="location.href='cart.html'" title="Cart">🛒</button>
+            <button onclick="location.href='profile.html'" title="Profile">👤</button>
+        </div>
+    </header>
 
+    <!-- 🛒 MAIN PRODUCTS SECTION -->
+    <section class="product-section" style="max-width: 1200px; margin: 30px auto; padding: 0 15px;">
+        <div class="section-title-box" style="text-align: center; margin-bottom: 25px;">
+            <h1 style="font-family: 'Orbitron', sans-serif; font-size: 28px; color: #00e5ff;"> Our Store Products</h1>
+            <p style="color: #94a3b8; font-size: 14px;">Browse and search our latest gaming and electronic gear</p>
+        </div>
 
-<nav class="navbar">
+        <!-- SEARCH BAR -->
+        <div class="search-box glassmorphism" style="max-width: 500px; margin: 0 auto 30px auto; padding: 4px 10px; border-radius: 25px;">
+            <input id="productSearch" type="text" placeholder="🔍 Search Products by name or category..." autocomplete="off">
+        </div>
 
-<a href="index.html">Home</a>
-<a href="product.html">Products</a>
-<a href="cart.html">Cart</a>
-<a href="wishlist.html">Wishlist</a>
+        <!-- PRODUCTS GRID CONTAINER -->
+        <div id="product-container" class="product-grid">
+            <div class="loading-state">
+                <div class="spinner"></div>
+                <p>Loading All Products...</p>
+            </div>
+        </div>
+    </section>
 
-</nav>
+    <!-- 🛑 FOOTER -->
+    <footer class="footer">
+        <h2>🔥 FARAZ STORE</h2>
+        <p>Gaming + Smart Shopping Experience</p>
+        <p class="copy">© 2026 Faraz Store. All Rights Reserved.</p>
+    </footer>
 
-
-<div class="header-buttons">
-
-
-
-
-</header>
-
-
-
-
-<section class="product-section">
-
-<h1>
-Our Products
-</h1>
-
-<div class="search-box">
-
-<input 
-id="productSearch"
-type="text"
-placeholder="🔍 Search Products...">
-
-</div>
-
-
-<div id="product-container" class="product-grid">
-
-</div>
-
-</section>
-
-
-
-
-
-
-<script type="module" src="js/product.js"></script>
-<script type="module" src="js/cart-page.js"></script>
-<script type="module" src="js/wishlist.js"></script>
+    <!-- MODULE SCRIPTS -->
+    <script type="module" src="js/product.js"></script>
+    <script type="module" src="js/cart-page.js"></script>
+    <script type="module" src="js/wishlist.js"></script>
 
 </body>
 

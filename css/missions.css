@@ -1,55 +1,138 @@
-body{
+/* ==========================================================================
+   🔥 FARAZ STORE v2.0 - DAILY MISSIONS CSS (CYBERPUNK GLASSMORPHIC)
+   ========================================================================== */
 
-font-family:Arial;
-
-background:#d407a8;
-
-text-align:center;
-
+.missions-page-bg {
+    background: radial-gradient(circle at top center, #1e1b4b 0%, #020617 75%);
+    color: #e2e8f0;
+    min-height: 100vh;
+    padding: 30px 15px;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    font-family: 'Plus Jakarta Sans', 'Segoe UI', sans-serif;
 }
 
-
-
-.mission-box{
-
-display:grid;
-
-grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
-
-gap:20px;
-
-padding:30px;
-
+.missions-container {
+    width: 100%;
+    max-width: 650px;
+    margin: 30px auto;
+    background: rgba(15, 23, 42, 0.85);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 24px;
+    padding: 30px 20px;
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.8), 0 0 30px rgba(0, 229, 255, 0.15);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
 }
 
-
-
-.mission-box div{
-
-background:rgb(88, 24, 24);
-
-padding:25px;
-
-border-radius:20px;
-
-box-shadow:0 5px 20px #0b17bd;
-
+.missions-header {
+    text-align: center;
+    margin-bottom: 25px;
 }
 
+.missions-header h1 {
+    font-family: 'Orbitron', 'Segoe UI', sans-serif;
+    color: #00e5ff;
+    font-size: 26px;
+    font-weight: 900;
+    margin-bottom: 6px;
+    text-shadow: 0 0 12px rgba(0, 229, 255, 0.4);
+}
 
+.missions-header p {
+    color: #94a3b8;
+    font-size: 13px;
+}
 
-button{
+#mission-timer {
+    color: #ffcc00;
+    font-size: 14px;
+    margin-top: 10px;
+    font-weight: 800;
+    font-family: 'Orbitron', sans-serif;
+}
 
-padding:12px 25px;
+.mission-box {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
 
-background:#673ab7;
+.mission-card {
+    padding: 20px;
+    border-radius: 18px;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    background: rgba(30, 41, 59, 0.6);
+    backdrop-filter: blur(10px);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
 
-color:rgb(8, 252, 252);
+.mission-card:hover {
+    border-color: #00e5ff;
+    box-shadow: 0 8px 25px rgba(0, 229, 255, 0.15);
+    transform: translateY(-2px);
+}
 
-border:none;
+.mission-card h2 {
+    font-size: 18px;
+    color: #ffffff;
+    margin: 0;
+    font-weight: 800;
+}
 
-border-radius:10px;
+.mission-card p {
+    color: #00e5ff;
+    font-size: 13px;
+    font-weight: 700;
+    margin: 0;
+}
 
-cursor:pointer;
+.mission-card button {
+    padding: 11px 20px;
+    border-radius: 12px;
+    font-size: 13px;
+    font-weight: 800;
+    border: none;
+    cursor: pointer;
+    transition: all 0.25s ease;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
 
+.mission-card button:hover:not(:disabled) {
+    filter: brightness(1.15);
+    transform: translateY(-2px);
+}
+
+.mission-card button:disabled {
+    background: #334155 !important;
+    color: #94a3b8 !important;
+    cursor: not-allowed;
+    transform: none;
+}
+
+/* ==========================================================================
+   📱 MOBILE RESPONSIVE TUNING
+   ========================================================================== */
+@media (max-width: 600px) {
+    .missions-container {
+        padding: 20px 14px;
+        border-radius: 18px;
+    }
+
+    .missions-header h1 {
+        font-size: 22px;
+    }
+
+    .mission-card {
+        padding: 16px;
+    }
+
+    .mission-card h2 {
+        font-size: 16px;
+    }
 }

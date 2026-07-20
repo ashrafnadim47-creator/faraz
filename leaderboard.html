@@ -1,120 +1,164 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Global Leaderboard | Faraz Store</title>
+    <meta name="description" content="Check out the top diamond wallet holders on Faraz Store leaderboard!">
+    <meta name="theme-color" content="#020617">
+    <link rel="icon" href="favicon.ico">
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700;900&family=Plus+Jakarta+Sans:wght@500;700;800&display=swap" rel="stylesheet">
+
+    <!-- CSS Links -->
+    <link rel="stylesheet" href="css/global.css">
+
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Segoe UI', Roboto, sans-serif;
-        }
-        body {
-            background: radial-gradient(circle, #1f2330 0%, #0b0c10 100%);
-            color: #fff;
+        .leaderboard-page-bg {
+            background: radial-gradient(circle at top center, #1e1b4b 0%, #020617 75%);
             min-height: 100vh;
             display: flex;
             justify-content: center;
             align-items: center;
-            padding: 20px;
+            padding: 25px 15px;
+            box-sizing: border-box;
+            font-family: 'Plus Jakarta Sans', sans-serif;
         }
+
         .leaderboard-box {
             width: 100%;
-            max-width: 500px;
-            background: linear-gradient(180deg, #161922 0%, #0f1118 100%);
-            border: 2px solid #3d435c;
-            border-radius: 16px;
-            padding: 25px;
-            box-shadow: 0 15px 40px rgba(0,0,0,0.8);
+            max-width: 520px;
+            background: rgba(15, 23, 42, 0.85);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 24px;
+            padding: 30px 20px;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.8), 0 0 30px rgba(255, 204, 0, 0.15);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
         }
+
         .board-header {
             text-align: center;
-            border-bottom: 2px solid #ffcc00;
-            padding-bottom: 15px;
-            margin-bottom: 20px;
+            border-bottom: 2px dashed rgba(255, 204, 0, 0.3);
+            padding-bottom: 18px;
+            margin-bottom: 22px;
         }
+
         .board-header h1 {
+            font-family: 'Orbitron', sans-serif;
             color: #ffcc00;
             font-size: 26px;
+            font-weight: 900;
             letter-spacing: 2px;
-            text-shadow: 0 0 10px rgba(255, 204, 0, 0.3);
+            text-shadow: 0 0 15px rgba(255, 204, 0, 0.4);
+            margin: 0;
         }
+
         .rank-list {
             display: flex;
             flex-direction: column;
-            gap: 10px;
+            gap: 12px;
         }
+
         .rank-row {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            background: #232736;
-            padding: 12px 18px;
-            border-radius: 8px;
-            border: 1px solid #3d435c;
-            transition: transform 0.2s;
+            background: rgba(30, 41, 59, 0.6);
+            padding: 14px 18px;
+            border-radius: 14px;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            transition: transform 0.25s ease, border-color 0.25s ease;
         }
+
         .rank-row:hover {
-            transform: scale(1.02);
+            transform: translateY(-2px);
             border-color: #ffcc00;
+            box-shadow: 0 6px 20px rgba(255, 204, 0, 0.15);
         }
+
         .user-meta {
             display: flex;
             align-items: center;
             gap: 15px;
         }
+
         .rank-number {
+            font-family: 'Orbitron', sans-serif;
             font-weight: 900;
             font-size: 16px;
-            width: 25px;
+            width: 32px;
+            color: #94a3b8;
         }
-        /* Top 3 Special Colors */
-        .rank-1 { color: #ffd700; text-shadow: 0 0 8px #ffd700; }
-        .rank-2 { color: #c0c0c0; text-shadow: 0 0 8px #c0c0c0; }
-        .rank-3 { color: #cd7f32; text-shadow: 0 0 8px #cd7f32; }
-        
+
+        /* Top 3 Ranks Glowing Colors */
+        .rank-1 { color: #ffd700; text-shadow: 0 0 10px rgba(255, 215, 0, 0.6); font-size: 18px; }
+        .rank-2 { color: #e2e8f0; text-shadow: 0 0 10px rgba(226, 232, 240, 0.6); font-size: 17px; }
+        .rank-3 { color: #cd7f32; text-shadow: 0 0 10px rgba(205, 127, 50, 0.6); font-size: 17px; }
+
         .user-name {
-            font-weight: 600;
+            font-weight: 800;
+            color: #ffffff;
+            font-size: 15px;
         }
+
         .diamond-count {
             color: #00e5ff;
-            font-weight: bold;
+            font-weight: 900;
+            font-size: 15px;
+            font-family: 'Orbitron', sans-serif;
         }
-        .back-btn {
+
+        .back-btn-shop {
             width: 100%;
-            background: transparent;
-            border: 1px solid #3d435c;
-            color: #cbd5e1;
-            padding: 10px;
-            border-radius: 6px;
+            background: rgba(30, 41, 59, 0.8);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: #ffffff;
+            padding: 13px;
+            border-radius: 14px;
             cursor: pointer;
-            margin-top: 20px;
-            font-weight: bold;
+            margin-top: 22px;
+            font-weight: 800;
+            font-size: 14px;
+            transition: all 0.25s ease;
+            text-transform: uppercase;
+        }
+
+        .back-btn-shop:hover {
+            border-color: #00e5ff;
+            background: #0f172a;
+            color: #00e5ff;
         }
     </style>
 </head>
-<body>
 
-    <div class="leaderboard-box">
+<body class="leaderboard-page-bg">
+
+    <div class="leaderboard-box glassmorphism">
         <div class="board-header">
-            <h1>🏆 TOP DIAMONDS</h1>
+            <h1>🏆 TOP DIAMONDS LEADERBOARD</h1>
         </div>
 
         <div class="rank-list" id="leaderboard-target">
-            <!-- Dynamic Users Data hooks here -->
+            <div class="loading-state" style="text-align: center; padding: 20px; color: #00e5ff;">
+                <div class="spinner"></div>
+                <p style="margin-top: 10px;">Loading Top Players...</p>
+            </div>
         </div>
 
-        <button class="back-btn" onclick="location.href='index.html'">Return to Shop</button>
+        <button class="back-btn-shop" onclick="location.href='index.html'">Return to Shop</button>
     </div>
 
+    <!-- SCRIPT LOGIC -->
     <script>
         window.addEventListener('DOMContentLoaded', () => {
             const boardTarget = document.getElementById('leaderboard-target');
-            
-            // Dummy Global Data Engine for demonstration
-            // Real setup me Firebase query (orderBy("diamonds", "desc")) isko automatic chalaegi
+
+            // Global Players Data Array
             let globalPlayers = [
                 { name: "Faraz (You)", diamonds: parseInt(localStorage.getItem('fw_persist_wallet') || "0") },
                 { name: "Aman_FF", diamonds: 450 },
@@ -123,7 +167,7 @@
                 { name: "Rohit_King", diamonds: 50 }
             ];
 
-            // ⚡ SHORTING LOGIC: Jiske paas sabse zyada diamond, wo sabse upar!
+            // ⚡ SORTING LOGIC: Higher diamond holders ranked on top
             globalPlayers.sort((a, b) => b.diamonds - a.diamonds);
 
             // Render Output Loop
@@ -139,11 +183,12 @@
                             <span class="rank-number ${rankClass}">#${idx + 1}</span>
                             <span class="user-name">${player.name}</span>
                         </div>
-                        <span class="diamond-count">💎 ${player.diamonds}</span>
+                        <span class="diamond-count">💎 ${player.diamonds.toLocaleString()}</span>
                     </div>
                 `;
             }).join('');
         });
     </script>
 </body>
+
 </html>

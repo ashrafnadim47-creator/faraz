@@ -1,256 +1,111 @@
-import {auth,db} from "./firebase-config.js";
-
-
+import { auth, db } from "./firebase-config.js";
+import { onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 import {
-onAuthStateChanged
-}
-from
-"https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
-
-
-import {
-doc,
-getDoc,
-collection,
-getDocs
-}
-from
-"https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
-
-
-
-
-
-onAuthStateChanged(auth,async(user)=>{
-
-
-if(!user){
-
-location.href="login.html";
-
-return;
-
-}
-
-
-
-try{
-
-
-const userRef =
-doc(
-db,
-"users",
-user.uid
-);
-
-
-
-const snap =
-await getDoc(userRef);
-
-
-
-let data = {};
-
-
-
-if(snap.exists()){
-
-data = snap.data();
-
-}
-
-
-
-
-
-
-// BASIC INFO
-
-
-const name =
-document.getElementById("user-name");
-
-
-const email =
-document.getElementById("user-email");
-
-
-const points =
-document.getElementById("user-points");
-
-
-
-
-
-if(name)
-
-name.innerHTML =
-data.name || user.displayName || "Faraz User";
-
-
-
-
-if(email)
-
-email.innerHTML =
-data.email || user.email;
-
-
-
-
-if(points)
-
-points.innerHTML =
-data.points || 0;
-
-
-
-
-
-
-
-// PROFILE IMAGE
-
-
-const image =
-document.getElementById("profile-image");
-
-
-
-if(image){
-
-
-image.src =
-data.photo ||
-user.photoURL ||
-"images/user.png";
-
-
-}
-
-
-
-
-
-
-
-// ORDER COUNT
-
-
-const orderBox =
-document.getElementById("order-count");
-
-
-
-if(orderBox){
-
-
-const orders =
-await getDocs(
-
-collection(
-db,
-"users",
-user.uid,
-"orders"
-
-)
-
-);
-
-
-
-orderBox.innerHTML =
-orders.size;
-
-
-}
-
-
-
-
-
-
-
-// WISHLIST COUNT
-
-
-const wishBox =
-document.getElementById("wishlist-count");
-
-
-
-if(wishBox){
-
-
-const wishlist =
-await getDocs(
-
-collection(
-db,
-"users",
-user.uid,
-"wishlist"
-
-)
-
-);
-
-
-
-wishBox.innerHTML =
-wishlist.size;
-
-
-}
-
-
-
-
-
-}
-
-catch(error){
-
-
-console.log(error);
-
-
-}
-
-
-
-});
-import {
-signOut
-}
-from
-"https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
-
-
-document.getElementById("logout-btn").onclick=async()=>{
-
-await signOut(auth);
-
-alert("Logout Successful");
-
-location.href="login.html";
-
-}
-
-// --- DYNAMIC DIAMOND SYNC LOGIC FOR PROFILE ---
-window.addEventListener('DOMContentLoaded', () => {
-    // Faded Wheel ke local engine se balance nikalte hain
-    const savedWallet = localStorage.getItem('fw_persist_wallet');
-    const profileWalletText = document.getElementById('profile-diamonds'); 
-    
-    if (profileWalletText) {
-        if (savedWallet !== null) {
-            profileWalletText.innerText = savedWallet;
-        } else {
-            profileWalletText.innerText = "0"; // Agar pehle kabhi spin nahi khela toh 0 dikhega
+    doc,
+    getDoc,
+    collection,
+    getDocs,
+    onSnapshot
+} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+let currentUser = null;
+
+// ==========================================
+// 🔑 AUTHENTICATION & PROFILE DATA LOAD
+// ==========================================
+onAuthStateChanged(auth, async (user) => {
+    if (!user) {
+        location.href = "login.html";
+        return;
+    }
+
+    currentUser = user;
+
+    try {
+        const userRef = doc(db, "users", user.uid);
+        const userSnap = await getDoc(userRef);
+        let userData = {};
+
+        if (userSnap.exists()) {
+            userData = userSnap.data();
         }
+
+        // 1. BASIC USER METADATA
+        const nameEl = document.getElementById("user-name");
+        const emailEl = document.getElementById("user-email");
+        const pointsEl = document.getElementById("user-points");
+
+        if (nameEl) nameEl.innerText = userData.name || user.displayName || "Faraz Customer";
+        if (emailEl) emailEl.innerText = userData.email || user.email || "";
+        if (pointsEl) pointsEl.innerText = (userData.points || 0).toLocaleString();
+
+        // 2. PROFILE AVATAR
+        const imageEl = document.getElementById("profile-image");
+        if (imageEl) {
+            imageEl.src = userData.photo || user.photoURL || "images/user.png";
+        }
+
+        // 3. DIAMONDS WALLET BALANCE (REALTIME FIRESTORE LISTEN + LOCAL FALLBACK)
+        const profileDiamondsEl = document.getElementById("profile-diamonds");
+        
+        onSnapshot(userRef, (snapshot) => {
+            if (snapshot.exists()) {
+                const liveData = snapshot.data();
+                if (profileDiamondsEl) {
+                    profileDiamondsEl.innerText = (liveData.diamonds ?? 0).toLocaleString();
+                }
+            }
+        }, () => {
+            // Local persistence fallback if offline
+            const savedWallet = localStorage.getItem('fw_persist_wallet');
+            if (profileDiamondsEl && savedWallet !== null) {
+                profileDiamondsEl.innerText = Number(savedWallet).toLocaleString();
+            }
+        });
+
+        // 4. ORDERS COUNT
+        const orderBox = document.getElementById("order-count");
+        if (orderBox) {
+            try {
+                const ordersSnap = await getDocs(collection(db, "users", user.uid, "orders"));
+                orderBox.innerText = ordersSnap.size;
+            } catch (e) {
+                orderBox.innerText = "0";
+            }
+        }
+
+        // 5. WISHLIST COUNT (HANDLES BOTH '#wishlist-count' AND '#wish-count' IDs)
+        const wishBox = document.getElementById("wishlist-count") || document.getElementById("wish-count");
+        if (wishBox) {
+            try {
+                const wishSnap = await getDocs(collection(db, "users", user.uid, "wishlist"));
+                wishBox.innerText = wishSnap.size;
+            } catch (e) {
+                wishBox.innerText = "0";
+            }
+        }
+
+    } catch (error) {
+        console.error("Profile initialization error:", error);
+    }
+});
+
+// ==========================================
+// 🚪 LOGOUT ACTION HANDLER
+// ==========================================
+window.addEventListener('DOMContentLoaded', () => {
+    const logoutBtn = document.getElementById("logout-btn");
+    
+    if (logoutBtn) {
+        logoutBtn.addEventListener("click", async () => {
+            try {
+                await signOut(auth);
+                alert("🚪 Logout Successful");
+                location.href = "login.html";
+            } catch (error) {
+                console.error("Logout error:", error);
+                alert("❌ Failed to log out.");
+            }
+        });
     }
 });

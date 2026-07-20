@@ -4,38 +4,43 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
     <title>Track Order | Faraz Store</title>
+    <meta name="description" content="Track your Faraz Store order status in real time.">
+    <meta name="theme-color" content="#020617">
+    <link rel="icon" href="favicon.ico">
 
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700;900&family=Plus+Jakarta+Sans:wght@500;700;800&display=swap" rel="stylesheet">
+
+    <!-- CSS Links -->
     <link rel="stylesheet" href="css/global.css">
     <link rel="stylesheet" href="css/tracking.css">
 </head>
 
-<body>
+<body class="tracking-page-bg">
 
-    <div class="tracking-page">
+    <div class="tracking-page glassmorphism">
 
         <!-- Header -->
-        <div class="tracking-header">
+        <header class="tracking-header">
+            <button class="nav-btn-back" onclick="location.href='orders.html'">← Back to Orders</button>
             <h1>📦 Track Your Order</h1>
-            <p>Follow your package in real time</p>
-        </div>
+            <p style="color: var(--muted); font-size: 14px;">Follow your package in real time</p>
+        </header>
 
-        <!-- Order Data -->
-        <div id="tracking-data">
-
+        <!-- Order Data Container -->
+        <main id="tracking-data">
             <div class="loading-card">
-
                 <div class="loader"></div>
-
-                <h2>Loading Order...</h2>
-
+                <h2>Loading Order Details...</h2>
             </div>
-
-        </div>
+        </main>
 
     </div>
 
+    <!-- Script Integration -->
     <script type="module" src="js/tracking.js"></script>
 
 </body>

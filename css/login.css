@@ -1,14 +1,12 @@
-/* =====================================
-   FARAZ STORE v2.0
-   PREMIUM LOGIN CSS (MOBILE FIXED)
-===================================== */
+/* ==========================================================================
+   FARAZ STORE v2.0 - PREMIUM LOGIN/SIGNUP CSS (MOBILE OPTIMIZED)
+   ========================================================================== */
 
-/* 1. Reset Box Sizing & Margin for Mobile Safety */
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    font-family: 'Segoe UI', Roboto, sans-serif;
+    font-family: 'Plus Jakarta Sans', 'Segoe UI', sans-serif;
 }
 
 body {
@@ -16,25 +14,26 @@ body {
     display: flex;
     align-items: center;
     justify-content: center;
-    background: linear-gradient(135deg, #020617, #111827);
-    padding: 15px; /* Ensures space on small screens */
+    background: radial-gradient(circle at center, #1e1b4b 0%, #020617 100%);
+    padding: 15px;
     overflow-x: hidden;
 }
 
-/* 2. Responsive Auth Box Container */
+/* Auth Container */
 .auth-box {
-    width: 100%; /* Flexible width for all screens */
-    max-width: 400px; /* Desktop limit */
+    width: 100%;
+    max-width: 400px;
     padding: 40px 30px;
     background: rgba(17, 24, 39, 0.95);
     border-radius: 28px;
     border: 1px solid rgba(255, 255, 255, 0.1);
     box-shadow: 0 25px 70px rgba(0, 0, 0, 0.6);
     text-align: center;
+    backdrop-filter: blur(15px);
 }
 
 .auth-box h1 {
-    font-size: 34px;
+    font-size: 32px;
     font-weight: 800;
     margin-bottom: 25px;
     background: linear-gradient(135deg, #38bdf8, #8b5cf6);
@@ -43,26 +42,26 @@ body {
     color: transparent;
 }
 
-/* 3. Inputs (Mobile Touch-Friendly) */
+/* Inputs */
 .auth-box input {
     width: 100%;
-    padding: 14px 18px;
+    padding: 15px 18px;
     margin: 10px 0;
     border-radius: 16px;
     background: #020617;
     color: white;
     border: 1px solid #334155;
     outline: none;
-    font-size: 16px; /* Prevents auto-zoom on iPhone/Android */
-    transition: border-color 0.3s ease;
+    font-size: 16px;
+    transition: all 0.3s ease;
 }
 
 .auth-box input:focus {
     border-color: #38bdf8;
-    box-shadow: 0 0 10px rgba(56, 189, 248, 0.2);
+    box-shadow: 0 0 12px rgba(56, 189, 248, 0.3);
 }
 
-/* 4. Action Button */
+/* Buttons */
 .auth-box button {
     width: 100%;
     margin-top: 18px;
@@ -70,22 +69,19 @@ body {
     border-radius: 25px;
     background: linear-gradient(135deg, #2563eb, #7c3aed);
     color: white;
-    font-size: 17px;
-    font-weight: bold;
+    font-size: 16px;
+    font-weight: 700;
     border: none;
     cursor: pointer;
-    transition: transform 0.2s, box-shadow 0.2s;
+    transition: all 0.2s ease;
 }
 
 .auth-box button:hover {
     transform: translateY(-2px);
-    box-shadow: 0 10px 25px rgba(37, 99, 235, 0.4);
+    box-shadow: 0 8px 20px rgba(56, 189, 248, 0.4);
 }
 
-.auth-box button:active {
-    transform: scale(0.98);
-}
-
+/* Footer Link */
 .auth-box p {
     margin-top: 22px;
     color: #94a3b8;
@@ -98,15 +94,8 @@ body {
     text-decoration: none;
 }
 
-/* 5. Mobile Screen Optimization (< 480px) */
+/* Responsive */
 @media (max-width: 480px) {
-    .auth-box {
-        padding: 30px 20px;
-        border-radius: 22px;
-    }
-
-    .auth-box h1 {
-        font-size: 28px;
-        margin-bottom: 20px;
-    }
+    .auth-box { padding: 30px 20px; border-radius: 22px; }
+    .auth-box h1 { font-size: 26px; }
 }

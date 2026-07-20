@@ -1,219 +1,111 @@
-let popup=document.getElementById("reward-popup");
+// ==========================================
+// 🎡 LUCKY SPIN WHEEL CONTROLLER
+// ==========================================
 
-let popupReward=document.getElementById("popup-reward");
+const popup = document.getElementById("reward-popup");
+const popupReward = document.getElementById("popup-reward");
+const popupCode = document.getElementById("popup-code");
+const closePopup = document.getElementById("close-popup");
+const wheel = document.getElementById("wheel");
+const spinBtn = document.getElementById("spin");
+const resultDisplay = document.getElementById("result");
+const couponDisplay = document.getElementById("coupon-result");
+const timerDisplay = document.getElementById("timer");
+const sound = document.getElementById("spin-sound");
 
-let popupCode=document.getElementById("popup-code");
-
-let closePopup=document.getElementById("close-popup");   
-
-let wheel=document.getElementById("wheel");
-
-let btn=document.getElementById("spin");
-
-let result=document.getElementById("result");
-
-let coupon=document.getElementById("coupon-result");
-
-let timer=document.getElementById("timer");
-
-
-
-let rewards=[
-
-{
-name:"₹50 OFF",
-code:"FARAZ50"
-},
-
-{
-name:"20 Points",
-code:"POINT20"
-},
-
-{
-name:"FREE DELIVERY",
-code:"FREEDEL"
-},
-
-{
-name:"₹30 OFF",
-code:"SPIN30"
-},
-
-{
-name:"TRY AGAIN",
-code:null
-},
-
-{
-name:"₹10 OFF",
-code:"FARAZ10"
-}
-
+const rewards = [
+    { name: "₹50 OFF", code: "FARAZ50" },
+    { name: "20 Points", code: "POINT20" },
+    { name: "FREE DELIVERY", code: "FREEDEL" },
+    { name: "₹30 OFF", code: "SPIN30" },
+    { name: "TRY AGAIN", code: null },
+    { name: "₹10 OFF", code: "FARAZ10" }
 ];
 
+// ==========================================
+// ⏳ DAILY SPIN CHECK ENGINE
+// ==========================================
+function checkSpin() {
+    if (!spinBtn) return;
 
+    const last = localStorage.getItem("spinTime");
 
-function checkSpin(){
+    if (!last) {
+        spinBtn.disabled = false;
+        if (timerDisplay) timerDisplay.innerHTML = "🎡 Spin Available";
+        return;
+    }
 
+    const diff = Number(last) - Date.now();
 
-let last=localStorage.getItem("spinTime");
+    if (diff <= 0) {
+        localStorage.removeItem("spinTime");
+        spinBtn.disabled = false;
+        if (timerDisplay) timerDisplay.innerHTML = "🎡 Spin Available";
+        return;
+    }
 
+    spinBtn.disabled = true;
 
-if(!last){
+    const h = Math.floor(diff / (1000 * 60 * 60));
+    const m = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+    const s = Math.floor((diff % (1000 * 60)) / 1000);
 
-btn.disabled=false;
-
-timer.innerHTML="🎡 Spin Available";
-
-return;
-
+    if (timerDisplay) {
+        timerDisplay.innerHTML = `⏳ Next Spin Available In: ${h}h ${m}m ${s}s`;
+    }
 }
 
-
-let diff=
-Number(last)-Date.now();
-
-
-
-if(diff<=0){
-
-localStorage.removeItem("spinTime");
-
-btn.disabled=false;
-
-timer.innerHTML="🎡 Spin Available";
-
-return;
-
-}
-
-
-
-btn.disabled=true;
-
-
-
-let h=Math.floor(diff/(1000*60*60));
-
-let m=Math.floor((diff%(1000*60*60))/(1000*60));
-
-let s=Math.floor((diff%(1000*60))/1000);
-
-
-
-timer.innerHTML=
-`⏳ Next Spin Tomorrow: ${h}h ${m}m ${s}s`;
-
-}
-
-
-setInterval(checkSpin,1000);
-
+setInterval(checkSpin, 1000);
 checkSpin();
 
+// ==========================================
+// 🎯 SPIN ACTION TRIGGER
+// ==========================================
+if (spinBtn) {
+    spinBtn.onclick = () => {
+        if (sound) {
+            sound.currentTime = 0;
+            sound.play().catch(() => {});
+        }
 
+        if (wheel) wheel.classList.add("rotate");
+        spinBtn.disabled = true;
 
-btn.onclick=()=>{
-sound.currentTime = 0;
-sound.play();
+        const win = rewards[Math.floor(Math.random() * rewards.length)];
 
-wheel.classList.add("rotate");
+        setTimeout(() => {
+            if (wheel) wheel.classList.remove("rotate");
 
-btn.disabled=true;
+            if (resultDisplay) resultDisplay.innerHTML = "🎉 You Won: " + win.name;
+            if (popupReward) popupReward.innerHTML = win.name;
 
+            if (win.code) {
+                if (popupCode) popupCode.innerHTML = "🎟️ Coupon: <b>" + win.code + "</b>";
+                if (couponDisplay) couponDisplay.innerHTML = "🎟️ Coupon Code: <b>" + win.code + "</b>";
 
+                let oldCoupons = JSON.parse(localStorage.getItem("coupons")) || [];
+                if (!oldCoupons.includes(win.code)) {
+                    oldCoupons.push(win.code);
+                    localStorage.setItem("coupons", JSON.stringify(oldCoupons));
+                }
+            } else {
+                if (popupCode) popupCode.innerHTML = "Try Again Tomorrow 😅";
+                if (couponDisplay) couponDisplay.innerHTML = "😅 Try Again Tomorrow";
+            }
 
-let win=
-rewards[
-Math.floor(Math.random()*rewards.length)
-];
+            if (popup) popup.style.display = "flex";
 
+        }, 4000);
 
-
-setTimeout(()=>{
-
-
-result.innerHTML=
-"🎉 You Won: "+win.name;
-
-popupReward.innerHTML=win.name;
-
-
-if(win.code){
-
-popupCode.innerHTML=
-"🎟️ Coupon: <b>"+win.code+"</b>";
-
-}
-else{
-
-popupCode.innerHTML="Try Again Tomorrow 😅";
-
-}
-
-
-popup.style.display="flex";
-
-
-if(win.code){
-
-
-coupon.innerHTML=
-"🎟️ Coupon Code: <b>"+win.code+"</b>";
-
-
-
-let old=
-JSON.parse(
-localStorage.getItem("coupons")
-)||[];
-
-
-
-old.push(win.code);
-
-
-localStorage.setItem(
-"coupons",
-JSON.stringify(old)
-);
-
-
+        const tomorrow = new Date();
+        tomorrow.setDate(tomorrow.getDate() + 1);
+        localStorage.setItem("spinTime", tomorrow.getTime());
+    };
 }
 
-else{
-
-
-coupon.innerHTML="😅 Try Again Tomorrow";
-
+if (closePopup) {
+    closePopup.onclick = () => {
+        if (popup) popup.style.display = "none";
+    };
 }
-
-
-},4000);
-
-
-
-let tomorrow=new Date();
-
-
-tomorrow.setDate(
-tomorrow.getDate()+1
-);
-
-
-
-localStorage.setItem(
-"spinTime",
-tomorrow.getTime()
-);
-
-
-
-};
-let sound = document.getElementById("spin-sound");
-closePopup.onclick=()=>{
-
-popup.style.display="none";
-
-};

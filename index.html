@@ -4,11 +4,17 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Faraz Store | Gaming & Shopping</title>
-    <meta name="description" content="Faraz Store - Gaming products, accessories, electronics and premium online shopping">
-    <meta name="keywords" content="Faraz Store, Gaming, Electronics, Accessories, Shopping">
-    <meta name="theme-color" content="#111827">
+    <title>Faraz Store | Premium Gaming & Tech Store</title>
+    <meta name="description" content="Faraz Store - Next Level Gaming Gear, Top-Up Diamonds, Electronics & Accessories">
+    <meta name="keywords" content="Faraz Store, Free Fire Top Up, Luck Royale, Gaming Gear, Smart Gadgets">
+    <meta name="theme-color" content="#020617">
     <link rel="icon" href="favicon.ico">
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600;800;900&family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
+
     <!-- CSS Links -->
     <link rel="stylesheet" href="css/global.css">
     <link rel="stylesheet" href="css/header.css">
@@ -16,259 +22,294 @@
     <link rel="stylesheet" href="css/footer.css">
     <link rel="stylesheet" href="css/responsive.css">
     <link rel="stylesheet" href="css/admin-product.css">
+    <link rel="stylesheet" href="css/floating.css">
 </head>
 
 <body>
 
-    <!-- HEADER -->
+    <!-- 🚀 HEADER -->
     <header class="header">
         <div class="logo-area">
-            <a href="index.html" class="logo">FARAZ STORE</a>
+            <a href="index.html" class="logo">
+                <span class="logo-icon">🔥</span>
+                <span class="logo-text">FARAZ <span class="logo-highlight">STORE</span></span>
+            </a>
+        </div>
+
+        <!-- SEARCH CONTAINER -->
+        <div class="search-container">
+            <input id="searchBox" type="text" placeholder="Search gaming gear, products, codes..." autocomplete="off">
+            <button id="search-icon-btn" aria-label="Search">🔍</button>
+        </div>
+
+        <!-- HEADER NAVIGATION ICONS -->
+        <div class="icons">
+            <a href="luck-royale.html" class="nav-icon-link" title="Luck Royale Event">
+                <span class="icon-badge glow-gold">🎰</span>
+            </a>
+            <a href="wishlist.html" class="nav-icon-link" title="Wishlist">❤️</a>
+            <a href="cart.html" class="nav-icon-link" title="Shopping Cart">🛒</a>
+            <a href="profile.html" class="nav-icon-link" title="My Profile">👤</a>
+            <a href="settings.html" class="nav-icon-link" title="Settings">⚙️</a>
+            
+            
+            
         </div>
 
         <!-- MOBILE MENU BUTTON -->
-        <button id="menu-btn" class="menu-btn">☰</button>
-
-        <!-- SEARCH -->
-        <div class="search-container">
-            <input id="searchBox" type="text" placeholder="Search Products...">
-            <button id="search-icon-btn">🔍</button>
-        </div>
-
-        <!-- HEADER ICONS -->
-        <div class="icons">
-            <a href="wishlist.html" title="Wishlist">❤️</a>
-            <a href="cart.html" title="Cart">🛒</a>
-            <a href="profile.html" title="Profile">👤</a>
-            <a href="settings.html" title="Settings">⚙️</a>
-            <button onclick="location.href='topup.html'" style="background: #00e5ff; color: #000; font-weight: bold; border-radius: 5px; padding: 10px 15px; border: none; cursor: pointer;">
-                💎 Buy Diamonds & Memberships
-            </button>
-        </div>
+        <button id="menu-btn" class="menu-btn" aria-label="Open Navigation Menu">☰</button>
     </header>
 
-    <!-- MOBILE SIDEBAR -->
-    <div id="sidebar">
-        <button id="close-sidebar">✖</button>
-        <div class="sidebar-logo">FARAZ STORE</div>
-        <a href="index.html">🏠 Home</a>
-        <a href="products.html">🛒 Products</a>
-        <a href="categories.html">📂 Categories</a>
-        <a href="wishlist.html">❤️ Wishlist</a>
-        <a href="orders.html">📦 Orders</a>
-        <a href="leaderboard.html">🏆 Leaderboard</a>
-        <a href="contact.html">📞 Contact</a>
-        <a href="profile.html">👤 Profile</a>
+    <!-- 📱 MOBILE SIDEBAR MENU -->
+<div id="sidebar">
+    <div class="sidebar-header">
+        <div class="sidebar-logo">🔥 FARAZ STORE</div>
+        <button id="close-sidebar" class="close-btn">✖</button>
     </div>
+    <div class="sidebar-nav">
+        <a href="index.html" class="sidebar-link active">🏠 Home</a>
+        <a href="luck-royale.html" class="sidebar-link highlight-gold">🎰 Luck Royale (Spin & Win)</a>
+        <a href="spin.html" class="sidebar-link highlight-gold">🎡 Lucky Spin</a>
+        <a href="missions.html" class="sidebar-link">🎯 Daily Missions</a>
+        <a href="topup.html" class="sidebar-link highlight-cyan">💎 Buy Diamonds & Memberships</a>
+        <a href="product.html" class="sidebar-link">🛒 All Products</a>
+        <a href="categories.html" class="sidebar-link">📂 Categories</a>
+        <a href="wishlist.html" class="sidebar-link">❤️ Wishlist</a>
+        <a href="orders.html" class="sidebar-link">📦 My Orders</a>
+        <a href="leaderboard.html" class="sidebar-link">🏆 Top Players Leaderboard</a>
+        <a href="contact.html" class="sidebar-link">📞 Support & Contact</a>
+        <a href="profile.html" class="sidebar-link">👤 My Profile Account</a>
+    </div>
+</div>
 
-    <!-- HERO SECTION -->
+    <!-- ⚡ HERO SECTION -->
     <section class="hero">
         <div class="hero-content">
-            <div class="offer-badge">🔥 Premium Gaming Store</div>
-            <h1>Gaming Power<br>+<br>Smart Shopping</h1>
-            <p>Gaming accessories, electronics and premium products at one place.</p>
+            <div class="offer-badge glow-purple">
+                <span class="pulse-dot"></span> NEXT-GEN GAMING HUB
+            </div>
+            <h1 class="hero-title">
+                Gaming Power <br>
+                <span class="gradient-text">+ Smart Shopping</span>
+            </h1>
+            <p class="hero-subtext">Unlock exclusive Free Fire top-ups, premium gaming gear, and tech accessories with instant delivery.</p>
             <div class="hero-buttons">
-                <button class="primary-btn" onclick="location.href='products.html'">🚀 Explore Store</button>
-                <button class="order-btn" onclick="location.href='orders.html'">📦 My Orders</button>
+                <button class="primary-btn glow-cyan" onclick="location.href='product.html'">🚀 Explore Store</button>
+                <button class="order-btn glow-pink" onclick="location.href='luck-royale.html'">🎰 Luck Royale</button>
             </div>
         </div>
 
-        <div class="hero-card">
-            <div class="circle">🎮</div>
+        <div class="hero-card glassmorphism">
+            <div class="hero-card-badge">LIVE EVENT</div>
+            <div class="circle pulse-glow">🎮</div>
             <h2>FARAZ STORE</h2>
-            <p>Next Level Shopping Experience</p>
+            <p>Official Gaming & E-Commerce Platform</p>
             <div class="hero-stats">
                 <div><h3>500+</h3><p>Products</p></div>
-                <div><h3>24/7</h3><p>Support</p></div>
-                <div><h3>100%</h3><p>Quality</p></div>
+                <div><h3>24/7</h3><p>Fast Support</p></div>
+                <div><h3>100%</h3><p>Verified</p></div>
             </div>
         </div>
     </section>
 
-    <!-- FLASH SALE SECTION -->
+    <!-- 👑 SPECIAL LUCK ROYALE BANNER SECTION -->
+    <section class="home-section">
+        <div class="luck-royale-banner-card">
+            <div class="event-live-badge">🔥 LIVE NOW</div>
+            <h2 class="banner-title">👑 LUCK ROYALE & RING EVENTS</h2>
+            <p class="banner-subtext">Spin the magical wheel, gather rare tokens, and redeem legendary bundles & smartphones!</p>
+            <button onclick="location.href='luck-royale.html'" class="banner-action-btn">
+                ⚡ Enter Spin Arena & Win
+            </button>
+        </div>
+    </section>
+
+    <!-- ⚡ FLASH SALE SECTION -->
     <section class="flash-sale home-section">
         <div class="section-title">
             <h2>⚡ Flash Sale</h2>
-            <p>Limited time premium offers</p>
+            <p>Limited time premium discounts</p>
         </div>
-        <div class="flash-card">
+        <div class="flash-card glassmorphism">
             <div class="sale-badge">50% OFF</div>
-            <h3>Mega Discount Up To 50% OFF 🔥</h3>
-            <p>Grab your favourite gaming and shopping products before the offer ends.</p>
+            <h3>Mega Discount Festival 🔥</h3>
+            <p>Grab your favorite gaming accessories before timer runs out.</p>
             <div class="sale-timer" id="sale-timer">24:00:00</div>
-            <button onclick="location.href='product.html'">🛒 Shop Now</button>
+            <button class="shop-now-btn" onclick="location.href='product.html'">🛒 Claim Discount</button>
         </div>
     </section>
 
-    <!-- CATEGORIES SECTION -->
+    <!-- 🛒 CATEGORIES SECTION -->
     <section class="categories home-section" id="categories">
         <div class="section-title">
             <h2>🛒 Categories</h2>
-            <p>Explore different collections</p>
+            <p>Browse curated collections</p>
         </div>
         <div class="category-grid">
-            <div class="category-box" data-cat="fashion"><div class="category-icon">👕</div><h3>Fashion</h3><p>Style Collection</p></div>
-            <div class="category-box" data-cat="electronics"><div class="category-icon">📱</div><h3>Electronics</h3><p>Latest Gadgets</p></div>
-            <div class="category-box" data-cat="gaming"><div class="category-icon">🎮</div><h3>Gaming</h3><p>Gaming Gear</p></div>
-            <div class="category-box" data-cat="home"><div class="category-icon">🏠</div><h3>Home</h3><p>Useful Products</p></div>
+            <div class="category-box" data-cat="fashion">
+                <div class="category-icon">👕</div>
+                <h3>Fashion</h3>
+                <p>Apparel & Merch</p>
+            </div>
+            <div class="category-box" data-cat="electronics">
+                <div class="category-icon">📱</div>
+                <h3>Electronics</h3>
+                <p>Smart Devices</p>
+            </div>
+            <div class="category-box" data-cat="gaming">
+                <div class="category-icon">🎮</div>
+                <h3>Gaming</h3>
+                <p>Gear & Codes</p>
+            </div>
+            <div class="category-box" data-cat="home">
+                <div class="category-icon">🏠</div>
+                <h3>Home Tech</h3>
+                <p>Essential Utility</p>
+            </div>
         </div>
     </section>
 
-    <!-- FIREBASE PRODUCTS SECTION -->
+    <!-- 🔥 FIREBASE PRODUCTS SECTION -->
     <section class="products home-section">
         <div class="section-title">
-            <h2>🔥 New Products</h2>
-            <p>Latest products from Faraz Store</p>
+            <h2>🔥 Trending Products</h2>
+            <p>Freshly uploaded directly from Faraz Store inventory</p>
         </div>
         <div id="home-products" class="product-grid">
-            <div class="loading">Loading Products...</div>
+            <div class="loading-state">
+                <div class="spinner"></div>
+                <p>Syncing Live Catalog...</p>
+            </div>
         </div>
     </section>
 
-    <!-- RECENTLY VIEWED -->
+    <!-- 👀 RECENTLY VIEWED -->
     <section class="home-section">
         <div class="section-title">
             <h2>👀 Recently Viewed</h2>
-            <p>Products you checked recently</p>
+            <p>Products you inspected recently</p>
         </div>
         <div id="recent-products" class="product-grid"></div>
     </section>
 
-    <!-- TRENDING PRODUCTS -->
+    <!-- 🚀 TRENDING GEAR -->
     <section class="trending home-section">
         <div class="section-title">
-            <h2>🚀 Trending Now</h2>
-            <p>Most popular products</p>
+            <h2>🚀 Top Demand Gear</h2>
+            <p>Highest rated gaming setup essentials</p>
         </div>
         <div class="trend-grid">
             <div class="trend-card">
                 <div class="trend-icon">🎧</div>
-                <h3>Gaming Headset</h3>
-                <p>Pro gaming experience</p>
-                <button class="trend-btn" onclick="location.href='product.html'">🚀 View Products</button>
+                <h3>7.1 Surround Headset</h3>
+                <p>Pro Spatial Gaming Audio</p>
+                <button class="trend-btn" onclick="location.href='product.html'">🚀 Explore</button>
             </div>
             <div class="trend-card">
                 <div class="trend-icon">⌨️</div>
-                <h3>Gaming Keyboard</h3>
-                <p>RGB performance gear</p>
-                <button class="trend-btn" onclick="location.href='product.html'">🚀 View Products</button>
+                <h3>RGB Mechanical Keyboard</h3>
+                <p>Tactile Switches</p>
+                <button class="trend-btn" onclick="location.href='product.html'">🚀 Explore</button>
             </div>
             <div class="trend-card">
                 <div class="trend-icon">🖱️</div>
-                <h3>Gaming Mouse</h3>
-                <p>Fast & accurate control</p>
-                <button class="trend-btn" onclick="location.href='product.html'">🚀 View Products</button>
+                <h3>Ultra-Light Gaming Mouse</h3>
+                <p>High Precision Sensor</p>
+                <button class="trend-btn" onclick="location.href='product.html'">🚀 Explore</button>
             </div>
             <div class="trend-card">
                 <div class="trend-icon">📱</div>
-                <h3>Smart Gadgets</h3>
-                <p>Latest technology</p>
-                <button class="trend-btn" onclick="location.href='product.html'">🚀 View Products</button>
+                <h3>Gaming Finger Sleeves & Cooling Fans</h3>
+                <p>Zero-Lag Touch Response</p>
+                <button class="trend-btn" onclick="location.href='product.html'">🚀 Explore</button>
             </div>
         </div>
     </section>
 
-    <!-- DAILY DEALS -->
-    <section class="deals home-section">
-        <div class="deal-box">
-            <h2>🎁 Daily Deals</h2>
-            <p>Special offers updated every day.</p>
-            <button onclick="location.href='product.html'">Explore Deals</button>
-        </div>
-    </section>
-
-    <!-- SOCIAL SECTION -->
+    <!-- 🌐 SOCIAL & COMMUNITY -->
     <section class="home-section">
-        <div class="social-card">
-            <h2>🌐 Follow Faraz Store</h2>
-            <p>Stay updated with new products, offers and events.</p>
+        <div class="social-card glassmorphism">
+            <h2>🌐 Faraz Store Community</h2>
+            <p>Subscribe and follow for daily voucher codes & giveaways!</p>
             <div class="social-links">
-                <a href="https://www.youtube.com/@TK_RUSH" target="_blank">▶ YouTube</a>
-                <a href="https://www.instagram.com/faraz_anjum_000" target="_blank">📷 Instagram</a>
-                <a href="#">👍 Facebook</a>
+                <a href="https://www.youtube.com/@TK_RUSH" target="_blank" class="soc-btn yt">▶ YouTube Channel</a>
+                <a href="https://www.instagram.com/faraz_anjum_000" target="_blank" class="soc-btn insta">📷 Instagram Handle</a>
             </div>
         </div>
     </section>
 
-    <!-- LEADERBOARD -->
+    <!-- 🏆 LEADERBOARD -->
     <section class="home-section">
-        <div class="leaderboard-card">
-            <h2>🏆 Top Players</h2>
-            <div id="leaderboard">Loading Users...</div>
-            <button onclick="location.href='leaderboard.html'">View Full Leaderboard</button>
+        <div class="leaderboard-card glassmorphism">
+            <h2>🏆 Top Token Masters</h2>
+            <div id="leaderboard">Loading Community Ranks...</div>
+            <button class="view-more-btn" onclick="location.href='leaderboard.html'">Full Rankings Matrix →</button>
         </div>
     </section>
 
-    <!-- CUSTOMER REVIEWS -->
+    <!-- ⭐ REVIEWS -->
     <section class="reviews home-section">
         <div class="section-title">
-            <h2>⭐ Customer Reviews</h2>
-            <p>What users say about Faraz Store</p>
+            <h2>⭐ Verified Buyer Feedback</h2>
+            <p>Real reviews from gamers & customers</p>
         </div>
         <div class="review-grid">
-            <div class="review-card"><h3>⭐⭐⭐⭐⭐</h3><p>Amazing products and smooth shopping experience.</p><h4>- Faraz User</h4></div>
-            <div class="review-card"><h3>⭐⭐⭐⭐⭐</h3><p>Fast delivery and good quality products.</p><h4>- Gaming Customer</h4></div>
-            <div class="review-card"><h3>⭐⭐⭐⭐</h3><p>Great gaming collection.</p><h4>- Store Member</h4></div>
+            <div class="review-card">
+                <div class="stars">⭐⭐⭐⭐⭐</div>
+                <p>"Top-up voucher code immediately works! Super fast service."</p>
+                <h4>- Free Fire Player</h4>
+            </div>
+            <div class="review-card">
+                <div class="stars">⭐⭐⭐⭐⭐</div>
+                <p>"Luck Royale spin system is totally transparent and fun!"</p>
+                <h4>- Gamer_X</h4>
+            </div>
+            <div class="review-card">
+                <div class="stars">⭐⭐⭐⭐⭐</div>
+                <p>"Best prices for diamond packs and gaming gear in India."</p>
+                <h4>- Faraz Store Member</h4>
+            </div>
         </div>
     </section>
 
-    <!-- FAQ -->
+    <!-- ❓ FAQ -->
     <section class="faq home-section">
         <div class="section-title">
-            <h2>❓ FAQ</h2>
+            <h2>❓ Frequently Asked Questions</h2>
         </div>
         <div class="faq-box">
-            <h3>How can I order products?</h3>
-            <p>Select product → Add to cart → Checkout.</p>
+            <h3>How do I claim Diamond Codes?</h3>
+            <p>Buy a pack from Top-Up section → Get code from Admin → Paste code in redeem modal to instantly get diamonds.</p>
         </div>
         <div class="faq-box">
-            <h3>How can I track my order?</h3>
-            <p>Open My Orders section from your profile.</p>
-        </div>
-        <div class="faq-box">
-            <h3>Is payment secure?</h3>
-            <p>Yes, Faraz Store provides secure shopping.</p>
+            <h3>How do I check my order status?</h3>
+            <p>Navigate to "My Orders" from your profile menu to see live delivery updates.</p>
         </div>
     </section>
 
-    <!-- FEATURES -->
-    <section class="features">
-        <div><div class="feature-icon">🚚</div><h3>Fast Delivery</h3><p>Track your orders easily</p></div>
-        <div><div class="feature-icon">🔒</div><h3>Secure Shopping</h3><p>Safe payment system</p></div>
-        <div><div class="feature-icon">⭐</div><h3>Premium Quality</h3><p>Best products collection</p></div>
-    </section>
-
-    <!-- FOOTER -->
+    <!-- 🛑 FOOTER -->
     <footer class="footer">
-        <h2>FARAZ STORE</h2>
-        <p>Gaming + Shopping Experience</p>
+        <div class="footer-brand">
+            <h2>🔥 FARAZ STORE</h2>
+            <p>India's Premium Gaming & Shopping Destination</p>
+        </div>
         <div class="footer-links">
             <a href="index.html">Home</a>
-            <a href="product.html">Products</a>
-            <a href="orders.html">Orders</a>
-            <a href="contact.html">Contact</a>
+            <a href="luck-royale.html">Luck Royale</a>
+            <a href="topup.html">Buy Diamonds</a>
+            <a href="product.html">All Products</a>
+            <a href="orders.html">My Orders</a>
+            <a href="contact.html">Support</a>
         </div>
-        <div class="social">Instagram | YouTube | Facebook</div>
         <p class="copy">© 2026 Faraz Store. All Rights Reserved.</p>
     </footer>
-<!-- 👑 FIXED PREMIUM RESPONSIVE FLOATING BUTTONS MATRIX -->
-    <link rel="stylesheet" href="css/floating.css">
-    
-    <div class="floating-box">
-        <!-- 💎 New Luck Royale Hub Link -->
-       <a href="topup.html" style="text-decoration: none;">
-    <button style="background: #00e5ff; color: #000; font-weight: bold; border-radius: 5px; padding: 10px 15px; border: none; cursor: pointer;">
-        💎 Buy Diamonds
-    </button>
-</a>
 
-        <!-- Round Action Icons Grid Section -->
-        <a href="spin.html" class="float-btn spin-btn">🎰</a>
-        <a href="missions.html" class="float-btn mission-btn">🎯</a>
-        <a href="https://www.instagram.com/faraz_anjum_000" class="float-btn insta-btn" target="_blank">📷</a>
-        <a href="https://www.youtube.com/@TK_RUSH" class="float-btn youtube-btn" target="_blank">▶️</a>
-        
-        <!-- Premium Access Credentials Dashboard Node -->
+    <!-- 👑 FLOATING BUTTONS MATRIX -->
+    <div class="floating-box">
+        <a href="luck-royale.html" class="royale-link">👑 LUCK ROYALE</a>
+        <a href="topup.html" class="float-btn diamond-btn" title="Top-Up Diamonds">💎</a>
+        <a href="https://www.instagram.com/faraz_anjum_000" class="float-btn insta-btn" target="_blank" title="Instagram">📷</a>
+        <a href="https://www.youtube.com/@TK_RUSH" class="float-btn youtube-btn" target="_blank" title="YouTube">▶️</a>
         <a href="admin-login.html" class="admin-btn">👑 <span>Admin</span></a>
     </div>
 

@@ -4,7 +4,17 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Wishlist | Faraz Store</title>
+    <title>My Wishlist | Faraz Store</title>
+    <meta name="description" content="Your pinned items and favorite products collection on Faraz Store.">
+    <meta name="theme-color" content="#020617">
+    <link rel="icon" href="favicon.ico">
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700;900&family=Plus+Jakarta+Sans:wght@500;700;800&display=swap" rel="stylesheet">
+
+    <!-- CSS Links -->
     <link rel="stylesheet" href="css/global.css">
     <link rel="stylesheet" href="css/header.css">
     <link rel="stylesheet" href="css/wishlist.css">
@@ -14,45 +24,51 @@
 
 <body>
 
-    <!-- HEADER -->
+    <!-- 🚀 HEADER -->
     <header class="header">
-        <div class="logo">
-            FARAZ <span>STORE</span>
+        <div class="logo-area">
+            <a href="index.html" class="logo">
+                <span>🔥</span> FARAZ <span class="gradient-text">STORE</span>
+            </a>
         </div>
 
         <nav class="navbar">
             <a href="index.html">Home</a>
-            <a href="product.html">Products</a>
+            <a href="products.html">Products</a>
             <a href="cart.html">Cart</a>
             <a href="wishlist.html" class="active">Wishlist</a>
+            <a href="orders.html">Orders</a>
         </nav>
 
         <div class="header-buttons">
-            <button onclick="location.href='index.html'">🏠</button>
-            <button onclick="location.href='cart.html'">🛒</button>
-            <button onclick="location.href='login.html'">👤</button>
+            <button onclick="location.href='index.html'" title="Home">🏠</button>
+            <button onclick="location.href='cart.html'" title="Cart">🛒</button>
+            <button onclick="location.href='profile.html'" title="Profile">👤</button>
         </div>
     </header>
 
-    <!-- WISHLIST MAIN CONTAINER -->
-    <main class="wishlist-wrapper">
+    <!-- ❤️ WISHLIST MAIN CONTAINER -->
+    <main class="wishlist-wrapper" style="width: 90%; max-width: 1200px; margin: 40px auto; min-height: 60vh;">
         <section class="wishlist-section">
-            <div class="section-title-box">
-                <h1>❤️ My Wishlist</h1>
-                <p>Your pinned items and favorite products collection</p>
+            <div class="section-title-box" style="text-align: center; margin-bottom: 30px;">
+                <h1 style="font-family: 'Orbitron', sans-serif; font-size: 28px; color: #ff0055;">❤️ My Wishlist</h1>
+                <p style="color: #94a3b8; font-size: 14px;">Your pinned items and favorite products collection</p>
             </div>
             
             <!-- Products grid mapping injection point -->
             <div id="wishlist-box" class="product-grid">
-                <div class="loading-state">Loading Wishlist...</div>
+                <div class="loading-state">
+                    <div class="spinner"></div>
+                    <p>Loading Wishlist Items...</p>
+                </div>
             </div>
         </section>
     </main>
 
-    <!-- FOOTER -->
+    <!-- 🛑 FOOTER -->
     <footer class="footer">
-        <h2>FARAZ STORE</h2>
-        <p>Gaming + Shopping Experience</p>
+        <h2>🔥 FARAZ STORE</h2>
+        <p>Gaming + Smart Shopping Experience</p>
         <p class="copy">© 2026 Faraz Store. All Rights Reserved.</p>
     </footer>
 
@@ -60,66 +76,5 @@
     <script type="module" src="js/wishlist.js"></script>
 
 </body>
-</html><!DOCTYPE html>
-<html lang="en">
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Wishlist | Faraz Store</title>
-    <link rel="stylesheet" href="css/global.css">
-    <link rel="stylesheet" href="css/header.css">
-    <link rel="stylesheet" href="css/wishlist.css">
-    <link rel="stylesheet" href="css/footer.css">
-    <link rel="stylesheet" href="css/responsive.css">
-</head>
-
-<body>
-
-    <!-- HEADER -->
-    <header class="header">
-        <div class="logo">
-            FARAZ <span>STORE</span>
-        </div>
-
-        <nav class="navbar">
-            <a href="index.html">Home</a>
-            <a href="product.html">Products</a>
-            <a href="cart.html">Cart</a>
-            <a href="wishlist.html" class="active">Wishlist</a>
-        </nav>
-
-        <div class="header-buttons">
-            <button onclick="location.href='index.html'">🏠</button>
-            <button onclick="location.href='cart.html'">🛒</button>
-            <button onclick="location.href='login.html'">👤</button>
-        </div>
-    </header>
-
-    <!-- WISHLIST MAIN CONTAINER -->
-    <main class="wishlist-wrapper">
-        <section class="wishlist-section">
-            <div class="section-title-box">
-                <h1>❤️ My Wishlist</h1>
-                <p>Your pinned items and favorite products collection</p>
-            </div>
-            
-            <!-- Products grid mapping injection point -->
-            <div id="wishlist-box" class="product-grid">
-                <div class="loading-state">Loading Wishlist...</div>
-            </div>
-        </section>
-    </main>
-
-    <!-- FOOTER -->
-    <footer class="footer">
-        <h2>FARAZ STORE</h2>
-        <p>Gaming + Shopping Experience</p>
-        <p class="copy">© 2026 Faraz Store. All Rights Reserved.</p>
-    </footer>
-
-    <!-- INTERACTIVITY MATRIX SCRIPT -->
-    <script type="module" src="js/wishlist.js"></script>
-
-</body>
 </html>

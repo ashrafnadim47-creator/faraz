@@ -1,49 +1,50 @@
 <!DOCTYPE html>
-
-<html>
+<html lang="en">
 
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Notifications | Faraz Store</title>
+    <meta name="description" content="View your order status updates, vouchers, and store alerts.">
+    <meta name="theme-color" content="#020617">
+    <link rel="icon" href="favicon.ico">
 
-<title>Notifications | Faraz Store</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700;900&family=Plus+Jakarta+Sans:wght@500;700;800&display=swap" rel="stylesheet">
 
-<link rel="stylesheet" href="css/global.css">
-
-<link rel="stylesheet" href="css/notifications.css">
-
+    <!-- CSS Links -->
+    <link rel="stylesheet" href="css/global.css">
+    <link rel="stylesheet" href="css/notifications.css">
 </head>
 
+<body class="notification-page-bg">
 
-<body>
+    <section class="notification-page" style="max-width: 680px; margin: 30px auto; padding: 0 15px;">
+        
+        <div class="notification-card glassmorphism" style="padding: 30px; border-radius: 24px;">
+            
+            <header class="notif-header" style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px dashed rgba(255, 255, 255, 0.1); padding-bottom: 15px; margin-bottom: 20px;">
+                <h1 style="font-family: 'Orbitron', sans-serif; font-size: 22px; color: #00e5ff; margin: 0;">
+                    🔔 Notifications
+                </h1>
+                <button class="nav-btn-back" onclick="location.href='index.html'" style="padding: 6px 14px; font-size: 12px;">← Back to Shop</button>
+            </header>
 
+            <div id="notification-list">
+                <div class="loading-state">
+                    <div class="spinner"></div>
+                    <p>Fetching Your Notifications...</p>
+                </div>
+            </div>
 
-<section class="notification-page">
+        </div>
 
+    </section>
 
-<div class="notification-card">
-
-
-<h1>
-🔔 Notifications
-</h1>
-
-
-
-<div id="notification-list">
-
-Loading...
-
-</div>
-
-
-</div>
-
-
-</section>
-
-
-
-<script type="module" src="js/notifications.js"></script>
-
+    <!-- SCRIPT INTEGRATION -->
+    <script type="module" src="js/notifications.js"></script>
 
 </body>
 

@@ -1,70 +1,67 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create Account | Faraz Store</title>
+    <meta name="description" content="Sign up for Faraz Store to unlock exclusive gaming gear, top-up vouchers, and rewards.">
+    <meta name="theme-color" content="#0b0f19">
+    <link rel="icon" href="favicon.ico">
 
-<title>Signup | Faraz Store</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700;900&family=Plus+Jakarta+Sans:wght@500;700;800&display=swap" rel="stylesheet">
 
-<link rel="stylesheet" href="css/global.css">
-<link rel="stylesheet" href="css/login.css">
-
+    <!-- CSS Links -->
+    <link rel="stylesheet" href="css/global.css">
+    <link rel="stylesheet" href="css/login.css">
 </head>
-
 
 <body>
 
+    <!-- Fullscreen Flex Wrapper for User Signup -->
+    <section class="user-login-page">
+        
+        <div class="user-login-card glassmorphism">
+            <div class="user-login-header">
+                <h1>⚡ FARAZ <span>STORE</span></h1>
+                <p>CREATE YOUR ACCOUNT</p>
+            </div>
 
-<section class="auth-box">
+            <!-- Form Input Fields -->
+            <div class="user-input-group">
+                <label for="name">Full Name</label>
+                <input id="name" type="text" placeholder="Enter your full name" autocomplete="off">
+            </div>
 
+            <div class="user-input-group">
+                <label for="email">Email Address</label>
+                <input id="email" type="email" placeholder="Enter your email address" autocomplete="off">
+            </div>
 
-<h1>
-Create Account
-</h1>
+            <div class="user-input-group">
+                <label for="password">Password</label>
+                <input id="password" type="password" placeholder="••••••••">
+            </div>
 
+            <!-- Action Submit Trigger -->
+            <button id="signup-btn" class="user-submit-btn">
+                Create Account
+            </button>
 
+            <!-- Navigation Redirection Links -->
+            <div class="user-login-footer-links">
+                <p>Already have an account? <a href="login.html">Sign In</a></p>
+                <a href="index.html" style="display: inline-block; margin-top: 12px; color: #94a3b8; font-size: 12px;">← Return to Home Shop</a>
+            </div>
+        </div>
 
-<input id="name" placeholder="Full Name">
+    </section>
 
-
-
-<input id="email" placeholder="Email">
-
-
-
-<input 
-id="password"
-type="password"
-placeholder="Password">
-
-
-
-<button id="signup-btn">
-
-Signup
-
-</button>
-
-
-
-<p>
-
-Already have account?
-
-<a href="login.html">
-
-Login
-
-</a>
-
-</p>
-
-
-</section>
-
-
-
-<script type="module" src="js/signup.js"></script>
-
+    <!-- Core Auth Tracking Module Engine -->
+    <script type="module" src="js/signup.js"></script>
 
 </body>
 

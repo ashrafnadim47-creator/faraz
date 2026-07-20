@@ -1,430 +1,269 @@
-body{
+/* ==========================================================================
+   🔥 FARAZ STORE v2.0 - LUCKY SPIN WHEEL STYLING (CYBERPUNK & GLASSMORPHIC)
+   ========================================================================== */
 
-margin:0;
-
-height:100vh;
-
-background:#111;
-
-color:white;
-
-font-family:Arial;
-
-display:flex;
-
-justify-content:center;
-
-align-items:center;
-
+.spin-page-bg {
+    background: radial-gradient(circle at top center, #1e1b4b 0%, #020617 70%);
+    color: #e2e8f0;
+    min-height: 100vh;
+    padding: 25px 15px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
-
-.spin-container{
-
-text-align:center;
-
+.spin-container {
+    width: 100%;
+    max-width: 480px;
+    background: rgba(15, 23, 42, 0.85);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 24px;
+    padding: 30px 20px;
+    text-align: center;
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.8), 0 0 30px rgba(0, 229, 255, 0.15);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
 }
 
-
-
-#wheel{
-
-width:300px;
-
-height:300px;
-
-border-radius:50%;
-
-margin:30px auto;
-
-position:relative;
-
-overflow:hidden;
-
-border:8px solid white;
-
-background:conic-gradient(
-
-#ff5252 0deg 60deg,
-
-#ffc107 60deg 120deg,
-
-#4caf50 120deg 180deg,
-
-#2196f3 180deg 240deg,
-
-#9c27b0 240deg 300deg,
-
-#ff9800 300deg 360deg
-
-);
-
+.spin-header {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 20px;
 }
 
-
-
-#wheel{
-
-width:300px;
-height:300px;
-
-border-radius:50%;
-
-margin:30px auto;
-
-position:relative;
-
-overflow:hidden;
-
-border:8px solid white;
-
-background:conic-gradient(
-#ff5252 0deg 60deg,
-#ffc107 60deg 120deg,
-#4caf50 120deg 180deg,
-#2196f3 180deg 240deg,
-#9c27b0 240deg 300deg,
-#ff9800 300deg 360deg
-);
-
+.spin-title {
+    font-family: 'Orbitron', 'Segoe UI', sans-serif;
+    font-size: 22px;
+    font-weight: 900;
+    color: #00e5ff;
+    text-shadow: 0 0 12px rgba(0, 229, 255, 0.5);
+    letter-spacing: 1px;
 }
 
-
-
-.wheel-text{
-
-position:absolute;
-
-width:100%;
-
-height:100%;
-
-display:flex;
-
-justify-content:center;
-
-align-items:flex-start;
-
-padding-top:35px;
-
-font-size:14px;
-
-font-weight:bold;
-
-color:white;
-
+/* ==========================================================================
+   🎡 WHEEL ARENA & ROTATION
+   ========================================================================== */
+.wheel-wrapper {
+    position: relative;
+    width: 300px;
+    height: 330px;
+    margin: 20px auto;
 }
 
-
-
-.t1{
-transform:rotate(30deg);
+.pointer {
+    position: absolute;
+    top: -8px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 38px;
+    color: #ffcc00;
+    z-index: 10;
+    filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.8));
+    animation: pointer-bounce 1s infinite alternate ease-in-out;
 }
 
-
-.t2{
-transform:rotate(90deg);
+@keyframes pointer-bounce {
+    from { transform: translateX(-50%) translateY(0); }
+    to { transform: translateX(-50%) translateY(-4px); }
 }
 
-
-.t3{
-transform:rotate(150deg);
+#wheel {
+    width: 300px;
+    height: 300px;
+    border-radius: 50%;
+    margin: 0 auto;
+    position: relative;
+    overflow: hidden;
+    border: 6px solid #ffcc00;
+    box-shadow: 0 0 25px rgba(255, 204, 0, 0.4), inset 0 0 15px rgba(0, 0, 0, 0.5);
+    background: conic-gradient(
+        #ff5252 0deg 60deg,
+        #ffc107 60deg 120deg,
+        #4caf50 120deg 180deg,
+        #2196f3 180deg 240deg,
+        #9c27b0 240deg 300deg,
+        #ff9800 300deg 360deg
+    );
+    transition: transform 4s cubic-bezier(0.15, 0.85, 0.15, 1);
 }
 
-
-.t4{
-transform:rotate(210deg);
+.wheel-text {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    padding-top: 32px;
+    font-size: 13px;
+    font-weight: 800;
+    color: #ffffff;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.8);
+    font-family: 'Plus Jakarta Sans', sans-serif;
 }
 
+.t1 { transform: rotate(30deg); }
+.t2 { transform: rotate(90deg); }
+.t3 { transform: rotate(150deg); }
+.t4 { transform: rotate(210deg); }
+.t5 { transform: rotate(270deg); }
+.t6 { transform: rotate(330deg); }
 
-.t5{
-transform:rotate(270deg);
+.center-logo {
+    position: absolute;
+    width: 86px;
+    height: 86px;
+    background: #020617;
+    border: 4px solid #ffcc00;
+    border-radius: 50%;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    font-size: 14px;
+    font-weight: 900;
+    color: #ffcc00;
+    z-index: 5;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.8);
+    font-family: 'Orbitron', sans-serif;
 }
 
-
-.t6{
-transform:rotate(330deg);
+.center-logo span {
+    color: #00e5ff;
+    font-size: 11px;
 }
 
-
-
-.p1{transform:rotate(0deg);}
-
-.p2{transform:rotate(60deg);}
-
-.p3{transform:rotate(120deg);}
-
-.p4{transform:rotate(180deg);}
-
-.p5{transform:rotate(240deg);}
-
-.p6{transform:rotate(300deg);}
-
-
-
-.rotate{
-
-animation:spin 4s ease;
-
+/* ==========================================================================
+   ⚡ SPIN CONTROLS & DISPLAY
+   ========================================================================== */
+.spin-trigger-btn {
+    width: 100%;
+    max-width: 260px;
+    padding: 14px;
+    border: none;
+    border-radius: 30px;
+    background: linear-gradient(135deg, #ff9900, #ff5500);
+    color: #ffffff;
+    font-size: 18px;
+    font-weight: 900;
+    cursor: pointer;
+    box-shadow: 0 4px 18px rgba(255, 153, 0, 0.4);
+    transition: all 0.25s ease;
+    font-family: 'Orbitron', sans-serif;
+    margin-top: 10px;
 }
 
-
-
-@keyframes spin{
-
-100%{
-
-transform:rotate(1440deg);
-
+.spin-trigger-btn:hover {
+    filter: brightness(1.15);
+    transform: translateY(-2px);
 }
 
+.spin-trigger-btn:disabled {
+    background: #334155;
+    color: #94a3b8;
+    box-shadow: none;
+    cursor: not-allowed;
+    transform: none;
 }
 
-
-
-button{
-
-padding:15px 35px;
-
-border:none;
-
-border-radius:30px;
-
-background:#ff9800;
-
-color:white;
-
-font-size:20px;
-
-cursor:pointer;
-
+.spin-result-text {
+    font-size: 18px;
+    color: #ffcc00;
+    margin-top: 15px;
+    min-height: 24px;
+    font-weight: 800;
 }
 
-
-
-button:disabled{
-
-background:gray;
-
+.spin-coupon-code {
+    font-size: 14px;
+    color: #00e5ff;
+    margin-top: 5px;
+    font-weight: 700;
 }
 
-
-
-#timer{
-
-margin-top:20px;
-
-font-size:18px;
-
-color:#ffd54f;
-
-}
-.wheel-wrapper{
-
-position:relative;
-
-width:300px;
-
-height:330px;
-
-margin:auto;
-
+.spin-cooldown-timer {
+    margin-top: 12px;
+    font-size: 15px;
+    color: #ffd54f;
+    font-weight: 700;
 }
 
-
-
-.pointer{
-
-position:absolute;
-
-top:-5px;
-
-left:50%;
-
-transform:translateX(-50%);
-
-font-size:45px;
-
-color:#ffcc00;
-
-z-index:10;
-
-text-shadow:0 3px 10px black;
-
+/* ==========================================================================
+   🎉 REWARD POPUP MODAL
+   ========================================================================== */
+.reward-card {
+    background: rgba(15, 23, 42, 0.95);
+    border: 2px solid #ffcc00;
+    border-radius: 24px;
+    padding: 30px 24px;
+    width: 90%;
+    max-width: 360px;
+    text-align: center;
+    box-shadow: 0 0 40px rgba(255, 204, 0, 0.3);
+    animation: popup-bounce 0.4s cubic-bezier(0.18, 0.89, 0.32, 1.28);
 }
 
-
-
-.center-logo{
-
-position:absolute;
-
-width:90px;
-
-height:90px;
-
-background:#111;
-
-border:5px solid white;
-
-border-radius:50%;
-
-top:50%;
-
-left:50%;
-
-transform:translate(-50%,-50%);
-
-display:flex;
-
-justify-content:center;
-
-align-items:center;
-
-flex-direction:column;
-
-font-size:15px;
-
-font-weight:bold;
-
-color:#ff9800;
-
-z-index:5;
-
-box-shadow:0 0 20px black;
-
+@keyframes popup-bounce {
+    from { transform: scale(0.7); opacity: 0; }
+    to { transform: scale(1); opacity: 1; }
 }
 
-
-
-.center-logo span{
-
-color:white;
-
-font-size:12px;
-
+.reward-icon {
+    font-size: 55px;
+    animation: bounce 1s infinite alternate ease-in-out;
 }
 
-
-
-#wheel{
-
-position:relative;
-
-}
-#reward-popup{
-
-position:fixed;
-
-top:0;
-
-left:0;
-
-width:100%;
-
-height:100%;
-
-background:rgba(0,0,0,.7);
-
-display:none;
-
-justify-content:center;
-
-align-items:center;
-
-z-index:100;
-
-
+@keyframes bounce {
+    from { transform: translateY(0); }
+    to { transform: translateY(-10px); }
 }
 
-
-
-.reward-card{
-
-background:white;
-
-color:#222;
-
-width:320px;
-
-padding:30px;
-
-border-radius:25px;
-
-text-align:center;
-
-animation:popup .5s ease;
-
+.reward-title {
+    color: #ffcc00;
+    font-size: 22px;
+    font-weight: 900;
+    margin: 10px 0;
+    font-family: 'Orbitron', sans-serif;
 }
 
-
-
-.reward-icon{
-
-font-size:60px;
-
-animation:bounce 1s infinite;
-
+.reward-highlight {
+    color: #00e5ff;
+    font-size: 18px;
+    font-weight: 800;
+    margin-bottom: 10px;
 }
 
-
-
-.reward-card h1{
-
-color:#ff9800;
-
+.reward-code-box {
+    background: #020617;
+    border: 1px dashed #ffcc00;
+    padding: 10px;
+    border-radius: 10px;
+    font-size: 15px;
+    color: #ffcc00;
+    font-weight: 800;
+    letter-spacing: 1px;
+    margin-bottom: 20px;
 }
 
-
-
-#close-popup{
-
-margin-top:20px;
-
-padding:12px 35px;
-
-border:none;
-
-border-radius:20px;
-
-background:#ff9800;
-
-color:white;
-
-font-size:18px;
-
+.reward-close-btn {
+    width: 100%;
+    padding: 12px;
+    border: none;
+    border-radius: 12px;
+    background: linear-gradient(135deg, #ffcc00, #ff9900);
+    color: #020617;
+    font-size: 15px;
+    font-weight: 900;
+    cursor: pointer;
+    box-shadow: 0 4px 15px rgba(255, 204, 0, 0.3);
+    transition: all 0.2s ease;
 }
 
-
-
-@keyframes popup{
-
-from{
-
-transform:scale(.5);
-
-opacity:0;
-
-}
-
-to{
-
-transform:scale(1);
-
-opacity:1;
-
-}
-
-}
-
-
-
-@keyframes bounce{
-
-50%{
-
-transform:translateY(-10px);
-
-}
-
+.reward-close-btn:hover {
+    filter: brightness(1.15);
 }

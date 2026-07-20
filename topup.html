@@ -1,90 +1,135 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Diamond Top-Up & Membership | Faraz Store</title>
+    <title>Diamond Top-Up & Memberships | Faraz Store</title>
+    <meta name="description" content="Instant Free Fire Diamond Top-Up & Membership Vouchers at Faraz Store">
+    <meta name="theme-color" content="#020617">
+    <link rel="icon" href="favicon.ico">
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600;800;900&family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
+
+    <!-- CSS Links -->
+    <link rel="stylesheet" href="css/global.css">
     <link rel="stylesheet" href="css/topup.css">
 </head>
-<body>
+
+<body class="topup-page-bg">
 
     <div class="topup-container">
-        <div class="topup-header">
-            <div>
-                <h1>DIAMOND TOP-UP</h1>
-                <button class="nav-btn" onclick="location.href='index.html'">← Back to Shop</button>
+        <!-- TOP-UP HEADER BAR -->
+        <header class="topup-header glassmorphism">
+            <div class="header-left">
+                <button class="nav-btn-back" onclick="location.href='index.html'">← Back to Shop</button>
+                <h1 class="topup-title">💎 DIAMOND TOP-UP HUB</h1>
             </div>
-            <div class="current-balance">
-                Balance: <span id="topup-wallet">💎 0</span>
+            <div class="current-balance glow-cyan">
+                <span class="balance-label">Wallet Balance:</span>
+                <span id="topup-wallet" class="balance-value">💎 0</span>
             </div>
-        </div>
+        </header>
 
         <!-- MEMBERSHIPS SECTIONS -->
-        <div class="section-title">Memberships (Special Offer)</div>
-        <div class="membership-grid">
-            
-            <!-- Weekly Card -->
-            <div class="membership-card">
-                <div class="badge">Sasta 4x</div>
-                <div class="card-title weekly">WEEKLY CARD</div>
-                <div class="diamonds-total">💎 450</div>
-                <div class="diamonds-breakdown">Claim 50 Diamonds daily for 7 Days<br>+ 100 Instantly!</div>
-                <button class="buy-btn trigger-redeem-btn" data-product="Weekly Membership" data-diamonds="450" data-price="159">₹159 / Buy</button>
-            </div>
+        <section class="topup-section">
+            <h2 class="section-title">👑 Premium Memberships (Special Value)</h2>
+            <div class="membership-grid">
+                
+                <!-- Weekly Membership Card -->
+                <div class="membership-card glassmorphism">
+                    <div class="card-badge badge-weekly">🔥 SASTA 4X VALUE</div>
+                    <div class="card-icon">⚡</div>
+                    <h3 class="card-title weekly">WEEKLY CARD</h3>
+                    <div class="diamonds-total">💎 450 Total</div>
+                    <p class="diamonds-breakdown">Claim 50 Diamonds daily for 7 Days<br>+ 100 Instant Bonus!</p>
+                    <button class="buy-btn trigger-redeem-btn weekly-btn" data-product="Weekly Membership" data-diamonds="450" data-price="159">
+                        ₹159 / Unlock
+                    </button>
+                </div>
 
-            <!-- Monthly Card -->
-            <div class="membership-card monthly">
-                <div class="badge" style="background: #a855f7;">Popular 6x</div>
-                <div class="card-title monthly">MONTHLY CARD</div>
-                <div class="diamonds-total" style="color: #c084fc;">💎 2,600</div>
-                <div class="diamonds-breakdown">Claim 70 Diamonds daily for 30 Days<br>+ 500 Instantly!</div>
-                <button class="buy-btn trigger-redeem-btn" style="background: linear-gradient(180deg, #d8b4fe 0%, #a855f7 100%);" data-product="Monthly Membership" data-diamonds="2600" data-price="799">₹799 / Buy</button>
-            </div>
+                <!-- Monthly Membership Card -->
+                <div class="membership-card glassmorphism monthly-glow">
+                    <div class="card-badge badge-monthly">⭐ POPULAR 6X VALUE</div>
+                    <div class="card-icon">👑</div>
+                    <h3 class="card-title monthly">MONTHLY CARD</h3>
+                    <div class="diamonds-total monthly-text">💎 2,600 Total</div>
+                    <p class="diamonds-breakdown">Claim 70 Diamonds daily for 30 Days<br>+ 500 Instant Bonus!</p>
+                    <button class="buy-btn trigger-redeem-btn monthly-btn" data-product="Monthly Membership" data-diamonds="2600" data-price="799">
+                        ₹799 / Unlock
+                    </button>
+                </div>
 
-        </div>
+            </div>
+        </section>
 
         <!-- INSTANT DIAMOND PACKS -->
-        <div class="section-title">Instant Top-Up Packs</div>
-        <div class="packs-grid">
-            
-            <div class="pack-card trigger-redeem-btn" data-product="Small Pack" data-diamonds="50" data-price="40">
-                <img src="https://img.icons8.com/external-wanicon-flat-wanicon/64/external-diamond-jewellery-wanicon-flat-wanicon.png" alt="Diamond">
-                <div class="pack-diamonds">💎 50</div>
-                <div class="pack-price">₹40</div>
-            </div>
+        <section class="topup-section">
+            <h2 class="section-title">⚡ Instant Top-Up Packs</h2>
+            <div class="packs-grid">
+                
+                <div class="pack-card glassmorphism trigger-redeem-btn" data-product="Small Pack" data-diamonds="50" data-price="40">
+                    <div class="pack-icon">💎</div>
+                    <div class="pack-diamonds">💎 50</div>
+                    <div class="pack-price">₹40</div>
+                    <button class="pack-action-btn">Buy Code</button>
+                </div>
 
-            <div class="pack-card trigger-redeem-btn" data-product="Medium Pack" data-diamonds="100" data-price="80">
-                <img src="https://img.icons8.com/external-wanicon-flat-wanicon/64/external-diamond-jewellery-wanicon-flat-wanicon.png" alt="Diamond">
-                <div class="pack-diamonds">💎 100</div>
-                <div class="pack-price">₹80</div>
-            </div>
+                <div class="pack-card glassmorphism trigger-redeem-btn" data-product="Medium Pack" data-diamonds="100" data-price="80">
+                    <div class="pack-icon">💎💎</div>
+                    <div class="pack-diamonds">💎 100</div>
+                    <div class="pack-price">₹80</div>
+                    <button class="pack-action-btn">Buy Code</button>
+                </div>
 
-            <div class="pack-card trigger-redeem-btn" data-product="Mega Pack" data-diamonds="310" data-price="240">
-                <img src="https://img.icons8.com/external-wanicon-flat-wanicon/64/external-diamond-jewellery-wanicon-flat-wanicon.png" alt="Diamond">
-                <div class="pack-diamonds">💎 310</div>
-                <div class="pack-price">₹240</div>
-            </div>
+                <div class="pack-card glassmorphism trigger-redeem-btn" data-product="Mega Pack" data-diamonds="310" data-price="240">
+                    <div class="pack-icon">💎💎💎</div>
+                    <div class="pack-diamonds">💎 310</div>
+                    <div class="pack-price">₹240</div>
+                    <button class="pack-action-btn">Buy Code</button>
+                </div>
 
-        </div>
+                <div class="pack-card glassmorphism trigger-redeem-btn" data-product="Ultra Pack" data-diamonds="520" data-price="400">
+                    <div class="pack-icon">👑💎</div>
+                    <div class="pack-diamonds">💎 520</div>
+                    <div class="pack-price">₹400</div>
+                    <button class="pack-action-btn">Buy Code</button>
+                </div>
+
+                <div class="pack-card glassmorphism trigger-redeem-btn" data-product="Supreme Pack" data-diamonds="1060" data-price="800">
+                    <div class="pack-icon">🔥💎</div>
+                    <div class="pack-diamonds">💎 1,060</div>
+                    <div class="pack-price">₹800</div>
+                    <button class="pack-action-btn">Buy Code</button>
+                </div>
+
+            </div>
+        </section>
     </div>
 
-    <!-- DYNAMIC POPUP WINDOW FOR REDEEM CODE -->
-    <div class="modal-overlay" id="redeem-popup-window" style="display: none;">
-        <div class="modal-card">
-            <div class="modal-title">🔓 ENTER VOUCHER CODE</div>
+    <!-- DYNAMIC POPUP MODAL FOR VOUCHER REDEEM -->
+    <div class="modal-overlay" id="redeem-popup-window">
+        <div class="modal-card glassmorphism">
+            <div class="modal-title">🔓 REDEEM DIAMOND CODE</div>
             <p class="modal-info-text" id="modal-product-details">Product: Pack | Price: ₹0</p>
-            <p class="modal-sub-text">Pay the amount to Admin via UPI/Paytm, then paste your unique code below to unlock diamonds.</p>
+            <p class="modal-sub-text">Pay the amount to Admin via UPI/Paytm, get your unique voucher code, and paste it below to instantly credit diamonds!</p>
             
-            <input type="text" id="popup-voucher-input" placeholder="PASTE VOUCHER CODE HERE" autocomplete="off">
+            <div class="input-wrapper">
+                <input type="text" id="popup-voucher-input" placeholder="PASTE VOUCHER CODE (e.g. FZ-100-A9X2)" autocomplete="off">
+            </div>
             
             <div class="modal-btn-group">
                 <button class="modal-btn cancel" id="close-modal-btn">Cancel</button>
-                <button class="modal-btn confirm" id="claim-reward-btn">Claim Reward</button>
+                <button class="modal-btn confirm" id="claim-reward-btn">⚡ Claim Reward</button>
             </div>
         </div>
     </div>
 
-    <!-- ⚡ FIXED: type="module" integration attached mapping -->
+    <!-- SCRIPT INTEGRATION -->
     <script type="module" src="js/topup.js"></script>
 </body>
+
 </html>

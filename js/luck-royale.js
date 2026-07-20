@@ -27,13 +27,16 @@ let currentTokens = 0;
 let isSpinning = false;
 let activeKey = "mystical-ring";
 let activeShopTab = "grand";
+let lockIntervalTimer = null;
 
 // ==========================================================================
-// 💎 RING EVENTS DATASET
+// 💎 RING EVENTS DATASET (WITH LOCK SYSTEM)
 // ==========================================================================
 const gameEventsData = {
     "mystical-ring": {
         title: "MYSTICAL RING",
+        isLocked: false,
+        unlockDate: null,
         slots: [
             { name: "iPhone 16 Pro Max", img: "images/iphone16.png", grand: true, isToken: false, type: "🏆 GRAND PRIZE" },
             { name: "1 Token", img: "images/token.png", isToken: true, amount: 1, type: "🪙 MYSTICAL TOKEN" },
@@ -47,6 +50,8 @@ const gameEventsData = {
     },
     "wall-royale": {
         title: "WALL STORE",
+        isLocked: false,
+        unlockDate: null,
         slots: [
             { name: "Red Gloo Wall", img: "images/gloowall.png", grand: true, isToken: false, type: "🏆 LEGENDARY SKIN" },
             { name: "1 Token", img: "images/token.png", isToken: true, amount: 1, type: "🪙 ROYALE TOKEN" },
@@ -59,7 +64,9 @@ const gameEventsData = {
         ]
     },
     "diwali-ring": {
-        title: "DIWALI RING",
+        title: "DIWALI RING 🪔",
+        isLocked: true, // 🔒 LOCK ACTIVATED
+        unlockDate: "2026-11-01T00:00:00", // Yahan aap apni Unlock Date/Time set kar sakte hain
         slots: [
             { name: "Diwali Bundle", img: "images/diwali_bundle.png", grand: true, isToken: false, type: "🏆 MYTHIC BUNDLE" },
             { name: "1 Token", img: "images/token.png", isToken: true, amount: 1, type: "🪙 DIWALI TOKEN" },
@@ -104,11 +111,103 @@ onAuthStateChanged(auth, (user) => {
     }
 });
 
+// ==========================================================================
+// 🔒 LOCK & COUNTDOWN ENGINE FOR SPECIAL EVENTS
+// ==========================================================================
+function checkAndRenderEventLockState(key) {
+    const event = gameEventsData[key];
+    if (lockIntervalTimer) clearInterval(lockIntervalTimer);
+
+    const spin1Btn = document.getElementById("btn-spin-1");
+    const spin10Btn = document.getElementById("btn-spin-10");
+
+    // Remove existing lock overlays if any
+    const existingOverlay = document.getElementById("event-lock-overlay");
+    if (existingOverlay) existingOverlay.remove();
+
+    if (!event || !event.isLocked) {
+        // Unlock Spin Buttons
+        if (spin1Btn) spin1Btn.disabled = false;
+        if (spin10Btn) spin10Btn.disabled = false;
+        return false; // Event is active
+    }
+
+    // Disable Spin Buttons
+    if (spin1Btn) spin1Btn.disabled = true;
+    if (spin10Btn) spin10Btn.disabled = true;
+
+    // Create Lock Overlay over wheel container
+    const lockOverlay = document.createElement("div");
+    lockOverlay.id = "event-lock-overlay";
+    lockOverlay.style.cssText = `
+        position: absolute;
+        inset: 0;
+        background: rgba(2, 6, 23, 0.92);
+        backdrop-filter: blur(8px);
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        z-index: 100;
+        border-radius: 50%;
+        text-align: center;
+        padding: 20px;
+        border: 2px dashed #ffcc00;
+    `;
+
+    lockOverlay.innerHTML = `
+        <div style="font-size: 45px; margin-bottom: 8px;">🔒</div>
+        <h3 style="color: #ffcc00; font-family: 'Orbitron', sans-serif; font-size: 18px; margin-bottom: 6px;">EVENT LOCKED</h3>
+        <p style="color: #cbd5e1; font-size: 12px; margin-bottom: 12px;">Diwali Special Event unlocks soon!</p>
+        <div id="lock-timer-display" style="font-family: 'Orbitron', sans-serif; font-size: 14px; font-weight: 900; color: #00e5ff; background: rgba(0,229,255,0.1); padding: 8px 16px; border-radius: 20px; border: 1px solid #00e5ff;">
+            Calculating...
+        </div>
+    `;
+
+    if (wheelContainer) {
+        wheelContainer.style.position = "relative";
+        wheelContainer.appendChild(lockOverlay);
+    }
+
+    // Timer Calculation
+    const targetTime = new Date(event.unlockDate).getTime();
+
+    function updateCountdown() {
+        const now = new Date().getTime();
+        const diff = targetTime - now;
+
+        const timerDisplay = document.getElementById("lock-timer-display");
+
+        if (diff <= 0) {
+            // Unlock automatically
+            event.isLocked = false;
+            clearInterval(lockIntervalTimer);
+            setupCircularWheelLayout(key);
+            return;
+        }
+
+        const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+        const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+        const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+
+        if (timerDisplay) {
+            timerDisplay.innerText = `⏳ ${days}d ${hours}h ${minutes}m ${seconds}s`;
+        }
+    }
+
+    updateCountdown();
+    lockIntervalTimer = setInterval(updateCountdown, 1000);
+    return true; // Event is locked
+}
+
 // Circular Wheel Setup
 function setupCircularWheelLayout(key) {
     const data = gameEventsData[key];
     if (!slotsGrid || !data) return;
     slotsGrid.innerHTML = "";
+
+    const isLocked = checkAndRenderEventLockState(key);
 
     const total = data.slots.length;
     const radius = 145;
@@ -123,21 +222,23 @@ function setupCircularWheelLayout(key) {
         node.className = `ff-card-node ${slot.grand ? 'grand-item' : ''}`;
         node.style.left = `${x}px`;
         node.style.top = `${y}px`;
-        node.style.cursor = "pointer";
+        node.style.cursor = isLocked ? "not-allowed" : "pointer";
         node.innerHTML = `
-            <img src="${slot.img}" alt="Prize">
+            <img src="${slot.img}" alt="Prize" style="${isLocked ? 'filter: grayscale(1); opacity: 0.5;' : ''}">
             <span>${slot.name}</span>
         `;
 
         node.onclick = (e) => {
             e.stopPropagation();
-            updateRightShowcaseBox(slot);
+            if (!isLocked) {
+                updateRightShowcaseBox(slot);
+            }
         };
 
         slotsGrid.appendChild(node);
     });
 
-    if (data.slots.length > 0) {
+    if (data.slots.length > 0 && !isLocked) {
         updateRightShowcaseBox(data.slots[0]);
     }
 }
@@ -162,13 +263,19 @@ function updateRightShowcaseBox(item) {
 let currentDegreesRotation = 0;
 function executeRingSpin(cost) {
     if (isSpinning) return;
+
+    const event = gameEventsData[activeKey];
+    if (event.isLocked) {
+        alert("🔒 This Event is currently locked! Please wait until the unlock timer finishes.");
+        return;
+    }
+
     if (currentDiamonds < cost) {
         alert("❌ Diamonds insufficient! Top-up your wallet account.");
         return;
     }
 
     isSpinning = true;
-    const event = gameEventsData[activeKey];
     const totalSlots = event.slots.length;
     let winnerIdx = Math.floor(Math.random() * totalSlots);
 
@@ -306,7 +413,7 @@ if (congratsDismissBtn) {
     };
 }
 
-// Category Navigation Menu
+// Category Navigation Menu inside Exchange Shop
 document.querySelectorAll(".ex-nav-btn").forEach(btn => {
     btn.onclick = () => {
         document.querySelectorAll(".ex-nav-btn").forEach(b => b.classList.remove("active"));
@@ -335,5 +442,5 @@ document.querySelectorAll(".ff-menu-item").forEach(item => {
     };
 });
 
-// Initialize
+// Initialize default event
 setupCircularWheelLayout("mystical-ring");

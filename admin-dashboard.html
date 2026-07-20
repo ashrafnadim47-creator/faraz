@@ -1,204 +1,114 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard | Faraz Store</title>
+    <meta name="description" content="Faraz Store Control Panel & Management System">
+    <meta name="theme-color" content="#020617">
+    <link rel="icon" href="favicon.ico">
 
-<title>Admin Dashboard | Faraz Store</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700;900&family=Plus+Jakarta+Sans:wght@500;700;800&display=swap" rel="stylesheet">
 
-<link rel="stylesheet" href="css/global.css">
-<link rel="stylesheet" href="css/admin-dashboard.css">
-
+    <!-- CSS Links -->
+    <link rel="stylesheet" href="css/global.css">
+    <link rel="stylesheet" href="css/admin-product.css">
 </head>
 
+<body class="admin-page-bg">
 
-<body>
+    <div class="admin-container">
 
+        <!-- 👑 ADMIN SIDEBAR NAVIGATION -->
+        <aside class="admin-sidebar glassmorphism">
+            <div class="sidebar-brand">
+                <h2>🔥 FARAZ STORE</h2>
+                <p>ADMIN CONTROL PANEL</p>
+            </div>
 
-<div class="admin-container">
+            <nav class="admin-nav-links">
+                <a href="admin-dashboard.html" class="admin-nav-item active">🏠 Dashboard Overview</a>
+                <a href="admin-products.html" class="admin-nav-item">📦 Product Inventory</a>
+                <a href="admin-orders.html" class="admin-nav-item">🛒 Order Management</a>
+                <a href="admin-users.html" class="admin-nav-item">👥 Registered Users</a>
+            </nav>
 
+            <button id="logout-btn" class="admin-logout-btn">
+                🚪 Logout Admin
+            </button>
+        </aside>
 
+        <!-- 🚀 MAIN DASHBOARD CONTENT -->
+        <main class="admin-main">
+            <header class="admin-header">
+                <div>
+                    <h1>Admin Dashboard 👑</h1>
+                    <p style="color: var(--muted); font-size: 14px;">Welcome back to your store overview</p>
+                </div>
+                <button class="nav-btn-back" onclick="location.href='index.html'">← Back to Main Shop</button>
+            </header>
 
-<aside class="admin-sidebar">
+            <!-- STATS GRID CARDS -->
+            <div class="stats-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px; margin: 25px 0;">
+                
+                <div class="stat-card glassmorphism" style="padding: 20px; text-align: center; border-radius: 18px;">
+                    <div style="font-size: 32px; margin-bottom: 6px;">📦</div>
+                    <h3 style="font-size: 14px; color: var(--muted); margin-bottom: 4px;">Products</h3>
+                    <p id="product-count" style="font-size: 24px; font-weight: 900; color: #00e5ff;">0</p>
+                </div>
 
+                <div class="stat-card glassmorphism" style="padding: 20px; text-align: center; border-radius: 18px;">
+                    <div style="font-size: 32px; margin-bottom: 6px;">🛒</div>
+                    <h3 style="font-size: 14px; color: var(--muted); margin-bottom: 4px;">Orders</h3>
+                    <p id="order-count" style="font-size: 24px; font-weight: 900; color: #ffcc00;">0</p>
+                </div>
 
-<h2>
-🔥 Faraz Store
-</h2>
+                <div class="stat-card glassmorphism" style="padding: 20px; text-align: center; border-radius: 18px;">
+                    <div style="font-size: 32px; margin-bottom: 6px;">👥</div>
+                    <h3 style="font-size: 14px; color: var(--muted); margin-bottom: 4px;">Users</h3>
+                    <p id="user-count" style="font-size: 24px; font-weight: 900; color: #22c55e;">0</p>
+                </div>
 
+                <div class="stat-card glassmorphism" style="padding: 20px; text-align: center; border-radius: 18px;">
+                    <div style="font-size: 32px; margin-bottom: 6px;">⭐</div>
+                    <h3 style="font-size: 14px; color: var(--muted); margin-bottom: 4px;">Points Issued</h3>
+                    <p id="points-count" style="font-size: 24px; font-weight: 900; color: #c084fc;">0</p>
+                </div>
 
-<a href="admin-dashboard.html">
-🏠 Dashboard
-</a>
+            </div>
 
+            <!-- 🛠️ FADED WHEEL VOUCHER GENERATOR SECTION -->
+            <section class="admin-voucher-card glassmorphism" style="border: 2px solid #a855f7; border-radius: 20px; padding: 25px; margin: 25px 0;">
+                <h3 style="color: #a855f7; margin-bottom: 6px; text-transform: uppercase; border-left: 4px solid #a855f7; padding-left: 10px; font-size: 16px; font-weight: 800;">
+                    🛠️ Faded Wheel Voucher Generator
+                </h3>
+                <p style="font-size: 12px; color: #94a3b8; margin-bottom: 18px;">
+                    Generate single-use diamond voucher codes for top-up. The generated code will copy to your clipboard automatically.
+                </p>
+                
+                <div style="display: flex; gap: 12px; margin-bottom: 15px; flex-wrap: wrap;">
+                    <input type="number" id="admin-diamond-input" placeholder="Enter Diamonds Amount (e.g. 100)" style="flex: 1; min-width: 200px; padding: 14px; border-radius: 12px; border: 1px solid #4b5563; background: #0f1118; color: #ffffff; font-weight: 800; text-align: center; outline: none;">
+                    <button id="admin-gen-btn" style="background: linear-gradient(135deg, #e9d5ff 0%, #a855f7 100%); color: #020617; border: none; padding: 14px 24px; font-weight: 900; border-radius: 12px; cursor: pointer; text-transform: uppercase; font-size: 13px;">
+                        Generate Code
+                    </button>
+                </div>
+                
+                <!-- Output Box for Code -->
+                <div id="admin-code-output" style="display: none; background: #0f1118; border: 1px dashed #a855f7; padding: 14px; text-align: center; font-family: monospace; font-size: 16px; color: #c084fc; font-weight: 800; border-radius: 10px; letter-spacing: 1.5px;"></div>
+            </section>
 
-<a href="admin-products.html">
-📦 Products
-</a>
+        </main>
 
-
-<a href="admin-orders.html">
-🛒 Orders
-</a>
-
-
-<a href="admin-users.html">
-👥 Users
-</a>
-
-
-<button id="logout-btn">
-
-Logout
-
-</button>
-
-
-</aside>
-
-
-
-
-
-
-
-<main class="admin-main">
-
-
-<h1>
-Admin Dashboard 👑
-</h1>
-
-
-<p>
-Welcome Admin
-</p>
-
-
-
-
-
-<div class="stats">
-
-
-
-<div class="stat-card">
-
-<h2>
-📦
-</h2>
-
-<h3>
-Products
-</h3>
-
-<p id="product-count">
-0
-</p>
-
-</div>
-
-
-
-
-
-<div class="stat-card">
-
-<h2>
-🛒
-</h2>
-
-<h3>
-Orders
-</h3>
-
-<p id="order-count">
-0
-</p>
-
-</div>
-
-<!-- FARAZ STORE: VOUCHER GENERATOR SECTION -->
-<div class="admin-voucher-card" style="background: linear-gradient(180deg, #232736 0%, #191424 100%); border: 2px solid #a855f7; border-radius: 12px; padding: 20px; margin: 20px 0; color: #fff;">
-    <h3 style="color: #a855f7; margin-bottom: 5px; text-transform: uppercase; border-left: 4px solid #a855f7; padding-left: 8px; font-size: 16px;">
-        🛠️ Faded Wheel Voucher Generator
-    </h3>
-    <p style="font-size: 12px; color: #94a3b8; margin-bottom: 15px;">
-        Generate unique single-use codes for diamonds. The code will copy to your clipboard automatically.
-    </p>
-    
-    <div style="display: flex; gap: 10px; margin-bottom: 15px;">
-        <input type="number" id="admin-diamond-input" placeholder="Enter Diamonds Amount (e.g. 100)" style="flex: 1; padding: 12px; border-radius: 6px; border: 1px solid #4b5563; background: #0f1118; color: #fff; font-weight: bold; text-align: center; outline: none;">
-        <!-- HTML me button ko badal kar bas ye line likho -->
-<button id="admin-gen-btn" style="background: linear-gradient(180deg, #e9d5ff 0%, #a855f7 100%); color: #fff; border: none; padding: 12px 20px; font-weight: bold; border-radius: 6px; cursor: pointer; text-transform: uppercase;">
-    Generate Code
-</button>
     </div>
-    
-    <!-- Code Output Box -->
-    <div id="admin-code-output" style="display: none; background: #0f1118; border: 1px dashed #a855f7; padding: 12px; text-align: center; font-family: monospace; font-size: 16px; color: #c084fc; font-weight: bold; border-radius: 4px; letter-spacing: 1px;"></div>
-</div>
 
-
-
-
-<div class="stat-card">
-
-<h2>
-👥
-</h2>
-
-<h3>
-Users
-</h3>
-
-<p id="user-count">
-0
-</p>
-
-</div>
-
-
-
-
-
-<div class="stat-card">
-
-<h2>
-⭐
-</h2>
-
-<h3>
-Points
-</h3>
-
-<p id="points-count">
-0
-</p>
-
-</div>
-
-
-
-
-</div>
-
-
-
-</main>
-
-
-</div>
-
-
-
-
-
-<script type="module" src="js/admin-guard.js"></script>
-
-<script type="module" src="js/admin-dashboard.js"></script>
-
-<script type="module" src="js/admin-logout.js"></script>
-
+    <!-- SCRIPT INTEGRATION -->
+    <script type="module" src="js/admin-guard.js"></script>
+    <script type="module" src="js/admin-dashboard.js"></script>
+    <script type="module" src="js/admin-logout.js"></script>
 
 </body>
 

@@ -1,82 +1,78 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Daily Missions | Faraz Store</title>
+    <meta name="description" content="Complete daily missions to earn exclusive discount coupons on Faraz Store!">
+    <meta name="theme-color" content="#020617">
+    <link rel="icon" href="favicon.ico">
 
-<title>Missions | Faraz Store</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700;900&family=Plus+Jakarta+Sans:wght@500;700;800&display=swap" rel="stylesheet">
 
-<link rel="stylesheet" href="css/missions.css">
-
+    <!-- CSS Links -->
+    <link rel="stylesheet" href="css/global.css">
+    <link rel="stylesheet" href="css/missions.css">
 </head>
 
+<body class="missions-page-bg">
 
-<body>
+    <div class="missions-container glassmorphism" style="max-width: 650px; margin: 30px auto; padding: 30px 20px; border-radius: 24px;">
+        
+        <!-- HEADER -->
+        <header class="missions-header" style="text-align: center; margin-bottom: 25px;">
+            <button class="nav-btn-back" onclick="location.href='index.html'" style="margin-bottom: 15px;">← Back to Shop</button>
+            <h1 style="font-family: 'Orbitron', sans-serif; color: #00e5ff; font-size: 26px; font-weight: 900; margin-bottom: 6px;">🎯 DAILY MISSIONS</h1>
+            <p style="color: #94a3b8; font-size: 13px;">Complete simple daily tasks to unlock reward coupons!</p>
+            <h3 id="mission-timer" style="color: #ffcc00; font-size: 14px; margin-top: 10px; font-weight: 800;"></h3>
+        </header>
 
+        <!-- MISSIONS BOX -->
+        <div class="mission-box" style="display: flex; flex-direction: column; gap: 16px;">
 
-<h1>🎯 Daily Missions</h1>
+            <!-- MISSION 1: YOUTUBE -->
+            <div class="mission-card glassmorphism" style="padding: 20px; border-radius: 18px; border: 1px solid rgba(255, 255, 255, 0.08); display: flex; flex-direction: column; gap: 10px; background: rgba(30, 41, 59, 0.6);">
+                <h2 style="font-size: 18px; color: #ffffff; margin: 0;">▶️ Subscribe TK_RUSH YouTube</h2>
+                <p style="color: #00e5ff; font-size: 13px; font-weight: 700; margin: 0;">Reward: TKRUSH20 Coupon Code</p>
+                <div style="display: flex; gap: 10px; margin-top: 8px;">
+                    <a href="https://www.youtube.com/@TK_RUSH" target="_blank" style="flex: 1;">
+                        <button class="primary-btn" style="width: 100%; padding: 10px; font-size: 13px; background: #ff0000; color: #fff;">Open YouTube</button>
+                    </a>
+                    <button class="claim primary-btn" data-reward="TKRUSH20" style="flex: 1; padding: 10px; font-size: 13px; background: linear-gradient(135deg, #22c55e, #16a34a); color: #fff;">Claim Reward</button>
+                </div>
+            </div>
 
-<h3 id="mission-timer"></h3>
+            <!-- MISSION 2: INSTAGRAM -->
+            <div class="mission-card glassmorphism" style="padding: 20px; border-radius: 18px; border: 1px solid rgba(255, 255, 255, 0.08); display: flex; flex-direction: column; gap: 10px; background: rgba(30, 41, 59, 0.6);">
+                <h2 style="font-size: 18px; color: #ffffff; margin: 0;">📷 Follow Instagram Page</h2>
+                <p style="color: #00e5ff; font-size: 13px; font-weight: 700; margin: 0;">Reward: INSTA30 Coupon Code</p>
+                <div style="display: flex; gap: 10px; margin-top: 8px;">
+                    <a href="https://www.instagram.com/faraz_anjum_000" target="_blank" style="flex: 1;">
+                        <button class="primary-btn" style="width: 100%; padding: 10px; font-size: 13px; background: linear-gradient(135deg, #e1306c, #c13584); color: #fff;">Open Instagram</button>
+                    </a>
+                    <button class="claim primary-btn" data-reward="INSTA30" style="flex: 1; padding: 10px; font-size: 13px; background: linear-gradient(135deg, #22c55e, #16a34a); color: #fff;">Claim Reward</button>
+                </div>
+            </div>
 
+            <!-- MISSION 3: DAILY SPIN -->
+            <div class="mission-card glassmorphism" style="padding: 20px; border-radius: 18px; border: 1px solid rgba(255, 255, 255, 0.08); display: flex; flex-direction: column; gap: 10px; background: rgba(30, 41, 59, 0.6);">
+                <h2 style="font-size: 18px; color: #ffffff; margin: 0;">🎡 Complete Daily Wheel Spin</h2>
+                <p style="color: #00e5ff; font-size: 13px; font-weight: 700; margin: 0;">Reward: FARAZ50 Coupon Code</p>
+                <div style="display: flex; gap: 10px; margin-top: 8px;">
+                    <button class="claim primary-btn" data-reward="FARAZ50" style="width: 100%; padding: 10px; font-size: 13px; background: linear-gradient(135deg, #ff9900, #ff5500); color: #fff;">Claim Daily Bonus</button>
+                </div>
+            </div>
 
-<div class="mission-box">
+        </div>
 
+    </div>
 
-<div class="mission-card">
-
-<h2>▶️ Subscribe TK_RUSH</h2>
-
-<p>Reward: TKRUSH20 Coupon</p>
-
-<a href="https://www.youtube.com/@TK_RUSH" target="_blank">
-<button>Open YouTube</button>
-</a>
-
-<button class="claim" data-reward="TKRUSH20">
-Claim
-</button>
-
-</div>
-
-
-
-<div class="mission-card">
-
-<h2>📷 Follow Instagram</h2>
-
-<p>Reward: INSTA30 Coupon</p>
-
-<a href="https://www.instagram.com/faraz_anjum_000" target="_blank">
-<button>Open Instagram</button>
-</a>
-
-<button class="claim" data-reward="INSTA30">
-Claim
-</button>
-
-</div>
-
-
-
-<div class="mission-card">
-
-<h2>🎡 Daily Spin</h2>
-
-<p>Reward: FARAZ50 Coupon</p>
-
-
-<button class="claim" data-reward="FARAZ50">
-Claim
-</button>
-
-
-</div>
-
-
-
-</div>
-
-
-<script type="module" src="js/missions.js"></script>
+    <!-- SCRIPT MODULE -->
+    <script type="module" src="js/missions.js"></script>
 
 </body>
 

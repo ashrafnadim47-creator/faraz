@@ -1,617 +1,119 @@
-/* =====================================
-   FARAZ STORE v2.0
-   PREMIUM CHECKOUT CSS
-===================================== */
+/* ==========================================================================
+   🔥 FARAZ STORE v2.0 - CHECKOUT & PAYMENT COMPONENTS CSS
+   ========================================================================== */
 
-
-
-.checkout-section{
-
-
-    padding:40px 5%;
-
-    min-height:90vh;
-
-
-}
-
-
-
-
-
-.page-title{
-
-
-    text-align:center;
-
-    font-size:42px;
-
-    margin-bottom:40px;
-
-
-}
-
-
-
-
-
-
-.checkout-container{
-
-
-    display:grid;
-
-    grid-template-columns:
-
-    1.5fr 1fr;
-
-
-    gap:30px;
-
-
-}
-
-
-
-
-
-
-.checkout-left,
-.checkout-right{
-
-
-    background:
-
-    rgba(17,24,39,.9);
-
-
-    padding:30px;
-
-
-    border-radius:30px;
-
-
-    border:
-
-    1px solid rgba(255,255,255,.1);
-
-
-}
-
-
-
-
-
-
-
-.checkout-left h2,
-.checkout-right h2{
-
-
-    margin-bottom:25px;
-
-
-}
-
-
-
-
-
-
-
-/* ITEMS */
-
-
-#checkout-items{
-
-
-    display:flex;
-
-    flex-direction:column;
-
-    gap:20px;
-
-
-}
-
-
-
-
-.checkout-item{
-
-
-    display:flex;
-
-    align-items:center;
-
-    gap:20px;
-
-
-    padding:20px;
-
-
-    background:#0f172a;
-
-
-    border-radius:20px;
-
-
-}
-
-
-
-
-
-.checkout-item img{
-
-
-    width:90px;
-
-    height:90px;
-
-
-    border-radius:15px;
-
-
-    object-fit:cover;
-
-
-}
-
-
-
-
-
-
-
-/* ADDRESS */
-
-
-.address-card,
-.payment-card,
-.payment-box,
 .coupon-box,
-.summary-box{
-
-
-    margin-top:25px;
-
-
-    padding:25px;
-
-
-    background:#0f172a;
-
-
-    border-radius:25px;
-
-
+.payment-box {
+    background: rgba(15, 23, 42, 0.85);
+    padding: 25px;
+    border-radius: 24px;
+    margin-top: 25px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.6), 0 0 20px rgba(0, 229, 255, 0.1);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
 }
 
-
-
-
-
-input,
-textarea{
-
-
-    width:100%;
-
-
-    margin:10px 0;
-
-
-    padding:14px;
-
-
-    border-radius:15px;
-
-
-    border:
-
-    1px solid #334155;
-
-
-    background:#020617;
-
-
-    color:white;
-
-
-    outline:none;
-
-
+.coupon-box h3,
+.payment-box h3 {
+    font-family: 'Orbitron', 'Segoe UI', sans-serif;
+    color: #ffcc00;
+    font-size: 16px;
+    font-weight: 800;
+    margin-bottom: 15px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
 }
 
-
-
-
-
-textarea{
-
-
-    height:120px;
-
-    resize:none;
-
-
+/* Coupon Input & Button Group */
+.coupon-input-group {
+    display: flex;
+    gap: 12px;
+    align-items: center;
 }
 
-
-
-
-
-
-
-
-label{
-
-
-    display:block;
-
-    padding:12px;
-
-    color:#cbd5e1;
-
-
+.coupon-box input {
+    flex: 1;
+    padding: 13px 18px;
+    border-radius: 14px;
+    border: 1px solid #334155;
+    background: #020617;
+    color: #ffffff;
+    font-size: 14px;
+    outline: none;
+    transition: all 0.25s ease;
 }
 
-
-
-
-
-
-
-
-/* COUPON */
-
-
-.coupon-box input{
-
-
-    width:70%;
-
-
+.coupon-box input:focus {
+    border-color: #00e5ff;
+    box-shadow: 0 0 15px rgba(0, 229, 255, 0.25);
 }
 
-
-
-.coupon-box button{
-
-
-    padding:12px 20px;
-
-
-    border-radius:20px;
-
-
-    background:
-
-    linear-gradient(
-    135deg,
-    #2563eb,
-    #7c3aed
-    );
-
-
-    color:white;
-
-
+.coupon-box button {
+    padding: 13px 24px;
+    border: none;
+    border-radius: 14px;
+    background: linear-gradient(135deg, #00e5ff, #0284c7);
+    color: #020617;
+    font-family: 'Orbitron', sans-serif;
+    font-weight: 900;
+    font-size: 13px;
+    cursor: pointer;
+    text-transform: uppercase;
+    transition: all 0.25s ease;
+    white-space: nowrap;
 }
 
-
-
-
-
-#coupon-message{
-
-
-    color:#22c55e;
-
-    margin-top:10px;
-
-
+.coupon-box button:hover {
+    filter: brightness(1.15);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(0, 229, 255, 0.35);
 }
 
-
-
-
-
-
-
-
-
-/* SUMMARY */
-
-
-.summary-row{
-
-
-    display:flex;
-
-    justify-content:space-between;
-
-
-    margin:15px 0;
-
-
-    color:#cbd5e1;
-
-
+/* Payment Selector Cards */
+.payment-box label {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    background: rgba(30, 41, 59, 0.5);
+    padding: 16px 20px;
+    margin: 10px 0;
+    border-radius: 16px;
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    cursor: pointer;
+    color: #e2e8f0;
+    font-weight: 700;
+    font-size: 14px;
+    transition: all 0.25s ease;
 }
 
-
-
-
-
-.free{
-
-
-    color:#22c55e;
-
-    font-weight:bold;
-
-
+.payment-box label:hover {
+    border-color: #00e5ff;
+    background: rgba(30, 41, 59, 0.8);
+    transform: translateY(-2px);
 }
 
-
-
-
-
-#checkout-total{
-
-
-    color:#38bdf8;
-
-
-    font-size:30px;
-
-
+.payment-box input[type="radio"] {
+    accent-color: #00e5ff;
+    width: 18px;
+    height: 18px;
+    cursor: pointer;
 }
 
-
-
-
-
-
-
-.place-order-btn{
-
-
-    width:100%;
-
-
-    margin-top:25px;
-
-
-    padding:18px;
-
-
-    border-radius:30px;
-
-
-    background:
-
-    linear-gradient(
-    135deg,
-    #16a34a,
-    #22c55e
-    );
-
-
-    color:white;
-
-
-    font-size:18px;
-
-
-    font-weight:bold;
-
-
-    transition:.3s;
-
-
-}
-
-
-
-
-
-.place-order-btn:hover{
-
-
-    transform:translateY(-4px);
-
-
-}
-
-
-
-
-
-
-
-
-.secure-box{
-
-
-    margin-top:25px;
-
-
-    padding:25px;
-
-
-    text-align:center;
-
-
-    background:#020617;
-
-
-    border-radius:20px;
-
-
-    color:#94a3b8;
-
-
-}
-
-
-
-
-
-
-
-
-/* SUCCESS POPUP */
-
-
-.success-popup{
-
-
-    position:fixed;
-
-
-    inset:0;
-
-
-    display:none;
-
-
-    align-items:center;
-
-    justify-content:center;
-
-
-    background:
-
-    rgba(0,0,0,.7);
-
-
-    z-index:3000;
-
-
-}
-
-
-
-
-
-
-
-.popup-card{
-
-
-    width:350px;
-
-
-    padding:40px;
-
-
-    text-align:center;
-
-
-    border-radius:30px;
-
-
-    background:#111827;
-
-
-}
-
-
-
-
-
-.popup-icon{
-
-
-    font-size:70px;
-
-
-}
-
-
-
-
-
-
-
-/* MOBILE */
-
-
-@media(max-width:900px){
-
-
-
-.checkout-container{
-
-
-    grid-template-columns:1fr;
-
-
-}
-
-
-
-.page-title{
-
-
-    font-size:32px;
-
-
-}
-
-
-
-}
-
-
-
-@media(max-width:600px){
-
-
-
-.checkout-section{
-
-
-    padding:25px 15px;
-
-
-}
-
-
-
-.checkout-left,
-.checkout-right{
-
-
-    padding:20px;
-
-
-}
-
-
-
-.coupon-box input{
-
-
-    width:100%;
-
-
-}
-
-
-
-.coupon-box button{
-
-
-    width:100%;
-
-    margin-top:10px;
-
-
-}
-
-
+/* 📱 Mobile Responsiveness */
+@media (max-width: 600px) {
+    .coupon-box,
+    .payment-box {
+        padding: 18px 14px;
+        border-radius: 18px;
+    }
+
+    .coupon-input-group {
+        flex-direction: column;
+    }
+
+    .coupon-box input,
+    .coupon-box button {
+        width: 100%;
+    }
 }
