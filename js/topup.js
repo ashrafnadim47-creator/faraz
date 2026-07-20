@@ -1,9 +1,9 @@
 // Firebase framework setup configs
 import { db, auth } from "./firebase-config.js";
 import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
-import { doc, getDoc, updateDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+import { doc, onSnapshot, getDoc, updateDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
-// DOM References Matrix Setup
+// DOM References
 const walletDisplay = document.getElementById("topup-wallet");
 const popupWindow = document.getElementById("redeem-popup-window");
 const modalDetailsText = document.getElementById("modal-product-details");
@@ -13,62 +13,59 @@ let currentActiveUserUid = "";
 let selectedItemDiamonds = 0;
 let currentWalletBalance = 0;
 
-// Track active transaction memory state
+// 1. Auth & Realtime Balance Listener (FIXED to Firebase v10 Modular Syntax)
 onAuthStateChanged(auth, (user) => {
     if (user) {
         currentActiveUserUid = user.uid;
-        // Listen live balances from Firestore documentation stack
-        db.collection("users").doc(user.uid).onSnapshot((docSnap) => {
-            if (docSnap.exists) {
+        
+        // Listen live balances from Firestore
+        onSnapshot(doc(db, "users", user.uid), (docSnap) => {
+            if (docSnap.exists()) {
                 currentWalletBalance = docSnap.data().diamonds ?? 0;
-                if(walletDisplay) walletDisplay.innerText = `💎 ${currentWalletBalance}`;
+                if (walletDisplay) walletDisplay.innerText = `💎 ${currentWalletBalance}`;
             }
+        }, (error) => {
+            console.error("Error reading wallet balance:", error);
         });
     } else {
         console.log("Session restricted. Access requires direct profile authentication.");
     }
 });
 
-// --- HYBRID REGISTRATION ENGINE FOR MOBILE TOUCH & PC CLICK ---
-window.addEventListener('DOMContentLoaded', () => {
-    const attachInteractionEvent = (selector, eventHandler) => {
-        document.querySelectorAll(selector).forEach(element => {
-            element.addEventListener('click', eventHandler);
-            element.addEventListener('touchstart', (e) => {
-                e.preventDefault(); // Stop mobile browser long press action delay
-                eventHandler(e);
-            }, { passive: false });
-        });
-    };
+// 2. FIXED: Universal Mobile Touch & PC Click Listener (Event Delegation)
+document.addEventListener("click", (e) => {
+    // A. Membership / Pack Buy Button Click
+    const redeemBtn = e.target.closest(".trigger-redeem-btn");
+    if (redeemBtn) {
+        e.preventDefault();
+        const productName = redeemBtn.getAttribute("data-product") || "Item";
+        const price = redeemBtn.getAttribute("data-price") || "0";
+        selectedItemDiamonds = parseInt(redeemBtn.getAttribute("data-diamonds") || "0");
 
-    // 1. Pack purchase listeners setup
-    attachInteractionEvent('.trigger-redeem-btn', (e) => {
-        const component = e.target.closest('.trigger-redeem-btn');
-        if (!component) return;
-
-        const productName = component.getAttribute('data-product');
-        const price = component.getAttribute('data-price');
-        selectedItemDiamonds = parseInt(component.getAttribute('data-diamonds') || "0");
-
-        if(modalDetailsText) {
+        if (modalDetailsText) {
             modalDetailsText.innerText = `Product: ${productName} | Price: ₹${price}`;
         }
-        if(popupWindow) popupWindow.style.display = "flex";
-    });
+        if (popupWindow) popupWindow.style.display = "flex";
+        return;
+    }
 
-    // 2. Cancel trigger closure integration
-    attachInteractionEvent('#close-modal-btn', () => {
-        if(popupWindow) popupWindow.style.display = "none";
-        if(voucherInputField) voucherInputField.value = "";
-    });
+    // B. Close Modal Button Click
+    if (e.target.closest("#close-modal-btn")) {
+        e.preventDefault();
+        if (popupWindow) popupWindow.style.display = "none";
+        if (voucherInputField) voucherInputField.value = "";
+        return;
+    }
 
-    // 3. Confirm Claim code button connection
-    attachInteractionEvent('#claim-reward-btn', () => {
+    // C. Claim Reward Button Click
+    if (e.target.closest("#claim-reward-btn")) {
+        e.preventDefault();
         processVoucherValidationSequence();
-    });
+        return;
+    }
 });
 
-// --- VOUCHER CODES AUTHENTICATION MATRIX ---
+// 3. Voucher Validation Logic
 async function processVoucherValidationSequence() {
     if (!currentActiveUserUid) {
         alert("❌ Authentication active status expired! Please log in again.");
@@ -83,34 +80,33 @@ async function processVoucherValidationSequence() {
     }
 
     try {
-        // Fetch specific collection node from database references
         const voucherRef = doc(db, "vouchers", typedCode);
         const voucherSnap = await getDoc(voucherRef);
 
         if (voucherSnap.exists() && voucherSnap.data().status === "ACTIVE") {
             const finalComputedBalance = currentWalletBalance + selectedItemDiamonds;
 
-            // 1. Credit balance to active user cloud doc ledger ledger node
+            // 1. Credit balance to active user account
             await updateDoc(doc(db, "users", currentActiveUserUid), {
                 diamonds: finalComputedBalance
             });
 
-            // 2. Consume voucher code inside system database logs
+            // 2. Mark voucher code as CONSUMED
             await updateDoc(voucherRef, {
                 status: "CONSUMED",
                 redeemedBy: currentActiveUserUid,
                 timestamp: new Date().toISOString()
             });
 
-            alert(`🎉 Success! credited 💎 ${selectedItemDiamonds} to your dynamic store account.`);
-            if(popupWindow) popupWindow.style.display = "none";
-            if(voucherInputField) voucherInputField.value = "";
+            alert(`🎉 Success! Credited 💎 ${selectedItemDiamonds} to your account.`);
+            if (popupWindow) popupWindow.style.display = "none";
+            if (voucherInputField) voucherInputField.value = "";
 
         } else {
-            alert("❌ Invalid code, used code, or structure expiration failure. Contact Faraz Admin.");
+            alert("❌ Invalid code, used code, or expired code. Contact Admin.");
         }
     } catch (error) {
-        console.error("Voucher matrix sync fail stream:", error);
-        alert("⛔ Network structural sync error. Transaction rolled back.");
+        console.error("Voucher validation fail:", error);
+        alert("⛔ Network sync error. Transaction rolled back.");
     }
 }
