@@ -7,7 +7,7 @@ import {
     serverTimestamp
 } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
-// 1. STATS LOADER (Synchronous & Accurate)
+// 1. STATS LOADER
 async function loadStats() {
     try {
         const products = await getDocs(collection(db, "products"));
@@ -16,17 +16,13 @@ async function loadStats() {
         let ordersCount = 0;
         let points = 0;
 
-        // Loop through all users
         for (const userDoc of users.docs) {
             const data = userDoc.data();
             points += data.points || 0;
-
-            // Get total orders count
             const orders = await getDocs(collection(db, "users", userDoc.id, "orders"));
             ordersCount += orders.size;
         }
 
-        // Update UI
         const prodEl = document.getElementById("product-count");
         const userEl = document.getElementById("user-count");
         const pointEl = document.getElementById("points-count");
@@ -44,7 +40,7 @@ async function loadStats() {
 
 loadStats();
 
-// 2. FIREBASE V10 COMPATIBLE VOUCHER GENERATOR
+// 2. VOUCHER GENERATOR (FIXED WITH UNUSED STATUS)
 window.addEventListener('DOMContentLoaded', () => {
     const genButton = document.getElementById('admin-gen-btn');
 
@@ -61,24 +57,25 @@ window.addEventListener('DOMContentLoaded', () => {
                 return;
             }
 
-            // 1. Generate unique code
+            // Code Generation
             const randomStamp = Math.random().toString(36).substring(2, 6).toUpperCase();
             const newGeneratedCode = `FZ-${amount}-${randomStamp}`;
 
             try {
-                // 2. Save in Firebase Firestore "vouchers" collection using Modular v10 syntax
+                // Save in Firebase Firestore with active status
                 await setDoc(doc(db, "vouchers", newGeneratedCode), {
+                    code: newGeneratedCode,
                     amount: amount,
+                    used: false,
+                    status: "active",
                     createdAt: serverTimestamp()
                 });
 
-                // 3. Display in UI
                 if (outputBox) {
                     outputBox.innerText = newGeneratedCode;
                     outputBox.style.display = "block";
                 }
 
-                // 4. Copy to Clipboard
                 await navigator.clipboard.writeText(newGeneratedCode);
                 alert(`⚡ Live Firebase Code Generated!\n\nCode: ${newGeneratedCode}\nWorth: 💎 ${amount}\n\nCopied & Saved online!`);
 
