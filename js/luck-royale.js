@@ -16,7 +16,7 @@ const wheelContainer = document.getElementById("wheel-slots-grid");
 const congratsPopup = document.getElementById("congratulations-popup");
 const rightColumnPrizes = document.getElementById("right-column-prizes");
 
-// NEW MODAL UI TARGETS FOR PREMIUM EXCHANGE STORE
+// MODAL UI TARGETS FOR EXCHANGE STORE
 const exchangeModal = document.getElementById("exchange-modal");
 const exchangeWalletText = document.getElementById("exchange-wallet-tokens");
 const itemsRendererGrid = document.getElementById("exchange-items-renderer");
@@ -29,7 +29,7 @@ let activeKey = "mystical-ring";
 let activeShopTab = "grand";
 
 // ==========================================================================
-// 💎 PURE ACTIVE RING EVENTS DATASET
+// 💎 RING EVENTS DATASET
 // ==========================================================================
 const gameEventsData = {
     "mystical-ring": {
@@ -88,7 +88,7 @@ const exchangeStoreCatalog = {
     ]
 };
 
-// Modular Firebase Auth & Snapshot Sync Fix
+// Modular Firebase Auth & Snapshot Sync
 onAuthStateChanged(auth, (user) => {
     if (user) {
         currentUserUid = user.uid;
@@ -104,7 +104,7 @@ onAuthStateChanged(auth, (user) => {
     }
 });
 
-// Circular Arena Slots Setup
+// Circular Wheel Setup
 function setupCircularWheelLayout(key) {
     const data = gameEventsData[key];
     if (!slotsGrid || !data) return;
@@ -172,7 +172,7 @@ function executeRingSpin(cost) {
     const totalSlots = event.slots.length;
     let winnerIdx = Math.floor(Math.random() * totalSlots);
 
-    // Prevent direct iPhone win
+    // Block direct iPhone win on normal random spin
     if (event.slots[winnerIdx].name === "iPhone 16 Pro Max") {
         isSpinning = false;
         executeRingSpin(cost);
@@ -335,5 +335,5 @@ document.querySelectorAll(".ff-menu-item").forEach(item => {
     };
 });
 
-// Initializing
+// Initialize
 setupCircularWheelLayout("mystical-ring");
