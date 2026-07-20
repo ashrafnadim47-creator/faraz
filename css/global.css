@@ -720,3 +720,20 @@ h1{
         font-size: 26px;
     }
 }
+/* 🚨 FIX: Mobile Overlay Blocking Click Events */
+#sidebar:not(.active) {
+    display: none !important;
+    pointer-events: none !important;
+}
+
+/* Ensure Header & Floating Buttons stay clickable */
+.header, .floating-box {
+    pointer-events: auto !important;
+}
+
+.header button, .header a, .hero-buttons button {
+    position: relative;
+    z-index: 9999 !important;
+    cursor: pointer !important;
+    touch-action: manipulation;
+}

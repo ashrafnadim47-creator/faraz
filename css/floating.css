@@ -1,4 +1,4 @@
-/* 👑 FIXED FLOATING BOX FOR MOBILE & DESKTOP */
+/* 👑 FIXED FLOATING BOX - NO SCREEN BLOCKING */
 .floating-box {
     position: fixed;
     bottom: 15px;
@@ -6,17 +6,23 @@
     display: flex;
     flex-direction: column;
     align-items: flex-end;
-    gap: 10px;
-    z-index: 99999 !important; /* Always on top */
-    pointer-events: auto;
+    gap: 8px;
+    z-index: 999999 !important;
+    pointer-events: none !important; /* 👈 Khali screen par touch block nahi hoga */
 }
 
-/* Royale Link Bar */
+/* Floating Elements Par Tap Allow Karein */
+.floating-box a, 
+.floating-box button {
+    pointer-events: auto !important;
+    touch-action: manipulation;
+}
+
 .royale-link {
     background: linear-gradient(45deg, #ff0055, #ffcc00);
     color: #fff;
     font-weight: bold;
-    padding: 8px 15px;
+    padding: 8px 14px;
     border-radius: 20px;
     text-decoration: none;
     font-size: 13px;
@@ -25,23 +31,17 @@
     white-space: nowrap;
 }
 
-/* Floating Round Icons Grid */
 .float-btn {
-    width: 45px;
-    height: 45px;
+    width: 42px;
+    height: 42px;
     border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
     text-decoration: none;
-    font-size: 20px;
+    font-size: 18px;
     color: #fff;
     box-shadow: 0 4px 10px rgba(0,0,0,0.5);
-    transition: transform 0.2s ease;
-}
-
-.float-btn:active {
-    transform: scale(0.9);
 }
 
 .spin-btn { background: #ff9900; }
@@ -56,18 +56,4 @@
     border-radius: 15px; 
     text-decoration: none;
     font-size: 12px;
-}
-
-/* Mobile Screen Responsive Tuning */
-@media (max-width: 768px) {
-    .floating-box {
-        bottom: 10px;
-        right: 10px;
-        gap: 8px;
-    }
-    .float-btn {
-        width: 40px;
-        height: 40px;
-        font-size: 18px;
-    }
 }

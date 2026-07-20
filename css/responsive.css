@@ -602,3 +602,31 @@ h1{
 
 
 }
+
+/* 🚨 MOBILE SIDEBAR OVERLAY FIX */
+#sidebar {
+    position: fixed;
+    top: 0;
+    left: -100%; /* Default hidden off-screen */
+    width: 260px;
+    height: 100vh;
+    background: #0f172a;
+    z-index: 1000000;
+    transition: left 0.3s ease;
+    pointer-events: auto;
+}
+
+#sidebar.active {
+    left: 0; /* Open state */
+}
+
+/* Base Buttons Clickability Force */
+header, section, .hero, .flash-sale, .products, footer {
+    position: relative;
+    z-index: 1;
+}
+
+button, a {
+    touch-action: manipulation;
+    -webkit-tap-highlight-color: transparent;
+}
