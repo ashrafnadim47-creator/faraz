@@ -2,7 +2,6 @@ import { auth, db } from "./firebase-config.js";
 import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 import { 
     doc, 
-    getDoc, 
     updateDoc, 
     increment, 
     collection, 
@@ -11,7 +10,8 @@ import {
     getDocs, 
     deleteDoc, 
     serverTimestamp, 
-    addDoc 
+    addDoc,
+    onSnapshot
 } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -25,28 +25,27 @@ document.addEventListener("DOMContentLoaded", () => {
 
     let currentUser = null;
     let selectedProduct = { name: "", diamonds: 0, price: 0 };
+    let userUnsubscribe = null;
 
-    // 1. Auth Listener & Load Wallet Balance
-    onAuthStateChanged(auth, async (user) => {
+    // 1. Auth Listener & Realtime Load Wallet Balance
+    onAuthStateChanged(auth, (user) => {
         if (user) {
             currentUser = user;
-            loadUserWallet(user.uid);
+            if (userUnsubscribe) userUnsubscribe();
+
+            // Realtime Sync for Instant Balance Upgrade
+            userUnsubscribe = onSnapshot(doc(db, "users", user.uid), (docSnap) => {
+                if (docSnap.exists()) {
+                    const data = docSnap.data();
+                    const liveBalance = data.diamonds ?? data.wallet ?? 0;
+                    if (walletElem) walletElem.innerText = `💎 ${liveBalance.toLocaleString()}`;
+                    localStorage.setItem('fw_persist_wallet', liveBalance.toString());
+                }
+            });
         } else {
-            walletElem.innerText = "💎 Login Required";
+            if (walletElem) walletElem.innerText = "💎 Login Required";
         }
     });
-
-    async function loadUserWallet(uid) {
-        try {
-            const userSnap = await getDoc(doc(db, "users", uid));
-            if (userSnap.exists()) {
-                const data = userSnap.data();
-                walletElem.innerText = `💎 ${data.wallet || 0}`;
-            }
-        } catch (err) {
-            console.error("Error loading wallet:", err);
-        }
-    }
 
     // 2. Open Redeem Popup
     triggerBtns.forEach((btn) => {
@@ -63,94 +62,104 @@ document.addEventListener("DOMContentLoaded", () => {
 
             selectedProduct = { name: pName, diamonds: pDiamonds, price: pPrice };
 
-            modalDetails.innerText = `Product: ${pName} (💎${pDiamonds}) | Price: ₹${pPrice}`;
-            voucherInput.value = "";
-            modalWindow.classList.add("active");
-            modalWindow.style.display = "flex";
+            if (modalDetails) modalDetails.innerText = `Product: ${pName} (💎${pDiamonds}) | Price: ₹${pPrice}`;
+            if (voucherInput) voucherInput.value = "";
+            if (modalWindow) {
+                modalWindow.classList.add("active");
+                modalWindow.style.display = "flex";
+            }
         });
     });
 
     // 3. Close Popup
-    closeModalBtn.addEventListener("click", () => {
-        modalWindow.classList.remove("active");
-        modalWindow.style.display = "none";
-    });
+    if (closeModalBtn) {
+        closeModalBtn.addEventListener("click", () => {
+            if (modalWindow) {
+                modalWindow.classList.remove("active");
+                modalWindow.style.display = "none";
+            }
+        });
+    }
 
-    // 4. 🔥 CLAIM VOUCHER & INSTANT AUTO UPDATE PRIME SPENT
-    claimRewardBtn.addEventListener("click", async () => {
-        const codeEntered = voucherInput.value.trim().toUpperCase();
+    // 4. 🔥 CLAIM VOUCHER & INSTANT AUTO UPDATE DIAMONDS AND PRIME SPENT
+    if (claimRewardBtn) {
+        claimRewardBtn.addEventListener("click", async () => {
+            const codeEntered = voucherInput.value.trim().toUpperCase();
 
-        if (!codeEntered) {
-            alert("❌ Please enter a valid Voucher Code!");
-            return;
-        }
-
-        claimRewardBtn.disabled = true;
-        claimRewardBtn.innerText = "Verifying...";
-
-        try {
-            // Check Voucher in Firestore Vouchers Collection
-            const vouchersRef = collection(db, "vouchers");
-            const q = query(vouchersRef, where("code", "==", codeEntered));
-            const querySnap = await getDocs(q);
-
-            if (querySnap.empty) {
-                alert("❌ Invalid or Already Used Voucher Code!");
-                claimRewardBtn.disabled = false;
-                claimRewardBtn.innerText = "⚡ Claim Reward";
+            if (!codeEntered) {
+                alert("❌ Please enter a valid Voucher Code!");
                 return;
             }
 
-            // Extract voucher details
-            let voucherDocId = "";
-            let rewardDiamonds = selectedProduct.diamonds || 0;
-            let packPrice = selectedProduct.price || 0;
+            claimRewardBtn.disabled = true;
+            claimRewardBtn.innerText = "Verifying...";
 
-            querySnap.forEach((d) => {
-                voucherDocId = d.id;
-                const vData = d.data();
-                if (vData.diamonds) rewardDiamonds = parseInt(vData.diamonds);
-                if (vData.price) packPrice = parseInt(vData.price);
-            });
+            try {
+                // Check Voucher in Firestore Vouchers Collection
+                const vouchersRef = collection(db, "vouchers");
+                const q = query(vouchersRef, where("code", "==", codeEntered));
+                const querySnap = await getDocs(q);
 
-            const userRef = doc(db, "users", currentUser.uid);
+                if (querySnap.empty) {
+                    alert("❌ Invalid or Already Used Voucher Code!");
+                    claimRewardBtn.disabled = false;
+                    claimRewardBtn.innerText = "⚡ Claim Reward";
+                    return;
+                }
 
-            // 🔥 A. Update User Wallet AND Increment totalSpent for Prime Level
-            await updateDoc(userRef, {
-                wallet: increment(rewardDiamonds),
-                totalSpent: increment(packPrice) // <-- Instant Auto Prime Upgrade Trigger!
-            });
+                // Extract voucher details
+                let voucherDocId = "";
+                let rewardDiamonds = selectedProduct.diamonds || 0;
+                let packPrice = selectedProduct.price || 0;
 
-            // B. Log Transaction Order History
-            await addDoc(collection(db, "orders"), {
-                userId: currentUser.uid,
-                userEmail: currentUser.email,
-                product: selectedProduct.name || "Voucher Redeem",
-                diamonds: rewardDiamonds,
-                amount: packPrice,
-                codeUsed: codeEntered,
-                status: "Completed",
-                timestamp: serverTimestamp()
-            });
+                querySnap.forEach((d) => {
+                    voucherDocId = d.id;
+                    const vData = d.data();
+                    if (vData.diamonds) rewardDiamonds = parseInt(vData.diamonds);
+                    if (vData.price) packPrice = parseInt(vData.price);
+                });
 
-            // C. Delete Used Voucher Code
-            await deleteDoc(doc(db, "vouchers", voucherDocId));
+                const userRef = doc(db, "users", currentUser.uid);
 
-            alert(`🎉 Success! 💎 ${rewardDiamonds} Diamonds added to your account & Prime Level Updated!`);
+                // 🔥 Update user diamonds, wallet, and totalSpent for Prime Level
+                await updateDoc(userRef, {
+                    diamonds: increment(rewardDiamonds),
+                    wallet: increment(rewardDiamonds),
+                    totalSpent: increment(packPrice)
+                });
 
-            modalWindow.classList.remove("active");
-            modalWindow.style.display = "none";
-            loadUserWallet(currentUser.uid);
+                // Log Transaction Order History
+                await addDoc(collection(db, "orders"), {
+                    userId: currentUser.uid,
+                    userEmail: currentUser.email || "Customer",
+                    product: selectedProduct.name || "Voucher Redeem",
+                    diamonds: rewardDiamonds,
+                    amount: packPrice,
+                    codeUsed: codeEntered,
+                    status: "Completed",
+                    timestamp: serverTimestamp()
+                });
 
-            // Redirect to Prime Membership page to see instant level upgrade
-            window.location.href = "prime-membership.html";
+                // Delete Used Voucher Code
+                await deleteDoc(doc(db, "vouchers", voucherDocId));
 
-        } catch (err) {
-            console.error("Redeem Error:", err);
-            alert("❌ Redemption Failed: " + err.message);
-        } finally {
-            claimRewardBtn.disabled = false;
-            claimRewardBtn.innerText = "⚡ Claim Reward";
-        }
-    });
+                alert(`🎉 Success! 💎 ${rewardDiamonds} Diamonds added to your account & Prime Level Updated!`);
+
+                if (modalWindow) {
+                    modalWindow.classList.remove("active");
+                    modalWindow.style.display = "none";
+                }
+
+                // Redirect to Prime Membership page
+                window.location.href = "prime-membership.html";
+
+            } catch (err) {
+                console.error("Redeem Error:", err);
+                alert("❌ Redemption Failed: " + err.message);
+            } finally {
+                claimRewardBtn.disabled = false;
+                claimRewardBtn.innerText = "⚡ Claim Reward";
+            }
+        });
+    }
 });

@@ -1,13 +1,32 @@
-import { db } from "./firebase-config.js";
+import { db, auth } from "./firebase-config.js";
 import {
     collection,
     getDocs,
     query,
-    orderBy
+    orderBy,
+    doc,
+    onSnapshot
 } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 
 const productBox = document.getElementById("home-products");
 let allProducts = [];
+
+// ======================
+// AUTH & REALTIME USER SYNC
+// ======================
+onAuthStateChanged(auth, (user) => {
+    if (user) {
+        onSnapshot(doc(db, "users", user.uid), (docSnap) => {
+            if (docSnap.exists()) {
+                const userData = docSnap.data();
+                // Store cached balance
+                const liveDiamonds = userData.diamonds ?? userData.diamond ?? userData.wallet ?? 0;
+                localStorage.setItem('fw_persist_wallet', liveDiamonds.toString());
+            }
+        });
+    }
+});
 
 // ======================
 // LOAD PRODUCTS
@@ -49,7 +68,6 @@ function displayProducts(products) {
         return;
     }
 
-    // Fast Single-Pass HTML Construction
     const htmlMarkup = products.map((product) => `
         <div class="product-card">
             <div class="product-image">
@@ -64,16 +82,14 @@ function displayProducts(products) {
     `).join('');
 
     productBox.innerHTML = htmlMarkup;
-
-    // Dynamic Element Listeners Injection Setup
     attachModuleClickListeners();
 }
 
 // ===============================================
-// MODULE COMPATIBLE INTERACTION LISTENERS ENGINE
+// INTERACTION LISTENERS ENGINE
 // ===============================================
 function attachModuleClickListeners() {
-    // 1. View button actions tracker (Closest selector fix)
+    // View Product
     document.querySelectorAll('.view-prod-btn').forEach(btn => {
         btn.addEventListener('click', (e) => {
             const button = e.target.closest('.view-prod-btn');
@@ -84,7 +100,7 @@ function attachModuleClickListeners() {
         });
     });
 
-    // 2. Add To Cart live click actions
+    // Add To Cart
     document.querySelectorAll('.add-to-cart-btn').forEach(btn => {
         btn.addEventListener('click', (e) => {
             const button = e.target.closest('.add-to-cart-btn');
@@ -99,7 +115,7 @@ function attachModuleClickListeners() {
         });
     });
 
-    // 3. Wishlist tracking system listener
+    // Add To Wishlist
     document.querySelectorAll('.add-wish-btn').forEach(btn => {
         btn.addEventListener('click', (e) => {
             const button = e.target.closest('.add-wish-btn');
@@ -114,12 +130,10 @@ function attachModuleClickListeners() {
     });
 }
 
-// --- CART & WISHLIST LOGIC ---
 function executeCartAdditionLogic(id, name, price, image) {
     let currentCart = JSON.parse(localStorage.getItem('fw_user_cart_memory') || "[]");
     currentCart.push({ id, name, price: parseFloat(price), image });
     localStorage.setItem('fw_user_cart_memory', JSON.stringify(currentCart));
-
     alert(`🎉 Success! ${name} has been added to your shopping cart.`);
 }
 
@@ -127,7 +141,6 @@ function executeWishlistAdditionLogic(name, price, image) {
     let currentWish = JSON.parse(localStorage.getItem('fw_user_wish_memory') || "[]");
     currentWish.push({ name, price: parseFloat(price), image });
     localStorage.setItem('fw_user_wish_memory', JSON.stringify(currentWish));
-
     alert(`❤️ Item added to your personal Wishlist!`);
 }
 
@@ -167,7 +180,7 @@ loadHomeProducts();
 setupCategoryFilters();
 
 // ======================
-// FLASH SALE REVERSE COUNTDOWN
+// FLASH SALE COUNTDOWN
 // ======================
 const timer = document.getElementById("sale-timer");
 let end = localStorage.getItem("flashEnd");

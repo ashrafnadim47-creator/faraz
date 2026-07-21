@@ -9,7 +9,8 @@
     <meta name="keywords" content="Faraz Store, Free Fire Top Up, Luck Royale, Gaming Gear, Smart Gadgets">
     <meta name="theme-color" content="#020617">
     <link rel="icon" href="favicon.ico">
-<link rel="manifest" href="manifest.json">
+    <link rel="manifest" href="manifest.json">
+
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -51,9 +52,6 @@
             <a href="cart.html" class="nav-icon-link" title="Shopping Cart">🛒</a>
             <a href="profile.html" class="nav-icon-link" title="My Profile">👤</a>
             <a href="settings.html" class="nav-icon-link" title="Settings">⚙️</a>
-            
-            
-            
         </div>
 
         <!-- MOBILE MENU BUTTON -->
@@ -61,27 +59,27 @@
     </header>
 
     <!-- 📱 MOBILE SIDEBAR MENU -->
-<div id="sidebar">
-    <div class="sidebar-header">
-        <div class="sidebar-logo">🔥 FARAZ STORE</div>
-        <button id="close-sidebar" class="close-btn">✖</button>
+    <div id="sidebar">
+        <div class="sidebar-header">
+            <div class="sidebar-logo">🔥 FARAZ STORE</div>
+            <button id="close-sidebar" class="close-btn">✖</button>
+        </div>
+        <div class="sidebar-nav">
+            <a href="index.html" class="sidebar-link active">🏠 Home</a>
+            <a href="prime-membership.html" class="sidebar-link highlight-gold" style="color: #ffcc00; font-weight: 800;">👑 Prime Membership</a>
+            <a href="luck-royale.html" class="sidebar-link highlight-gold">🎰 Luck Royale (Spin & Win)</a>
+            <a href="spin.html" class="sidebar-link highlight-gold">🎡 Lucky Spin</a>
+            <a href="missions.html" class="sidebar-link">🎯 Daily Missions</a>
+            <a href="topup.html" class="sidebar-link highlight-cyan">💎 Buy Diamonds & Memberships</a>
+            <a href="product.html" class="sidebar-link">🛒 All Products</a>
+            <a href="categories.html" class="sidebar-link">📂 Categories</a>
+            <a href="wishlist.html" class="sidebar-link">❤️ Wishlist</a>
+            <a href="orders.html" class="sidebar-link">📦 My Orders</a>
+            <a href="leaderboard.html" class="sidebar-link">🏆 Top Players Leaderboard</a>
+            <a href="contact.html" class="sidebar-link">📞 Support & Contact</a>
+            <a href="profile.html" class="sidebar-link">👤 My Profile Account</a>
+        </div>
     </div>
-    <div class="sidebar-nav">
-        <a href="index.html" class="sidebar-link active">🏠 Home</a>
-        <a href="luck-royale.html" class="sidebar-link highlight-gold">🎰 Luck Royale (Spin & Win)</a>
-        <a href="spin.html" class="sidebar-link highlight-gold">🎡 Lucky Spin</a>
-        <a href="missions.html" class="sidebar-link">🎯 Daily Missions</a>
-        <a href="topup.html" class="sidebar-link highlight-cyan">💎 Buy Diamonds & Memberships</a>
-        <a href="product.html" class="sidebar-link">🛒 All Products</a>
-        <a href="categories.html" class="sidebar-link">📂 Categories</a>
-        <a href="wishlist.html" class="sidebar-link">❤️ Wishlist</a>
-        <a href="orders.html" class="sidebar-link">📦 My Orders</a>
-        <a href="leaderboard.html" class="sidebar-link">🏆 Top Players Leaderboard</a>
-        <a href="contact.html" class="sidebar-link">📞 Support & Contact</a>
-        <a href="prime-membership.html" class="sidebar-link"></a>
-        <a href="profile.html" class="sidebar-link">👤 My Profile Account</a>
-    </div>
-</div>
 
     <!-- ⚡ HERO SECTION -->
     <section class="hero">
@@ -296,6 +294,7 @@
         </div>
         <div class="footer-links">
             <a href="index.html">Home</a>
+            <a href="prime-membership.html">Prime Level</a>
             <a href="luck-royale.html">Luck Royale</a>
             <a href="topup.html">Buy Diamonds</a>
             <a href="product.html">All Products</a>
@@ -320,13 +319,12 @@
     <script type="module" src="js/cart-page.js"></script>
     <script type="module" src="js/wishlist.js"></script>
     <script type="module" src="js/recent.js"></script>
-<script>
-  if ('serviceWorker' in navigator) {
-    navigator.serviceWorker.register('/sw.js');
-  }
-</script>
+    <script>
+      if ('serviceWorker' in navigator) {
+        navigator.serviceWorker.register('/sw.js');
+      }
+    </script>
 
 </body>
-
 
 </html>
