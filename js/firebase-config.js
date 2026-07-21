@@ -1,5 +1,9 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-import { getAuth } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+import { 
+    getAuth, 
+    setPersistence, 
+    browserLocalPersistence 
+} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 import { getFirestore } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
 // ==========================================
@@ -18,4 +22,15 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 
 export const auth = getAuth(app);
+
+// 🚀 MANDATORY FOR NATIVE APK: PERMANENT LOCAL PERSISTENCE
+// Isse app band hone ke baad bhi user permanently logged-in rahega!
+setPersistence(auth, browserLocalPersistence)
+    .then(() => {
+        console.log("✅ Local Auth Persistence Enabled");
+    })
+    .catch((error) => {
+        console.error("❌ Auth Persistence Error:", error);
+    });
+
 export const db = getFirestore(app);
