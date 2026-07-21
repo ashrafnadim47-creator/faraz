@@ -1,0 +1,26 @@
+{
+  "background_color": "#020617",
+  "description": "Faraz Store - Next Level Gaming Gear, Top-Up Diamonds, Electronics &amp; Accessories",
+  "dir": "ltr",
+  "display": "standalone",
+  "name": "Faraz Store",
+  "orientation": "any",
+  "scope": "/",
+  "short_name": "FarazStore",
+  "start_url": "/",
+  "theme_color": "#020617",
+  "icons": [
+    {
+      "src": "https://faraz-eta.vercel.app/favicon.ico",
+      "isSquare": false,
+      "isPng": false,
+      "isWebp": false,
+      "isJpg": false,
+      "width": 0,
+      "is512x512": false,
+      "is256x256": false,
+      "is192x192": false
+    }
+  ],
+  "id": "com.farazstore.app"
+}
