@@ -320,6 +320,13 @@
     <script type="module" src="js/cart-page.js"></script>
     <script type="module" src="js/wishlist.js"></script>
     <script type="module" src="js/recent.js"></script>
+<script>
+  if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('/sw.js');
+  }
+</script>
+
 </body>
+
 
 </html>
