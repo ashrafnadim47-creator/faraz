@@ -17,6 +17,7 @@
     <!-- CSS Links -->
     <link rel="stylesheet" href="css/global.css">
     <link rel="stylesheet" href="css/luck-royale.css">
+    <link rel="stylesheet" href="css/faded-wheel.css">
 </head>
 
 <body>
@@ -33,6 +34,10 @@
                     <span class="ff-item-indicator"></span>
                     <span>🔮 MYSTICAL RING</span>
                 </div>
+                <div class="ff-menu-item" data-event="faded-wheel-event">
+                    <span class="ff-item-indicator"></span>
+                    <span>🎡 FADED WHEEL</span>
+                </div>
                 <div class="ff-menu-item" data-event="wall-royale">
                     <span class="ff-item-indicator"></span>
                     <span>🛡️ GLOO WALL STORE</span>
@@ -47,12 +52,14 @@
                 </div>
             </div>
 
-            <!-- TOKEN BALANCE BOX -->
-            <div class="token-status-box">
-                <img src="images/token.png" alt="Token">
+            <!-- TOKEN & DIAMOND BALANCE BOX -->
+            <div class="token-status-box" style="display: flex; gap: 10px; align-items: center; background: rgba(0,0,0,0.4); padding: 8px 12px; border-radius: 8px; margin-bottom: 10px;">
+                <img src="images/token.png" alt="Token" style="width: 24px; height: 24px;">
                 <div>
-                    <div style="font-size: 10px; color: #94a3b8; font-family: sans-serif;">TOKENS</div>
+                    <div style="font-size: 10px; color: #94a3b8;">TOKENS / DIAMONDS</div>
                     <span id="user-token-balance" style="color: #eab308; font-weight: bold;">0</span>
+                    <span style="color: #64748b;">|</span>
+                    <span id="user-diamonds-display" style="color: #00e5ff; font-weight: bold;">💎 0</span>
                 </div>
             </div>
 
@@ -70,25 +77,53 @@
             <h1 id="event-title-display" class="ff-stage-title">MYSTICAL RING</h1>
 
             <!-- CIRCULAR WHEEL ARENA -->
-            <div class="ff-circle-arena">
-                <div id="wheel-slots-grid" class="ff-slots-container">
-                    <!-- Dynamic Wheel Slots Rendered via JS -->
+            <div id="ring-wheel-section">
+                <div class="ff-circle-arena">
+                    <div id="wheel-slots-grid" class="ff-slots-container">
+                        <!-- Dynamic Wheel Slots Rendered via JS -->
+                    </div>
+                    <div class="ff-center-hub">
+                        <span>🎰</span>
+                    </div>
                 </div>
-                <div class="ff-center-hub">
-                    <span>🎰</span>
+
+                <!-- ACTION CONTROL DECK (SPIN BUTTONS) -->
+                <div class="ff-action-deck">
+                    <button id="btn-spin-1" class="ff-deck-btn normal-spin">
+                        <span class="btn-primary-text">1 SPIN</span>
+                        <span class="btn-sub-text">💎 10 Diamonds</span>
+                    </button>
+                    <button id="btn-spin-10" class="ff-deck-btn grand-spin">
+                        <span class="btn-primary-text">10 SPINS</span>
+                        <span class="btn-sub-text">💎 100 Diamonds</span>
+                    </button>
                 </div>
             </div>
 
-            <!-- ACTION CONTROL DECK (SPIN BUTTONS) -->
-            <div class="ff-action-deck">
-                <button id="btn-spin-1" class="ff-deck-btn normal-spin">
-                    <span class="btn-primary-text">1 SPIN</span>
-                    <span class="btn-sub-text">💎 10 Diamonds</span>
-                </button>
-                <button id="btn-spin-10" class="ff-deck-btn grand-spin">
-                    <span class="btn-primary-text">10 SPINS</span>
-                    <span class="btn-sub-text">💎 100 Diamonds</span>
-                </button>
+            <!-- FADED WHEEL SECTION (HIDDEN BY DEFAULT) -->
+            <div id="faded-wheel-section" style="display: none; width: 100%; max-width: 550px; margin: auto;">
+                <div class="faded-wheel-container">
+                    <div id="status-message" style="text-align: center; color: #ffcc00; font-weight: bold; margin-bottom: 10px;">Select 2 unwanted items to remove</div>
+                    
+                    <div class="faded-grid" style="display: grid; grid-template-columns: repeat(5, 1fr); gap: 10px; margin-bottom: 15px;">
+                        <div class="grid-item" data-index="0"><img src="images/iphone16.png" alt="Item"><span class="item-title">iPhone 16</span></div>
+                        <div class="grid-item" data-index="1"><img src="images/gloowall.png" alt="Item"><span class="item-title">Gloo Wall</span></div>
+                        <div class="grid-item" data-index="2"><img src="images/diwali_bundle.png" alt="Item"><span class="item-title">Diwali Bundle</span></div>
+                        <div class="grid-item" data-index="3"><img src="images/weapon_crate.png" alt="Item"><span class="item-title">Gun Crate</span></div>
+                        <div class="grid-item" data-index="4"><img src="images/token.png" alt="Item"><span class="item-title">10 Tokens</span></div>
+                        <div class="grid-item" data-index="5"><img src="images/loot_box.png" alt="Item"><span class="item-title">Loot Box</span></div>
+                        <div class="grid-item" data-index="6"><img src="images/avtar.png" alt="Item"><span class="item-title">Avatar</span></div>
+                        <div class="grid-item" data-index="7"><img src="images/token.png" alt="Item"><span class="item-title">5 Tokens</span></div>
+                        <div class="grid-item" data-index="8"><img src="images/weapon_crate.png" alt="Item"><span class="item-title">Weapon Box</span></div>
+                        <div class="grid-item" data-index="9"><img src="images/token.png" alt="Item"><span class="item-title">2 Tokens</span></div>
+                    </div>
+
+                    <div style="text-align: center;">
+                        <button id="main-action-trigger" class="primary-btn" disabled style="padding: 12px 30px; font-size: 16px; font-weight: 800; width: 100%;">
+                            REMOVE (0/2)
+                        </button>
+                    </div>
+                </div>
             </div>
         </main>
 
@@ -145,6 +180,7 @@
 
     <!-- SCRIPT INTEGRATION -->
     <script type="module" src="js/luck-royale.js"></script>
+    <script type="module" src="js/faded-wheel.js"></script>
 </body>
 
 </html>

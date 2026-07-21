@@ -1,6 +1,7 @@
 import { db, auth } from "./firebase-config.js";
 import { 
     doc, 
+    getDoc,
     onSnapshot, 
     updateDoc, 
     collection, 
@@ -12,6 +13,7 @@ import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.2/f
 const slotsGrid = document.getElementById("wheel-slots-grid");
 const eventTitleDisplay = document.getElementById("event-title-display");
 const tokenDisplay = document.getElementById("user-token-balance");
+const diamondDisplay = document.getElementById("user-diamonds-display");
 const wheelContainer = document.getElementById("wheel-slots-grid");
 const congratsPopup = document.getElementById("congratulations-popup");
 const rightColumnPrizes = document.getElementById("right-column-prizes");
@@ -30,7 +32,7 @@ let activeShopTab = "grand";
 let lockIntervalTimer = null;
 
 // ==========================================================================
-// 💎 RING EVENTS DATASET (WITH LOCK SYSTEM)
+// 💎 RING EVENTS DATASET
 // ==========================================================================
 const gameEventsData = {
     "mystical-ring": {
@@ -65,8 +67,8 @@ const gameEventsData = {
     },
     "diwali-ring": {
         title: "DIWALI RING 🪔",
-        isLocked: true, // 🔒 LOCK ACTIVATED
-        unlockDate: "2026-11-01T00:00:00", // Yahan aap apni Unlock Date/Time set kar sakte hain
+        isLocked: true,
+        unlockDate: "2026-11-01T00:00:00",
         slots: [
             { name: "Diwali Bundle", img: "images/diwali_bundle.png", grand: true, isToken: false, type: "🏆 MYTHIC BUNDLE" },
             { name: "1 Token", img: "images/token.png", isToken: true, amount: 1, type: "🪙 DIWALI TOKEN" },
@@ -95,25 +97,31 @@ const exchangeStoreCatalog = {
     ]
 };
 
-// Modular Firebase Auth & Snapshot Sync
+// AUTH & REALTIME FIRESTORE SYNC
 onAuthStateChanged(auth, (user) => {
     if (user) {
         currentUserUid = user.uid;
         onSnapshot(doc(db, "users", user.uid), (docSnap) => {
             if (docSnap.exists()) {
                 const data = docSnap.data();
-                currentDiamonds = data.diamonds ?? 0;
+                currentDiamonds = data.diamonds ?? data.diamond ?? data.wallet ?? 0;
                 currentTokens = data.tokens ?? 0;
+
                 if (tokenDisplay) tokenDisplay.innerText = currentTokens;
+                if (diamondDisplay) diamondDisplay.innerText = `💎 ${currentDiamonds.toLocaleString()}`;
                 if (exchangeWalletText) exchangeWalletText.innerText = currentTokens;
+
+                localStorage.setItem('fw_persist_wallet', currentDiamonds.toString());
             }
         });
+    } else {
+        // Fallback for non-logged in state
+        const savedWallet = localStorage.getItem('fw_persist_wallet');
+        if (savedWallet) currentDiamonds = parseInt(savedWallet, 10);
     }
 });
 
-// ==========================================================================
-// 🔒 LOCK & COUNTDOWN ENGINE FOR SPECIAL EVENTS
-// ==========================================================================
+// Lock Check Engine
 function checkAndRenderEventLockState(key) {
     const event = gameEventsData[key];
     if (lockIntervalTimer) clearInterval(lockIntervalTimer);
@@ -121,38 +129,25 @@ function checkAndRenderEventLockState(key) {
     const spin1Btn = document.getElementById("btn-spin-1");
     const spin10Btn = document.getElementById("btn-spin-10");
 
-    // Remove existing lock overlays if any
     const existingOverlay = document.getElementById("event-lock-overlay");
     if (existingOverlay) existingOverlay.remove();
 
     if (!event || !event.isLocked) {
-        // Unlock Spin Buttons
         if (spin1Btn) spin1Btn.disabled = false;
         if (spin10Btn) spin10Btn.disabled = false;
-        return false; // Event is active
+        return false;
     }
 
-    // Disable Spin Buttons
     if (spin1Btn) spin1Btn.disabled = true;
     if (spin10Btn) spin10Btn.disabled = true;
 
-    // Create Lock Overlay over wheel container
     const lockOverlay = document.createElement("div");
     lockOverlay.id = "event-lock-overlay";
     lockOverlay.style.cssText = `
-        position: absolute;
-        inset: 0;
-        background: rgba(2, 6, 23, 0.92);
-        backdrop-filter: blur(8px);
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-        z-index: 100;
-        border-radius: 50%;
-        text-align: center;
-        padding: 20px;
-        border: 2px dashed #ffcc00;
+        position: absolute; inset: 0; background: rgba(2, 6, 23, 0.92);
+        backdrop-filter: blur(8px); display: flex; flex-direction: column;
+        justify-content: center; align-items: center; z-index: 100;
+        border-radius: 50%; text-align: center; padding: 20px; border: 2px dashed #ffcc00;
     `;
 
     lockOverlay.innerHTML = `
@@ -169,17 +164,14 @@ function checkAndRenderEventLockState(key) {
         wheelContainer.appendChild(lockOverlay);
     }
 
-    // Timer Calculation
     const targetTime = new Date(event.unlockDate).getTime();
 
     function updateCountdown() {
         const now = new Date().getTime();
         const diff = targetTime - now;
-
         const timerDisplay = document.getElementById("lock-timer-display");
 
         if (diff <= 0) {
-            // Unlock automatically
             event.isLocked = false;
             clearInterval(lockIntervalTimer);
             setupCircularWheelLayout(key);
@@ -198,7 +190,7 @@ function checkAndRenderEventLockState(key) {
 
     updateCountdown();
     lockIntervalTimer = setInterval(updateCountdown, 1000);
-    return true; // Event is locked
+    return true;
 }
 
 // Circular Wheel Setup
@@ -261,17 +253,37 @@ function updateRightShowcaseBox(item) {
 
 // Spin Rotation Controller
 let currentDegreesRotation = 0;
-function executeRingSpin(cost) {
+async function executeRingSpin(cost) {
     if (isSpinning) return;
 
-    const event = gameEventsData[activeKey];
-    if (event.isLocked) {
-        alert("🔒 This Event is currently locked! Please wait until the unlock timer finishes.");
+    const user = auth.currentUser;
+    if (!user && !currentUserUid) {
+        alert("Please log in first!");
+        window.location.href = "login.html";
         return;
     }
 
+    const event = gameEventsData[activeKey];
+    if (event.isLocked) {
+        alert("🔒 This Event is currently locked!");
+        return;
+    }
+
+    // Direct Firestore Fresh Read to ensure accurate balance
+    try {
+        const userSnap = await getDoc(doc(db, "users", currentUserUid || user.uid));
+        if (userSnap.exists()) {
+            const freshData = userSnap.data();
+            currentDiamonds = freshData.diamonds ?? freshData.diamond ?? freshData.wallet ?? 0;
+            currentTokens = freshData.tokens ?? 0;
+        }
+    } catch (e) {
+        console.log("Using cached diamonds balance.");
+    }
+
     if (currentDiamonds < cost) {
-        alert("❌ Diamonds insufficient! Top-up your wallet account.");
+        alert(`❌ Insufficient Diamonds! You need ${cost} Diamonds to spin.`);
+        window.location.href = "topup.html";
         return;
     }
 
@@ -279,7 +291,7 @@ function executeRingSpin(cost) {
     const totalSlots = event.slots.length;
     let winnerIdx = Math.floor(Math.random() * totalSlots);
 
-    // Block direct iPhone win on normal random spin
+    // Filter grand prize on simple random spin
     if (event.slots[winnerIdx].name === "iPhone 16 Pro Max") {
         isSpinning = false;
         executeRingSpin(cost);
@@ -299,10 +311,14 @@ function executeRingSpin(cost) {
             updatedTokens += prizeWon.amount;
         }
 
-        await updateDoc(doc(db, "users", currentUserUid), {
-            diamonds: currentDiamonds - cost,
-            tokens: updatedTokens
-        });
+        try {
+            await updateDoc(doc(db, "users", currentUserUid || user.uid), {
+                diamonds: currentDiamonds - cost,
+                tokens: updatedTokens
+            });
+        } catch (e) {
+            console.error("Spin update error:", e);
+        }
 
         updateRightShowcaseBox(prizeWon);
         triggerCongratsBanner(prizeWon.name, prizeWon.img);
@@ -316,71 +332,6 @@ function triggerCongratsBanner(name, img) {
     if (nameEl) nameEl.innerText = name;
     if (imgEl) imgEl.src = img;
     if (congratsPopup) congratsPopup.style.display = "flex";
-}
-
-// Render Items inside Exchange Modal
-function renderExchangeShopItems(tabKey) {
-    if (!itemsRendererGrid) return;
-    itemsRendererGrid.innerHTML = "";
-    const itemsPool = exchangeStoreCatalog[tabKey] || [];
-
-    itemsPool.forEach(item => {
-        const itemBox = document.createElement("div");
-        itemBox.className = `ex-shop-node ${item.class}`;
-        itemBox.innerHTML = `
-            <div class="ex-node-badge">${item.tag}</div>
-            <img src="${item.img}" class="ex-node-img" alt="Item">
-            <div class="ex-node-title">${item.name}</div>
-            <div class="ex-node-action-panel">
-                <div class="ex-node-cost">
-                    <img src="images/token.png" alt="coin">
-                    <span>${item.cost} Tokens</span>
-                </div>
-                <button class="ex-node-claim-btn" data-item="${item.name}" data-cost="${item.cost}" data-img="${item.img}">
-                    CLAIM REWARD
-                </button>
-            </div>
-        `;
-
-        itemBox.querySelector(".ex-node-claim-btn").onclick = (e) => {
-            const target = e.target.closest(".ex-node-claim-btn");
-            const name = target.getAttribute("data-item");
-            const price = parseInt(target.getAttribute("data-cost"));
-            const image = target.getAttribute("data-img");
-
-            processTokenExchangeTransaction(name, price, image);
-        };
-
-        itemsRendererGrid.appendChild(itemBox);
-    });
-}
-
-// Token Exchange Transaction
-async function processTokenExchangeTransaction(itemName, cost, itemImg) {
-    if (currentTokens < cost) {
-        alert(`❌ Token balance low! You need minimum ${cost} tokens to unlock this reward item.`);
-        return;
-    }
-
-    try {
-        await updateDoc(doc(db, "users", currentUserUid), {
-            tokens: currentTokens - cost
-        });
-
-        await addDoc(collection(db, "orders"), {
-            userId: currentUserUid,
-            productName: itemName,
-            status: "PENDING",
-            costType: "EXCHANGE_TOKENS",
-            timestamp: new Date().toISOString()
-        });
-
-        if (exchangeModal) exchangeModal.style.display = "none";
-        triggerCongratsBanner(`🎉 ${itemName}`, itemImg || "images/iphone16.png");
-
-    } catch (e) {
-        console.error("Orders compilation crash stream:", e);
-    }
 }
 
 // Bindings Connection Matrix
@@ -413,16 +364,6 @@ if (congratsDismissBtn) {
     };
 }
 
-// Category Navigation Menu inside Exchange Shop
-document.querySelectorAll(".ex-nav-btn").forEach(btn => {
-    btn.onclick = () => {
-        document.querySelectorAll(".ex-nav-btn").forEach(b => b.classList.remove("active"));
-        btn.classList.add("active");
-        activeShopTab = btn.getAttribute("data-shop");
-        renderExchangeShopItems(activeShopTab);
-    };
-});
-
 // Event Tabs Switcher
 document.querySelectorAll(".ff-menu-item").forEach(item => {
     item.onclick = () => {
@@ -436,9 +377,22 @@ document.querySelectorAll(".ff-menu-item").forEach(item => {
 
         document.querySelectorAll(".ff-menu-item").forEach(m => m.classList.remove("active"));
         item.classList.add("active");
+        
         activeKey = item.getAttribute("data-event");
-        if (eventTitleDisplay) eventTitleDisplay.innerText = gameEventsData[activeKey].title;
-        setupCircularWheelLayout(activeKey);
+
+        const ringWheelSection = document.getElementById("ring-wheel-section");
+        const fadedWheelSection = document.getElementById("faded-wheel-section");
+
+        if (activeKey === "faded-wheel-event") {
+            if (eventTitleDisplay) eventTitleDisplay.innerText = "🎡 FADED WHEEL ARENA";
+            if (ringWheelSection) ringWheelSection.style.display = "none";
+            if (fadedWheelSection) fadedWheelSection.style.display = "block";
+        } else {
+            if (eventTitleDisplay) eventTitleDisplay.innerText = gameEventsData[activeKey].title;
+            if (fadedWheelSection) fadedWheelSection.style.display = "none";
+            if (ringWheelSection) ringWheelSection.style.display = "block";
+            setupCircularWheelLayout(activeKey);
+        }
     };
 });
 
