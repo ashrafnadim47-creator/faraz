@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FF Prime System | Faraz Store</title>
+    <link rel="stylesheet" href="css/global.css">
+    <link rel="stylesheet" href="css/header.css">
+    <link rel="stylesheet" href="css/ff-prime.css">
+    <!-- Google Gaming Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700;800;900&family=Teko:wght@600;700&family=Plus+Jakarta+Sans:wght@700;800&display=swap" rel="stylesheet">
+</head>
+
+<body class="ff-prime-bg">
+
+    <header id="header-container"></header>
+
+    <main class="ff-prime-wrapper">
+        
+        <!-- TOP TITLE BANNER -->
+        <div class="ff-top-banner">
+            <div class="ff-banner-glow"></div>
+            <h1>👑 NEW PRIME SYSTEM</h1>
+        </div>
+
+        <!-- MAIN 3D GAME STAGE PANEL -->
+        <div class="ff-game-stage">
+            
+            <!-- LEFT EMBLEM STAGE -->
+            <div class="ff-emblem-section">
+                <div class="ff-emblem-rays"></div>
+                <div class="ff-3d-badge">
+                    <span id="ff-giant-emblem">1</span>
+                </div>
+            </div>
+
+            <!-- RIGHT CONTROL PANEL -->
+            <div class="ff-info-section">
+                
+                <div class="ff-level-header">
+                    <span class="mylevel-tag">MY LEVEL</span>
+                    <h2 id="ff-level-title">PRIME 1</h2>
+                </div>
+
+                <!-- PROGRESS BAR & TOP UP BUTTON -->
+                <div class="ff-progress-wrapper">
+                    <div class="ff-progress-info">
+                        <span id="ff-needed-diamonds">Gain 💎 500 to reach Prime 2</span>
+                        <!-- REDIRECTS DIRECTLY TO topup.html -->
+                        <a href="topup.html" class="ff-topup-btn">TOP-UP &raquo;</a>
+                    </div>
+
+                    <div class="ff-bar-frame">
+                        <div class="ff-bar-fill" id="ff-bar-fill" style="width: 0%;"></div>
+                        <span class="ff-bar-text" id="ff-bar-text">0 / 500</span>
+                    </div>
+                </div>
+
+                <!-- PRIVILEGES CARDS -->
+                <div class="ff-privileges-box">
+                    <div class="ff-privilege-title">&lt; PRIVILEGE HIGHLIGHTS &gt;</div>
+                    <div class="ff-privilege-grid" id="ff-privilege-grid">
+                        <!-- Loaded dynamically via JS -->
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+
+        <!-- BOTTOM TIMELINE LEVEL SLIDER -->
+        <div class="ff-timeline-box">
+            <div class="ff-timeline-sub">TAP LEVEL TO VIEW UNLOCKABLE REWARDS</div>
+            <div class="ff-timeline-track" id="ff-timeline-nodes">
+                <!-- Loaded dynamically via JS -->
+            </div>
+        </div>
+
+    </main>
+
+    <script type="module" src="js/ff-prime-ui.js"></script>
+</body>
+
+</html>

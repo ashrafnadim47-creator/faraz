@@ -1,0 +1,292 @@
+/* ==========================================================================
+   🔥 EXACT 100% FREE FIRE IN-GAME ENGINE STYLESHEET
+   ========================================================================== */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body.ff-prime-bg {
+    background: #0d0600 url('https://e1.pxfuel.com/desktop-wallpaper/461/805/desktop-wallpaper-free-fire-dark-backgrounds-page-5.jpg') center/cover no-repeat fixed;
+    color: #ffffff;
+    font-family: 'Teko', 'Plus Jakarta Sans', sans-serif;
+    min-height: 100vh;
+    padding-bottom: 50px;
+}
+
+.ff-prime-wrapper {
+    max-width: 1050px;
+    margin: 20px auto;
+    padding: 0 15px;
+}
+
+/* 👑 TOP TITLE BANNER */
+.ff-top-banner {
+    position: relative;
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.ff-banner-glow {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 300px;
+    height: 60px;
+    background: radial-gradient(circle, rgba(255, 183, 0, 0.4) 0%, rgba(0,0,0,0) 70%);
+}
+
+.ff-top-banner h1 {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 32px;
+    font-weight: 900;
+    letter-spacing: 3px;
+    background: linear-gradient(180deg, #ffffff 0%, #ffe600 40%, #ff8800 80%, #662200 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    filter: drop-shadow(0 0 15px rgba(255, 170, 0, 0.8));
+    text-transform: uppercase;
+}
+
+/* 🎮 MAIN GAME STAGE CONTAINER */
+.ff-game-stage {
+    display: grid;
+    grid-template-columns: 1fr 1.35fr;
+    gap: 25px;
+    align-items: center;
+    background: linear-gradient(180deg, rgba(25, 14, 3, 0.96) 0%, rgba(8, 4, 1, 0.98) 100%);
+    border: 3px solid;
+    border-image: linear-gradient(180deg, #ffe600 0%, #b87a00 50%, #4a2c00 100%) 1;
+    box-shadow: 0 0 40px rgba(255, 136, 0, 0.3), inset 0 0 20px rgba(0, 0, 0, 0.9);
+    padding: 30px 25px;
+    clip-path: polygon(0 0, 100% 0, 100% calc(100% - 20px), calc(100% - 20px) 100%, 0 100%);
+}
+
+/* 🏆 GIANT 3D GOLD EMBLEM */
+.ff-emblem-section {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 240px;
+}
+
+.ff-emblem-rays {
+    position: absolute;
+    width: 250px;
+    height: 250px;
+    background: radial-gradient(circle, rgba(255, 170, 0, 0.5) 0%, rgba(0,0,0,0) 70%);
+    animation: pulseEmblem 2s infinite alternate ease-in-out;
+}
+
+@keyframes pulseEmblem {
+    0% { transform: scale(0.85); opacity: 0.5; }
+    100% { transform: scale(1.1); opacity: 1; }
+}
+
+.ff-3d-badge {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 140px;
+    font-weight: 900;
+    line-height: 1;
+    background: linear-gradient(180deg, #ffffff 0%, #fff066 25%, #ff8800 70%, #661100 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    filter: drop-shadow(0 0 25px #ff7700) drop-shadow(0 10px 10px rgba(0,0,0,0.9));
+    z-index: 2;
+}
+
+/* 👑 RIGHT INFO PANEL */
+.mylevel-tag {
+    background: linear-gradient(180deg, #ffe600 0%, #995500 100%);
+    color: #000000;
+    padding: 2px 12px;
+    font-size: 14px;
+    font-weight: 900;
+    letter-spacing: 1px;
+    display: inline-block;
+    clip-path: polygon(0 0, 100% 0, 88% 100%, 0 100%);
+    border-bottom: 2px solid #ffffff;
+}
+
+#ff-level-title {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 42px;
+    color: #ffffff;
+    margin-top: 2px;
+    text-shadow: 2px 2px 0px #000000, 0 0 15px rgba(255, 255, 255, 0.4);
+}
+
+/* 💎 PROGRESS BAR & TOP-UP CUTOUT BUTTON */
+.ff-progress-wrapper {
+    margin: 18px 0 22px 0;
+}
+
+.ff-progress-info {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 18px;
+    font-weight: 700;
+    color: #ffcc00;
+    margin-bottom: 6px;
+}
+
+.ff-topup-btn {
+    background: linear-gradient(180deg, #00f0ff 0%, #0066cc 100%);
+    color: #000000;
+    padding: 6px 18px;
+    text-decoration: none;
+    font-family: 'Orbitron', sans-serif;
+    font-weight: 900;
+    font-size: 12px;
+    border: 1px solid #99f7ff;
+    clip-path: polygon(12% 0, 100% 0, 88% 100%, 0 100%);
+    box-shadow: 0 0 15px rgba(0, 240, 255, 0.7);
+    transition: all 0.2s ease;
+}
+
+.ff-topup-btn:hover {
+    transform: scale(1.08);
+    background: linear-gradient(180deg, #ffffff 0%, #00f0ff 100%);
+}
+
+.ff-bar-frame {
+    position: relative;
+    height: 20px;
+    background: #080300;
+    border: 2px solid #664411;
+    overflow: hidden;
+    box-shadow: inset 0 0 10px #000000;
+}
+
+.ff-bar-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #ff4400 0%, #ffaa00 50%, #ffee00 100%);
+    box-shadow: 0 0 15px #ff7700;
+    transition: width 0.5s ease;
+}
+
+.ff-bar-text {
+    position: absolute;
+    right: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-family: 'Orbitron', sans-serif;
+    font-size: 10px;
+    font-weight: 900;
+    color: #ffffff;
+    text-shadow: 1px 1px 3px #000000;
+}
+
+/* 🎁 PRIVILEGE HIGHLIGHTS CARDS */
+.ff-privilege-title {
+    text-align: center;
+    color: #ffd700;
+    font-family: 'Orbitron', sans-serif;
+    font-size: 12px;
+    letter-spacing: 2px;
+    margin-bottom: 12px;
+}
+
+.ff-privilege-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+}
+
+.ff-card {
+    background: linear-gradient(180deg, rgba(45, 28, 10, 0.95) 0%, rgba(18, 9, 2, 0.95) 100%);
+    border: 1px solid #73501a;
+    padding: 10px 12px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    box-shadow: inset 0 0 8px rgba(255, 170, 0, 0.15);
+    clip-path: polygon(0 0, 94% 0, 100% 25%, 100% 100%, 0 100%);
+}
+
+.ff-card .card-icon {
+    font-size: 26px;
+}
+
+.ff-card span {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-size: 11px;
+    font-weight: 800;
+    color: #ffeedd;
+    text-transform: uppercase;
+}
+
+/* 🎯 BOTTOM TIMELINE TRACK SLIDER */
+.ff-timeline-box {
+    margin-top: 25px;
+    background: linear-gradient(180deg, rgba(20, 10, 2, 0.95) 0%, rgba(5, 2, 0, 0.98) 100%);
+    border: 2px solid #523b12;
+    padding: 18px 15px;
+}
+
+.ff-timeline-sub {
+    text-align: center;
+    font-family: 'Orbitron', sans-serif;
+    font-size: 10px;
+    color: #a88144;
+    letter-spacing: 1.5px;
+    margin-bottom: 12px;
+}
+
+.ff-timeline-track {
+    display: flex;
+    justify-content: space-between;
+    gap: 8px;
+    overflow-x: auto;
+}
+
+.ff-node {
+    flex: 1;
+    min-width: 85px;
+    text-align: center;
+    padding: 12px 6px;
+    background: linear-gradient(180deg, #2b1a08 0%, #120901 100%);
+    border: 1px solid #4a320f;
+    cursor: pointer;
+    font-family: 'Orbitron', sans-serif;
+    font-size: 12px;
+    font-weight: 900;
+    color: #8c6834;
+    transition: all 0.2s ease;
+    clip-path: polygon(10% 0, 100% 0, 90% 100%, 0 100%);
+}
+
+.ff-node:hover, .ff-node.active-view {
+    background: linear-gradient(180deg, #ffe600 0%, #ff7700 100%);
+    color: #000000;
+    border-color: #ffffff;
+    box-shadow: 0 0 18px rgba(255, 170, 0, 0.9);
+    transform: translateY(-3px);
+}
+
+/* 📱 MOBILE RESPONSIVE TUNING */
+@media (max-width: 800px) {
+    .ff-game-stage {
+        grid-template-columns: 1fr;
+        padding: 20px 15px;
+    }
+
+    .ff-3d-badge {
+        font-size: 100px;
+    }
+
+    #ff-level-title {
+        font-size: 32px;
+    }
+
+    .ff-privilege-grid {
+        grid-template-columns: 1fr;
+    }
+}

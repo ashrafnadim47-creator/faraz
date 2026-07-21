@@ -1,0 +1,130 @@
+/* ==========================================================================
+   🔥 PRIME VIP LEVEL STYLESHEET
+   ========================================================================== */
+
+.prime-container {
+    max-width: 1100px;
+    margin: 40px auto;
+    padding: 0 20px;
+}
+
+.prime-hero-card {
+    text-align: center;
+    padding: 40px 20px;
+    border-radius: 24px;
+    background: rgba(15, 23, 42, 0.85);
+    border: 2px solid rgba(0, 229, 255, 0.2);
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.8), 0 0 30px rgba(0, 229, 255, 0.15);
+    margin-bottom: 40px;
+}
+
+.prime-badge-large {
+    font-size: 70px;
+    line-height: 1;
+    margin-bottom: 10px;
+    filter: drop-shadow(0 0 15px rgba(255, 255, 255, 0.3));
+}
+
+.prime-hero-card h1 {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 32px;
+    color: #00e5ff;
+    margin-bottom: 6px;
+    letter-spacing: 1.5px;
+}
+
+.prime-hero-card p {
+    color: #94a3b8;
+    font-size: 15px;
+    margin-bottom: 25px;
+}
+
+/* PROGRESS BAR */
+.prime-progress-wrapper {
+    max-width: 500px;
+    margin: 0 auto;
+}
+
+.prime-progress-bar {
+    width: 100%;
+    height: 16px;
+    background: #020617;
+    border-radius: 20px;
+    overflow: hidden;
+    border: 1px solid #334155;
+    margin-bottom: 10px;
+}
+
+.prime-progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #00e5ff, #a855f7);
+    border-radius: 20px;
+    transition: width 0.5s ease;
+}
+
+#prime-progress-text {
+    font-size: 13px;
+    font-weight: 700;
+    color: #cbd5e1;
+}
+
+/* TIERS GRID */
+.section-title {
+    font-family: 'Orbitron', sans-serif;
+    color: #ffffff;
+    font-size: 22px;
+    margin-bottom: 25px;
+    text-align: center;
+}
+
+.prime-tiers-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 20px;
+}
+
+.tier-card {
+    background: rgba(15, 23, 42, 0.7);
+    border-radius: 20px;
+    padding: 25px 20px;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    transition: all 0.3s ease;
+}
+
+.tier-card:hover {
+    transform: translateY(-6px);
+    border-color: #00e5ff;
+}
+
+.tier-icon {
+    font-size: 40px;
+    margin-bottom: 10px;
+}
+
+.tier-card h3 {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 16px;
+    color: #ffffff;
+    margin-bottom: 4px;
+}
+
+.tier-range {
+    display: inline-block;
+    font-size: 12px;
+    color: #00e5ff;
+    font-weight: 700;
+    margin-bottom: 15px;
+}
+
+.tier-card ul {
+    list-style: none;
+    padding: 0;
+    text-align: left;
+}
+
+.tier-card ul li {
+    font-size: 13px;
+    color: #cbd5e1;
+    margin-bottom: 8px;
+    font-weight: 600;
+}
