@@ -1,5 +1,5 @@
 /* ==========================================================================
-   🔥 FARAZ STORE v2.0 - LUCK ROYALE & FREE FIRE NEEDLE SPIN STYLING
+   🔥 FARAZ STORE v2.0 - MOBILE LANDSCAPE FIT & FADED WHEEL CSS
    ========================================================================== */
 
 body {
@@ -21,45 +21,42 @@ body {
     overflow: hidden;
 }
 
-/* --- LEFT SIDE NAVIGATION PANEL --- */
+/* LEFT NAVIGATION PANEL */
 .ff-navigation-panel {
-    width: 240px;
-    background: rgba(10, 10, 18, 0.95);
+    width: 220px;
+    background: rgba(10, 10, 18, 0.92);
     backdrop-filter: blur(16px);
     border-right: 2px solid #eab308;
-    padding: 15px 10px;
+    padding: 10px 8px;
     display: flex;
     flex-direction: column;
-    gap: 10px;
+    gap: 8px;
     box-sizing: border-box;
     z-index: 10;
 }
 
 .ff-panel-title {
-    font-size: 18px;
+    font-size: 16px;
     font-weight: 900;
     color: #eab308;
     text-align: center;
-    padding-bottom: 10px;
+    padding-bottom: 6px;
     border-bottom: 2px dashed rgba(255, 255, 255, 0.15);
 }
 
 .ff-menu-list {
     display: flex;
     flex-direction: column;
-    gap: 8px;
+    gap: 6px;
 }
 
 .ff-menu-item {
-    position: relative;
-    padding: 10px 12px;
+    padding: 8px 10px;
     background: #111827;
-    border-radius: 8px;
-    font-size: 11px;
+    border-radius: 6px;
+    font-size: 10px;
     font-weight: 800;
     cursor: pointer;
-    display: flex;
-    align-items: center;
     border: 1px solid rgba(255, 255, 255, 0.05);
 }
 
@@ -72,26 +69,26 @@ body {
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 10px;
+    gap: 8px;
     background: #1e293b;
-    padding: 8px 12px;
-    border-radius: 12px;
+    padding: 6px 10px;
+    border-radius: 8px;
     border: 1px solid rgba(0, 229, 255, 0.3);
 }
 
 .token-status-box img {
-    width: 24px;
-    height: 24px;
+    width: 20px;
+    height: 20px;
 }
 
 .ff-exchange-trigger-btn {
     background: linear-gradient(135deg, #eab308, #ca8a04);
     color: #020617;
     border: none;
-    padding: 10px;
+    padding: 8px;
     font-weight: 900;
-    font-size: 12px;
-    border-radius: 10px;
+    font-size: 11px;
+    border-radius: 8px;
     cursor: pointer;
 }
 
@@ -100,107 +97,81 @@ body {
     background: #ef4444;
     border: none;
     color: #ffffff;
-    padding: 10px;
+    padding: 8px;
     font-weight: 800;
-    font-size: 11px;
-    border-radius: 10px;
+    font-size: 10px;
+    border-radius: 8px;
     cursor: pointer;
 }
 
-/* --- CENTER MAIN STAGE --- */
+/* CENTER MAIN STAGE */
 .ff-main-stage {
     flex: 1;
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: space-between;
-    padding: 15px 10px;
+    justify-content: space-around;
+    padding: 10px;
     position: relative;
 }
 
 .ff-stage-title {
-    font-size: 24px;
+    font-size: 20px;
     font-weight: 900;
     color: #eab308;
     margin: 0;
 }
 
-/* 🎯 CIRCULAR ARENA & NEEDLE POINTER */
+/* RING ARENA */
 .ff-circle-arena {
     position: relative;
-    width: 320px;
-    height: 320px;
+    width: 300px;
+    height: 300px;
     display: flex;
     align-items: center;
     justify-content: center;
     margin: auto;
-    border-radius: 50%;
-    border: 3px solid rgba(0, 229, 255, 0.3);
 }
 
-/* Static slots container where 8 items are displayed */
 .ff-slots-container {
     position: absolute;
-    width: 320px;
-    height: 320px;
+    width: 300px;
+    height: 300px;
     top: 0;
     left: 0;
 }
 
 .ff-card-node {
     position: absolute;
-    width: 62px;
-    height: 62px;
+    width: 56px;
+    height: 56px;
     background: radial-gradient(circle, #374151 0%, #1f2937 100%);
     border: 2px solid #4b5563;
-    border-radius: 14px;
+    border-radius: 12px;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
     font-size: 8px;
     font-weight: 800;
-    text-align: center;
     transform: translate(-50%, -50%);
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
-}
-
-.ff-card-node.grand-item {
-    border-color: #eab308;
-    background: radial-gradient(circle, #7c2d12 0%, #431407 100%);
-    box-shadow: 0 0 18px rgba(234, 179, 8, 0.5);
 }
 
 .ff-card-node img {
-    width: 34px;
-    height: 34px;
+    width: 30px;
+    height: 30px;
     object-fit: contain;
 }
 
-.ff-center-hub {
-    position: absolute;
-    width: 60px;
-    height: 60px;
-    background: radial-gradient(circle, #dc2626 0%, #991b1b 100%);
-    border: 3px solid #ffffff;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    z-index: 10;
-    font-size: 20px;
-}
-
-/* 🔻 NEEDLE / POINTER THAT SPINS OVER ITEMS (FREE FIRE STYLE) */
 .ff-needle-pointer {
     position: absolute;
-    width: 20px;
-    height: 250px;
-    top: 35px;
-    left: 150px;
+    width: 16px;
+    height: 240px;
+    top: 30px;
+    left: 142px;
     z-index: 8;
     pointer-events: none;
-    transform-origin: 50% 125px; /* Center hub origin */
+    transform-origin: 50% 120px;
     transition: transform 4s cubic-bezier(0.15, 0.85, 0.15, 1);
 }
 
@@ -209,80 +180,55 @@ body {
     top: 0;
     left: 50%;
     transform: translateX(-50%);
-    font-size: 26px;
+    font-size: 22px;
     color: #ffcc00;
-    text-shadow: 0 0 12px #ffcc00, 0 0 20px #ffcc00;
 }
 
-/* Control Deck Buttons */
-.ff-action-deck {
-    display: flex;
-    gap: 15px;
-}
-
-.ff-deck-btn {
-    width: 130px;
-    padding: 8px 0;
+.ff-center-hub {
+    position: absolute;
+    width: 50px;
+    height: 50px;
+    background: radial-gradient(circle, #dc2626 0%, #991b1b 100%);
     border: 2px solid #ffffff;
-    border-radius: 20px;
-    cursor: pointer;
+    border-radius: 50%;
     display: flex;
-    flex-direction: column;
     align-items: center;
+    justify-content: center;
+    z-index: 10;
+    font-size: 18px;
 }
 
-.ff-deck-btn.normal-spin {
-    background: linear-gradient(180deg, #06b6d4 0%, #0891b2 100%);
-}
-
-.ff-deck-btn.grand-spin {
-    background: linear-gradient(180deg, #ea580c 0%, #c2410c 100%);
-}
-
-.btn-primary-text {
-    font-size: 14px;
-    font-weight: 900;
-    color: #ffffff;
-}
-
-.btn-sub-text {
-    font-size: 10px;
-    color: #fef08a;
-    font-weight: 700;
-}
-
-/* 🎡 FADED WHEEL GRID STYLING */
+/* FADED WHEEL MOBILE GRID */
 .faded-grid {
     display: grid;
     grid-template-columns: repeat(5, 1fr);
-    gap: 10px;
-    max-width: 520px;
+    gap: 8px;
+    max-width: 480px;
     margin: 0 auto;
 }
 
 .faded-grid .grid-item {
-    background: rgba(30, 41, 59, 0.8);
+    background: rgba(30, 41, 59, 0.85);
     border: 2px solid rgba(255, 255, 255, 0.15);
-    border-radius: 12px;
-    padding: 8px;
+    border-radius: 10px;
+    padding: 6px;
     text-align: center;
     cursor: pointer;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    transition: all 0.2s ease;
 }
 
 .faded-grid .grid-item img {
-    width: 40px;
-    height: 40px;
+    width: 36px;
+    height: 36px;
     object-fit: contain;
 }
 
 .faded-grid .grid-item .item-title {
-    font-size: 9px;
-    margin-top: 4px;
+    font-size: 8px;
+    margin-top: 2px;
     color: #cbd5e1;
 }
 
@@ -301,122 +247,59 @@ body {
     border-color: #22c55e !important;
     background: rgba(34, 197, 94, 0.3) !important;
     opacity: 0.4;
-    pointer-events: none;
 }
 
-/* ⚡ CHASE LIGHT HIGHLIGHT FOR FADED WHEEL */
 .faded-grid .grid-item.active-chase {
     border-color: #ffcc00 !important;
     background: rgba(255, 204, 0, 0.4) !important;
-    box-shadow: 0 0 20px #ffcc00, inset 0 0 10px #ffcc00 !important;
-    transform: scale(1.1);
-    z-index: 5;
+    box-shadow: 0 0 15px #ffcc00 !important;
+    transform: scale(1.08);
 }
 
-/* RIGHT PANEL SHOWCASE */
+/* RIGHT SHOWCASE */
 .ff-right-panel {
-    width: 220px;
-    padding: 15px 10px;
+    width: 200px;
+    padding: 10px;
     display: flex;
     align-items: center;
     justify-content: center;
-    box-sizing: border-box;
 }
 
 .ff-showcase-card {
     width: 100%;
-    background: linear-gradient(180deg, #1f2937 0%, #111827 100%);
+    background: #111827;
     border: 2px solid #374151;
-    border-radius: 16px;
-    padding: 15px 10px;
+    border-radius: 14px;
+    padding: 12px 8px;
     text-align: center;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 10px;
-}
-
-.ff-item-image-wrap {
-    width: 80px;
-    height: 80px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
 }
 
 .ff-item-image-wrap img {
-    width: 100%;
-    height: 100%;
+    width: 70px;
+    height: 70px;
     object-fit: contain;
 }
 
-/* MODAL OVERLAYS */
+/* MODAL FIX */
 .royale-modal-overlay,
 .congratulations-overlay {
     position: fixed !important;
-    top: 0 !important;
-    left: 0 !important;
-    right: 0 !important;
-    bottom: 0 !important;
-    width: 100vw !important;
-    height: 100vh !important;
-    background: rgba(2, 6, 23, 0.92) !important;
-    backdrop-filter: blur(12px);
+    inset: 0 !important;
+    background: rgba(2, 6, 23, 0.95) !important;
+    backdrop-filter: blur(10px);
     z-index: 999999 !important;
     display: flex;
     justify-content: center;
     align-items: center;
-    padding: 10px;
 }
 
 .exchange-fullscreen-card {
     width: 95vw;
     height: 90vh;
-    max-width: 900px;
-    background: radial-gradient(circle at 50% 30%, #1e1e38 0%, #0a0a14 100%);
+    max-width: 850px;
+    background: #0a0a14;
     border: 2px solid #eab308;
-    border-radius: 20px;
+    border-radius: 16px;
     display: flex;
     flex-direction: column;
-    overflow: hidden;
-}
-
-.exchange-top-bar {
-    background: rgba(0, 0, 0, 0.6);
-    padding: 12px 20px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    border-bottom: 2px dashed rgba(234, 179, 8, 0.3);
-}
-
-.ex-title {
-    font-size: 15px;
-    color: #eab308;
-    font-weight: 900;
-}
-
-.exchange-main-body {
-    flex: 1;
-    display: flex;
-    overflow: hidden;
-}
-
-.exchange-side-nav {
-    width: 160px;
-    background: rgba(0, 0, 0, 0.3);
-    border-right: 1px solid rgba(255, 255, 255, 0.08);
-    padding: 15px 8px;
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-}
-
-.exchange-content-grid {
-    flex: 1;
-    padding: 15px;
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
-    gap: 12px;
-    overflow-y: auto;
 }

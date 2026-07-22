@@ -10,7 +10,7 @@ import {
 } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 
-// DOM Targets
+// DOM Targets Matrix
 const slotsGrid = document.getElementById("wheel-slots-grid");
 const spinnerNeedle = document.getElementById("ring-spinner-needle");
 const eventTitleDisplay = document.getElementById("event-title-display");
@@ -19,10 +19,16 @@ const diamondDisplay = document.getElementById("user-diamonds-display");
 const congratsPopup = document.getElementById("congratulations-popup");
 const rightColumnPrizes = document.getElementById("right-column-prizes");
 
+// Exchange Store Elements
 const exchangeModal = document.getElementById("exchange-modal");
 const exchangeWalletText = document.getElementById("exchange-wallet-tokens");
 const itemsRendererGrid = document.getElementById("exchange-items-renderer");
 
+// Faded Wheel Elements
+const fadedActionBtn = document.getElementById("main-action-trigger");
+const fadedStatusMsg = document.getElementById("status-message");
+
+// State Variables
 let currentUserUid = "";
 let currentDiamonds = 0;
 let currentTokens = 0;
@@ -30,6 +36,32 @@ let isSpinning = false;
 let activeKey = "mystical-ring";
 let activeShopTab = "grand";
 
+// 🔐 FADED WHEEL STATES WITH LOCAL STORAGE FALLBACK (PERSISTENT AFTER REFRESH)
+let fadedSelected = [];
+let fadedRemoved = JSON.parse(localStorage.getItem('fw_persist_removed') || "[]");
+let fadedWon = JSON.parse(localStorage.getItem('fw_persist_won') || "[]");
+let fadedSpinPointer = parseInt(localStorage.getItem('fw_persist_pointer') || "0", 10);
+const fadedCosts = [9, 19, 39, 69, 99, 149, 199, 499];
+
+// Sound Synthesizer
+function playBeepSound(frequency = 520, type = 'sine', duration = 0.08) {
+    try {
+        const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        const osc = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
+        osc.type = type;
+        osc.frequency.setValueAtTime(frequency, audioCtx.currentTime);
+        gain.gain.setValueAtTime(0.1, audioCtx.currentTime);
+        osc.connect(gain);
+        gain.connect(audioCtx.destination);
+        osc.start();
+        osc.stop(audioCtx.currentTime + duration);
+    } catch(e) {}
+}
+
+// ==========================================
+// 💎 DATASETS
+// ==========================================
 const gameEventsData = {
     "mystical-ring": {
         title: "MYSTICAL RING",
@@ -71,7 +103,9 @@ const exchangeStoreCatalog = {
     ]
 };
 
-// AUTH & REALTIME SYNC
+// ==========================================
+// 🔑 AUTH & REALTIME FIRESTORE SYNC
+// ==========================================
 onAuthStateChanged(auth, (user) => {
     if (user) {
         currentUserUid = user.uid;
@@ -81,23 +115,41 @@ onAuthStateChanged(auth, (user) => {
                 currentDiamonds = data.diamonds ?? data.wallet ?? 0;
                 currentTokens = data.tokens ?? 0;
 
+                // Sync Firestore array if available, else keep Local Storage
+                if (data.faded_removed && data.faded_removed.length >= 2) {
+                    fadedRemoved = data.faded_removed;
+                    localStorage.setItem('fw_persist_removed', JSON.stringify(fadedRemoved));
+                }
+                if (data.faded_won) {
+                    fadedWon = data.faded_won;
+                    localStorage.setItem('fw_persist_won', JSON.stringify(fadedWon));
+                }
+                if (data.faded_spinCount !== undefined) {
+                    fadedSpinPointer = data.faded_spinCount;
+                    localStorage.setItem('fw_persist_pointer', fadedSpinPointer.toString());
+                }
+
                 if (tokenDisplay) tokenDisplay.innerText = currentTokens;
                 if (diamondDisplay) diamondDisplay.innerText = `💎 ${currentDiamonds.toLocaleString()}`;
                 if (exchangeWalletText) exchangeWalletText.innerText = currentTokens;
+
+                syncFadedUI();
             }
         });
     }
 });
 
-// Setup Circular Wheel Items
+// ==========================================
+// 🎡 RING WHEEL SETUP & SPIN
+// ==========================================
 function setupCircularWheelLayout(key) {
     const data = gameEventsData[key];
     if (!slotsGrid || !data) return;
     slotsGrid.innerHTML = "";
 
     const total = data.slots.length;
-    const radius = 130;
-    const center = 160;
+    const radius = 120;
+    const center = 150;
 
     data.slots.forEach((slot, i) => {
         const angle = (i * 2 * Math.PI) / total - (Math.PI / 2);
@@ -131,7 +183,6 @@ function updateRightShowcaseBox(item) {
     `;
 }
 
-// Spin Pointer Needle Execution
 let needleDegrees = 0;
 async function executeRingSpin(cost) {
     if (isSpinning) return;
@@ -143,6 +194,7 @@ async function executeRingSpin(cost) {
     }
 
     isSpinning = true;
+    playBeepSound(600, 'sine', 0.1);
 
     const event = gameEventsData[activeKey] || gameEventsData["mystical-ring"];
     const totalSlots = event.slots.length;
@@ -155,6 +207,7 @@ async function executeRingSpin(cost) {
 
     setTimeout(async () => {
         isSpinning = false;
+        playBeepSound(880, 'square', 0.25);
 
         const prizeWon = event.slots[winnerIdx];
         let updatedTokens = currentTokens + (prizeWon.isToken ? prizeWon.amount : 0);
@@ -172,15 +225,168 @@ async function executeRingSpin(cost) {
     }, 4000);
 }
 
-function triggerCongratsBanner(name, img) {
-    const nameEl = document.getElementById("congrats-item-name");
-    const imgEl = document.getElementById("congrats-item-img");
-    if (nameEl) nameEl.innerText = name;
-    if (imgEl) imgEl.src = img;
-    if (congratsPopup) congratsPopup.style.display = "flex";
+// ==========================================
+// 🎡 FADED WHEEL SYSTEM (PERMANENT SAVE FIX)
+// ==========================================
+function syncFadedUI() {
+    const domItems = document.querySelectorAll('.faded-grid .grid-item');
+    domItems.forEach((el, idx) => {
+        el.classList.remove('removed', 'won', 'to-remove');
+        if (fadedRemoved.includes(idx)) el.classList.add('removed');
+        if (fadedWon.includes(idx)) el.classList.add('won');
+    });
+
+    if (fadedRemoved.length < 2) {
+        if (fadedStatusMsg) fadedStatusMsg.innerText = "Select 2 unwanted items to remove";
+        if (fadedActionBtn) {
+            fadedActionBtn.innerText = `REMOVE (${fadedSelected.length}/2)`;
+            fadedActionBtn.disabled = fadedSelected.length < 2;
+        }
+    } else {
+        const cost = fadedCosts[fadedSpinPointer] || 499;
+        if (fadedSpinPointer >= fadedCosts.length || fadedWon.length >= 8) {
+            if (fadedStatusMsg) fadedStatusMsg.innerText = "🎉 All Rewards Claimed!";
+            if (fadedActionBtn) { fadedActionBtn.innerText = "COMPLETED"; fadedActionBtn.disabled = true; }
+        } else {
+            if (fadedStatusMsg) fadedStatusMsg.innerText = "Pool ready! Click SPIN to draw reward.";
+            if (fadedActionBtn) {
+                fadedActionBtn.innerText = `SPIN (💎 ${cost})`;
+                fadedActionBtn.disabled = false;
+            }
+        }
+    }
 }
 
-// Exchange Store
+// Click Handler for Faded Wheel Items
+document.querySelectorAll('.faded-grid .grid-item').forEach((item) => {
+    item.addEventListener('click', () => {
+        const index = parseInt(item.getAttribute('data-index'), 10);
+        
+        if (fadedRemoved.length >= 2 || fadedWon.includes(index) || isSpinning) return;
+
+        const selIdx = fadedSelected.indexOf(index);
+        if (selIdx > -1) {
+            fadedSelected.splice(selIdx, 1);
+            item.classList.remove('to-remove');
+        } else {
+            if (fadedSelected.length < 2) {
+                fadedSelected.push(index);
+                item.classList.add('to-remove');
+            }
+        }
+
+        playBeepSound(400, 'triangle', 0.05);
+        
+        if (fadedActionBtn) {
+            fadedActionBtn.innerText = fadedSelected.length < 2 ? `REMOVE (${fadedSelected.length}/2)` : `CONFIRM REMOVE`;
+            fadedActionBtn.disabled = fadedSelected.length < 2;
+        }
+    });
+});
+
+// Faded Wheel Action Button Click
+if (fadedActionBtn) {
+    fadedActionBtn.addEventListener('click', async () => {
+        if (isSpinning) return;
+
+        // Step 1: Remove 2 Items
+        if (fadedRemoved.length < 2) {
+            if (fadedSelected.length < 2) return;
+            fadedRemoved = [...fadedSelected];
+            fadedSelected = [];
+
+            // SAVE PERMANENTLY TO LOCAL STORAGE & FIRESTORE
+            localStorage.setItem('fw_persist_removed', JSON.stringify(fadedRemoved));
+
+            if (currentUserUid) {
+                try {
+                    await updateDoc(doc(db, "users", currentUserUid), { faded_removed: fadedRemoved });
+                } catch(e) {}
+            }
+            syncFadedUI();
+            return;
+        }
+
+        // Step 2: Spin Faded Wheel
+        const cost = fadedCosts[fadedSpinPointer];
+        if (currentDiamonds < cost) {
+            alert(`❌ Insufficient Diamonds! You need 💎 ${cost}.`);
+            window.location.href = "topup.html";
+            return;
+        }
+
+        executeFadedChaseSpin(cost);
+    });
+}
+
+function executeFadedChaseSpin(cost) {
+    isSpinning = true;
+    if (fadedActionBtn) fadedActionBtn.disabled = true;
+
+    const domItems = document.querySelectorAll('.faded-grid .grid-item');
+    let accessiblePool = [];
+    for (let i = 0; i < 10; i++) {
+        if (!fadedRemoved.includes(i) && !fadedWon.includes(i)) accessiblePool.push(i);
+    }
+
+    const winnerIndex = accessiblePool[Math.floor(Math.random() * accessiblePool.length)];
+    let currentTick = 0;
+    let cycles = 0;
+
+    const interval = setInterval(() => {
+        playBeepSound(500 + cycles * 8, 'sine', 0.03);
+        domItems.forEach(el => el.classList.remove('active-chase'));
+
+        while (fadedRemoved.includes(currentTick) || fadedWon.includes(currentTick)) {
+            currentTick = (currentTick + 1) % 10;
+        }
+
+        if (domItems[currentTick]) domItems[currentTick].classList.add('active-chase');
+
+        const prev = currentTick;
+        currentTick = (currentTick + 1) % 10;
+        cycles++;
+
+        if (cycles >= 25 && prev === winnerIndex) {
+            clearInterval(interval);
+
+            setTimeout(async () => {
+                playBeepSound(880, 'square', 0.3);
+                domItems[winnerIndex].classList.remove('active-chase');
+                domItems[winnerIndex].classList.add('won');
+
+                fadedWon.push(winnerIndex);
+                fadedSpinPointer++;
+
+                localStorage.setItem('fw_persist_won', JSON.stringify(fadedWon));
+                localStorage.setItem('fw_persist_pointer', fadedSpinPointer.toString());
+
+                const updatedDiamonds = currentDiamonds - cost;
+
+                if (currentUserUid) {
+                    try {
+                        await updateDoc(doc(db, "users", currentUserUid), {
+                            diamonds: updatedDiamonds,
+                            faded_won: fadedWon,
+                            faded_spinCount: fadedSpinPointer
+                        });
+                    } catch(e) {}
+                }
+
+                const winName = domItems[winnerIndex].querySelector('.item-title')?.innerText || "Special Item";
+                const winImg = domItems[winnerIndex].querySelector('img')?.src || "images/token.png";
+
+                triggerCongratsBanner(winName, winImg);
+                isSpinning = false;
+                syncFadedUI();
+            }, 300);
+        }
+    }, 100);
+}
+
+// ==========================================
+// 🛍️ TOKEN EXCHANGE STORE
+// ==========================================
 function renderExchangeShopItems(tabKey) {
     if (!itemsRendererGrid) return;
     itemsRendererGrid.innerHTML = "";
@@ -189,17 +395,28 @@ function renderExchangeShopItems(tabKey) {
     itemsPool.forEach(item => {
         const itemBox = document.createElement("div");
         itemBox.className = "ex-shop-node";
+        itemBox.style.cssText = "background:#1e293b; padding:12px; border-radius:10px; text-align:center; border:1px solid #334155;";
         itemBox.innerHTML = `
-            <div class="ex-node-badge">${item.tag}</div>
-            <img src="${item.img}" class="ex-node-img" alt="Item">
-            <div class="ex-node-title">${item.name}</div>
-            <button class="ex-node-claim-btn" style="background:#22c55e; color:#fff; border:none; padding:8px; border-radius:6px; font-weight:bold;">CLAIM (${item.cost} 🪙)</button>
+            <div style="font-size:10px; color:#eab308; font-weight:bold;">${item.tag}</div>
+            <img src="${item.img}" style="width:60px; height:60px; object-fit:contain; margin:8px 0;" alt="Item">
+            <div style="font-size:12px; font-weight:bold; color:#fff; margin-bottom:8px;">${item.name}</div>
+            <button style="background:#22c55e; color:#fff; border:none; padding:6px 12px; border-radius:6px; font-weight:bold; cursor:pointer; font-size:11px;">CLAIM (${item.cost} 🪙)</button>
         `;
         itemsRendererGrid.appendChild(itemBox);
     });
 }
 
-// Bindings
+function triggerCongratsBanner(name, img) {
+    const nameEl = document.getElementById("congrats-item-name");
+    const imgEl = document.getElementById("congrats-item-img");
+    if (nameEl) nameEl.innerText = name;
+    if (imgEl) imgEl.src = img;
+    if (congratsPopup) congratsPopup.style.display = "flex";
+}
+
+// ==========================================
+// 🔗 BINDINGS & TAB SWITCHER
+// ==========================================
 document.getElementById("btn-spin-1")?.addEventListener("click", () => executeRingSpin(10));
 document.getElementById("btn-spin-10")?.addEventListener("click", () => executeRingSpin(100));
 
@@ -216,7 +433,6 @@ document.getElementById("congrats-dismiss-bstn")?.addEventListener("click", () =
     if (congratsPopup) congratsPopup.style.display = "none";
 });
 
-// Tab Switcher
 document.querySelectorAll(".ff-menu-item").forEach(item => {
     item.onclick = () => {
         if (isSpinning) return;
@@ -225,20 +441,23 @@ document.querySelectorAll(".ff-menu-item").forEach(item => {
 
         activeKey = item.getAttribute("data-event");
 
-        const ringWheelSection = document.getElementById("ring-wheel-section");
-        const fadedWheelSection = document.getElementById("faded-wheel-section");
+        const ringSec = document.getElementById("ring-wheel-section");
+        const fadedSec = document.getElementById("faded-wheel-section");
 
         if (activeKey === "faded-wheel-event") {
             if (eventTitleDisplay) eventTitleDisplay.innerText = "🎡 FADED WHEEL ARENA";
-            if (ringWheelSection) ringWheelSection.style.display = "none";
-            if (fadedWheelSection) fadedWheelSection.style.display = "block";
+            if (ringSec) ringSec.style.display = "none";
+            if (fadedSec) fadedSec.style.display = "block";
+            syncFadedUI();
         } else {
             if (eventTitleDisplay) eventTitleDisplay.innerText = gameEventsData[activeKey] ? gameEventsData[activeKey].title : "LUCK ROYALE";
-            if (fadedWheelSection) fadedWheelSection.style.display = "none";
-            if (ringWheelSection) ringWheelSection.style.display = "block";
+            if (fadedSec) fadedSec.style.display = "none";
+            if (ringSec) ringSec.style.display = "block";
             setupCircularWheelLayout(activeKey);
         }
     };
 });
 
+// INITIALIZE
+syncFadedUI();
 setupCircularWheelLayout("mystical-ring");
