@@ -27,13 +27,12 @@ document.addEventListener("DOMContentLoaded", () => {
     let selectedProduct = { name: "", diamonds: 0, price: 0 };
     let userUnsubscribe = null;
 
-    // 1. Auth Listener & Realtime Load Wallet Balance
+    // 1. Auth Listener & Persistent Session
     onAuthStateChanged(auth, (user) => {
+        currentUser = user;
         if (user) {
-            currentUser = user;
             if (userUnsubscribe) userUnsubscribe();
 
-            // Realtime Sync for Instant Balance Upgrade
             userUnsubscribe = onSnapshot(doc(db, "users", user.uid), (docSnap) => {
                 if (docSnap.exists()) {
                     const data = docSnap.data();
@@ -47,10 +46,12 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     });
 
-    // 2. Open Redeem Popup
+    // 2. Open Redeem Popup (Fixes First Click Duplicate Login)
     triggerBtns.forEach((btn) => {
         btn.addEventListener("click", () => {
-            if (!currentUser) {
+            const activeUser = currentUser || auth.currentUser;
+
+            if (!activeUser) {
                 alert("❌ Please Login first to buy or redeem diamonds!");
                 window.location.href = "login.html";
                 return;
@@ -81,7 +82,7 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     }
 
-    // 4. 🔥 CLAIM VOUCHER & INSTANT AUTO UPDATE DIAMONDS AND PRIME SPENT
+    // 4. Claim Voucher Execution
     if (claimRewardBtn) {
         claimRewardBtn.addEventListener("click", async () => {
             const codeEntered = voucherInput.value.trim().toUpperCase();
@@ -95,7 +96,6 @@ document.addEventListener("DOMContentLoaded", () => {
             claimRewardBtn.innerText = "Verifying...";
 
             try {
-                // Check Voucher in Firestore Vouchers Collection
                 const vouchersRef = collection(db, "vouchers");
                 const q = query(vouchersRef, where("code", "==", codeEntered));
                 const querySnap = await getDocs(q);
@@ -107,7 +107,6 @@ document.addEventListener("DOMContentLoaded", () => {
                     return;
                 }
 
-                // Extract voucher details
                 let voucherDocId = "";
                 let rewardDiamonds = selectedProduct.diamonds || 0;
                 let packPrice = selectedProduct.price || 0;
@@ -119,19 +118,18 @@ document.addEventListener("DOMContentLoaded", () => {
                     if (vData.price) packPrice = parseInt(vData.price);
                 });
 
-                const userRef = doc(db, "users", currentUser.uid);
+                const targetUid = currentUser ? currentUser.uid : auth.currentUser.uid;
+                const userRef = doc(db, "users", targetUid);
 
-                // 🔥 Update user diamonds, wallet, and totalSpent for Prime Level
                 await updateDoc(userRef, {
                     diamonds: increment(rewardDiamonds),
                     wallet: increment(rewardDiamonds),
                     totalSpent: increment(packPrice)
                 });
 
-                // Log Transaction Order History
                 await addDoc(collection(db, "orders"), {
-                    userId: currentUser.uid,
-                    userEmail: currentUser.email || "Customer",
+                    userId: targetUid,
+                    userEmail: (currentUser && currentUser.email) || "Customer",
                     product: selectedProduct.name || "Voucher Redeem",
                     diamonds: rewardDiamonds,
                     amount: packPrice,
@@ -140,17 +138,15 @@ document.addEventListener("DOMContentLoaded", () => {
                     timestamp: serverTimestamp()
                 });
 
-                // Delete Used Voucher Code
                 await deleteDoc(doc(db, "vouchers", voucherDocId));
 
-                alert(`🎉 Success! 💎 ${rewardDiamonds} Diamonds added to your account & Prime Level Updated!`);
+                alert(`🎉 Success! 💎 ${rewardDiamonds} Diamonds added to your account!`);
 
                 if (modalWindow) {
                     modalWindow.classList.remove("active");
                     modalWindow.style.display = "none";
                 }
 
-                // Redirect to Prime Membership page
                 window.location.href = "prime-membership.html";
 
             } catch (err) {
