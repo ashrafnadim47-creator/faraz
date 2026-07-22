@@ -1,5 +1,5 @@
 /* ==========================================================================
-   🔥 FARAZ STORE v2.0 - MOBILE LANDSCAPE FIT & FADED WHEEL CSS
+   🔥 FARAZ STORE v2.0 - LUCK ROYALE & ARENA UI FIX
    ========================================================================== */
 
 body {
@@ -12,22 +12,26 @@ body {
     user-select: none;
 }
 
+/* Fullscreen Arena Layout */
 .ff-interface-wrapper {
     display: flex;
+    flex-direction: row;
     width: 100vw;
     height: 100vh;
     background: radial-gradient(circle at 50% 50%, #1e1b4b 0%, #03000a 100%);
     position: relative;
-    overflow: hidden;
+    box-sizing: border-box;
 }
 
-/* LEFT NAVIGATION PANEL */
+/* 👈 LEFT SIDE NAVIGATION PANEL */
 .ff-navigation-panel {
-    width: 220px;
+    width: 210px;
+    min-width: 210px;
+    height: 100vh;
     background: rgba(10, 10, 18, 0.92);
     backdrop-filter: blur(16px);
     border-right: 2px solid #eab308;
-    padding: 10px 8px;
+    padding: 12px 8px;
     display: flex;
     flex-direction: column;
     gap: 8px;
@@ -57,12 +61,14 @@ body {
     font-size: 10px;
     font-weight: 800;
     cursor: pointer;
-    border: 1px solid rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    color: #e2e8f0;
 }
 
 .ff-menu-item.active {
     background: linear-gradient(90deg, #a21caf 0%, #6366f1 100%);
     border-color: #eab308;
+    color: #ffffff;
 }
 
 .token-status-box {
@@ -104,7 +110,7 @@ body {
     cursor: pointer;
 }
 
-/* CENTER MAIN STAGE */
+/* 🎯 CENTER MAIN STAGE */
 .ff-main-stage {
     flex: 1;
     display: flex;
@@ -112,6 +118,8 @@ body {
     align-items: center;
     justify-content: space-around;
     padding: 10px;
+    height: 100vh;
+    box-sizing: border-box;
     position: relative;
 }
 
@@ -120,13 +128,14 @@ body {
     font-weight: 900;
     color: #eab308;
     margin: 0;
+    text-shadow: 0 0 10px rgba(234, 179, 8, 0.4);
 }
 
-/* RING ARENA */
+/* RING ARENA & NEEDLE */
 .ff-circle-arena {
     position: relative;
-    width: 300px;
-    height: 300px;
+    width: 280px;
+    height: 280px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -135,43 +144,44 @@ body {
 
 .ff-slots-container {
     position: absolute;
-    width: 300px;
-    height: 300px;
+    width: 280px;
+    height: 280px;
     top: 0;
     left: 0;
 }
 
 .ff-card-node {
     position: absolute;
-    width: 56px;
-    height: 56px;
+    width: 52px;
+    height: 52px;
     background: radial-gradient(circle, #374151 0%, #1f2937 100%);
     border: 2px solid #4b5563;
-    border-radius: 12px;
+    border-radius: 10px;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    font-size: 8px;
+    font-size: 7px;
     font-weight: 800;
     transform: translate(-50%, -50%);
+    box-sizing: border-box;
 }
 
 .ff-card-node img {
-    width: 30px;
-    height: 30px;
+    width: 28px;
+    height: 28px;
     object-fit: contain;
 }
 
 .ff-needle-pointer {
     position: absolute;
     width: 16px;
-    height: 240px;
+    height: 220px;
     top: 30px;
-    left: 142px;
+    left: 132px;
     z-index: 8;
     pointer-events: none;
-    transform-origin: 50% 120px;
+    transform-origin: 50% 110px;
     transition: transform 4s cubic-bezier(0.15, 0.85, 0.15, 1);
 }
 
@@ -180,14 +190,14 @@ body {
     top: 0;
     left: 50%;
     transform: translateX(-50%);
-    font-size: 22px;
+    font-size: 20px;
     color: #ffcc00;
 }
 
 .ff-center-hub {
     position: absolute;
-    width: 50px;
-    height: 50px;
+    width: 46px;
+    height: 46px;
     background: radial-gradient(circle, #dc2626 0%, #991b1b 100%);
     border: 2px solid #ffffff;
     border-radius: 50%;
@@ -195,15 +205,57 @@ body {
     align-items: center;
     justify-content: center;
     z-index: 10;
-    font-size: 18px;
+    font-size: 16px;
 }
 
-/* FADED WHEEL MOBILE GRID */
+/* 🔘 ACTION BUTTONS (CLEAN & PROPER) */
+.ff-action-deck {
+    display: flex;
+    gap: 12px;
+    margin-top: 5px;
+}
+
+.ff-deck-btn {
+    width: 120px;
+    padding: 8px 6px;
+    border: 2px solid #ffffff;
+    border-radius: 16px;
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    box-sizing: border-box;
+}
+
+.ff-deck-btn.normal-spin {
+    background: linear-gradient(180deg, #06b6d4 0%, #0891b2 100%);
+    border-color: #22d3ee;
+}
+
+.ff-deck-btn.grand-spin {
+    background: linear-gradient(180deg, #ea580c 0%, #c2410c 100%);
+    border-color: #f97316;
+}
+
+.btn-primary-text {
+    font-size: 13px;
+    font-weight: 900;
+    color: #ffffff;
+}
+
+.btn-sub-text {
+    font-size: 9px;
+    color: #fef08a;
+    font-weight: 700;
+}
+
+/* 🎡 FADED WHEEL GRID */
 .faded-grid {
     display: grid;
     grid-template-columns: repeat(5, 1fr);
     gap: 8px;
-    max-width: 480px;
+    max-width: 460px;
     margin: 0 auto;
 }
 
@@ -221,8 +273,8 @@ body {
 }
 
 .faded-grid .grid-item img {
-    width: 36px;
-    height: 36px;
+    width: 32px;
+    height: 32px;
     object-fit: contain;
 }
 
@@ -256,28 +308,68 @@ body {
     transform: scale(1.08);
 }
 
-/* RIGHT SHOWCASE */
+/* 👉 RIGHT SIDE SHOWCASE PREVIEW PANEL (CLEAR & VISIBLE) */
 .ff-right-panel {
-    width: 200px;
+    width: 210px;
+    min-width: 210px;
+    height: 100vh;
     padding: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-sizing: border-box;
+}
+
+.right-showcase-container {
+    width: 100%;
+}
+
+.ff-showcase-card {
+    width: 100%;
+    background: rgba(17, 24, 39, 0.95);
+    border: 2px solid #374151;
+    border-radius: 14px;
+    padding: 14px 10px;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    box-sizing: border-box;
+}
+
+.ff-showcase-card.epic-glow {
+    border-color: #eab308;
+    box-shadow: 0 0 18px rgba(234, 179, 8, 0.35);
+}
+
+.ff-item-badge {
+    font-size: 9px;
+    background: #eab308;
+    color: #020617;
+    padding: 3px 8px;
+    border-radius: 12px;
+    font-weight: 900;
+}
+
+.ff-item-image-wrap {
+    width: 80px;
+    height: 80px;
     display: flex;
     align-items: center;
     justify-content: center;
 }
 
-.ff-showcase-card {
+.ff-item-image-wrap img {
     width: 100%;
-    background: #111827;
-    border: 2px solid #374151;
-    border-radius: 14px;
-    padding: 12px 8px;
-    text-align: center;
+    height: 100%;
+    object-fit: contain;
 }
 
-.ff-item-image-wrap img {
-    width: 70px;
-    height: 70px;
-    object-fit: contain;
+.ff-item-display-title {
+    font-size: 13px;
+    color: #ffffff;
+    margin: 0;
 }
 
 /* MODAL FIX */
