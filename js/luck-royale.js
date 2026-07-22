@@ -61,7 +61,7 @@ function playBeepSound(frequency = 520, type = 'sine', duration = 0.08) {
 }
 
 // ==========================================
-// 💎 DATASETS (DIWALI RING IS NOW RELOCKED 🔒)
+// 💎 DATASETS (RING & DIWALI LOCK)
 // ==========================================
 const gameEventsData = {
     "mystical-ring": {
@@ -109,15 +109,20 @@ const gameEventsData = {
     }
 };
 
+// ==========================================
+// 🛍️ PREMIUM TOKEN EXCHANGE STORE CATALOG
+// ==========================================
 const exchangeStoreCatalog = {
     "grand": [
-        { name: "iPhone 16 Pro Max", img: "images/iphone16.png", cost: 5000, tag: "🏆 LEGENDARY" },
-        { name: "iPhone 15 Pro", img: "images/iphone16.png", cost: 3500, tag: "✨ MYTHIC" },
-        { name: "Red Gloo Wall Skin", img: "images/gloowall.png", cost: 1500, tag: "🛡️ WALL PREMIUM" }
+        { name: "iPhone 16 Pro Max", img: "images/iphone16.png", cost: 5000, tag: "🏆 LEGENDARY", class: "legendary-border" },
+        { name: "iPhone 15 Pro", img: "images/iphone16.png", cost: 3500, tag: "✨ MYTHIC", class: "" },
+        { name: "Red Gloo Wall Skin", img: "images/gloowall.png", cost: 1500, tag: "🛡️ WALL PREMIUM", class: "legendary-border" },
+        { name: "Diwali Special Bundle", img: "images/diwali_bundle.png", cost: 2000, tag: "🔥 BUNDLE UNIQ", class: "legendary-border" }
     ],
     "crates": [
-        { name: "Epic Weapon Crate", img: "images/weapon_crate.png", cost: 80, tag: "🔫 GUN BOX" },
-        { name: "Rare Avatar Badge", img: "images/avtar.png", cost: 30, tag: "👤 CUSTOM CARD" }
+        { name: "Epic Weapon Crate", img: "images/weapon_crate.png", cost: 80, tag: "🔫 GUN BOX", class: "" },
+        { name: "Diwali Firework Crate", img: "images/loot_box.png", cost: 50, tag: "📦 SPECIAL LOOT", class: "" },
+        { name: "Rare Avatar Badge", img: "images/avtar.png", cost: 30, tag: "👤 CUSTOM CARD", class: "" }
     ]
 };
 
@@ -478,6 +483,74 @@ function executeFadedChaseSpin(cost) {
     }, 100);
 }
 
+// ==========================================
+// 🛍️ STYLISH EXCHANGE STORE RENDER ENGINE
+// ==========================================
+function renderExchangeShopItems(tabKey) {
+    if (!itemsRendererGrid) return;
+    itemsRendererGrid.innerHTML = "";
+    const itemsPool = exchangeStoreCatalog[tabKey] || [];
+
+    itemsPool.forEach(item => {
+        const itemBox = document.createElement("div");
+        itemBox.className = `ex-shop-node ${item.class || ''}`;
+        
+        itemBox.innerHTML = `
+            <div class="ex-node-badge">${item.tag}</div>
+            <img src="${item.img}" class="ex-node-img" alt="${item.name}">
+            <div class="ex-node-title">${item.name}</div>
+            <div class="ex-node-action-panel">
+                <div class="ex-node-cost">
+                    <img src="images/token.png" alt="token">
+                    <span>${item.cost} Tokens</span>
+                </div>
+                <button class="ex-node-claim-btn" data-item="${item.name}" data-cost="${item.cost}" data-img="${item.img}">
+                    CLAIM REWARD
+                </button>
+            </div>
+        `;
+
+        itemBox.querySelector(".ex-node-claim-btn").onclick = (e) => {
+            const target = e.target.closest(".ex-node-claim-btn");
+            const name = target.getAttribute("data-item");
+            const price = parseInt(target.getAttribute("data-cost"));
+            const image = target.getAttribute("data-img");
+
+            processTokenExchangeTransaction(name, price, image);
+        };
+
+        itemsRendererGrid.appendChild(itemBox);
+    });
+}
+
+// Token Exchange Transaction Process
+async function processTokenExchangeTransaction(itemName, cost, itemImg) {
+    if (currentTokens < cost) {
+        alert(`❌ Token balance low! You need minimum ${cost} tokens to unlock this reward item.`);
+        return;
+    }
+
+    try {
+        await updateDoc(doc(db, "users", currentUserUid), {
+            tokens: currentTokens - cost
+        });
+
+        await addDoc(collection(db, "orders"), {
+            userId: currentUserUid,
+            productName: itemName,
+            status: "PENDING",
+            costType: "EXCHANGE_TOKENS",
+            timestamp: serverTimestamp()
+        });
+
+        if (exchangeModal) exchangeModal.style.display = "none";
+        triggerCongratsBanner(`🎉 ${itemName}`, itemImg || "images/iphone16.png");
+
+    } catch (e) {
+        console.error("Exchange transaction failed:", e);
+    }
+}
+
 // Banner Modal
 function triggerCongratsBanner(name, img) {
     const nameEl = document.getElementById("congrats-item-name");
@@ -494,7 +567,9 @@ document.getElementById("btn-spin-1")?.addEventListener("click", () => executeRi
 document.getElementById("btn-spin-10")?.addEventListener("click", () => executeRingSpin(100));
 
 document.getElementById("open-exchange-btn")?.addEventListener("click", () => {
+    if (exchangeWalletText) exchangeWalletText.innerText = currentTokens;
     if (exchangeModal) exchangeModal.style.display = "flex";
+    renderExchangeShopItems(activeShopTab);
 });
 
 document.getElementById("close-exchange-btn")?.addEventListener("click", () => {
@@ -503,6 +578,16 @@ document.getElementById("close-exchange-btn")?.addEventListener("click", () => {
 
 document.getElementById("congrats-dismiss-bstn")?.addEventListener("click", () => {
     if (congratsPopup) congratsPopup.style.display = "none";
+});
+
+// Category Tabs Navigation Inside Exchange Store
+document.querySelectorAll(".ex-nav-btn").forEach(btn => {
+    btn.onclick = () => {
+        document.querySelectorAll(".ex-nav-btn").forEach(b => b.classList.remove("active"));
+        btn.classList.add("active");
+        activeShopTab = btn.getAttribute("data-shop");
+        renderExchangeShopItems(activeShopTab);
+    };
 });
 
 // Event Switcher Navigation
