@@ -1,5 +1,4 @@
-import { auth, db } from "./firebase-config.js";
-import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+import { db } from "./firebase-config.js";
 import { 
     doc, 
     updateDoc, 
@@ -10,12 +9,10 @@ import {
     getDocs, 
     deleteDoc, 
     serverTimestamp, 
-    addDoc,
-    onSnapshot
+    addDoc
 } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
 document.addEventListener("DOMContentLoaded", () => {
-    const walletElem = document.getElementById("topup-wallet");
     const modalWindow = document.getElementById("redeem-popup-window");
     const modalDetails = document.getElementById("modal-product-details");
     const voucherInput = document.getElementById("popup-voucher-input");
@@ -23,49 +20,22 @@ document.addEventListener("DOMContentLoaded", () => {
     const claimRewardBtn = document.getElementById("claim-reward-btn");
     const triggerBtns = document.querySelectorAll(".trigger-redeem-btn");
 
-    let currentUser = null;
     let selectedProduct = { name: "", diamonds: 0, price: 0 };
-    let userUnsubscribe = null;
 
-    // 1. Auth Listener & Persistent Sync
-    onAuthStateChanged(auth, (user) => {
-        currentUser = user;
-        if (user) {
-            if (userUnsubscribe) userUnsubscribe();
-
-            userUnsubscribe = onSnapshot(doc(db, "users", user.uid), (docSnap) => {
-                if (docSnap.exists()) {
-                    const data = docSnap.data();
-                    const liveBalance = data.diamonds ?? data.wallet ?? 0;
-                    if (walletElem) walletElem.innerText = `💎 ${liveBalance.toLocaleString()}`;
-                    localStorage.setItem('fw_persist_wallet', liveBalance.toString());
-                }
-            });
-        } else {
-            if (walletElem) walletElem.innerText = "💎 Login Required";
-        }
-    });
-
-    // 2. Open Redeem Popup (Instant Mobile Resolution - No Duplicate Alert)
+    // 1. DIRECT OPEN POPUP (LOGIN CHECK REMOVED)
     triggerBtns.forEach((btn) => {
         btn.addEventListener("click", () => {
-            // Immediate fallbacks for mobile touch events
-            const activeUser = currentUser || auth.currentUser;
-
-            if (!activeUser) {
-                alert("❌ Please Login first to buy or redeem diamonds!");
-                window.location.href = "login.html";
-                return;
-            }
-
             const pName = btn.getAttribute("data-product") || "Diamond Pack";
             const pDiamonds = parseInt(btn.getAttribute("data-diamonds")) || 0;
             const pPrice = parseInt(btn.getAttribute("data-price")) || 0;
 
             selectedProduct = { name: pName, diamonds: pDiamonds, price: pPrice };
 
-            if (modalDetails) modalDetails.innerText = `Product: ${pName} (💎${pDiamonds}) | Price: ₹${pPrice}`;
+            if (modalDetails) {
+                modalDetails.innerText = `Product: ${pName} (💎${pDiamonds}) | Price: ₹${pPrice}`;
+            }
             if (voucherInput) voucherInput.value = "";
+            
             if (modalWindow) {
                 modalWindow.classList.add("active");
                 modalWindow.style.display = "flex";
@@ -73,7 +43,7 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     });
 
-    // 3. Close Popup
+    // 2. CLOSE POPUP
     if (closeModalBtn) {
         closeModalBtn.addEventListener("click", () => {
             if (modalWindow) {
@@ -83,10 +53,10 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     }
 
-    // 4. Claim Voucher Execution
+    // 3. CLAIM REWARD / VOUCHER REDEEM
     if (claimRewardBtn) {
         claimRewardBtn.addEventListener("click", async () => {
-            const codeEntered = voucherInput.value.trim().toUpperCase();
+            const codeEntered = voucherInput ? voucherInput.value.trim().toUpperCase() : "";
 
             if (!codeEntered) {
                 alert("❌ Please enter a valid Voucher Code!");
@@ -119,18 +89,8 @@ document.addEventListener("DOMContentLoaded", () => {
                     if (vData.price) packPrice = parseInt(vData.price);
                 });
 
-                const activeUid = currentUser ? currentUser.uid : auth.currentUser.uid;
-                const userRef = doc(db, "users", activeUid);
-
-                await updateDoc(userRef, {
-                    diamonds: increment(rewardDiamonds),
-                    wallet: increment(rewardDiamonds),
-                    totalSpent: increment(packPrice)
-                });
-
+                // Order Log entry
                 await addDoc(collection(db, "orders"), {
-                    userId: activeUid,
-                    userEmail: (currentUser && currentUser.email) || "Customer",
                     product: selectedProduct.name || "Voucher Redeem",
                     diamonds: rewardDiamonds,
                     amount: packPrice,
@@ -141,14 +101,12 @@ document.addEventListener("DOMContentLoaded", () => {
 
                 await deleteDoc(doc(db, "vouchers", voucherDocId));
 
-                alert(`🎉 Success! 💎 ${rewardDiamonds} Diamonds added to your account!`);
+                alert(`🎉 Success! 💎 ${rewardDiamonds} Diamonds Voucher Verified!`);
 
                 if (modalWindow) {
                     modalWindow.classList.remove("active");
                     modalWindow.style.display = "none";
                 }
-
-                window.location.href = "prime-membership.html";
 
             } catch (err) {
                 console.error("Redeem Error:", err);

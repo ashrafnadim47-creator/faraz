@@ -1,5 +1,5 @@
 import { db, auth } from "./firebase-config.js";
-import { doc, getDoc, updateDoc, onSnapshot, setDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+import { doc, updateDoc, onSnapshot, getDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 
 let localSelected = [];
@@ -12,19 +12,31 @@ let spinPointer = 0;
 let userDiamonds = 0;
 let currentUserId = "";
 
-// DOM Elements Link
-const domItems = document.querySelectorAll('.faded-grid .grid-item');
-const actionControl = document.getElementById('main-action-trigger');
-const alertBar = document.getElementById('status-message');
+// Safe Web Audio Synthesizer (No external 403 audio link issue)
+function playBeepSound(frequency = 520, type = 'sine', duration = 0.08) {
+    try {
+        const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        const osc = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
+        osc.type = type;
+        osc.frequency.setValueAtTime(frequency, audioCtx.currentTime);
+        gain.gain.setValueAtTime(0.1, audioCtx.currentTime);
+        osc.connect(gain);
+        gain.connect(audioCtx.destination);
+        osc.start();
+        osc.stop(audioCtx.currentTime + duration);
+    } catch(e) {}
+}
 
 window.addEventListener('DOMContentLoaded', () => {
+    // 🔑 AUTH LISTENER & SYNC
     onAuthStateChanged(auth, (user) => {
         if (user) {
             currentUserId = user.uid;
             onSnapshot(doc(db, "users", user.uid), (docSnap) => {
                 if (docSnap.exists()) {
                     const data = docSnap.data();
-                    userDiamonds = data.diamonds ?? data.diamond ?? data.wallet ?? 0;
+                    userDiamonds = data.diamonds ?? data.wallet ?? 0;
                     localRemoved = data.faded_removed ?? [];
                     localWon = data.faded_won ?? [];
                     spinPointer = data.faded_spinCount ?? 0;
@@ -38,36 +50,43 @@ window.addEventListener('DOMContentLoaded', () => {
     attachInteractiveListeners();
 });
 
+// UI SYNC
 function syncSystemUILayout() {
+    const domItems = document.querySelectorAll('.faded-grid .grid-item');
     domItems.forEach(el => el.classList.remove('removed', 'won', 'to-remove'));
+    
     localRemoved.forEach(idx => { if (domItems[idx]) domItems[idx].classList.add('removed'); });
     localWon.forEach(idx => { if (domItems[idx]) domItems[idx].classList.add('won'); });
 
     determineActiveStateMode();
 }
 
+// CLICK LISTENERS
 function attachInteractiveListeners() {
-    domItems.forEach(item => {
-        item.onclick = () => {
+    document.addEventListener('click', (e) => {
+        const item = e.target.closest('.faded-grid .grid-item');
+        if (item) {
             const index = parseInt(item.getAttribute('data-index'), 10);
             evaluateSelectionLayer(index, item);
-        };
-    });
+        }
 
-    if (actionControl) {
-        actionControl.onclick = () => {
+        const actionTrigger = e.target.closest('#main-action-trigger');
+        if (actionTrigger) {
             if (executionRunning) return;
             if (localRemoved.length < 2) {
                 commitRemovalProcess();
             } else {
-                verifyBalanceSheet();
+                verifyBalanceAndSpin();
             }
-        };
-    }
+        }
+    });
 }
 
+// 2 ITEMS REMOVE SELECTION
 function evaluateSelectionLayer(targetIdx, element) {
     if (localRemoved.length === 2 || localWon.includes(targetIdx) || executionRunning) return;
+
+    playBeepSound(400, 'triangle', 0.05);
 
     const cacheIndex = localSelected.indexOf(targetIdx);
     if (cacheIndex > -1) {
@@ -80,6 +99,7 @@ function evaluateSelectionLayer(targetIdx, element) {
         }
     }
 
+    const actionControl = document.getElementById('main-action-trigger');
     if (actionControl) {
         if (localSelected.length < 2) {
             actionControl.innerText = `REMOVE (${localSelected.length}/2)`;
@@ -91,35 +111,48 @@ function evaluateSelectionLayer(targetIdx, element) {
     }
 }
 
+// CONFIRM REMOVE 2 ITEMS
 async function commitRemovalProcess() {
+    if (localSelected.length < 2) return;
+    
     localRemoved = [...localSelected];
     localSelected = [];
 
     if (currentUserId) {
         try {
-            await updateDoc(doc(db, "users", currentUserId), {
-                faded_removed: localRemoved
-            });
+            await updateDoc(doc(db, "users", currentUserId), { faded_removed: localRemoved });
         } catch (e) {
-            console.error("Removal sync failed:", e);
+            console.error("Removal sync error:", e);
         }
     }
 
     syncSystemUILayout();
 }
 
+// STATE CONTROLLER
 function determineActiveStateMode() {
-    if (localRemoved.length < 2) return;
+    const actionControl = document.getElementById('main-action-trigger');
+    const alertBar = document.getElementById('status-message');
 
-    const pricePoint = progressiveCosts[spinPointer];
-    if (spinPointer >= progressiveCosts.length || localWon.length >= 8) {
-        if (alertBar) alertBar.innerText = "🎉 Congratulations! All prize items cleared.";
+    if (localRemoved.length < 2) {
+        if (alertBar) alertBar.innerText = "Select 2 unwanted items to remove";
         if (actionControl) {
-            actionControl.innerText = "COMPLETED";
-            actionControl.disabled = true;
+            actionControl.innerText = `REMOVE (${localSelected.length}/2)`;
+            actionControl.disabled = localSelected.length < 2;
         }
         return;
     }
+
+    const pricePoint = progressiveCosts[spinPointer];
+    if (spinPointer >= progressiveCosts.length || localWon.length >= 8) {
+        if (alertBar) alertBar.innerText = "🎉 All rewards claimed!";
+        if (actionControl) { 
+            actionControl.innerText = "COMPLETED"; 
+            actionControl.disabled = true; 
+        }
+        return;
+    }
+
     if (alertBar) alertBar.innerText = "Pool ready! Click SPIN to draw your reward.";
     if (actionControl) {
         actionControl.innerText = `SPIN (💎 ${pricePoint})`;
@@ -127,30 +160,33 @@ function determineActiveStateMode() {
     }
 }
 
-async function verifyBalanceSheet() {
+// BALANCE & SPIN EXECUTION
+async function verifyBalanceAndSpin() {
     const targetedCost = progressiveCosts[spinPointer];
 
+    if (currentUserId) {
+        try {
+            const userSnap = await getDoc(doc(db, "users", currentUserId));
+            if (userSnap.exists()) {
+                userDiamonds = userSnap.data().diamonds ?? userSnap.data().wallet ?? 0;
+            }
+        } catch (e) {}
+    }
+
     if (userDiamonds < targetedCost) {
-        if (alertBar) alertBar.innerText = `⚠️ Low Diamond Balance! Redirecting to Top-Up...`;
-        setTimeout(() => {
-            alert("❌ Insufficient Diamonds!\n\nPlease buy diamonds from the topup desk.");
-            window.location.href = "topup.html";
-        }, 500);
+        alert(`❌ Insufficient Diamonds! You need 💎 ${targetedCost} Diamonds.`);
+        window.location.href = "topup.html";
         return;
     }
 
-    if (currentUserId) {
-        await updateDoc(doc(db, "users", currentUserId), {
-            diamonds: userDiamonds - targetedCost,
-            faded_spinCount: spinPointer + 1
-        });
-    }
-
-    executeWheelSpin();
+    executeFadedChaseSpin(targetedCost);
 }
 
-function executeWheelSpin() {
+// FREE FIRE CHASE LIGHT ANIMATION
+function executeFadedChaseSpin(cost) {
     executionRunning = true;
+    const actionControl = document.getElementById('main-action-trigger');
+    const domItems = document.querySelectorAll('.faded-grid .grid-item');
     if (actionControl) actionControl.disabled = true;
 
     let accessiblePool = [];
@@ -164,9 +200,9 @@ function executeWheelSpin() {
 
     let activeTickIndex = 0;
     let computedCycles = 0;
-    const targetCyclesThreshold = 20 + Math.floor(Math.random() * 8);
 
     const runtimeClock = setInterval(() => {
+        playBeepSound(600 + (computedCycles * 10), 'sine', 0.04);
         domItems.forEach(el => el.classList.remove('active-chase'));
 
         while (localRemoved.includes(activeTickIndex) || localWon.includes(activeTickIndex)) {
@@ -181,25 +217,42 @@ function executeWheelSpin() {
         activeTickIndex = (activeTickIndex + 1) % 10;
         computedCycles++;
 
-        if (computedCycles >= targetCyclesThreshold && previousTick === selectedWinnerIndex) {
+        if (computedCycles >= 28 && previousTick === selectedWinnerIndex) {
             clearInterval(runtimeClock);
 
             setTimeout(async () => {
+                playBeepSound(880, 'square', 0.3); // Win sound
+
                 domItems[selectedWinnerIndex].classList.remove('active-chase');
                 domItems[selectedWinnerIndex].classList.add('won');
 
                 localWon.push(selectedWinnerIndex);
                 spinPointer++;
 
+                const updatedDiamonds = userDiamonds - cost;
+
                 if (currentUserId) {
-                    await updateDoc(doc(db, "users", currentUserId), {
-                        faded_won: localWon
+                    await updateDoc(doc(db, "users", currentUserId), { 
+                        diamonds: updatedDiamonds,
+                        faded_won: localWon,
+                        faded_spinCount: spinPointer
                     });
                 }
 
+                const winnerName = domItems[selectedWinnerIndex].querySelector('.item-title')?.innerText || "Special Reward";
+                const winnerImg = domItems[selectedWinnerIndex].querySelector('img')?.src || "images/token.png";
+
+                const congratsName = document.getElementById("congrats-item-name");
+                const congratsImg = document.getElementById("congrats-item-img");
+                const congratsPopup = document.getElementById("congratulations-popup");
+
+                if (congratsName) congratsName.innerText = winnerName;
+                if (congratsImg) congratsImg.src = winnerImg;
+                if (congratsPopup) congratsPopup.style.display = "flex";
+
                 executionRunning = false;
                 determineActiveStateMode();
-            }, 250);
+            }, 300);
         }
     }, 100);
 }
