@@ -35,8 +35,9 @@ let currentTokens = 0;
 let isSpinning = false;
 let activeKey = "mystical-ring";
 let activeShopTab = "grand";
+let lockIntervalTimer = null;
 
-// 🔐 FADED WHEEL STATES WITH LOCAL STORAGE FALLBACK (PERSISTENT AFTER REFRESH)
+// Faded Wheel States
 let fadedSelected = [];
 let fadedRemoved = JSON.parse(localStorage.getItem('fw_persist_removed') || "[]");
 let fadedWon = JSON.parse(localStorage.getItem('fw_persist_won') || "[]");
@@ -60,11 +61,12 @@ function playBeepSound(frequency = 520, type = 'sine', duration = 0.08) {
 }
 
 // ==========================================
-// 💎 DATASETS
+// 💎 DATASETS (DIWALI RING IS NOW RELOCKED 🔒)
 // ==========================================
 const gameEventsData = {
     "mystical-ring": {
         title: "MYSTICAL RING",
+        isLocked: false,
         slots: [
             { name: "iPhone 16 Pro Max", img: "images/iphone16.png", grand: true, isToken: false, type: "🏆 GRAND PRIZE" },
             { name: "1 Token", img: "images/token.png", isToken: true, amount: 1, type: "🪙 MYSTICAL TOKEN" },
@@ -78,6 +80,7 @@ const gameEventsData = {
     },
     "wall-royale": {
         title: "WALL STORE",
+        isLocked: false,
         slots: [
             { name: "Red Gloo Wall", img: "images/gloowall.png", grand: true, isToken: false, type: "🏆 LEGENDARY SKIN" },
             { name: "1 Token", img: "images/token.png", isToken: true, amount: 1, type: "🪙 ROYALE TOKEN" },
@@ -87,6 +90,21 @@ const gameEventsData = {
             { name: "10 Tokens", img: "images/token.png", isToken: true, amount: 10, type: "🪙 ROYALE TOKEN" },
             { name: "Sasta Avatar", img: "images/avtar.png", isToken: false, type: "👤 RARE AVATAR CARD" },
             { name: "3 Tokens", img: "images/token.png", isToken: true, amount: 3, type: "🪙 ROYALE TOKEN" }
+        ]
+    },
+    "diwali-ring": {
+        title: "DIWALI RING 🪔",
+        isLocked: true, // 🔒 LOCK ACTIVATED
+        unlockDate: "2026-11-01T00:00:00",
+        slots: [
+            { name: "Diwali Bundle", img: "images/diwali_bundle.png", grand: true, isToken: false, type: "🏆 MYTHIC BUNDLE" },
+            { name: "1 Token", img: "images/token.png", isToken: true, amount: 1, type: "🪙 DIWALI TOKEN" },
+            { name: "5 Tokens", img: "images/token.png", isToken: true, amount: 5, type: "🪙 DIWALI TOKEN" },
+            { name: "Crackers Crate", img: "images/loot_box.png", isToken: false, type: "📦 EXCLUSIVE LOOT BOX" },
+            { name: "10 Tokens", img: "images/token.png", isToken: true, amount: 10, type: "🪙 DIWALI TOKEN" },
+            { name: "2 Tokens", img: "images/token.png", isToken: true, amount: 2, type: "🪙 DIWALI TOKEN" },
+            { name: "Sweet Box Item", img: "images/loot_box.png", isToken: false, type: "📦 SPECIAL LOOT BOX" },
+            { name: "20 Tokens", img: "images/token.png", isToken: true, amount: 20, type: "🪙 DIWALI TOKEN" }
         ]
     }
 };
@@ -104,6 +122,80 @@ const exchangeStoreCatalog = {
 };
 
 // ==========================================
+// 🔒 LOCK OVERLAY CHECK FOR SPECIAL EVENTS
+// ==========================================
+function checkAndRenderEventLockState(key) {
+    const event = gameEventsData[key];
+    if (lockIntervalTimer) clearInterval(lockIntervalTimer);
+
+    const spin1Btn = document.getElementById("btn-spin-1");
+    const spin10Btn = document.getElementById("btn-spin-10");
+
+    const existingOverlay = document.getElementById("event-lock-overlay");
+    if (existingOverlay) existingOverlay.remove();
+
+    if (!event || !event.isLocked) {
+        if (spin1Btn) spin1Btn.disabled = false;
+        if (spin10Btn) spin10Btn.disabled = false;
+        return false;
+    }
+
+    if (spin1Btn) spin1Btn.disabled = true;
+    if (spin10Btn) spin10Btn.disabled = true;
+
+    const lockOverlay = document.createElement("div");
+    lockOverlay.id = "event-lock-overlay";
+    lockOverlay.style.cssText = `
+        position: absolute; inset: 0; background: rgba(2, 6, 23, 0.92);
+        backdrop-filter: blur(8px); display: flex; flex-direction: column;
+        justify-content: center; align-items: center; z-index: 100;
+        border-radius: 50%; text-align: center; padding: 20px; border: 2px dashed #ffcc00;
+    `;
+
+    lockOverlay.innerHTML = `
+        <div style="font-size: 36px; margin-bottom: 4px;">🔒</div>
+        <h3 style="color: #ffcc00; font-family: 'Orbitron', sans-serif; font-size: 14px; margin-bottom: 4px;">EVENT LOCKED</h3>
+        <p style="color: #cbd5e1; font-size: 10px; margin-bottom: 8px;">Diwali Special Event unlocks soon!</p>
+        <div id="lock-timer-display" style="font-family: 'Orbitron', sans-serif; font-size: 11px; font-weight: 900; color: #00e5ff; background: rgba(0,229,255,0.1); padding: 4px 10px; border-radius: 12px; border: 1px solid #00e5ff;">
+            Calculating...
+        </div>
+    `;
+
+    if (slotsGrid && slotsGrid.parentElement) {
+        slotsGrid.parentElement.style.position = "relative";
+        slotsGrid.parentElement.appendChild(lockOverlay);
+    }
+
+    const targetTime = new Date(event.unlockDate).getTime();
+
+    function updateCountdown() {
+        const now = new Date().getTime();
+        const diff = targetTime - now;
+        const timerDisplay = document.getElementById("lock-timer-display");
+
+        if (diff <= 0) {
+            event.isLocked = false;
+            clearInterval(lockIntervalTimer);
+            setupCircularWheelLayout(key);
+            return;
+        }
+
+        const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+        const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+        const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+
+        if (timerDisplay) {
+            timerDisplay.innerText = `⏳ ${days}d ${hours}h ${minutes}m ${seconds}s`;
+        }
+    }
+
+    updateCountdown();
+    lockIntervalTimer = setInterval(updateCountdown, 1000);
+    return true;
+}
+
+// ==========================================
 // 🔑 AUTH & REALTIME FIRESTORE SYNC
 // ==========================================
 onAuthStateChanged(auth, (user) => {
@@ -115,7 +207,6 @@ onAuthStateChanged(auth, (user) => {
                 currentDiamonds = data.diamonds ?? data.wallet ?? 0;
                 currentTokens = data.tokens ?? 0;
 
-                // Sync Firestore array if available, else keep Local Storage
                 if (data.faded_removed && data.faded_removed.length >= 2) {
                     fadedRemoved = data.faded_removed;
                     localStorage.setItem('fw_persist_removed', JSON.stringify(fadedRemoved));
@@ -147,9 +238,11 @@ function setupCircularWheelLayout(key) {
     if (!slotsGrid || !data) return;
     slotsGrid.innerHTML = "";
 
+    const isLocked = checkAndRenderEventLockState(key);
+
     const total = data.slots.length;
-    const radius = 120;
-    const center = 150;
+    const radius = 110;
+    const center = 140;
 
     data.slots.forEach((slot, i) => {
         const angle = (i * 2 * Math.PI) / total - (Math.PI / 2);
@@ -161,15 +254,15 @@ function setupCircularWheelLayout(key) {
         node.style.left = `${x}px`;
         node.style.top = `${y}px`;
         node.innerHTML = `
-            <img src="${slot.img}" alt="Prize">
+            <img src="${slot.img}" alt="Prize" style="${isLocked ? 'filter: grayscale(1); opacity: 0.5;' : ''}">
             <span>${slot.name}</span>
         `;
 
-        node.onclick = () => updateRightShowcaseBox(slot);
+        node.onclick = () => { if (!isLocked) updateRightShowcaseBox(slot); };
         slotsGrid.appendChild(node);
     });
 
-    if (data.slots.length > 0) updateRightShowcaseBox(data.slots[0]);
+    if (data.slots.length > 0 && !isLocked) updateRightShowcaseBox(data.slots[0]);
 }
 
 function updateRightShowcaseBox(item) {
@@ -187,6 +280,12 @@ let needleDegrees = 0;
 async function executeRingSpin(cost) {
     if (isSpinning) return;
 
+    const event = gameEventsData[activeKey];
+    if (event && event.isLocked) {
+        alert("🔒 This Event is locked!");
+        return;
+    }
+
     if (currentDiamonds < cost) {
         alert(`❌ Insufficient Diamonds! You need ${cost} Diamonds.`);
         window.location.href = "topup.html";
@@ -196,7 +295,6 @@ async function executeRingSpin(cost) {
     isSpinning = true;
     playBeepSound(600, 'sine', 0.1);
 
-    const event = gameEventsData[activeKey] || gameEventsData["mystical-ring"];
     const totalSlots = event.slots.length;
     let winnerIdx = Math.floor(Math.random() * totalSlots);
 
@@ -226,7 +324,7 @@ async function executeRingSpin(cost) {
 }
 
 // ==========================================
-// 🎡 FADED WHEEL SYSTEM (PERMANENT SAVE FIX)
+// 🎡 FADED WHEEL SYSTEM
 // ==========================================
 function syncFadedUI() {
     const domItems = document.querySelectorAll('.faded-grid .grid-item');
@@ -284,18 +382,15 @@ document.querySelectorAll('.faded-grid .grid-item').forEach((item) => {
     });
 });
 
-// Faded Wheel Action Button Click
 if (fadedActionBtn) {
     fadedActionBtn.addEventListener('click', async () => {
         if (isSpinning) return;
 
-        // Step 1: Remove 2 Items
         if (fadedRemoved.length < 2) {
             if (fadedSelected.length < 2) return;
             fadedRemoved = [...fadedSelected];
             fadedSelected = [];
 
-            // SAVE PERMANENTLY TO LOCAL STORAGE & FIRESTORE
             localStorage.setItem('fw_persist_removed', JSON.stringify(fadedRemoved));
 
             if (currentUserUid) {
@@ -307,7 +402,6 @@ if (fadedActionBtn) {
             return;
         }
 
-        // Step 2: Spin Faded Wheel
         const cost = fadedCosts[fadedSpinPointer];
         if (currentDiamonds < cost) {
             alert(`❌ Insufficient Diamonds! You need 💎 ${cost}.`);
@@ -384,28 +478,7 @@ function executeFadedChaseSpin(cost) {
     }, 100);
 }
 
-// ==========================================
-// 🛍️ TOKEN EXCHANGE STORE
-// ==========================================
-function renderExchangeShopItems(tabKey) {
-    if (!itemsRendererGrid) return;
-    itemsRendererGrid.innerHTML = "";
-    const itemsPool = exchangeStoreCatalog[tabKey] || [];
-
-    itemsPool.forEach(item => {
-        const itemBox = document.createElement("div");
-        itemBox.className = "ex-shop-node";
-        itemBox.style.cssText = "background:#1e293b; padding:12px; border-radius:10px; text-align:center; border:1px solid #334155;";
-        itemBox.innerHTML = `
-            <div style="font-size:10px; color:#eab308; font-weight:bold;">${item.tag}</div>
-            <img src="${item.img}" style="width:60px; height:60px; object-fit:contain; margin:8px 0;" alt="Item">
-            <div style="font-size:12px; font-weight:bold; color:#fff; margin-bottom:8px;">${item.name}</div>
-            <button style="background:#22c55e; color:#fff; border:none; padding:6px 12px; border-radius:6px; font-weight:bold; cursor:pointer; font-size:11px;">CLAIM (${item.cost} 🪙)</button>
-        `;
-        itemsRendererGrid.appendChild(itemBox);
-    });
-}
-
+// Banner Modal
 function triggerCongratsBanner(name, img) {
     const nameEl = document.getElementById("congrats-item-name");
     const imgEl = document.getElementById("congrats-item-img");
@@ -415,14 +488,13 @@ function triggerCongratsBanner(name, img) {
 }
 
 // ==========================================
-// 🔗 BINDINGS & TAB SWITCHER
+// 🔗 BINDINGS & DIRECT BUY DIAMONDS REDIRECT FIX
 // ==========================================
 document.getElementById("btn-spin-1")?.addEventListener("click", () => executeRingSpin(10));
 document.getElementById("btn-spin-10")?.addEventListener("click", () => executeRingSpin(100));
 
 document.getElementById("open-exchange-btn")?.addEventListener("click", () => {
     if (exchangeModal) exchangeModal.style.display = "flex";
-    renderExchangeShopItems(activeShopTab);
 });
 
 document.getElementById("close-exchange-btn")?.addEventListener("click", () => {
@@ -433,9 +505,19 @@ document.getElementById("congrats-dismiss-bstn")?.addEventListener("click", () =
     if (congratsPopup) congratsPopup.style.display = "none";
 });
 
+// Event Switcher Navigation
 document.querySelectorAll(".ff-menu-item").forEach(item => {
-    item.onclick = () => {
+    item.onclick = (e) => {
+        e.preventDefault();
+        
+        // 💎 DIRECT BUY DIAMONDS CLICK REDIRECT FIX
+        if (item.classList.contains("faded-link-tab") || item.getAttribute("data-url")) {
+            window.location.href = "topup.html";
+            return;
+        }
+
         if (isSpinning) return;
+
         document.querySelectorAll(".ff-menu-item").forEach(m => m.classList.remove("active"));
         item.classList.add("active");
 
