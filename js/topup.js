@@ -27,7 +27,7 @@ document.addEventListener("DOMContentLoaded", () => {
     let selectedProduct = { name: "", diamonds: 0, price: 0 };
     let userUnsubscribe = null;
 
-    // 1. Auth Listener & Persistent Session
+    // 1. Auth Listener & Persistent Sync
     onAuthStateChanged(auth, (user) => {
         currentUser = user;
         if (user) {
@@ -46,9 +46,10 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     });
 
-    // 2. Open Redeem Popup (Fixes First Click Duplicate Login)
+    // 2. Open Redeem Popup (Instant Mobile Resolution - No Duplicate Alert)
     triggerBtns.forEach((btn) => {
         btn.addEventListener("click", () => {
+            // Immediate fallbacks for mobile touch events
             const activeUser = currentUser || auth.currentUser;
 
             if (!activeUser) {
@@ -118,8 +119,8 @@ document.addEventListener("DOMContentLoaded", () => {
                     if (vData.price) packPrice = parseInt(vData.price);
                 });
 
-                const targetUid = currentUser ? currentUser.uid : auth.currentUser.uid;
-                const userRef = doc(db, "users", targetUid);
+                const activeUid = currentUser ? currentUser.uid : auth.currentUser.uid;
+                const userRef = doc(db, "users", activeUid);
 
                 await updateDoc(userRef, {
                     diamonds: increment(rewardDiamonds),
@@ -128,7 +129,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 });
 
                 await addDoc(collection(db, "orders"), {
-                    userId: targetUid,
+                    userId: activeUid,
                     userEmail: (currentUser && currentUser.email) || "Customer",
                     product: selectedProduct.name || "Voucher Redeem",
                     diamonds: rewardDiamonds,

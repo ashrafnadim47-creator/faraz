@@ -1,5 +1,5 @@
 /* ==========================================================================
-   🔥 FARAZ STORE v2.0 - LUCK ROYALE & LANDSCAPE ARENA STYLING
+   🔥 FARAZ STORE v2.0 - LUCK ROYALE & MOBILE RESPONSIVE FIX
    ========================================================================== */
 
 body {
@@ -8,130 +8,65 @@ body {
     background: #03000a;
     color: #ffffff;
     font-family: 'Orbitron', 'Plus Jakarta Sans', sans-serif;
-    overflow: hidden;
+    overflow-x: hidden;
     user-select: none;
 }
 
-/* Landscape Guidance Overlay for Mobile Portrait Viewports */
-@media screen and (max-width: 900px) and (orientation: portrait) {
-    body::before {
-        content: "🔄 Please rotate your phone to Landscape Mode for optimal Luck Royale arena gameplay!";
-        position: fixed;
-        top: 0; left: 0; right: 0; bottom: 0;
-        background: #020617;
-        color: #ffcc00;
-        z-index: 999999;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        text-align: center;
-        padding: 24px;
-        font-family: 'Orbitron', sans-serif;
-        font-size: 15px;
-        font-weight: bold;
-        line-height: 1.6;
-    }
-}
-
-/* Fullscreen Interface Grid */
+/* Fullscreen Interface Wrapper */
 .ff-interface-wrapper {
     display: flex;
     width: 100vw;
-    height: 100vh;
+    min-height: 100vh;
     background: radial-gradient(circle at 50% 50%, #1e1b4b 0%, #03000a 100%);
     position: relative;
-    overflow: hidden;
 }
 
-/* --- LEFT SIDE NAVIGATION PANEL --- */
+/* LEFT NAVIGATION PANEL */
 .ff-navigation-panel {
     width: 250px;
-    background: rgba(10, 10, 18, 0.85);
+    background: rgba(10, 10, 18, 0.95);
     backdrop-filter: blur(16px);
     -webkit-backdrop-filter: blur(16px);
     border-right: 2px solid #eab308;
-    padding: 20px 12px;
+    padding: 15px 12px;
     display: flex;
     flex-direction: column;
-    gap: 14px;
+    gap: 10px;
     box-sizing: border-box;
     z-index: 10;
 }
 
 .ff-panel-title {
-    font-size: 22px;
+    font-size: 20px;
     font-weight: 900;
     color: #eab308;
-    text-shadow: 0 0 12px rgba(234, 179, 8, 0.4);
     text-align: center;
-    padding-bottom: 14px;
+    padding-bottom: 10px;
     border-bottom: 2px dashed rgba(255, 255, 255, 0.15);
-    letter-spacing: 1px;
 }
 
 .ff-menu-list {
     display: flex;
     flex-direction: column;
-    gap: 10px;
+    gap: 8px;
 }
 
 .ff-menu-item {
     position: relative;
-    padding: 12px 14px;
+    padding: 10px 12px;
     background: #111827;
     border-radius: 8px;
-    font-size: 12px;
+    font-size: 11px;
     font-weight: 800;
-    letter-spacing: 0.5px;
     cursor: pointer;
     display: flex;
     align-items: center;
-    transition: all 0.25s ease;
     border: 1px solid rgba(255, 255, 255, 0.05);
-}
-
-.ff-menu-item:hover {
-    background: #1f2937;
-    border-color: #eab308;
-}
-
-.ff-item-indicator {
-    position: absolute;
-    left: 0;
-    top: 0;
-    bottom: 0;
-    width: 4px;
-    background: #4b5563;
-    border-top-left-radius: 8px;
-    border-bottom-left-radius: 8px;
 }
 
 .ff-menu-item.active {
     background: linear-gradient(90deg, #a21caf 0%, #6366f1 100%);
-    box-shadow: 0 0 15px rgba(162, 28, 175, 0.4);
-    border-color: transparent;
-}
-
-.ff-menu-item.active .ff-item-indicator {
-    background: #eab308;
-}
-
-.token-status-box {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 12px;
-    background: #1e293b;
-    padding: 10px 14px;
-    border-radius: 12px;
-    margin-top: 10px;
-    border: 1px solid rgba(0, 229, 255, 0.3);
-}
-
-.token-status-box img {
-    width: 28px;
-    height: 28px;
-    object-fit: contain;
+    border-color: #eab308;
 }
 
 .ff-exchange-trigger-btn {
@@ -140,16 +75,10 @@ body {
     border: none;
     padding: 12px;
     font-weight: 900;
-    font-size: 13px;
+    font-size: 12px;
     border-radius: 10px;
     cursor: pointer;
-    box-shadow: 0 4px 15px rgba(234, 179, 8, 0.3);
-    transition: all 0.25s ease;
-}
-
-.ff-exchange-trigger-btn:hover {
-    filter: brightness(1.15);
-    transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(234, 179, 8, 0.4);
 }
 
 .ff-close-gate {
@@ -157,321 +86,144 @@ body {
     background: #ef4444;
     border: none;
     color: #ffffff;
-    padding: 12px;
+    padding: 10px;
     font-weight: 800;
     font-size: 12px;
     border-radius: 10px;
     cursor: pointer;
-    transition: background 0.2s;
 }
 
-.ff-close-gate:hover {
-    background: #dc2626;
-}
-
-/* --- CENTER MAIN STAGE & SPIN ARENA --- */
+/* CENTER MAIN STAGE */
 .ff-main-stage {
     flex: 1;
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: space-between;
-    padding: 25px 15px;
+    justify-content: space-around;
+    padding: 15px;
     position: relative;
 }
 
 .ff-stage-title {
-    font-size: 32px;
+    font-size: 26px;
     font-weight: 900;
-    margin: 0;
     color: #eab308;
-    text-shadow: 0 4px 20px rgba(234, 179, 8, 0.5);
-    letter-spacing: 1px;
+    margin: 0;
 }
 
-/* 🎰 FREE FIRE STYLE OUTER RING ROTATION */
 .ff-circle-arena {
     position: relative;
-    width: 360px;
-    height: 360px;
+    width: 320px;
+    height: 320px;
     display: flex;
     align-items: center;
     justify-content: center;
     border-radius: 50%;
-    border: 3px solid rgba(0, 229, 255, 0.3);
-    box-shadow: 0 0 30px rgba(0, 229, 255, 0.2);
 }
 
 .ff-slots-container {
     position: absolute;
     width: 100%;
     height: 100%;
-    top: 0;
-    left: 0;
     transition: transform 4s cubic-bezier(0.15, 0.85, 0.15, 1);
 }
 
 .ff-card-node {
     position: absolute;
-    width: 72px;
-    height: 72px;
+    width: 65px;
+    height: 65px;
     background: radial-gradient(circle, #374151 0%, #1f2937 100%);
     border: 2px solid #4b5563;
-    border-radius: 16px;
+    border-radius: 14px;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    font-family: sans-serif;
-    font-size: 9px;
+    font-size: 8px;
     font-weight: 800;
-    text-align: center;
     transform: translate(-50%, -50%);
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
-    transition: border-color 0.2s;
-}
-
-.ff-card-node.grand-item {
-    border-color: #eab308;
-    background: radial-gradient(circle, #7c2d12 0%, #431407 100%);
-    box-shadow: 0 0 18px rgba(234, 179, 8, 0.5);
 }
 
 .ff-card-node img {
-    width: 40px;
-    height: 40px;
+    width: 35px;
+    height: 35px;
     object-fit: contain;
 }
 
 .ff-center-hub {
     position: absolute;
-    width: 76px;
-    height: 76px;
+    width: 65px;
+    height: 65px;
     background: radial-gradient(circle, #dc2626 0%, #991b1b 100%);
     border: 3px solid #ffffff;
     border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
-    box-shadow: 0 0 25px rgba(220, 38, 38, 0.7);
     z-index: 10;
-    font-size: 22px;
+    font-size: 20px;
 }
 
-/* Control Deck Buttons */
 .ff-action-deck {
     display: flex;
-    gap: 20px;
+    gap: 15px;
 }
 
 .ff-deck-btn {
-    width: 160px;
-    padding: 10px 0;
+    width: 140px;
+    padding: 8px 0;
     border: 2px solid #ffffff;
-    border-radius: 25px;
+    border-radius: 20px;
     cursor: pointer;
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 2px;
-    transition: transform 0.2s, filter 0.2s;
-}
-
-.ff-deck-btn:hover {
-    transform: translateY(-3px);
-    filter: brightness(1.15);
 }
 
 .ff-deck-btn.normal-spin {
     background: linear-gradient(180deg, #06b6d4 0%, #0891b2 100%);
-    border-color: #22d3ee;
-    box-shadow: 0 4px 15px rgba(6, 182, 212, 0.4);
 }
 
 .ff-deck-btn.grand-spin {
     background: linear-gradient(180deg, #ea580c 0%, #c2410c 100%);
-    border-color: #f97316;
-    box-shadow: 0 4px 15px rgba(234, 88, 12, 0.4);
 }
 
-.btn-primary-text {
-    font-size: 16px;
-    font-weight: 900;
-    color: #ffffff;
-}
-
-.btn-sub-text {
-    font-size: 11px;
-    color: #fef08a;
-    font-weight: 700;
-}
-
-/* --- FADED WHEEL MOBILE FIT STYLING --- */
-.faded-grid {
-    display: grid;
-    grid-template-columns: repeat(5, 1fr);
-    gap: 10px;
-    max-width: 520px;
-    margin: 0 auto;
-}
-
-.faded-grid .grid-item {
-    background: rgba(30, 41, 59, 0.8);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    border-radius: 12px;
-    padding: 8px;
-    text-align: center;
-    cursor: pointer;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    transition: all 0.2s;
-}
-
-.faded-grid .grid-item img {
-    width: 42px;
-    height: 42px;
-    object-fit: contain;
-}
-
-.faded-grid .grid-item .item-title {
-    font-size: 10px;
-    margin-top: 4px;
-    color: #cbd5e1;
-}
-
-.faded-grid .grid-item.to-remove {
-    border-color: #ef4444;
-    background: rgba(239, 68, 68, 0.25);
-}
-
-.faded-grid .grid-item.removed {
-    opacity: 0.15;
-    pointer-events: none;
-    filter: grayscale(1);
-}
-
-.faded-grid .grid-item.active-chase {
-    border-color: #ffcc00;
-    box-shadow: 0 0 15px #ffcc00;
-    transform: scale(1.05);
-}
-
-/* --- RIGHT PANEL SHOWCASE CARD --- */
-.ff-right-panel {
-    width: 260px;
-    padding: 25px 15px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    box-sizing: border-box;
-}
-
-.right-showcase-container {
-    width: 100%;
-}
-
-.ff-showcase-card {
-    width: 100%;
-    background: linear-gradient(180deg, #1f2937 0%, #111827 100%);
-    border: 2px solid #374151;
-    border-radius: 20px;
-    padding: 25px 15px;
-    box-sizing: border-box;
-    text-align: center;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 15px;
-    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.6);
-}
-
-.ff-showcase-card.epic-glow {
-    border-color: #eab308;
-    box-shadow: 0 0 25px rgba(234, 179, 8, 0.35);
-}
-
-.ff-item-badge {
-    font-size: 10px;
-    background: #eab308;
-    color: #020617;
-    padding: 4px 12px;
-    border-radius: 20px;
-    font-weight: 900;
-}
-
-.ff-item-image-wrap {
-    width: 110px;
-    height: 110px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background: rgba(255, 255, 255, 0.04);
-    border-radius: 50%;
-    padding: 10px;
-}
-
-.ff-item-image-wrap img {
-    width: 100%;
-    height: 100%;
-    object-fit: contain;
-    filter: drop-shadow(0 5px 15px rgba(0, 0, 0, 0.6));
-}
-
-.ff-item-display-title {
-    font-size: 16px;
-    color: #ffffff;
-    margin: 0;
-    font-family: 'Plus Jakarta Sans', sans-serif;
-    font-weight: 800;
-}
-
-.ff-item-status-text {
-    font-size: 11px;
-    color: #9ca3af;
-    margin: 0;
-    font-family: 'Plus Jakarta Sans', sans-serif;
-}
-
-/* ==========================================================================
-   🛍️ TOKEN EXCHANGE STORE FULLSCREEN MODAL
-   ========================================================================== */
+/* 🛍️ TOKEN EXCHANGE STORE FULLSCREEN MODAL FIX FOR MOBILE */
 .royale-modal-overlay,
 .congratulations-overlay {
-    position: fixed;
-    inset: 0;
-    background: rgba(2, 6, 23, 0.88);
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
-    z-index: 99999;
+    position: fixed !important;
+    top: 0 !important;
+    left: 0 !important;
+    right: 0 !important;
+    bottom: 0 !important;
+    width: 100vw !important;
+    height: 100vh !important;
+    background: rgba(2, 6, 23, 0.95) !important;
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    z-index: 999999 !important;
     display: flex;
     justify-content: center;
     align-items: center;
-    padding: 15px;
+    padding: 10px;
+    box-sizing: border-box;
 }
 
 .exchange-fullscreen-card {
-    width: 92vw;
-    height: 88vh;
+    width: 95vw;
+    height: 90vh;
+    max-width: 900px;
     background: radial-gradient(circle at 50% 30%, #1e1e38 0%, #0a0a14 100%);
     border: 2px solid #eab308;
-    border-radius: 24px;
-    box-shadow: 0 0 50px rgba(0, 0, 0, 0.9), inset 0 0 20px rgba(234, 179, 8, 0.2);
+    border-radius: 20px;
     display: flex;
     flex-direction: column;
     overflow: hidden;
-    animation: modal-appear 0.3s ease;
-}
-
-@keyframes modal-appear {
-    from { transform: scale(0.9); opacity: 0; }
-    to { transform: scale(1); opacity: 1; }
 }
 
 .exchange-top-bar {
-    background: rgba(0, 0, 0, 0.5);
-    padding: 16px 24px;
+    background: rgba(0, 0, 0, 0.6);
+    padding: 12px 20px;
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -479,40 +231,9 @@ body {
 }
 
 .ex-title {
-    font-size: 18px;
+    font-size: 15px;
     color: #eab308;
     font-weight: 900;
-    letter-spacing: 1px;
-}
-
-.ex-wallet {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    background: #111827;
-    padding: 6px 16px;
-    border-radius: 20px;
-    border: 1px solid #374151;
-    font-size: 15px;
-    font-weight: 800;
-    color: #ffffff;
-}
-
-.ex-wallet img {
-    width: 22px;
-    height: 22px;
-}
-
-.ex-close-cross {
-    background: #ef4444;
-    border: none;
-    color: #ffffff;
-    width: 32px;
-    height: 32px;
-    font-weight: bold;
-    font-size: 14px;
-    border-radius: 50%;
-    cursor: pointer;
 }
 
 .exchange-main-body {
@@ -522,222 +243,37 @@ body {
 }
 
 .exchange-side-nav {
-    width: 200px;
-    background: rgba(0, 0, 0, 0.25);
+    width: 160px;
+    background: rgba(0, 0, 0, 0.3);
     border-right: 1px solid rgba(255, 255, 255, 0.08);
-    padding: 20px 10px;
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-}
-
-.ex-nav-btn {
-    padding: 12px 14px;
-    background: #1f2937;
-    color: #9ca3af;
-    border: none;
-    border-radius: 10px;
-    cursor: pointer;
-    font-size: 12px;
-    font-weight: 800;
-    letter-spacing: 0.5px;
-    transition: all 0.2s;
-}
-
-.ex-nav-btn.active {
-    background: linear-gradient(90deg, #ea580c 0%, #d97706 100%);
-    color: #ffffff;
-    box-shadow: 0 4px 12px rgba(234, 88, 12, 0.35);
-}
-
-.exchange-content-grid {
-    flex: 1;
-    padding: 24px;
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
-    gap: 18px;
-    overflow-y: auto;
-}
-
-.ex-shop-node {
-    background: radial-gradient(circle, #374151 0%, #111827 100%);
-    border: 2px solid #4b5563;
-    border-radius: 16px;
-    padding: 16px 12px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: space-between;
-    text-align: center;
-    position: relative;
-    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.4);
-}
-
-.ex-shop-node.legendary-border {
-    border-color: #eab308;
-}
-
-.ex-node-badge {
-    position: absolute;
-    top: 8px;
-    left: 8px;
-    font-size: 9px;
-    background: rgba(0, 0, 0, 0.7);
-    color: #eab308;
-    padding: 2px 6px;
-    border-radius: 4px;
-    font-family: 'Plus Jakarta Sans', sans-serif;
-    font-weight: 800;
-}
-
-.ex-node-img {
-    width: 80px;
-    height: 80px;
-    object-fit: contain;
-    margin: 15px 0 10px 0;
-}
-
-.ex-node-title {
-    font-size: 13px;
-    color: #ffffff;
-    margin-bottom: 10px;
-    font-family: 'Plus Jakarta Sans', sans-serif;
-    font-weight: 800;
-}
-
-.ex-node-action-panel {
-    width: 100%;
+    padding: 15px 8px;
     display: flex;
     flex-direction: column;
     gap: 8px;
 }
 
-.ex-node-cost {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 6px;
-    font-size: 13px;
-    color: #fbbf24;
-    font-weight: 800;
+.exchange-content-grid {
+    flex: 1;
+    padding: 15px;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+    gap: 12px;
+    overflow-y: auto;
 }
 
-.ex-node-cost img {
-    width: 16px;
-    height: 16px;
-}
-
-.ex-node-claim-btn {
-    width: 100%;
-    padding: 10px 0;
-    background: linear-gradient(180deg, #22c55e 0%, #16a34a 100%);
-    color: #ffffff;
-    border: none;
-    font-weight: 900;
-    border-radius: 8px;
-    cursor: pointer;
-    font-size: 11px;
-    letter-spacing: 0.5px;
-}
-
-/* ==========================================================================
-   🎉 CONGRATULATIONS POPUP
-   ========================================================================== */
-.congrats-card {
-    text-align: center;
-    animation: popup-appear 0.4s cubic-bezier(0.18, 0.89, 0.32, 1.28);
-}
-
-.congrats-banner {
-    font-size: 42px;
-    font-weight: 900;
-    background: linear-gradient(180deg, #fff200 0%, #ff5100 100%);
-    -webkit-background-clip: text;
-    background-clip: text;
-    color: transparent;
-    margin: 0;
-    letter-spacing: 2px;
-}
-
-.congrats-sub {
-    font-size: 14px;
-    color: #38bdf8;
-    letter-spacing: 3px;
-    margin: 5px 0 25px 0;
-}
-
-.unlocked-reward-display img {
-    width: 140px;
-    height: 140px;
-    object-fit: contain;
-    margin-bottom: 15px;
-}
-
-.unlocked-reward-display h2 {
-    font-size: 24px;
-    color: #ffffff;
-    margin-bottom: 25px;
-}
-
-.congrats-close-btn {
-    padding: 12px 40px;
-    font-size: 16px;
-    font-weight: 900;
-    background: #ffffff;
-    color: #020617;
-    border: none;
-    border-radius: 25px;
-    cursor: pointer;
-    box-shadow: 0 0 20px rgba(255, 255, 255, 0.5);
-}
-
-/* ==========================================================================
-   📱 MOBILE RESPONSIVE TUNING
-   ========================================================================== */
+/* MOBILE LANDSCAPE SPECIFIC MEDIA QUERY */
 @media (max-width: 900px) {
     .ff-interface-wrapper {
-        flex-direction: column;
-        overflow-y: auto;
+        flex-direction: row;
     }
 
     .ff-navigation-panel {
-        width: 100%;
-        height: auto;
-        border-right: none;
-        border-bottom: 2px solid #eab308;
-    }
-
-    .ff-menu-list {
-        flex-direction: row;
-        overflow-x: auto;
-    }
-
-    .ff-menu-item {
-        white-space: nowrap;
-    }
-
-    .ff-right-panel {
-        width: 100%;
+        width: 200px;
+        height: 100vh;
     }
 
     .exchange-fullscreen-card {
         width: 98vw;
-        height: 94vh;
-    }
-
-    .exchange-main-body {
-        flex-direction: column;
-    }
-
-    .exchange-side-nav {
-        width: 100%;
-        flex-direction: row;
-        overflow-x: auto;
-    }
-
-    .exchange-content-grid {
-        grid-template-columns: repeat(2, 1fr);
-        gap: 10px;
-        padding: 15px;
+        height: 95vh;
     }
 }
