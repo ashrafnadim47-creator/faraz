@@ -16,9 +16,10 @@ let currentUser = null;
 let userDataState = {};
 let activeVaultTab = "avatars";
 
-const defaultVault = [
+// Default Inventory Items
+const defaultVaultItems = [
     { id: "avatar_default", name: "Classic Avatar", img: "images/avtar.png", type: "avatar" },
-    { id: "banner_default", name: "Default Banner", img: "images/diwali_bundle.png", type: "banner" }
+    { id: "banner_default", name: "Diwali Banner", img: "images/diwali_bundle.png", type: "banner" }
 ];
 
 onAuthStateChanged(auth, async (user) => {
@@ -28,6 +29,7 @@ onAuthStateChanged(auth, async (user) => {
             if (docSnap.exists()) {
                 userDataState = docSnap.data();
                 renderProfileData();
+                renderVaultItems();
             }
         });
         checkLoginStreak(user.uid);
@@ -40,17 +42,35 @@ function renderProfileData() {
     const diamonds = data.diamonds ?? data.wallet ?? 0;
     const playerUid = data.playerUid || Math.floor(10000000 + Math.random() * 90000000).toString();
 
-    document.getElementById("display-nickname").innerText = data.nickname || (currentUser?.email ? currentUser.email.split("@")[0] : "Gamer");
-    document.getElementById("display-player-id").innerText = playerUid;
+    // 1. Nickname & Player ID
+    const nameElem = document.getElementById("display-nickname");
+    const idElem = document.getElementById("display-player-id");
+    if (nameElem) nameElem.innerText = data.nickname || (currentUser?.email ? currentUser.email.split("@")[0] : "Gamer");
+    if (idElem) idElem.innerText = playerUid;
 
-    if (data.equippedAvatar) document.getElementById("user-avatar-img").src = data.equippedAvatar;
-    if (data.equippedBanner) document.getElementById("profile-banner-bg").style.backgroundImage = `url('${data.equippedBanner}')`;
+    // 2. EQUIPPED AVATAR
+    const avatarImgElem = document.getElementById("user-avatar-img");
+    if (avatarImgElem) {
+        avatarImgElem.src = data.equippedAvatar || "images/avtar.png";
+    }
 
-    document.getElementById("display-streak").innerText = data.streak || 1;
-    document.getElementById("display-likes").innerText = data.likes || 0;
-    document.getElementById("display-xp").innerText = (data.xp || data.points || 0).toLocaleString();
+    // 3. EQUIPPED BANNER FIX
+    const bannerBgElem = document.getElementById("profile-banner-bg");
+    if (bannerBgElem) {
+        const bannerUrl = data.equippedBanner || "images/diwali_bundle.png";
+        bannerBgElem.style.backgroundImage = `url('${bannerUrl}')`;
+    }
 
-    // PRIME LEVEL CALCULATION (10,000 Diamonds = LEVEL 5 CROWN 👑)
+    // 4. Stats Row
+    const streakElem = document.getElementById("display-streak");
+    const likesElem = document.getElementById("display-likes");
+    const xpElem = document.getElementById("display-xp");
+
+    if (streakElem) streakElem.innerText = data.streak || 1;
+    if (likesElem) likesElem.innerText = data.likes || 0;
+    if (xpElem) xpElem.innerText = (data.xp || data.points || 0).toLocaleString();
+
+    // 5. Prime Level Tier
     let primeTitle = "LEVEL 1 (BRONZE)";
     let target = 500;
 
@@ -70,9 +90,13 @@ function renderProfileData() {
 
     const percentage = Math.min(100, Math.floor((diamonds / target) * 100));
 
-    document.getElementById("display-prime-title").innerText = `👑 PRIME ${primeTitle}`;
-    document.getElementById("display-diamonds-count").innerText = `💎 ${diamonds.toLocaleString()} / ${target.toLocaleString()}`;
-    document.getElementById("prime-progress-fill").style.width = `${percentage}%`;
+    const primeTitleElem = document.getElementById("display-prime-title");
+    const diamondsCountElem = document.getElementById("display-diamonds-count");
+    const progressFillElem = document.getElementById("prime-progress-fill");
+
+    if (primeTitleElem) primeTitleElem.innerText = `👑 PRIME ${primeTitle}`;
+    if (diamondsCountElem) diamondsCountElem.innerText = `💎 ${diamonds.toLocaleString()} / ${target.toLocaleString()}`;
+    if (progressFillElem) progressFillElem.style.width = `${percentage}%`;
 }
 
 window.changeNickname = async function() {
@@ -88,9 +112,11 @@ window.addProfileLike = async function() {
 };
 
 window.copyPlayerId = function() {
-    const uid = document.getElementById("display-player-id").innerText;
-    navigator.clipboard.writeText(uid);
-    alert("📋 Player ID Copied: " + uid);
+    const uid = document.getElementById("display-player-id")?.innerText;
+    if (uid) {
+        navigator.clipboard.writeText(uid);
+        alert("📋 Player ID Copied: " + uid);
+    }
 };
 
 async function checkLoginStreak(uid) {
@@ -115,58 +141,93 @@ async function loadOrdersCount(uid) {
     } catch(e){}
 }
 
-// VAULT MODAL
+// ==========================================
+// 🧰 VAULT INVENTORY & EQUIP LOGIC
+// ==========================================
 window.openVaultModal = () => {
-    document.getElementById("vault-modal").style.display = "flex";
-    renderVaultItems();
+    const modal = document.getElementById("vault-modal");
+    if (modal) {
+        modal.style.display = "flex";
+        renderVaultItems();
+    }
 };
 
 window.closeVaultModal = () => {
-    document.getElementById("vault-modal").style.display = "none";
+    const modal = document.getElementById("vault-modal");
+    if (modal) modal.style.display = "none";
 };
 
 window.switchVaultTab = (type) => {
     activeVaultTab = type;
-    document.getElementById("vtab-avatars").style.background = type === 'avatars' ? '#00e5ff' : '#1e293b';
-    document.getElementById("vtab-avatars").style.color = type === 'avatars' ? '#000' : '#fff';
-    document.getElementById("vtab-banners").style.background = type === 'banners' ? '#00e5ff' : '#1e293b';
-    document.getElementById("vtab-banners").style.color = type === 'banners' ? '#000' : '#fff';
+    
+    const avTab = document.getElementById("vtab-avatars");
+    const bnTab = document.getElementById("vtab-banners");
+
+    if (type === 'avatars') {
+        avTab.style.background = '#00e5ff';
+        avTab.style.color = '#000';
+        bnTab.style.background = '#1e293b';
+        bnTab.style.color = '#fff';
+    } else {
+        bnTab.style.background = '#00e5ff';
+        bnTab.style.color = '#000';
+        avTab.style.background = '#1e293b';
+        avTab.style.color = '#fff';
+    }
+
     renderVaultItems();
 };
 
 function renderVaultItems() {
     const container = document.getElementById("vault-items-container");
+    if (!container) return;
     container.innerHTML = "";
 
-    const userVault = userDataState.vault || defaultVault;
-    const items = userVault.filter(i => (i.type || 'avatar') === (activeVaultTab === 'avatars' ? 'avatar' : 'banner'));
+    // Combine default items + items won by user in Vault
+    const userVault = userDataState.vault && userDataState.vault.length > 0 
+        ? [...defaultVaultItems, ...userDataState.vault] 
+        : defaultVaultItems;
+
+    const targetType = activeVaultTab === 'avatars' ? 'avatar' : 'banner';
+    const items = userVault.filter(i => (i.type || 'avatar') === targetType);
 
     if (items.length === 0) {
-        container.innerHTML = `<p style="grid-column: span 3; text-align: center; color: #64748b; font-size: 12px;">No items in this section yet.</p>`;
+        container.innerHTML = `<p style="grid-column: span 3; text-align: center; color: #64748b; font-size: 12px; padding: 20px;">No items in this section. Spin Luck Royale to unlock!</p>`;
         return;
     }
 
     items.forEach((item) => {
-        const isEquipped = (activeVaultTab === 'avatars' && userDataState.equippedAvatar === item.img) ||
-                           (activeVaultTab === 'banners' && userDataState.equippedBanner === item.img);
+        const isEquipped = (targetType === 'avatar' && userDataState.equippedAvatar === item.img) ||
+                           (targetType === 'banner' && userDataState.equippedBanner === item.img);
 
         const card = document.createElement("div");
         card.className = `vault-item ${isEquipped ? 'equipped' : ''}`;
         card.innerHTML = `
-            <img src="${item.img}" alt="${item.name}">
-            <div style="font-size: 10px; font-weight: bold; color: #fff;">${item.name}</div>
-            <button style="margin-top: 6px; padding: 4px 8px; font-size: 9px; border: none; border-radius: 6px; font-weight: bold; background: ${isEquipped ? '#22c55e' : '#00e5ff'}; color: #000; cursor: pointer;">
-                ${isEquipped ? 'EQUIPPED' : 'EQUIP'}
+            <img src="${item.img}" alt="${item.name}" onerror="this.src='images/avtar.png'">
+            <div class="vault-item-name">${item.name}</div>
+            <button class="equip-btn" style="margin-top: 6px; padding: 6px; font-size: 10px; border: none; border-radius: 8px; font-weight: 900; background: ${isEquipped ? '#22c55e' : '#00e5ff'}; color: #000; cursor: pointer; width: 100%;">
+                ${isEquipped ? 'EQUIPPED ✅' : 'EQUIP'}
             </button>
         `;
 
-        card.onclick = () => equipVaultItem(item.type, item.img);
+        // Click handler for entire card
+        card.onclick = () => equipVaultItem(targetType, item.img);
+
         container.appendChild(card);
     });
 }
 
-async function equipVaultItem(type, img) {
-    const updateObj = type === 'avatar' ? { equippedAvatar: img } : { equippedBanner: img };
-    await updateDoc(doc(db, "users", currentUser.uid), updateObj);
-    renderVaultItems();
+async function equipVaultItem(type, imgUrl) {
+    if (!currentUser) return;
+
+    try {
+        const userRef = doc(db, "users", currentUser.uid);
+        if (type === 'avatar') {
+            await updateDoc(userRef, { equippedAvatar: imgUrl });
+        } else if (type === 'banner') {
+            await updateDoc(userRef, { equippedBanner: imgUrl });
+        }
+    } catch (e) {
+        console.error("Equip Error:", e);
+    }
 }
