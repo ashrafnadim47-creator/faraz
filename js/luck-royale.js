@@ -452,6 +452,19 @@ document.querySelectorAll(".ff-menu-item").forEach(item => {
         }
     });
 });
+// Inside Luck Royale Spin Win Handler:
+if (prizeWon.type === "AVATAR" || prizeWon.type === "BANNER" || prizeWon.grand) {
+    // Add Item to User's Vault Inventory + Award XP
+    await updateDoc(doc(db, "users", currentUserUid), {
+        xp: increment(100), // +100 XP per spin win
+        vault: arrayUnion({
+            id: `item_${Date.now()}`,
+            name: prizeWon.name,
+            img: prizeWon.img,
+            type: prizeWon.name.toLowerCase().includes("avatar") ? "avatar" : "banner"
+        })
+    });
+}
 
 // Init
 setupCircularWheelLayout("mystical-ring");
