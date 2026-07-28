@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gamer Profile & FF Vault | Faraz Store</title>
+    <title>My Profile | Faraz Store</title>
     <meta name="theme-color" content="#020617">
     <link rel="icon" href="favicon.ico">
 
@@ -17,82 +17,64 @@
     <link rel="stylesheet" href="css/global.css">
     <style>
         body { background: #020617; color: #fff; font-family: 'Plus Jakarta Sans', sans-serif; padding: 15px; margin: 0; }
-        .container { max-width: 680px; margin: 10px auto; }
+        .container { max-width: 650px; margin: 15px auto; }
         
-        /* FF PROFILE CARD */
-        .ff-profile-card {
+        .profile-card {
             position: relative;
-            background-size: cover;
-            background-position: center;
+            background: linear-gradient(135deg, rgba(30, 41, 59, 0.85), rgba(15, 23, 42, 0.95));
             border: 2px solid #00e5ff;
             border-radius: 20px;
             padding: 20px;
-            overflow: hidden;
-            box-shadow: 0 0 25px rgba(0, 229, 255, 0.3);
-            margin-bottom: 20px;
-            background-color: rgba(15, 23, 42, 0.9);
-        }
-
-        .ff-card-overlay {
-            position: absolute;
-            inset: 0;
-            background: linear-gradient(90deg, rgba(2, 6, 23, 0.88) 0%, rgba(2, 6, 23, 0.6) 100%);
-            z-index: 1;
-        }
-
-        .ff-card-content {
-            position: relative;
-            z-index: 2;
             display: flex;
             align-items: center;
             gap: 16px;
+            box-shadow: 0 0 25px rgba(0, 229, 255, 0.25);
+            margin-bottom: 20px;
+            background-size: cover;
+            background-position: center;
         }
 
-        .ff-avatar-frame {
-            width: 75px;
-            height: 75px;
+        .avatar-frame {
+            width: 70px;
+            height: 70px;
             border-radius: 50%;
             border: 3px solid #ffcc00;
-            box-shadow: 0 0 15px #ffcc00;
+            box-shadow: 0 0 12px #ffcc00;
             overflow: hidden;
             background: #1e293b;
             flex-shrink: 0;
         }
 
-        .ff-avatar-frame img { width: 100%; height: 100%; object-fit: cover; }
-        .ff-user-details { flex: 1; }
-        .ff-name-row { display: flex; align-items: center; gap: 8px; }
-        .ff-username { font-family: 'Orbitron', sans-serif; font-size: 20px; color: #fff; font-weight: 900; margin: 0; }
-        .edit-name-btn { background: none; border: none; color: #00e5ff; cursor: pointer; font-size: 14px; }
-        .ff-uid-tag { display: inline-flex; align-items: center; gap: 6px; font-family: 'Orbitron', sans-serif; font-size: 11px; color: #00e5ff; background: rgba(0,229,255,0.15); padding: 3px 8px; border-radius: 8px; border: 1px solid rgba(0,229,255,0.3); margin-top: 4px; }
+        .avatar-frame img { width: 100%; height: 100%; object-fit: cover; }
+        .user-details { flex: 1; }
+        .name-row { display: flex; align-items: center; gap: 8px; }
+        .username { font-family: 'Orbitron', sans-serif; font-size: 20px; color: #fff; font-weight: 900; margin: 0; }
+        .edit-btn { background: none; border: none; color: #00e5ff; cursor: pointer; font-size: 14px; }
+        
+        .uid-tag { display: inline-flex; align-items: center; gap: 6px; font-family: 'Orbitron', sans-serif; font-size: 11px; color: #00e5ff; background: rgba(0,229,255,0.15); padding: 3px 8px; border-radius: 8px; border: 1px solid rgba(0,229,255,0.3); margin-top: 4px; }
 
-        .ff-stats-badge-row { display: flex; gap: 10px; margin-top: 10px; }
-        .badge-box { background: rgba(30, 41, 59, 0.8); border: 1px solid rgba(255,255,255,0.1); padding: 4px 10px; border-radius: 10px; font-size: 11px; font-weight: bold; color: #ffcc00; display: flex; align-items: center; gap: 4px; }
+        .stats-row { display: flex; gap: 10px; margin-top: 10px; }
+        .badge-item { background: rgba(30, 41, 59, 0.8); border: 1px solid rgba(255,255,255,0.1); padding: 4px 10px; border-radius: 10px; font-size: 11px; font-weight: bold; color: #ffcc00; }
 
-        .prime-level-container { margin-top: 16px; background: rgba(15, 23, 42, 0.8); border: 1px solid rgba(255,204,0,0.3); border-radius: 14px; padding: 12px; }
-        .prime-header { display: flex; justify-content: space-between; font-size: 12px; font-weight: 900; color: #ffcc00; margin-bottom: 6px; font-family: 'Orbitron', sans-serif; }
+        .prime-level-box { background: rgba(15, 23, 42, 0.85); border: 1px solid rgba(255,204,0,0.3); border-radius: 16px; padding: 14px; margin-bottom: 20px; }
+        .prime-header { display: flex; justify-content: space-between; font-size: 12px; font-weight: 900; color: #ffcc00; margin-bottom: 8px; font-family: 'Orbitron', sans-serif; }
         .progress-bar-bg { background: #1e293b; height: 10px; border-radius: 10px; overflow: hidden; }
         .progress-bar-fill { background: linear-gradient(90deg, #ffcc00, #f97316); height: 100%; width: 0%; transition: width 0.5s; }
 
-        .quick-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; margin-bottom: 20px; }
+        .quick-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; }
         .quick-box { background: rgba(30, 41, 59, 0.7); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 16px; padding: 16px; text-align: center; cursor: pointer; transition: transform 0.2s; }
         .quick-box:hover { transform: translateY(-3px); border-color: #00e5ff; }
         .quick-icon { font-size: 28px; margin-bottom: 4px; }
         .quick-title { font-size: 13px; font-weight: 800; color: #f8fafc; }
         .quick-count { font-size: 11px; color: #00e5ff; font-weight: bold; }
 
-        /* EXPANDABLE VAULT MODAL SYSTEM */
-        .ff-modal-overlay { position: fixed; inset: 0; background: rgba(2, 6, 23, 0.92); backdrop-filter: blur(12px); display: flex; align-items: center; justify-content: center; z-index: 999; }
-        .ff-vault-card { background: #0f172a; border: 2px solid #00e5ff; border-radius: 20px; width: 92%; max-width: 600px; padding: 20px; box-shadow: 0 0 35px rgba(0, 229, 255, 0.3); }
-
-        .vault-category-bar { display: flex; gap: 8px; overflow-x: auto; padding-bottom: 8px; margin-bottom: 14px; border-bottom: 1px solid rgba(255,255,255,0.1); }
-        .vault-cat-btn { background: #1e293b; color: #94a3b8; border: 1px solid transparent; padding: 8px 14px; border-radius: 10px; font-weight: bold; font-size: 11px; white-space: nowrap; cursor: pointer; }
-        .vault-cat-btn.active { background: #00e5ff; color: #000; border-color: #00e5ff; }
-
-        .vault-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; max-height: 320px; overflow-y: auto; padding: 4px; }
-        .vault-item-node { background: #1e293b; border: 1px solid rgba(255,255,255,0.1); border-radius: 12px; padding: 10px; text-align: center; cursor: pointer; position: relative; }
-        .vault-item-node.equipped { border-color: #22c55e; box-shadow: 0 0 12px rgba(34, 197, 94, 0.4); }
-        .vault-item-node img { width: 50px; height: 50px; object-fit: contain; margin-bottom: 6px; }
+        /* VAULT MODAL */
+        .modal-overlay { position: fixed; inset: 0; background: rgba(2, 6, 23, 0.92); backdrop-filter: blur(10px); display: flex; align-items: center; justify-content: center; z-index: 999; }
+        .modal-card { background: #0f172a; border: 2px solid #00e5ff; border-radius: 20px; width: 90%; max-width: 480px; padding: 20px; }
+        .vault-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; max-height: 280px; overflow-y: auto; padding: 4px; }
+        .vault-item { background: #1e293b; border: 1px solid rgba(255,255,255,0.1); border-radius: 12px; padding: 8px; text-align: center; cursor: pointer; }
+        .vault-item.equipped { border-color: #22c55e; box-shadow: 0 0 10px rgba(34,197,94,0.4); }
+        .vault-item img { width: 45px; height: 45px; object-fit: contain; }
     </style>
 </head>
 
@@ -101,32 +83,29 @@
     <main class="container">
         <a href="index.html" style="color: #00e5ff; text-decoration: none; font-weight: bold; font-size: 13px;">← Back to Shop</a>
 
-        <div class="ff-profile-card" id="profile-banner-bg">
-            <div class="ff-card-overlay"></div>
-            <div class="ff-card-content">
-                <div class="ff-avatar-frame">
-                    <img id="user-avatar-img" src="images/avtar.png" alt="Avatar">
+        <div class="profile-card" id="profile-banner-bg">
+            <div class="avatar-frame">
+                <img id="user-avatar-img" src="images/avtar.png" alt="Avatar">
+            </div>
+            <div class="user-details">
+                <div class="name-row">
+                    <h2 class="username" id="display-nickname">Gamer</h2>
+                    <button class="edit-btn" onclick="changeNickname()">✏️</button>
                 </div>
-                <div class="ff-user-details">
-                    <div class="ff-name-row">
-                        <h2 class="ff-username" id="display-nickname">Gamer</h2>
-                        <button class="edit-name-btn" onclick="changeNickname()">✏️</button>
-                    </div>
-                    <div class="ff-uid-tag">
-                        <span>ID: <span id="display-player-id">-------</span></span>
-                        <span onclick="copyPlayerId()" style="cursor: pointer; color: #ffcc00;">📋</span>
-                    </div>
+                <div class="uid-tag">
+                    <span>ID: <span id="display-player-id">-------</span></span>
+                    <span onclick="copyPlayerId()" style="cursor: pointer; color: #ffcc00;">📋</span>
+                </div>
 
-                    <div class="ff-stats-badge-row">
-                        <div class="badge-box">🔥 Streak: <span id="display-streak">1</span> Days</div>
-                        <div class="badge-box" onclick="addProfileLike()" style="cursor: pointer;">❤️ Likes: <span id="display-likes">0</span></div>
-                        <div class="badge-box" style="color: #00e5ff;">⭐ XP: <span id="display-xp">0</span></div>
-                    </div>
+                <div class="stats-row">
+                    <div class="badge-item">🔥 Streak: <span id="display-streak">1</span> Days</div>
+                    <div class="badge-item" onclick="addProfileLike()" style="cursor: pointer;">❤️ Likes: <span id="display-likes">0</span></div>
+                    <div class="badge-item" style="color: #00e5ff;">⭐ XP: <span id="display-xp">0</span></div>
                 </div>
             </div>
         </div>
 
-        <div class="prime-level-container">
+        <div class="prime-level-box">
             <div class="prime-header">
                 <span id="display-prime-title">👑 PRIME LEVEL 1 (BRONZE)</span>
                 <span id="display-diamonds-count">💎 0 / 10,000</span>
@@ -136,11 +115,11 @@
             </div>
         </div>
 
-        <div class="quick-grid" style="margin-top: 20px;">
+        <div class="quick-grid">
             <div class="quick-box" onclick="openVaultModal()">
                 <div class="quick-icon">🧰</div>
                 <div class="quick-title">VAULT (INVENTORY)</div>
-                <div class="quick-count">Equip Skins & Items</div>
+                <div class="quick-count">Equip Avatar & Banner</div>
             </div>
 
             <div class="quick-box" onclick="location.href='orders.html'">
@@ -163,24 +142,21 @@
         </div>
     </main>
 
-    <!-- 🧰 MULTI-CATEGORY EXPANDABLE VAULT INVENTORY MODAL -->
-    <div id="vault-modal" class="ff-modal-overlay" style="display: none;">
-        <div class="ff-vault-card">
+    <!-- VAULT MODAL -->
+    <div id="vault-modal" class="modal-overlay" style="display: none;">
+        <div class="modal-card">
             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
-                <h2 style="font-family: 'Orbitron', sans-serif; color: #00e5ff; margin: 0; font-size: 16px;">🧰 FF VAULT COLLECTION</h2>
+                <h2 style="font-family: 'Orbitron', sans-serif; color: #00e5ff; margin: 0; font-size: 16px;">🧰 VAULT INVENTORY</h2>
                 <button onclick="closeVaultModal()" style="background: none; border: none; color: #ef4444; font-size: 20px; cursor: pointer;">✖</button>
             </div>
 
-            <!-- EXPANDABLE CATEGORIES -->
-            <div class="vault-category-bar">
-                <button class="vault-cat-btn active" id="vcat-avatar" onclick="switchVaultCategory('avatar')">👤 AVATARS</button>
-                <button class="vault-cat-btn" id="vcat-banner" onclick="switchVaultCategory('banner')">🚩 BANNERS</button>
-                <button class="vault-cat-btn" id="vcat-skin" onclick="switchVaultCategory('skin')">🛡️ GLOO WALL & SKINS</button>
-                <button class="vault-cat-btn" id="vcat-crate" onclick="switchVaultCategory('crate')">📦 CRATES & BUNDLES</button>
+            <div style="display: flex; gap: 10px; margin-bottom: 12px;">
+                <button id="vtab-avatars" onclick="switchVaultTab('avatars')" style="flex:1; padding: 8px; background: #00e5ff; color: #000; border: none; border-radius: 8px; font-weight: bold; cursor: pointer;">AVATARS</button>
+                <button id="vtab-banners" onclick="switchVaultTab('banners')" style="flex:1; padding: 8px; background: #1e293b; color: #fff; border: none; border-radius: 8px; font-weight: bold; cursor: pointer;">BANNERS</button>
             </div>
 
             <div id="vault-items-container" class="vault-grid">
-                <!-- Dynamically loaded vault items -->
+                <!-- Loaded via JS -->
             </div>
         </div>
     </div>
