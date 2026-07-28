@@ -15,23 +15,58 @@ import {
 } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
 let currentUser = null;
+let userUnsubscribe = null;
 
-// Sync All Wallet UI Displays across Topup Page
+// Realtime Single Wallet Balance & Prime Sync
 onAuthStateChanged(auth, (user) => {
     currentUser = user;
+    if (userUnsubscribe) userUnsubscribe();
+
     if (user) {
-        onSnapshot(doc(db, "users", user.uid), (docSnap) => {
+        userUnsubscribe = onSnapshot(doc(db, "users", user.uid), (docSnap) => {
             if (docSnap.exists()) {
                 const data = docSnap.data();
                 const diamondsVal = data.diamonds ?? data.wallet ?? 0;
                 
-                document.querySelectorAll("#user-diamonds, .wallet-balance span, #wallet-balance-val, .wallet-card span").forEach(el => {
-                    if (el) el.innerText = diamondsVal.toLocaleString();
-                });
+                // Update Top Right Header Wallet directly
+                const headerWallet = document.getElementById("wallet-balance-val") || document.getElementById("user-diamonds");
+                if (headerWallet) headerWallet.innerText = diamondsVal.toLocaleString();
+
+                // Auto Prime Level Sync based on total diamonds
+                autoSyncPrimeLevel(user.uid, diamondsVal);
             }
         });
     }
 });
+
+// Auto Prime Tier Sync Engine
+async function autoSyncPrimeLevel(uid, totalDiamonds) {
+    let primeLevel = "BRONZE";
+    let bonusMultiplier = 0; // 0%
+
+    if (totalDiamonds >= 10000) {
+        primeLevel = "CROWN 👑";
+        bonusMultiplier = 0.25; // +25% Bonus
+    } else if (totalDiamonds >= 5000) {
+        primeLevel = "DIAMOND 💎";
+        bonusMultiplier = 0.20; // +20% Bonus
+    } else if (totalDiamonds >= 2000) {
+        primeLevel = "GOLD 🥇";
+        bonusMultiplier = 0.15; // +15% Bonus
+    } else if (totalDiamonds >= 500) {
+        primeLevel = "SILVER 🥈";
+        bonusMultiplier = 0.10; // +10% Bonus
+    }
+
+    try {
+        await setDoc(doc(db, "users", uid), {
+            primeLevel: primeLevel,
+            primeBonusRate: bonusMultiplier
+        }, { merge: true });
+    } catch (e) {
+        console.error("Prime Sync Error:", e);
+    }
+}
 
 document.addEventListener("DOMContentLoaded", () => {
     const modalWindow = document.getElementById("redeem-popup-window");
@@ -52,7 +87,7 @@ document.addEventListener("DOMContentLoaded", () => {
             selectedProduct = { name: pName, price: pPrice, diamonds: pDiamonds };
 
             if (modalDetails) {
-                modalDetails.innerText = `Product: ${pName} | Price: ₹${pPrice}`;
+                modalDetails.innerText = `Product: ${pName} (💎${pDiamonds}) | Price: ₹${pPrice}`;
             }
             if (voucherInput) voucherInput.value = "";
             
@@ -108,20 +143,25 @@ document.addEventListener("DOMContentLoaded", () => {
                 querySnap.forEach((d) => {
                     voucherDocId = d.id;
                     const vData = d.data();
-                    // Multi-field Extraction Fix
-                    actualWorth = Number(vData.worth || vData.diamonds || vData.amount || vData.value || selectedProduct.diamonds || 0);
+                    actualWorth = Number(vData.worth || vData.diamonds || vData.amount || vData.value || 0);
                 });
 
-                if (actualWorth <= 0) actualWorth = selectedProduct.diamonds || 10;
+                // STRICT VALIDATION: Code value must match selected plan value
+                if (selectedProduct.diamonds > 0 && actualWorth !== selectedProduct.diamonds) {
+                    alert(`❌ PLAN MISMATCH ERROR!\n\nThis voucher is worth 💎 ${actualWorth} Diamonds, but you selected the "${selectedProduct.name}" (💎 ${selectedProduct.diamonds} Diamonds) plan.\n\nPlease select the correct pack worth 💎 ${actualWorth} to claim!`);
+                    claimRewardBtn.disabled = false;
+                    claimRewardBtn.innerText = "⚡ Claim Reward";
+                    return;
+                }
 
-                // Credit Diamonds
+                // Credit Diamonds to User Profile
                 const userRef = doc(db, "users", currentUser.uid);
                 await setDoc(userRef, {
                     diamonds: increment(actualWorth),
                     lastRedeem: serverTimestamp()
                 }, { merge: true });
 
-                // Order Record
+                // Add Order Record
                 await addDoc(collection(db, "orders"), {
                     userId: currentUser.uid,
                     userEmail: currentUser.email || "N/A",

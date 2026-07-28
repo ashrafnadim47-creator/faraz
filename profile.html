@@ -4,8 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>My Account Profile | Faraz Store</title>
-    <meta name="description" content="View your account details, wallet, diamonds, and orders at Faraz Store.">
+    <title>My Profile & Friends | Faraz Store</title>
     <meta name="theme-color" content="#020617">
     <link rel="icon" href="favicon.ico">
 
@@ -16,82 +15,110 @@
 
     <!-- CSS Links -->
     <link rel="stylesheet" href="css/global.css">
-    <link rel="stylesheet" href="css/profile.css">
-    <link rel="stylesheet" href="css/responsive.css">
+    <style>
+        body { background: #020617; color: #fff; font-family: 'Plus Jakarta Sans', sans-serif; padding: 20px; margin: 0; }
+        .profile-container { max-width: 650px; margin: 20px auto; background: rgba(15, 23, 42, 0.85); backdrop-filter: blur(12px); border: 1px solid rgba(0, 229, 255, 0.3); border-radius: 24px; padding: 24px; box-shadow: 0 0 30px rgba(0, 229, 255, 0.15); }
+        
+        /* FF PROFILE CARD */
+        .profile-card { background: linear-gradient(135deg, rgba(30, 41, 59, 0.8), rgba(15, 23, 42, 0.9)); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 20px; padding: 20px; display: flex; align-items: center; gap: 16px; margin-bottom: 24px; }
+        .profile-avatar { width: 64px; height: 64px; background: radial-gradient(circle, #38bdf8, #0284c7); border: 3px solid #00e5ff; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 28px; box-shadow: 0 0 15px rgba(0, 229, 255, 0.5); }
+        .profile-info { flex: 1; }
+        .profile-name { font-size: 18px; font-weight: 800; color: #f8fafc; margin: 0; }
+        .player-id-box { display: inline-flex; align-items: center; gap: 8px; background: rgba(0, 229, 255, 0.1); border: 1px solid rgba(0, 229, 255, 0.3); padding: 4px 10px; border-radius: 10px; margin-top: 6px; font-size: 12px; color: #00e5ff; font-weight: 800; font-family: 'Orbitron', sans-serif; }
+        .copy-btn { background: none; border: none; color: #ffcc00; cursor: pointer; font-size: 12px; }
+
+        /* FRIENDS TRIGGER BUTTON */
+        .btn-friends-modal { width: 100%; padding: 14px; background: linear-gradient(135deg, #00e5ff, #3b82f6); color: #000; font-family: 'Orbitron', sans-serif; font-weight: 900; font-size: 14px; border: none; border-radius: 14px; cursor: pointer; box-shadow: 0 0 20px rgba(0, 229, 255, 0.3); margin-bottom: 20px; }
+
+        /* MODAL POPUP */
+        .ff-modal-overlay { position: fixed; inset: 0; background: rgba(2, 6, 23, 0.9); backdrop-filter: blur(10px); display: flex; align-items: center; justify-content: center; z-index: 999; }
+        .ff-modal-card { background: #0f172a; border: 2px solid #00e5ff; border-radius: 20px; width: 90%; max-width: 520px; padding: 20px; box-shadow: 0 0 30px rgba(0, 229, 255, 0.2); }
+        
+        .modal-tabs { display: flex; gap: 8px; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 10px; margin-bottom: 16px; }
+        .tab-btn { flex: 1; padding: 10px; background: #1e293b; color: #94a3b8; border: none; border-radius: 10px; font-weight: 800; font-size: 12px; cursor: pointer; }
+        .tab-btn.active { background: #00e5ff; color: #000; }
+
+        .search-row { display: flex; gap: 10px; margin-bottom: 15px; }
+        .search-row input { flex: 1; background: rgba(30, 41, 59, 0.8); border: 1px solid rgba(255,255,255,0.1); color: #fff; padding: 10px; border-radius: 10px; font-size: 13px; }
+        .search-row button { background: #22c55e; color: #000; border: none; padding: 10px 16px; border-radius: 10px; font-weight: 800; cursor: pointer; }
+
+        .friend-item { background: rgba(30, 41, 59, 0.6); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 12px; padding: 10px 14px; display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
+        .status-dot { display: inline-block; width: 8px; height: 8px; border-radius: 50%; margin-right: 6px; }
+        .dot-online { background: #22c55e; box-shadow: 0 0 8px #22c55e; }
+        .dot-offline { background: #64748b; }
+
+        .btn-action-small { padding: 6px 12px; border-radius: 8px; border: none; font-weight: 800; font-size: 11px; cursor: pointer; }
+        .btn-invite { background: #ffcc00; color: #000; }
+        .btn-accept { background: #22c55e; color: #000; }
+        .btn-reject { background: #ef4444; color: #fff; margin-left: 4px; }
+    </style>
 </head>
 
-<body class="profile-page-bg">
+<body>
 
-    <section class="profile-section">
+    <main class="profile-container">
+        <a href="index.html" style="color: #00e5ff; text-decoration: none; font-weight: bold; font-size: 13px;">← Back to Shop</a>
+        <h1 style="font-family: 'Orbitron', sans-serif; color: #00e5ff; font-size: 22px; margin: 15px 0 20px;">👤 MY PROFILE ARENA</h1>
 
-        <div class="profile-card glassmorphism" style="position: relative; padding: 35px 25px; border-radius: 24px; max-width: 500px; width: 100%; margin: auto; text-align: center;">
-            
-            <!-- Logout Action Button -->
-            <button id="logout-btn" class="logout-btn-top" style="position: absolute; top: 20px; right: 20px; background: rgba(239, 68, 68, 0.15); border: 1px solid #ef4444; color: #ef4444; padding: 6px 14px; border-radius: 20px; font-weight: bold; cursor: pointer;">
-                🚪 Logout
-            </button>
-
-            <!-- User Avatar & Details -->
-            <div class="profile-icon-wrapper" style="margin-bottom: 15px;">
-                <img id="profile-image" src="images/user.png" alt="Profile Avatar" style="width: 80px; height: 80px; border-radius: 50%; border: 2px solid #00e5ff; object-fit: cover;">
-            </div>
-
-            <h1 id="user-name" style="font-size: 24px; color: #ffffff; margin-bottom: 4px;">Loading Account...</h1>
-            <p id="user-email" style="color: #94a3b8; font-size: 14px; margin-bottom: 25px;"></p>
-
-            <!-- 4-CARD STATS GRID -->
-            <div class="profile-info-grid" style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 14px; margin-bottom: 25px;">
-                
-                <div class="info-node glassmorphism" style="padding: 15px; border-radius: 16px; border: 1px solid rgba(255, 255, 255, 0.08);">
-                    <span style="font-size: 12px; color: #94a3b8; font-weight: 700;">📦 Orders</span>
-                    <h3 id="order-count" style="font-size: 22px; color: #38bdf8; margin-top: 4px;">0</h3>
-                </div>
-
-                <div class="info-node glassmorphism" style="padding: 15px; border-radius: 16px; border: 1px solid rgba(255, 255, 255, 0.08);">
-                    <span style="font-size: 12px; color: #94a3b8; font-weight: 700;">⭐ Points</span>
-                    <h3 id="user-points" style="font-size: 22px; color: #ffcc00; margin-top: 4px;">0</h3>
-                </div>
-
-                <div class="info-node glassmorphism" style="padding: 15px; border-radius: 16px; border: 1px solid #00e5ff; background: rgba(0, 229, 255, 0.05);">
-                    <span style="font-size: 12px; color: #00e5ff; font-weight: 700;">💎 Diamonds</span>
-                    <h3 id="profile-diamonds" style="font-size: 22px; color: #00e5ff; margin-top: 4px;">0</h3>
-                </div>
-
-                <div class="info-node glassmorphism" style="padding: 15px; border-radius: 16px; border: 1px solid rgba(255, 255, 255, 0.08);">
-                    <span style="font-size: 12px; color: #94a3b8; font-weight: 700;">❤️ Wishlist</span>
-                    <h3 id="wish-count" style="font-size: 22px; color: #ff0055; margin-top: 4px;">0</h3>
-                </div>
-
-            </div>
-
-            <!-- ACTION BUTTONS -->
-            <div style="display: flex; flex-direction: column; gap: 12px;">
-                <button class="primary-btn" onclick="location.href='orders.html'" style="width: 100%; font-size: 15px; padding: 12px;">
-                    📦 View My Orders
-                </button>
-
-                <button class="order-btn" onclick="location.href='index.html'" style="width: 100%; font-size: 15px; padding: 12px; background: #1e293b; border: 1px solid #334155;">
-                    🏠 Continue Shopping
-                </button>
-
-                <!-- PROFILE PAGE VIP CARD -->
-                <div class="profile-vip-card" style="background: rgba(255, 183, 0, 0.1); border: 1px solid #ffcc00; padding: 15px; border-radius: 12px; margin: 15px 0; text-align: center;">
-                    <h3 style="color: #ffcc00; margin-bottom: 5px;">👑 Free Fire Prime System</h3>
-                    <p style="font-size: 12px; color: #cbd5e1; margin-bottom: 10px;">Check your VIP Level & Unlockable Rewards</p>
-                    
-                    <a href="prime-membership.html" style="display: inline-block; background: linear-gradient(135deg, #ff8800, #ffe600); color: #000; padding: 8px 18px; border-radius: 8px; font-weight: 900; text-decoration: none;">
-                        VIEW MY PRIME LEVEL &raquo;
-                    </a>
+        <!-- USER PROFILE CARD -->
+        <div class="profile-card">
+            <div class="profile-avatar">🎮</div>
+            <div class="profile-info">
+                <h2 class="profile-name" id="user-email-display">Loading User...</h2>
+                <div class="player-id-box">
+                    <span>ID: <span id="user-player-uid">-------</span></span>
+                    <button class="copy-btn" onclick="copyPlayerId()">📋 Copy</button>
                 </div>
             </div>
-
         </div>
 
-    </section>
+        <!-- FREE FIRE FRIENDS SYSTEM BUTTON -->
+        <button class="btn-friends-modal" onclick="openFriendsModal()">
+            👥 FRIENDS SYSTEM (ONLINE / ADD FRIEND)
+        </button>
+    </main>
 
-    <!-- SCRIPT MODULE -->
-    <script type="module" src="js/profile.js"></script>
+    <!-- 🎮 FREE FIRE FRIENDS MODAL POPUP -->
+    <div id="friends-modal" class="ff-modal-overlay" style="display: none;">
+        <div class="ff-modal-card">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+                <h2 style="font-family: 'Orbitron', sans-serif; color: #00e5ff; margin: 0; font-size: 16px;">👥 FRIENDS ARENA</h2>
+                <button onclick="closeFriendsModal()" style="background: none; border: none; color: #ef4444; font-size: 20px; cursor: pointer;">✖</button>
+            </div>
 
+            <!-- MODAL TABS -->
+            <div class="modal-tabs">
+                <button class="tab-btn active" id="tab-my-friends" onclick="switchFriendsTab('friends')">My Friends</button>
+                <button class="tab-btn" id="tab-add-friend" onclick="switchFriendsTab('add')">Add Friend</button>
+                <button class="tab-btn" id="tab-requests" onclick="switchFriendsTab('requests')">Requests</button>
+            </div>
+
+            <!-- TAB 1: MY FRIENDS LIST -->
+            <div id="panel-friends">
+                <div id="my-friends-list" style="max-height: 260px; overflow-y: auto;">
+                    <p style="color: #64748b; font-size: 12px; text-align: center;">Loading friends...</p>
+                </div>
+            </div>
+
+            <!-- TAB 2: ADD FRIEND SEARCH -->
+            <div id="panel-add" style="display: none;">
+                <div class="search-row">
+                    <input type="text" id="friend-search-id" placeholder="Enter 8-Digit Player ID...">
+                    <button onclick="searchPlayerById()">🔍 Search</button>
+                </div>
+                <div id="search-result-container"></div>
+            </div>
+
+            <!-- TAB 3: FRIEND REQUESTS -->
+            <div id="panel-requests" style="display: none;">
+                <div id="pending-requests-list" style="max-height: 260px; overflow-y: auto;">
+                    <p style="color: #64748b; font-size: 12px; text-align: center;">No pending requests.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script type="module" src="js/friends.js"></script>
 </body>
 
 </html>
