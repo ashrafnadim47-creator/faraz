@@ -4,8 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Global Leaderboard | Faraz Store</title>
-    <meta name="description" content="Check out the top diamond wallet holders on Faraz Store leaderboard!">
+    <title>Top Players Leaderboard | Faraz Store</title>
     <meta name="theme-color" content="#020617">
     <link rel="icon" href="favicon.ico">
 
@@ -16,179 +15,36 @@
 
     <!-- CSS Links -->
     <link rel="stylesheet" href="css/global.css">
-
     <style>
-        .leaderboard-page-bg {
-            background: radial-gradient(circle at top center, #1e1b4b 0%, #020617 75%);
-            min-height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            padding: 25px 15px;
-            box-sizing: border-box;
-            font-family: 'Plus Jakarta Sans', sans-serif;
-        }
-
-        .leaderboard-box {
-            width: 100%;
-            max-width: 520px;
-            background: rgba(15, 23, 42, 0.85);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 24px;
-            padding: 30px 20px;
-            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.8), 0 0 30px rgba(255, 204, 0, 0.15);
-            backdrop-filter: blur(16px);
-            -webkit-backdrop-filter: blur(16px);
-        }
-
-        .board-header {
-            text-align: center;
-            border-bottom: 2px dashed rgba(255, 204, 0, 0.3);
-            padding-bottom: 18px;
-            margin-bottom: 22px;
-        }
-
-        .board-header h1 {
-            font-family: 'Orbitron', sans-serif;
-            color: #ffcc00;
-            font-size: 26px;
-            font-weight: 900;
-            letter-spacing: 2px;
-            text-shadow: 0 0 15px rgba(255, 204, 0, 0.4);
-            margin: 0;
-        }
-
-        .rank-list {
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
-        }
-
-        .rank-row {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            background: rgba(30, 41, 59, 0.6);
-            padding: 14px 18px;
-            border-radius: 14px;
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            transition: transform 0.25s ease, border-color 0.25s ease;
-        }
-
-        .rank-row:hover {
-            transform: translateY(-2px);
-            border-color: #ffcc00;
-            box-shadow: 0 6px 20px rgba(255, 204, 0, 0.15);
-        }
-
-        .user-meta {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-        }
-
-        .rank-number {
-            font-family: 'Orbitron', sans-serif;
-            font-weight: 900;
-            font-size: 16px;
-            width: 32px;
-            color: #94a3b8;
-        }
-
-        /* Top 3 Ranks Glowing Colors */
-        .rank-1 { color: #ffd700; text-shadow: 0 0 10px rgba(255, 215, 0, 0.6); font-size: 18px; }
-        .rank-2 { color: #e2e8f0; text-shadow: 0 0 10px rgba(226, 232, 240, 0.6); font-size: 17px; }
-        .rank-3 { color: #cd7f32; text-shadow: 0 0 10px rgba(205, 127, 50, 0.6); font-size: 17px; }
-
-        .user-name {
-            font-weight: 800;
-            color: #ffffff;
-            font-size: 15px;
-        }
-
-        .diamond-count {
-            color: #00e5ff;
-            font-weight: 900;
-            font-size: 15px;
-            font-family: 'Orbitron', sans-serif;
-        }
-
-        .back-btn-shop {
-            width: 100%;
-            background: rgba(30, 41, 59, 0.8);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            color: #ffffff;
-            padding: 13px;
-            border-radius: 14px;
-            cursor: pointer;
-            margin-top: 22px;
-            font-weight: 800;
-            font-size: 14px;
-            transition: all 0.25s ease;
-            text-transform: uppercase;
-        }
-
-        .back-btn-shop:hover {
-            border-color: #00e5ff;
-            background: #0f172a;
-            color: #00e5ff;
-        }
+        body { background: #020617; color: #fff; font-family: 'Plus Jakarta Sans', sans-serif; padding: 20px; margin: 0; }
+        .lb-container { max-width: 650px; margin: 20px auto; background: rgba(15, 23, 42, 0.85); backdrop-filter: blur(12px); border: 1px solid rgba(0, 229, 255, 0.3); border-radius: 24px; padding: 24px; box-shadow: 0 0 30px rgba(0, 229, 255, 0.2); }
+        .lb-title { font-family: 'Orbitron', sans-serif; color: #ffcc00; font-size: 22px; text-align: center; margin: 10px 0 20px; }
+        
+        .rank-node { background: rgba(30, 41, 59, 0.7); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 16px; padding: 14px 18px; display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; transition: transform 0.2s; }
+        .rank-node.top-1 { border-color: #ffcc00; background: linear-gradient(135deg, rgba(255, 204, 0, 0.15), rgba(15, 23, 42, 0.9)); box-shadow: 0 0 15px rgba(255, 204, 0, 0.3); }
+        .rank-number { font-family: 'Orbitron', sans-serif; font-size: 18px; font-weight: 900; color: #00e5ff; width: 35px; }
+        .player-info { flex: 1; }
+        .player-name { font-weight: 800; font-size: 14px; color: #fff; margin-bottom: 2px; }
+        .player-tier { font-size: 10px; color: #ffcc00; font-weight: bold; }
+        
+        .score-box { text-align: right; display: flex; flex-direction: column; gap: 2px; }
+        .score-diamonds { font-family: 'Orbitron', sans-serif; color: #00e5ff; font-weight: 800; font-size: 13px; }
+        .score-xp { font-family: 'Orbitron', sans-serif; color: #ffcc00; font-weight: 800; font-size: 12px; }
     </style>
 </head>
 
-<body class="leaderboard-page-bg">
+<body>
 
-    <div class="leaderboard-box glassmorphism">
-        <div class="board-header">
-            <h1>🏆 TOP DIAMONDS LEADERBOARD</h1>
+    <main class="lb-container">
+        <a href="index.html" style="color: #00e5ff; text-decoration: none; font-weight: bold; font-size: 13px;">← Back to Shop</a>
+        <h1 class="lb-title">🏆 TOP PLAYERS LEADERBOARD</h1>
+
+        <div id="leaderboard-list">
+            <p style="text-align: center; color: #94a3b8; font-size: 13px;">Loading Top Players Matrix...</p>
         </div>
+    </main>
 
-        <div class="rank-list" id="leaderboard-target">
-            <div class="loading-state" style="text-align: center; padding: 20px; color: #00e5ff;">
-                <div class="spinner"></div>
-                <p style="margin-top: 10px;">Loading Top Players...</p>
-            </div>
-        </div>
-
-        <button class="back-btn-shop" onclick="location.href='index.html'">Return to Shop</button>
-    </div>
-
-    <!-- SCRIPT LOGIC -->
-    <script>
-        window.addEventListener('DOMContentLoaded', () => {
-            const boardTarget = document.getElementById('leaderboard-target');
-
-            // Global Players Data Array
-            let globalPlayers = [
-                { name: "Faraz (You)", diamonds: parseInt(localStorage.getItem('fw_persist_wallet') || "0") },
-                { name: "Aman_FF", diamonds: 450 },
-                { name: "Rahul_Gamer", diamonds: 310 },
-                { name: "Sahil_Store", diamonds: 120 },
-                { name: "Rohit_King", diamonds: 50 }
-            ];
-
-            // ⚡ SORTING LOGIC: Higher diamond holders ranked on top
-            globalPlayers.sort((a, b) => b.diamonds - a.diamonds);
-
-            // Render Output Loop
-            boardTarget.innerHTML = globalPlayers.map((player, idx) => {
-                let rankClass = "";
-                if (idx === 0) rankClass = "rank-1";
-                if (idx === 1) rankClass = "rank-2";
-                if (idx === 2) rankClass = "rank-3";
-
-                return `
-                    <div class="rank-row">
-                        <div class="user-meta">
-                            <span class="rank-number ${rankClass}">#${idx + 1}</span>
-                            <span class="user-name">${player.name}</span>
-                        </div>
-                        <span class="diamond-count">💎 ${player.diamonds.toLocaleString()}</span>
-                    </div>
-                `;
-            }).join('');
-        });
-    </script>
+    <script type="module" src="js/leaderboard.js"></script>
 </body>
 
 </html>
