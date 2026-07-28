@@ -627,4 +627,4 @@ document.querySelectorAll(".ff-menu-item").forEach(item => {
 
 // INITIALIZE
 syncFadedUI();
-setupCircularWheelLayout("mystical-ring");
+setupCircularWheelLayout("mystical-ring");                   

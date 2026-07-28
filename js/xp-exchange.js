@@ -1,110 +1,58 @@
 import { auth, db } from "./firebase-config.js";
-import {
-    doc,
-    getDoc,
-    updateDoc,
-    addDoc,
-    collection,
-    serverTimestamp
-} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+import { doc, getDoc, setDoc, increment, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
-const xpCount = document.getElementById("xp-count");
-const message = document.getElementById("message");
+const xpCountElem = document.getElementById("xp-count");
+let currentUser = null;
 
-let uid = null;
-let currentXp = 0;
-
-// ==========================================
-// 🔑 AUTH CHECK & INITIAL XP FETCH
-// ==========================================
 onAuthStateChanged(auth, async (user) => {
-    if (!user) {
-        location.href = "login.html";
-        return;
+    currentUser = user;
+    if (user) {
+        const userRef = doc(db, "users", user.uid);
+        const snap = await getDoc(userRef);
+        if (snap.exists() && xpCountElem) {
+            xpCountElem.innerText = snap.data().points || snap.data().xp || 0;
+        }
     }
-
-    uid = user.uid;
-    await fetchUserXp();
 });
 
-async function fetchUserXp() {
+window.exchangeReward = async function(cost, rewardType) {
+    if (!currentUser) {
+        alert("🔒 Please log in first!");
+        window.location.href = "login.html";
+        return;
+    }
+
+    const userRef = doc(db, "users", currentUser.uid);
+    const userSnap = await getDoc(userRef);
+    const currentXP = userSnap.data()?.points || userSnap.data()?.xp || 0;
+
+    if (currentXP < cost) {
+        alert(`❌ Insufficient XP! You need at least ${cost} XP.`);
+        return;
+    }
+
     try {
-        const snap = await getDoc(doc(db, "users", uid));
-        if (snap.exists()) {
-            currentXp = snap.data().xp || 0;
+        // Deduct XP
+        await setDoc(userRef, {
+            points: increment(-cost)
+        }, { merge: true });
+
+        // Grant Reward
+        if (rewardType === 'VIP') {
+            await setDoc(userRef, { isVip: true }, { merge: true });
+            alert("🏆 VIP Badge Unlocked successfully!");
         } else {
-            currentXp = 0;
-        }
-
-        if (xpCount) {
-            xpCount.innerText = currentXp.toLocaleString();
-        }
-    } catch (error) {
-        console.error("Error fetching XP balance:", error);
-    }
-}
-
-// ==========================================
-// 🔄 EXCHANGE REWARD ENGINE
-// ==========================================
-window.exchangeReward = async function (cost, reward) {
-    if (!uid) {
-        if (message) message.innerHTML = `<span style="color: #ef4444;">❌ Please login first</span>`;
-        return;
-    }
-
-    if (currentXp < cost) {
-        if (message) {
-            message.innerHTML = `<span style="color: #ef4444;">❌ Not enough XP balance. You need ${cost - currentXp} more XP!</span>`;
-        }
-        return;
-    }
-
-    if (message) {
-        message.innerHTML = `<span style="color: #00e5ff;">⏳ Processing XP Exchange...</span>`;
-    }
-
-    try {
-        currentXp -= cost;
-        const userRef = doc(db, "users", uid);
-
-        // 1. Deduct XP from User Document
-        await updateDoc(userRef, {
-            xp: currentXp
-        });
-
-        // 2. Log Claimed Reward Subcollection
-        await addDoc(collection(db, "users", uid, "rewards"), {
-            reward: reward,
-            xpUsed: cost,
-            createdAt: serverTimestamp()
-        });
-
-        // 3. Save to coupons list if it's a code
-        if (reward !== "VIP") {
-            await addDoc(collection(db, "users", uid, "coupons"), {
-                code: reward,
+            await setDoc(doc(db, "users", currentUser.uid, "coupons", rewardType), {
+                code: rewardType,
                 createdAt: serverTimestamp()
-            });
+            }, { merge: true });
+            alert(`🎟️ Coupon ${rewardType} unlocked successfully!`);
         }
 
-        if (message) {
-            message.innerHTML = `<span style="color: #22c55e;">🎉 Reward Claimed Successfully: <b>${reward}</b>!</span>`;
-        }
-
-        if (xpCount) {
-            xpCount.innerText = currentXp.toLocaleString();
-        }
-
-        alert(`🎉 Success!\n\nYou exchanged ${cost} XP for "${reward}". Check your account for details.`);
-
-    } catch (error) {
-        console.error("Exchange error:", error);
-        currentXp += cost; // Revert locally on failure
-        if (xpCount) xpCount.innerText = currentXp.toLocaleString();
-        if (message) {
-            message.innerHTML = `<span style="color: #ef4444;">❌ Exchange failed due to network issues.</span>`;
-        }
+        location.reload();
+    } catch (err) {
+        console.error(err);
+        alert("Exchange failed.");
     }
 };

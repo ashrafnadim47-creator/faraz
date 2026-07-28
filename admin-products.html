@@ -31,9 +31,8 @@
             </div>
 
             <nav class="admin-nav-links">
-                <a href="admin-dashboard.html" class="admin-nav-item">🏠 Dashboard Overview</a>
+                <a href="admin.html" class="admin-nav-item">📊 Dashboard Overview</a>
                 <a href="admin-products.html" class="admin-nav-item active">📦 Product Inventory</a>
-                <a href="admin-orders.html" class="admin-nav-item">🛒 Order Management</a>
                 <a href="admin-users.html" class="admin-nav-item">👥 Registered Users</a>
             </nav>
 
@@ -47,12 +46,12 @@
             <header class="admin-header" style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 15px; margin-bottom: 25px;">
                 <div>
                     <h1 style="font-family: 'Orbitron', sans-serif; font-size: 24px; color: #00e5ff; margin: 0;">🛒 Manage Products</h1>
-                    <p style="color: var(--muted); font-size: 13px; margin-top: 4px;">View, edit, or delete store catalog items</p>
+                    <p style="color: #94a3b8; font-size: 13px; margin-top: 4px;">View, edit, or delete store catalog items</p>
                 </div>
 
                 <div style="display: flex; gap: 10px;">
                     <a href="admin-add-product.html" style="text-decoration: none;">
-                        <button class="add-btn primary-btn" style="padding: 12px 20px; font-size: 13px; font-weight: 800; border-radius: 12px;">
+                        <button class="add-btn primary-btn" style="padding: 12px 20px; font-size: 13px; font-weight: 800; border-radius: 12px; background: #00e5ff; color: #000; border: none; cursor: pointer;">
                             ➕ Add New Product
                         </button>
                     </a>
@@ -60,10 +59,9 @@
             </header>
 
             <!-- PRODUCTS LIST CONTAINER -->
-            <section id="product-list" class="glassmorphism" style="padding: 25px; border-radius: 20px; min-height: 400px;">
+            <section id="product-list" class="glassmorphism" style="padding: 25px; border-radius: 20px; min-height: 400px; background: rgba(15, 23, 42, 0.8);">
                 <div class="loading-state">
-                    <div class="spinner"></div>
-                    <p>Loading Store Inventory...</p>
+                    <p style="color: #94a3b8;">Loading Store Inventory...</p>
                 </div>
             </section>
         </main>

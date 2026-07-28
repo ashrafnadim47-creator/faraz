@@ -16,12 +16,81 @@
 
     <!-- CSS Links -->
     <link rel="stylesheet" href="css/global.css">
-    <link rel="stylesheet" href="css/xp-exchange.css">
+    <style>
+        body.xp-page-bg {
+            background: #020617;
+            color: #ffffff;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            min-height: 100vh;
+            padding: 30px 20px;
+            margin: 0;
+        }
+
+        .exchange-container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: rgba(15, 23, 42, 0.8);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 24px;
+            padding: 30px;
+        }
+
+        .nav-btn-back {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: #00e5ff;
+            padding: 8px 16px;
+            border-radius: 12px;
+            font-weight: 700;
+            cursor: pointer;
+            margin-bottom: 12px;
+        }
+
+        .exchange-title { font-family: 'Orbitron', sans-serif; color: #00e5ff; margin: 0; font-size: 24px; }
+        .exchange-subtext { color: #94a3b8; font-size: 13px; margin: 4px 0 24px; }
+
+        .xp-box {
+            background: linear-gradient(135deg, rgba(0, 229, 255, 0.1), rgba(168, 85, 247, 0.1));
+            border: 1px solid rgba(0, 229, 255, 0.3);
+            border-radius: 18px;
+            padding: 20px;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .xp-number { font-family: 'Orbitron', sans-serif; font-size: 32px; color: #ffcc00; font-weight: 900; }
+
+        .rewards-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 20px;
+        }
+
+        .reward-card {
+            background: rgba(30, 41, 59, 0.6);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 18px;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .exchange-action-btn {
+            width: 100%;
+            padding: 12px;
+            background: #00e5ff;
+            color: #000;
+            border: none;
+            border-radius: 12px;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 15px;
+        }
+    </style>
 </head>
 
 <body class="xp-page-bg">
 
-    <div class="exchange-container glassmorphism">
+    <div class="exchange-container">
 
         <!-- HEADER -->
         <header class="exchange-header">
@@ -31,46 +100,38 @@
         </header>
 
         <!-- XP BALANCE CARD -->
-        <div class="xp-box glassmorphism">
-            <span class="xp-label">Your Experience Points:</span>
-            <div class="xp-value-wrapper">
-                <span class="xp-icon">⭐</span>
-                <span id="xp-count" class="xp-number">0</span>
-                <span class="xp-unit">XP</span>
+        <div class="xp-box">
+            <span style="color: #94a3b8; font-size: 13px;">Your Experience Points:</span>
+            <div style="margin-top: 6px;">
+                <span class="xp-number" id="xp-count">0</span>
+                <span style="color: #ffcc00; font-weight: bold;"> XP</span>
             </div>
         </div>
 
         <!-- REWARDS GRID -->
         <div class="rewards-grid">
 
-            <!-- DISCOUNT COUPON REWARD -->
-            <div class="reward-card glassmorphism">
-                <div class="reward-badge">COUPON</div>
-                <div class="reward-icon">🎟️</div>
-                <h2>10% Discount Coupon</h2>
-                <p class="reward-desc">Get an instant 10% discount on your next store checkout.</p>
-                <div class="cost-tag">Cost: <span>1,000 XP</span></div>
+            <div class="reward-card">
+                <div style="font-size: 40px;">🎟️</div>
+                <h2 style="font-size: 18px; margin: 10px 0 4px;">10% Discount Coupon</h2>
+                <p style="color: #94a3b8; font-size: 13px; margin: 0 0 10px;">Get an instant 10% discount on your next store checkout.</p>
+                <div style="color: #00e5ff; font-weight: bold; font-size: 14px;">Cost: 1,000 XP</div>
                 <button class="exchange-action-btn" onclick="exchangeReward(1000, '10OFF')">
                     Exchange Reward
                 </button>
             </div>
 
-            <!-- VIP BADGE REWARD -->
-            <div class="reward-card glassmorphism vip-glow">
-                <div class="reward-badge badge-vip">PREMIUM</div>
-                <div class="reward-icon">🏆</div>
-                <h2>VIP Membership Badge</h2>
-                <p class="reward-desc">Unlock special VIP badge status on your profile & leaderboard.</p>
-                <div class="cost-tag">Cost: <span>5,000 XP</span></div>
-                <button class="exchange-action-btn vip-btn" onclick="exchangeReward(5000, 'VIP')">
+            <div class="reward-card">
+                <div style="font-size: 40px;">🏆</div>
+                <h2 style="font-size: 18px; margin: 10px 0 4px;">VIP Membership Badge</h2>
+                <p style="color: #94a3b8; font-size: 13px; margin: 0 0 10px;">Unlock special VIP badge status on your profile & leaderboard.</p>
+                <div style="color: #00e5ff; font-weight: bold; font-size: 14px;">Cost: 5,000 XP</div>
+                <button class="exchange-action-btn" style="background: linear-gradient(135deg, #ffcc00, #f97316);" onclick="exchangeReward(5000, 'VIP')">
                     Exchange VIP Badge
                 </button>
             </div>
 
         </div>
-
-        <!-- STATUS MESSAGE DISPLAY -->
-        <p id="message" class="status-message"></p>
 
     </div>
 

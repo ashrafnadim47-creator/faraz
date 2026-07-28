@@ -37,33 +37,36 @@
             <!-- MISSION 1: YOUTUBE -->
             <div class="mission-card glassmorphism" style="padding: 20px; border-radius: 18px; border: 1px solid rgba(255, 255, 255, 0.08); display: flex; flex-direction: column; gap: 10px; background: rgba(30, 41, 59, 0.6);">
                 <h2 style="font-size: 18px; color: #ffffff; margin: 0;">▶️ Subscribe TK_RUSH YouTube</h2>
-                <p style="color: #00e5ff; font-size: 13px; font-weight: 700; margin: 0;">Reward: TKRUSH20 Coupon Code</p>
+                <p style="color: #00e5ff; font-size: 13px; font-weight: 700; margin: 0;">Reward Coupon: <span id="code-yt" style="color: #ffcc00; letter-spacing: 2px;">🔒 Locked</span> (+20 Points)</p>
                 <div style="display: flex; gap: 10px; margin-top: 8px;">
-                    <a href="https://www.youtube.com/@TK_RUSH" target="_blank" style="flex: 1;">
-                        <button class="primary-btn" style="width: 100%; padding: 10px; font-size: 13px; background: #ff0000; color: #fff;">Open YouTube</button>
+                    <a href="https://www.youtube.com/@TK_RUSH" target="_blank" style="flex: 1;" id="link-yt">
+                        <button class="primary-btn" style="width: 100%; padding: 10px; font-size: 13px; background: #ff0000; color: #fff;">1. Open YouTube</button>
                     </a>
-                    <button class="claim primary-btn" data-reward="TKRUSH20" style="flex: 1; padding: 10px; font-size: 13px; background: linear-gradient(135deg, #22c55e, #16a34a); color: #fff;">Claim Reward</button>
+                    <button class="claim primary-btn" id="btn-yt" data-task="yt" data-reward="TKRUSH20" data-points="20" disabled style="flex: 1; padding: 10px; font-size: 13px; background: #475569; color: #cbd5e1; cursor: not-allowed;">2. Complete Task First</button>
                 </div>
             </div>
 
             <!-- MISSION 2: INSTAGRAM -->
             <div class="mission-card glassmorphism" style="padding: 20px; border-radius: 18px; border: 1px solid rgba(255, 255, 255, 0.08); display: flex; flex-direction: column; gap: 10px; background: rgba(30, 41, 59, 0.6);">
                 <h2 style="font-size: 18px; color: #ffffff; margin: 0;">📷 Follow Instagram Page</h2>
-                <p style="color: #00e5ff; font-size: 13px; font-weight: 700; margin: 0;">Reward: INSTA30 Coupon Code</p>
+                <p style="color: #00e5ff; font-size: 13px; font-weight: 700; margin: 0;">Reward Coupon: <span id="code-insta" style="color: #ffcc00; letter-spacing: 2px;">🔒 Locked</span> (+30 Points)</p>
                 <div style="display: flex; gap: 10px; margin-top: 8px;">
-                    <a href="https://www.instagram.com/faraz_anjum_000" target="_blank" style="flex: 1;">
-                        <button class="primary-btn" style="width: 100%; padding: 10px; font-size: 13px; background: linear-gradient(135deg, #e1306c, #c13584); color: #fff;">Open Instagram</button>
+                    <a href="https://www.instagram.com/faraz_anjum_000" target="_blank" style="flex: 1;" id="link-insta">
+                        <button class="primary-btn" style="width: 100%; padding: 10px; font-size: 13px; background: linear-gradient(135deg, #e1306c, #c13584); color: #fff;">1. Open Instagram</button>
                     </a>
-                    <button class="claim primary-btn" data-reward="INSTA30" style="flex: 1; padding: 10px; font-size: 13px; background: linear-gradient(135deg, #22c55e, #16a34a); color: #fff;">Claim Reward</button>
+                    <button class="claim primary-btn" id="btn-insta" data-task="insta" data-reward="INSTA30" data-points="30" disabled style="flex: 1; padding: 10px; font-size: 13px; background: #475569; color: #cbd5e1; cursor: not-allowed;">2. Complete Task First</button>
                 </div>
             </div>
 
             <!-- MISSION 3: DAILY SPIN -->
             <div class="mission-card glassmorphism" style="padding: 20px; border-radius: 18px; border: 1px solid rgba(255, 255, 255, 0.08); display: flex; flex-direction: column; gap: 10px; background: rgba(30, 41, 59, 0.6);">
                 <h2 style="font-size: 18px; color: #ffffff; margin: 0;">🎡 Complete Daily Wheel Spin</h2>
-                <p style="color: #00e5ff; font-size: 13px; font-weight: 700; margin: 0;">Reward: FARAZ50 Coupon Code</p>
+                <p style="color: #00e5ff; font-size: 13px; font-weight: 700; margin: 0;">Reward Coupon: <span id="code-spin" style="color: #ffcc00; letter-spacing: 2px;">🔒 Locked</span> (+50 Points)</p>
                 <div style="display: flex; gap: 10px; margin-top: 8px;">
-                    <button class="claim primary-btn" data-reward="FARAZ50" style="width: 100%; padding: 10px; font-size: 13px; background: linear-gradient(135deg, #ff9900, #ff5500); color: #fff;">Claim Daily Bonus</button>
+                    <a href="spin.html" style="flex: 1;" id="link-spin">
+                        <button class="primary-btn" style="width: 100%; padding: 10px; font-size: 13px; background: linear-gradient(135deg, #a855f7, #6366f1); color: #fff;">1. Go To Spin Arena</button>
+                    </a>
+                    <button class="claim primary-btn" id="btn-spin" data-task="spin" data-reward="FARAZ50" data-points="50" disabled style="flex: 1; padding: 10px; font-size: 13px; background: #475569; color: #cbd5e1; cursor: not-allowed;">2. Complete Task First</button>
                 </div>
             </div>
 

@@ -4,8 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin Orders & Stats | Faraz Store</title>
-    <meta name="description" content="Faraz Store Live Order Tracking and Sales Management Panel">
+    <title>Admin Dashboard & Analytics | Faraz Store</title>
     <meta name="theme-color" content="#020617">
     <link rel="icon" href="favicon.ico">
 
@@ -16,57 +15,154 @@
 
     <!-- CSS Links -->
     <link rel="stylesheet" href="css/global.css">
-    <link rel="stylesheet" href="css/admin-product.css">
+    <style>
+        body {
+            background: #020617;
+            color: #ffffff;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            margin: 0;
+            padding: 24px;
+        }
+
+        .admin-wrapper {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .admin-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: rgba(15, 23, 42, 0.8);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 20px 24px;
+            border-radius: 20px;
+            margin-bottom: 24px;
+        }
+
+        .admin-title h1 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 24px;
+            color: #00e5ff;
+            margin: 0;
+        }
+
+        .admin-title p {
+            margin: 4px 0 0;
+            color: #94a3b8;
+            font-size: 13px;
+        }
+
+        /* Live Analytics Grid */
+        .analytics-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 16px;
+            margin-bottom: 28px;
+        }
+
+        .stat-card {
+            background: rgba(15, 23, 42, 0.7);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 18px;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .stat-card p {
+            font-size: 12px;
+            color: #94a3b8;
+            text-transform: uppercase;
+            font-weight: 700;
+            margin: 0 0 8px;
+        }
+
+        .stat-card h2 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 28px;
+            margin: 0;
+        }
+
+        .c-cyan { color: #00e5ff; }
+        .c-gold { color: #ffcc00; }
+        .c-green { color: #22c55e; }
+        .c-orange { color: #f97316; }
+        .c-purple { color: #a855f7; }
+
+        /* Order Stream Box */
+        .orders-box {
+            background: rgba(15, 23, 42, 0.8);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            padding: 24px;
+        }
+
+        .orders-box h2 {
+            font-size: 18px;
+            margin: 0 0 16px;
+            color: #ffffff;
+        }
+
+        .order-card {
+            background: rgba(30, 41, 59, 0.5);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 14px;
+            padding: 16px;
+            margin-bottom: 12px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+    </style>
 </head>
 
-<body class="admin-page-bg">
+<body>
 
-    <div class="admin-container glassmorphism" style="max-width: 1100px; margin: 30px auto; padding: 25px; border-radius: 24px;">
+    <div class="admin-wrapper">
 
         <!-- 👑 HEADER -->
-        <header class="admin-header" style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px dashed rgba(255, 255, 255, 0.15); padding-bottom: 18px; margin-bottom: 25px;">
-            <div>
-                <h1 style="font-family: 'Orbitron', sans-serif; font-size: 24px; color: #00e5ff; margin: 0;">👑 Faraz Store Admin Panel</h1>
-                <p style="color: #94a3b8; font-size: 13px; margin-top: 4px;">Live order management and store analytics</p>
+        <header class="admin-header">
+            <div class="admin-title">
+                <h1>👑 Faraz Store Live Analytics & Management</h1>
+                <p>Real-time order tracking, revenue matrix, and user metrics</p>
             </div>
-
-            <div class="admin-buttons" style="display: flex; gap: 12px;">
-                <a href="index.html" class="nav-btn-back" style="text-decoration: none; padding: 10px 18px; border-radius: 12px; font-weight: 800;">🏠 Home Shop</a>
-                <button class="admin-logout-btn" onclick="logout()" style="background: rgba(239, 68, 68, 0.15); border: 1px solid #ef4444; color: #ef4444; padding: 10px 18px; border-radius: 12px; font-weight: 800; cursor: pointer;">🚪 Logout</button>
+            <div>
+                <a href="index.html" style="background: rgba(255,255,255,0.08); color: #fff; padding: 10px 18px; border-radius: 12px; text-decoration: none; font-weight: 700; font-size: 13px;">🏠 Back To Shop</a>
             </div>
         </header>
 
-        <!-- 📊 STATS CARDS GRID -->
-        <div class="dashboard" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px; margin-bottom: 30px;">
-
-            <div class="stat-box glassmorphism" style="padding: 20px; text-align: center; border-radius: 18px; border: 1px solid rgba(255, 255, 255, 0.08);">
-                <h2 style="font-size: 13px; color: #94a3b8; margin-bottom: 6px; text-transform: uppercase;">📦 Total Orders</h2>
-                <h1 id="totalOrders" style="font-family: 'Orbitron', sans-serif; font-size: 26px; color: #38bdf8; margin: 0;">0</h1>
+        <!-- 📊 LIVE ANALYTICS CARDS -->
+        <div class="analytics-grid">
+            <div class="stat-card">
+                <p>💰 Total Revenue</p>
+                <h2 id="totalSales" class="c-gold">₹0</h2>
             </div>
-
-            <div class="stat-box glassmorphism" style="padding: 20px; text-align: center; border-radius: 18px; border: 1px solid rgba(255, 255, 255, 0.08);">
-                <h2 style="font-size: 13px; color: #94a3b8; margin-bottom: 6px; text-transform: uppercase;">💰 Total Sales</h2>
-                <h1 id="totalSales" style="font-family: 'Orbitron', sans-serif; font-size: 26px; color: #ffcc00; margin: 0;">₹0</h1>
+            <div class="stat-card">
+                <p>📦 Total Orders</p>
+                <h2 id="totalOrders" class="c-cyan">0</h2>
             </div>
-
-            <div class="stat-box glassmorphism" style="padding: 20px; text-align: center; border-radius: 18px; border: 1px solid rgba(255, 255, 255, 0.08);">
-                <h2 style="font-size: 13px; color: #94a3b8; margin-bottom: 6px; text-transform: uppercase;">🟡 Processing</h2>
-                <h1 id="processingOrders" style="font-family: 'Orbitron', sans-serif; font-size: 26px; color: #eab308; margin: 0;">0</h1>
+            <div class="stat-card">
+                <p>⏳ Processing</p>
+                <h2 id="processingOrders" class="c-orange">0</h2>
             </div>
-
-            <div class="stat-box glassmorphism" style="padding: 20px; text-align: center; border-radius: 18px; border: 1px solid rgba(255, 255, 255, 0.08);">
-                <h2 style="font-size: 13px; color: #94a3b8; margin-bottom: 6px; text-transform: uppercase;">🟢 Delivered</h2>
-                <h1 id="deliveredOrders" style="font-family: 'Orbitron', sans-serif; font-size: 26px; color: #22c55e; margin: 0;">0</h1>
+            <div class="stat-card">
+                <p>🟢 Delivered</p>
+                <h2 id="deliveredOrders" class="c-green">0</h2>
             </div>
-
+            <div class="stat-card">
+                <p>👥 Total Users</p>
+                <h2 id="totalUsers" class="c-purple">0</h2>
+            </div>
         </div>
 
-        <!-- 🛒 ORDERS CONTAINER -->
-        <h2 style="font-size: 18px; color: #ffffff; margin-bottom: 16px;">📦 Store Orders Stream</h2>
-        <div id="adminOrders" style="display: flex; flex-direction: column; gap: 14px;">
-            <div class="loading-state">
-                <div class="spinner"></div>
-                <p>Loading Live Orders Database...</p>
+        <!-- 📦 LIVE ORDERS STREAM -->
+        <div class="orders-box">
+            <h2>📥 Live Customer Orders Stream</h2>
+            <div id="adminOrders">
+                <p style="color: #64748b; font-size: 14px;">Syncing Firestore live database...</p>
             </div>
         </div>
 
