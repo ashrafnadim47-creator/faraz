@@ -1,4 +1,5 @@
-import { db } from "./firebase-config.js";
+import { auth, db } from "./firebase-config.js";
+import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 import { 
     doc, 
     updateDoc, 
@@ -9,8 +10,16 @@ import {
     getDocs, 
     deleteDoc, 
     serverTimestamp, 
-    addDoc
+    addDoc,
+    setDoc
 } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+let currentUser = null;
+
+// Auth State Tracking
+onAuthStateChanged(auth, (user) => {
+    currentUser = user;
+});
 
 document.addEventListener("DOMContentLoaded", () => {
     const modalWindow = document.getElementById("redeem-popup-window");
@@ -22,7 +31,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     let selectedProduct = { name: "", diamonds: 0, price: 0 };
 
-    // 1. DIRECT OPEN POPUP (LOGIN CHECK REMOVED)
+    // 1. OPEN POPUP & SET PRODUCT
     triggerBtns.forEach((btn) => {
         btn.addEventListener("click", () => {
             const pName = btn.getAttribute("data-product") || "Diamond Pack";
@@ -53,9 +62,15 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     }
 
-    // 3. CLAIM REWARD / VOUCHER REDEEM
+    // 3. CLAIM REWARD / VOUCHER REDEEM ENGINE (FIXED)
     if (claimRewardBtn) {
         claimRewardBtn.addEventListener("click", async () => {
+            if (!currentUser) {
+                alert("🔒 Please Log In first to redeem voucher code!");
+                window.location.href = "login.html";
+                return;
+            }
+
             const codeEntered = voucherInput ? voucherInput.value.trim().toUpperCase() : "";
 
             if (!codeEntered) {
@@ -64,9 +79,10 @@ document.addEventListener("DOMContentLoaded", () => {
             }
 
             claimRewardBtn.disabled = true;
-            claimRewardBtn.innerText = "Verifying...";
+            claimRewardBtn.innerText = "Verifying Code...";
 
             try {
+                // Fetch Voucher from Firestore
                 const vouchersRef = collection(db, "vouchers");
                 const q = query(vouchersRef, where("code", "==", codeEntered));
                 const querySnap = await getDocs(q);
@@ -89,24 +105,37 @@ document.addEventListener("DOMContentLoaded", () => {
                     if (vData.price) packPrice = parseInt(vData.price);
                 });
 
-                // Order Log entry
+                // A. Update User Balance in Firestore (`users/{uid}`)
+                const userRef = doc(db, "users", currentUser.uid);
+                await setDoc(userRef, {
+                    diamonds: increment(rewardDiamonds),
+                    lastRedeem: serverTimestamp()
+                }, { merge: true });
+
+                // B. Save Detailed Order Entry in `orders`
                 await addDoc(collection(db, "orders"), {
+                    userId: currentUser.uid,
+                    userEmail: currentUser.email || "N/A",
                     product: selectedProduct.name || "Voucher Redeem",
                     diamonds: rewardDiamonds,
                     amount: packPrice,
                     codeUsed: codeEntered,
                     status: "Completed",
-                    timestamp: serverTimestamp()
+                    createdAt: serverTimestamp()
                 });
 
+                // C. Delete Used Voucher from Database
                 await deleteDoc(doc(db, "vouchers", voucherDocId));
 
-                alert(`🎉 Success! 💎 ${rewardDiamonds} Diamonds Voucher Verified!`);
+                alert(`🎉 SUCCESS!\n\n💎 +${rewardDiamonds} Diamonds Added directly to your account!`);
 
                 if (modalWindow) {
                     modalWindow.classList.remove("active");
                     modalWindow.style.display = "none";
                 }
+
+                // Optional: Reload to show updated balance
+                location.reload();
 
             } catch (err) {
                 console.error("Redeem Error:", err);
