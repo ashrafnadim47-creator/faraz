@@ -21,7 +21,7 @@
 
 <body>
 
-    <!-- 🎮 MAIN FREE FIRE STYLE ARENA WRAPPER -->
+    <!-- 🎮 MAIN ARENA WRAPPER -->
     <div class="ff-interface-wrapper">
         
         <!-- 👈 LEFT NAVIGATION PANEL -->
@@ -131,7 +131,7 @@
             </div>
         </main>
 
-        <!-- 👉 RIGHT COLUMN ITEM SHOWCASE CARD -->
+        <!-- 👉 RIGHT COLUMN SHOWCASE -->
         <aside class="ff-right-panel">
             <div id="right-column-prizes" class="right-showcase-container">
                 <!-- Dynamic Showcase via JS -->
@@ -140,7 +140,7 @@
 
     </div>
 
-    <!-- 🛍️ TOKEN EXCHANGE STORE MODAL POPUP -->
+    <!-- 🛍️ TOKEN EXCHANGE STORE MODAL -->
     <div id="exchange-modal" class="royale-modal-overlay" style="display: none;">
         <div class="exchange-fullscreen-card">
             <div class="exchange-top-bar">
@@ -169,20 +169,19 @@
     <div id="congratulations-popup" class="congratulations-overlay" style="display: none;">
         <div class="congrats-card">
             <h1 class="congrats-banner">CONGRATULATIONS!</h1>
-            <p class="congrats-sub">YOU UNLOCKED A NEW REWARD</p>
+            <p class="congrats-sub">YOU UNLOCKED NEW REWARDS</p>
 
             <div class="unlocked-reward-display">
-                <img id="congrats-item-img" src="images/iphone16.png" alt="Prize">
-                <h2 id="congrats-item-name">iPhone 16 Pro Max</h2>
+                <!-- Dynamic Rewards / Grid Output -->
             </div>
 
             <button id="congrats-dismiss-bstn" class="congrats-close-btn">CLAIM NOW</button>
         </div>
     </div>
 
-    <!-- SCRIPTS INTEGRATION -->
+    <!-- SCRIPTS MODULE -->
     <script type="module" src="js/luck-royale.js"></script>
-    <script type="module" src="js/faded-wheel.js"></script>
+
 </body>
 
 </html>

@@ -2,7 +2,7 @@ import { auth, db } from "./firebase-config.js";
 import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 import { 
     doc, 
-    updateDoc, 
+    onSnapshot,
     increment, 
     collection, 
     query, 
@@ -15,10 +15,27 @@ import {
 } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
 let currentUser = null;
+let userUnsubscribe = null;
 
-// Auth State Tracking
+// Realtime User Wallet Balance Sync
 onAuthStateChanged(auth, (user) => {
     currentUser = user;
+    if (userUnsubscribe) userUnsubscribe();
+
+    if (user) {
+        userUnsubscribe = onSnapshot(doc(db, "users", user.uid), (docSnap) => {
+            if (docSnap.exists()) {
+                const data = docSnap.data();
+                const diamondsVal = data.diamonds ?? data.wallet ?? 0;
+                
+                // Update all wallet balance elements on page
+                const walletElems = document.querySelectorAll("#user-diamonds, .wallet-balance span, #wallet-balance-val");
+                walletElems.forEach(el => {
+                    if (el) el.innerText = diamondsVal.toLocaleString();
+                });
+            }
+        });
+    }
 });
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -29,19 +46,17 @@ document.addEventListener("DOMContentLoaded", () => {
     const claimRewardBtn = document.getElementById("claim-reward-btn");
     const triggerBtns = document.querySelectorAll(".trigger-redeem-btn");
 
-    let selectedProduct = { name: "", diamonds: 0, price: 0 };
+    let selectedProduct = { name: "", price: 0 };
 
-    // 1. OPEN POPUP & SET PRODUCT
     triggerBtns.forEach((btn) => {
         btn.addEventListener("click", () => {
             const pName = btn.getAttribute("data-product") || "Diamond Pack";
-            const pDiamonds = parseInt(btn.getAttribute("data-diamonds")) || 0;
             const pPrice = parseInt(btn.getAttribute("data-price")) || 0;
 
-            selectedProduct = { name: pName, diamonds: pDiamonds, price: pPrice };
+            selectedProduct = { name: pName, price: pPrice };
 
             if (modalDetails) {
-                modalDetails.innerText = `Product: ${pName} (💎${pDiamonds}) | Price: ₹${pPrice}`;
+                modalDetails.innerText = `Product: ${pName} | Price: ₹${pPrice}`;
             }
             if (voucherInput) voucherInput.value = "";
             
@@ -52,7 +67,6 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     });
 
-    // 2. CLOSE POPUP
     if (closeModalBtn) {
         closeModalBtn.addEventListener("click", () => {
             if (modalWindow) {
@@ -62,7 +76,6 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     }
 
-    // 3. CLAIM REWARD / VOUCHER REDEEM ENGINE (FIXED)
     if (claimRewardBtn) {
         claimRewardBtn.addEventListener("click", async () => {
             if (!currentUser) {
@@ -95,47 +108,48 @@ document.addEventListener("DOMContentLoaded", () => {
                 }
 
                 let voucherDocId = "";
-                let rewardDiamonds = selectedProduct.diamonds || 0;
-                let packPrice = selectedProduct.price || 0;
+                let actualWorth = 0;
 
                 querySnap.forEach((d) => {
                     voucherDocId = d.id;
                     const vData = d.data();
-                    if (vData.diamonds) rewardDiamonds = parseInt(vData.diamonds);
-                    if (vData.price) packPrice = parseInt(vData.price);
+                    // FIX: Always read exact worth set by Admin!
+                    actualWorth = Number(vData.worth || vData.diamonds || vData.value || 0);
                 });
 
-                // A. Update User Balance in Firestore (`users/{uid}`)
+                if (actualWorth <= 0) {
+                    alert("❌ Invalid voucher value found!");
+                    return;
+                }
+
+                // 1. Credit EXACT Voucher Diamonds to User Profile
                 const userRef = doc(db, "users", currentUser.uid);
                 await setDoc(userRef, {
-                    diamonds: increment(rewardDiamonds),
+                    diamonds: increment(actualWorth),
                     lastRedeem: serverTimestamp()
                 }, { merge: true });
 
-                // B. Save Detailed Order Entry in `orders`
+                // 2. Add Order Log
                 await addDoc(collection(db, "orders"), {
                     userId: currentUser.uid,
                     userEmail: currentUser.email || "N/A",
                     product: selectedProduct.name || "Voucher Redeem",
-                    diamonds: rewardDiamonds,
-                    amount: packPrice,
+                    diamonds: actualWorth,
+                    amount: selectedProduct.price || 0,
                     codeUsed: codeEntered,
                     status: "Completed",
                     createdAt: serverTimestamp()
                 });
 
-                // C. Delete Used Voucher from Database
+                // 3. Delete Used Voucher
                 await deleteDoc(doc(db, "vouchers", voucherDocId));
 
-                alert(`🎉 SUCCESS!\n\n💎 +${rewardDiamonds} Diamonds Added directly to your account!`);
+                alert(`🎉 SUCCESS!\n\n💎 +${actualWorth} Diamonds Added directly to your account!`);
 
                 if (modalWindow) {
                     modalWindow.classList.remove("active");
                     modalWindow.style.display = "none";
                 }
-
-                // Optional: Reload to show updated balance
-                location.reload();
 
             } catch (err) {
                 console.error("Redeem Error:", err);
