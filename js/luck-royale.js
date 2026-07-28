@@ -35,6 +35,7 @@ let isSpinning = false;
 let activeKey = "mystical-ring";
 let activeShopTab = "grand";
 let spinTimerTimeout = null;
+let lockIntervalTimer = null;
 
 // Faded Wheel States
 let fadedSelected = [];
@@ -43,6 +44,7 @@ let fadedWon = JSON.parse(localStorage.getItem('fw_persist_won') || "[]");
 let fadedSpinPointer = parseInt(localStorage.getItem('fw_persist_pointer') || "0", 10);
 const fadedCosts = [9, 19, 39, 69, 99, 149, 199, 499];
 
+// Datasets
 const gameEventsData = {
     "mystical-ring": {
         title: "MYSTICAL RING",
@@ -89,7 +91,93 @@ const gameEventsData = {
     }
 };
 
-// Realtime User Data Listener
+const exchangeStoreCatalog = {
+    "grand": [
+        { name: "iPhone 16 Pro Max", img: "images/iphone16.png", cost: 5000, tag: "🏆 LEGENDARY" },
+        { name: "iPhone 15 Pro", img: "images/iphone16.png", cost: 3500, tag: "✨ MYTHIC" },
+        { name: "Red Gloo Wall Skin", img: "images/gloowall.png", cost: 1500, tag: "🛡️ WALL PREMIUM" },
+        { name: "Diwali Special Bundle", img: "images/diwali_bundle.png", cost: 2000, tag: "🔥 BUNDLE UNIQ" }
+    ],
+    "crates": [
+        { name: "Epic Weapon Crate", img: "images/weapon_crate.png", cost: 80, tag: "🔫 GUN BOX" },
+        { name: "Diwali Firework Crate", img: "images/loot_box.png", cost: 50, tag: "📦 SPECIAL LOOT" },
+        { name: "Rare Avatar Badge", img: "images/avtar.png", cost: 30, tag: "👤 CUSTOM CARD" }
+    ]
+};
+
+// Lock state handler
+function checkAndRenderEventLockState(key) {
+    const event = gameEventsData[key];
+    if (lockIntervalTimer) clearInterval(lockIntervalTimer);
+
+    const spin1Btn = document.getElementById("btn-spin-1");
+    const spin10Btn = document.getElementById("btn-spin-10");
+
+    const existingOverlay = document.getElementById("event-lock-overlay");
+    if (existingOverlay) existingOverlay.remove();
+
+    if (!event || !event.isLocked) {
+        if (spin1Btn) spin1Btn.disabled = false;
+        if (spin10Btn) spin10Btn.disabled = false;
+        return false;
+    }
+
+    if (spin1Btn) spin1Btn.disabled = true;
+    if (spin10Btn) spin10Btn.disabled = true;
+
+    const lockOverlay = document.createElement("div");
+    lockOverlay.id = "event-lock-overlay";
+    lockOverlay.style.cssText = `
+        position: absolute; inset: 0; background: rgba(2, 6, 23, 0.92);
+        backdrop-filter: blur(8px); display: flex; flex-direction: column;
+        justify-content: center; align-items: center; z-index: 100;
+        border-radius: 50%; text-align: center; padding: 20px; border: 2px dashed #ffcc00;
+    `;
+
+    lockOverlay.innerHTML = `
+        <div style="font-size: 36px; margin-bottom: 4px;">🔒</div>
+        <h3 style="color: #ffcc00; font-family: 'Orbitron', sans-serif; font-size: 14px; margin-bottom: 4px;">EVENT LOCKED</h3>
+        <p style="color: #cbd5e1; font-size: 10px; margin-bottom: 8px;">Diwali Special Event unlocks soon!</p>
+        <div id="lock-timer-display" style="font-family: 'Orbitron', sans-serif; font-size: 11px; font-weight: 900; color: #00e5ff; background: rgba(0,229,255,0.1); padding: 4px 10px; border-radius: 12px; border: 1px solid #00e5ff;">
+            Calculating...
+        </div>
+    `;
+
+    const arenaParent = document.querySelector(".ff-circle-arena-wrapper") || slotsGrid.parentElement;
+    if (arenaParent) {
+        arenaParent.appendChild(lockOverlay);
+    }
+
+    const targetTime = new Date(event.unlockDate).getTime();
+
+    function updateCountdown() {
+        const now = new Date().getTime();
+        const diff = targetTime - now;
+        const timerDisplay = document.getElementById("lock-timer-display");
+
+        if (diff <= 0) {
+            event.isLocked = false;
+            clearInterval(lockIntervalTimer);
+            setupCircularWheelLayout(key);
+            return;
+        }
+
+        const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+        const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+        const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+
+        if (timerDisplay) {
+            timerDisplay.innerText = `⏳ ${days}d ${hours}h ${minutes}m ${seconds}s`;
+        }
+    }
+
+    updateCountdown();
+    lockIntervalTimer = setInterval(updateCountdown, 1000);
+    return true;
+}
+
+// Auth listener
 onAuthStateChanged(auth, (user) => {
     if (user) {
         currentUserUid = user.uid;
@@ -107,10 +195,13 @@ onAuthStateChanged(auth, (user) => {
     }
 });
 
+// Setup Ring Layout
 function setupCircularWheelLayout(key) {
     const data = gameEventsData[key];
     if (!slotsGrid || !data) return;
     slotsGrid.innerHTML = "";
+
+    const isLocked = checkAndRenderEventLockState(key);
 
     const total = data.slots.length;
     const radius = 110;
@@ -125,12 +216,12 @@ function setupCircularWheelLayout(key) {
         node.className = `ff-card-node ${slot.grand ? 'grand-item' : ''}`;
         node.style.left = `${x}px`;
         node.style.top = `${y}px`;
-        node.innerHTML = `<img src="${slot.img}" alt="Prize"><span>${slot.name}</span>`;
-        node.onclick = () => updateRightShowcaseBox(slot);
+        node.innerHTML = `<img src="${slot.img}" alt="Prize" style="${isLocked ? 'filter: grayscale(1); opacity: 0.5;' : ''}"><span>${slot.name}</span>`;
+        node.onclick = () => { if (!isLocked) updateRightShowcaseBox(slot); };
         slotsGrid.appendChild(node);
     });
 
-    if (data.slots.length > 0) updateRightShowcaseBox(data.slots[0]);
+    if (data.slots.length > 0 && !isLocked) updateRightShowcaseBox(data.slots[0]);
 }
 
 function updateRightShowcaseBox(item) {
@@ -155,6 +246,12 @@ async function executeRingSpin(spinCount, cost) {
         return;
     }
 
+    const event = gameEventsData[activeKey];
+    if (event && event.isLocked) {
+        alert("🔒 This Event is currently locked!");
+        return;
+    }
+
     if (currentDiamonds < cost) {
         alert(`❌ Insufficient Diamonds! You need 💎 ${cost}.`);
         window.location.href = "topup.html";
@@ -170,20 +267,19 @@ async function executeRingSpin(spinCount, cost) {
         skipBtn.id = "royale-skip-btn";
         skipBtn.style.cssText = `
             position: fixed; bottom: 80px; left: 50%; transform: translateX(-50%);
-            padding: 10px 24px; background: #ffcc00; color: #000; font-family: 'Orbitron', sans-serif;
-            font-weight: 900; border: none; border-radius: 20px; cursor: pointer; z-index: 1000;
+            padding: 12px 30px; background: linear-gradient(135deg, #ffcc00, #f97316); color: #000; font-family: 'Orbitron', sans-serif;
+            font-weight: 900; border: none; border-radius: 25px; cursor: pointer; z-index: 1000;
+            box-shadow: 0 0 20px rgba(255, 204, 0, 0.6);
         `;
         skipBtn.innerText = "⚡ TAP TO SKIP";
         document.body.appendChild(skipBtn);
     }
     skipBtn.style.display = "block";
 
-    const event = gameEventsData[activeKey];
     const totalSlots = event.slots.length;
     const wonPrizesList = [];
     let tokensGained = 0;
 
-    // Generate Array of 1 or 10 rewards
     for (let i = 0; i < spinCount; i++) {
         const randomIndex = Math.floor(Math.random() * totalSlots);
         const prize = event.slots[randomIndex];
@@ -214,7 +310,6 @@ async function executeRingSpin(spinCount, cost) {
             console.error(e);
         }
 
-        // Show Multi-Item or Single Item Banner
         triggerCongratsBanner(wonPrizesList);
     };
 
@@ -253,7 +348,53 @@ function triggerCongratsBanner(wonPrizesList) {
     congratsPopup.style.display = "flex";
 }
 
-// Event Bindings
+// EXCHANGE STORE SHOP RENDER
+function renderExchangeShopItems(tabKey) {
+    if (!itemsRendererGrid) return;
+    itemsRendererGrid.innerHTML = "";
+    const itemsPool = exchangeStoreCatalog[tabKey] || [];
+
+    itemsPool.forEach(item => {
+        const itemBox = document.createElement("div");
+        itemBox.className = "ex-shop-node";
+        itemBox.innerHTML = `
+            <div style="font-size: 9px; color: #00e5ff; font-weight: bold;">${item.tag}</div>
+            <img src="${item.img}" class="ex-node-img" alt="${item.name}">
+            <div class="ex-node-title">${item.name}</div>
+            <div class="ex-node-cost"><img src="images/token.png"><span>${item.cost} Tokens</span></div>
+            <button class="ex-node-claim-btn">CLAIM REWARD</button>
+        `;
+
+        itemBox.querySelector(".ex-node-claim-btn").onclick = async () => {
+            if (!currentUserUid) {
+                alert("🔒 Log in to redeem!");
+                window.location.href = "topup.html";
+                return;
+            }
+            if (currentTokens < item.cost) {
+                alert(`❌ You need ${item.cost} Tokens!`);
+                return;
+            }
+
+            try {
+                await updateDoc(doc(db, "users", currentUserUid), { tokens: currentTokens - item.cost });
+                await addDoc(collection(db, "orders"), {
+                    userId: currentUserUid,
+                    productName: item.name,
+                    status: "PENDING",
+                    timestamp: serverTimestamp()
+                });
+
+                exchangeModal.style.display = "none";
+                triggerCongratsBanner(item);
+            } catch(e) { console.error(e); }
+        };
+
+        itemsRendererGrid.appendChild(itemBox);
+    });
+}
+
+// Bindings
 document.getElementById("btn-spin-1")?.addEventListener("click", () => executeRingSpin(1, 10));
 document.getElementById("btn-spin-10")?.addEventListener("click", () => executeRingSpin(10, 100));
 
@@ -261,4 +402,56 @@ document.getElementById("congrats-dismiss-bstn")?.addEventListener("click", () =
     if (congratsPopup) congratsPopup.style.display = "none";
 });
 
+document.getElementById("open-exchange-btn")?.addEventListener("click", () => {
+    if (exchangeWalletText) exchangeWalletText.innerText = currentTokens;
+    if (exchangeModal) exchangeModal.style.display = "flex";
+    renderExchangeShopItems(activeShopTab);
+});
+
+document.getElementById("close-exchange-btn")?.addEventListener("click", () => {
+    if (exchangeModal) exchangeModal.style.display = "none";
+});
+
+// Category Switcher in Exchange Modal
+document.querySelectorAll(".ex-nav-btn").forEach(btn => {
+    btn.onclick = () => {
+        document.querySelectorAll(".ex-nav-btn").forEach(b => b.classList.remove("active"));
+        btn.classList.add("active");
+        activeShopTab = btn.getAttribute("data-shop");
+        renderExchangeShopItems(activeShopTab);
+    };
+});
+
+// LEFT TAB MENU SWITCHER
+document.querySelectorAll(".ff-menu-item").forEach(item => {
+    item.addEventListener("click", () => {
+        if (item.id === "nav-buy-diamonds" || item.classList.contains("faded-link-tab")) {
+            window.location.href = "topup.html";
+            return;
+        }
+
+        if (isSpinning) return;
+
+        document.querySelectorAll(".ff-menu-item").forEach(m => m.classList.remove("active"));
+        item.classList.add("active");
+
+        activeKey = item.getAttribute("data-event");
+
+        const ringSec = document.getElementById("ring-wheel-section");
+        const fadedSec = document.getElementById("faded-wheel-section");
+
+        if (activeKey === "faded-wheel-event") {
+            if (eventTitleDisplay) eventTitleDisplay.innerText = "🎡 FADED WHEEL ARENA";
+            if (ringSec) ringSec.style.display = "none";
+            if (fadedSec) fadedSec.style.display = "block";
+        } else {
+            if (eventTitleDisplay) eventTitleDisplay.innerText = gameEventsData[activeKey] ? gameEventsData[activeKey].title : "LUCK ROYALE";
+            if (fadedSec) fadedSec.style.display = "none";
+            if (ringSec) ringSec.style.display = "block";
+            setupCircularWheelLayout(activeKey);
+        }
+    });
+});
+
+// Init
 setupCircularWheelLayout("mystical-ring");

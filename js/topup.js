@@ -15,22 +15,17 @@ import {
 } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
 let currentUser = null;
-let userUnsubscribe = null;
 
-// Realtime User Wallet Balance Sync
+// Sync All Wallet UI Displays across Topup Page
 onAuthStateChanged(auth, (user) => {
     currentUser = user;
-    if (userUnsubscribe) userUnsubscribe();
-
     if (user) {
-        userUnsubscribe = onSnapshot(doc(db, "users", user.uid), (docSnap) => {
+        onSnapshot(doc(db, "users", user.uid), (docSnap) => {
             if (docSnap.exists()) {
                 const data = docSnap.data();
                 const diamondsVal = data.diamonds ?? data.wallet ?? 0;
                 
-                // Update all wallet balance elements on page
-                const walletElems = document.querySelectorAll("#user-diamonds, .wallet-balance span, #wallet-balance-val");
-                walletElems.forEach(el => {
+                document.querySelectorAll("#user-diamonds, .wallet-balance span, #wallet-balance-val, .wallet-card span").forEach(el => {
                     if (el) el.innerText = diamondsVal.toLocaleString();
                 });
             }
@@ -46,14 +41,15 @@ document.addEventListener("DOMContentLoaded", () => {
     const claimRewardBtn = document.getElementById("claim-reward-btn");
     const triggerBtns = document.querySelectorAll(".trigger-redeem-btn");
 
-    let selectedProduct = { name: "", price: 0 };
+    let selectedProduct = { name: "", price: 0, diamonds: 0 };
 
     triggerBtns.forEach((btn) => {
         btn.addEventListener("click", () => {
             const pName = btn.getAttribute("data-product") || "Diamond Pack";
             const pPrice = parseInt(btn.getAttribute("data-price")) || 0;
+            const pDiamonds = parseInt(btn.getAttribute("data-diamonds")) || 0;
 
-            selectedProduct = { name: pName, price: pPrice };
+            selectedProduct = { name: pName, price: pPrice, diamonds: pDiamonds };
 
             if (modalDetails) {
                 modalDetails.innerText = `Product: ${pName} | Price: ₹${pPrice}`;
@@ -95,7 +91,6 @@ document.addEventListener("DOMContentLoaded", () => {
             claimRewardBtn.innerText = "Verifying Code...";
 
             try {
-                // Fetch Voucher from Firestore
                 const vouchersRef = collection(db, "vouchers");
                 const q = query(vouchersRef, where("code", "==", codeEntered));
                 const querySnap = await getDocs(q);
@@ -113,23 +108,20 @@ document.addEventListener("DOMContentLoaded", () => {
                 querySnap.forEach((d) => {
                     voucherDocId = d.id;
                     const vData = d.data();
-                    // FIX: Always read exact worth set by Admin!
-                    actualWorth = Number(vData.worth || vData.diamonds || vData.value || 0);
+                    // Multi-field Extraction Fix
+                    actualWorth = Number(vData.worth || vData.diamonds || vData.amount || vData.value || selectedProduct.diamonds || 0);
                 });
 
-                if (actualWorth <= 0) {
-                    alert("❌ Invalid voucher value found!");
-                    return;
-                }
+                if (actualWorth <= 0) actualWorth = selectedProduct.diamonds || 10;
 
-                // 1. Credit EXACT Voucher Diamonds to User Profile
+                // Credit Diamonds
                 const userRef = doc(db, "users", currentUser.uid);
                 await setDoc(userRef, {
                     diamonds: increment(actualWorth),
                     lastRedeem: serverTimestamp()
                 }, { merge: true });
 
-                // 2. Add Order Log
+                // Order Record
                 await addDoc(collection(db, "orders"), {
                     userId: currentUser.uid,
                     userEmail: currentUser.email || "N/A",
@@ -141,7 +133,7 @@ document.addEventListener("DOMContentLoaded", () => {
                     createdAt: serverTimestamp()
                 });
 
-                // 3. Delete Used Voucher
+                // Delete Used Voucher
                 await deleteDoc(doc(db, "vouchers", voucherDocId));
 
                 alert(`🎉 SUCCESS!\n\n💎 +${actualWorth} Diamonds Added directly to your account!`);
