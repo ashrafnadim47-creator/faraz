@@ -86,33 +86,30 @@ window.searchPlayerById = async function() {
 
     try {
         const usersRef = collection(db, "users");
-        let querySnap = null;
+        let matchedDocs = [];
 
-        // 1. Search String playerUid
+        // Search 1: Match playerUid as String
         let q1 = query(usersRef, where("playerUid", "==", String(inputVal)));
-        querySnap = await getDocs(q1);
+        let snap1 = await getDocs(q1);
 
-        // 2. Search Number playerUid if 1st search is empty
-        if (querySnap.empty && !isNaN(inputVal)) {
-            let q2 = query(usersRef, where("playerUid", "==", Number(inputVal)));
-            querySnap = await getDocs(q2);
+        snap1.forEach(d => matchedDocs.push({ id: d.id, data: d.data() }));
+
+        // Search 2: If empty, match email
+        if (matchedDocs.length === 0) {
+            let q2 = query(usersRef, where("email", "==", inputVal.toLowerCase()));
+            let snap2 = await getDocs(q2);
+            snap2.forEach(d => matchedDocs.push({ id: d.id, data: d.data() }));
         }
 
-        // 3. Search Email if still empty
-        if (querySnap.empty) {
-            let q3 = query(usersRef, where("email", "==", inputVal.toLowerCase()));
-            querySnap = await getDocs(q3);
-        }
-
-        if (querySnap.empty) {
-            container.innerHTML = "<p style='color:#ef4444; font-size:12px;'>❌ Player Not Found! Please check the ID or Email.</p>";
+        if (matchedDocs.length === 0) {
+            container.innerHTML = "<p style='color:#ef4444; font-size:12px;'>❌ Player Not Found! Verify the ID or Email.</p>";
             return;
         }
 
         container.innerHTML = "";
-        querySnap.forEach((d) => {
-            const targetData = d.data();
-            const targetUid = d.id;
+        matchedDocs.forEach((docItem) => {
+            const targetData = docItem.data;
+            const targetUid = docItem.id;
 
             if (targetUid === currentUser?.uid) {
                 container.innerHTML = "<p style='color:#ffcc00; font-size:12px;'>⚠️ This is your own Player ID!</p>";
@@ -136,7 +133,6 @@ window.searchPlayerById = async function() {
         container.innerHTML = "<p style='color:#ef4444; font-size:12px;'>Search failed. Try again.</p>";
     }
 };
-
 // SEND REQUEST
 window.sendRequest = async function(targetUid, targetPlayerId) {
     if (!currentUser) return alert("Please log in first!");
