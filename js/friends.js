@@ -18,71 +18,94 @@ let currentUser = null;
 let myPlayerUid = "";
 
 // ==========================================
-// 🔑 AUTH CHECK & AUTO PLAYER ID GENERATOR
+// 🔑 AUTH CHECK & ONLINE PRESENCE TRACKER
 // ==========================================
 onAuthStateChanged(auth, async (user) => {
     currentUser = user;
     if (user) {
-        document.getElementById("user-email-display").innerText = user.email || "Gamer";
-        
-        const userRef = doc(db, "users", user.uid);
-        const userSnap = await getDoc(userRef);
+        const emailElem = document.getElementById("user-email-display");
+        if (emailElem) emailElem.innerText = user.email || "Gamer";
 
-        if (userSnap.exists()) {
-            const data = userSnap.data();
-            if (data.playerUid) {
-                myPlayerUid = data.playerUid;
+        const userRef = doc(db, "users", user.uid);
+        try {
+            const userSnap = await getDoc(userRef);
+
+            if (userSnap.exists()) {
+                const data = userSnap.data();
+                if (data.playerUid) {
+                    myPlayerUid = String(data.playerUid);
+                } else {
+                    myPlayerUid = String(Math.floor(10000000 + Math.random() * 90000000));
+                    await setDoc(userRef, { playerUid: myPlayerUid, isOnline: true }, { merge: true });
+                }
             } else {
-                // Generate 8-Digit Unique Free Fire Style ID
-                myPlayerUid = Math.floor(10000000 + Math.random() * 90000000).toString();
+                myPlayerUid = String(Math.floor(10000000 + Math.random() * 90000000));
                 await setDoc(userRef, { playerUid: myPlayerUid, isOnline: true }, { merge: true });
             }
-        } else {
-            myPlayerUid = Math.floor(10000000 + Math.random() * 90000000).toString();
-            await setDoc(userRef, { playerUid: myPlayerUid, isOnline: true }, { merge: true });
+
+            const playerUidElem = document.getElementById("user-player-uid");
+            if (playerUidElem) playerUidElem.innerText = myPlayerUid;
+
+            // Set User Online State in Database
+            await updateDoc(userRef, { isOnline: true, lastSeen: serverTimestamp() });
+        } catch (e) {
+            console.error("Auth init error:", e);
         }
 
-        document.getElementById("user-player-uid").innerText = myPlayerUid;
-
-        // Set Presence Online
-        await updateDoc(userRef, { isOnline: true, lastSeen: serverTimestamp() });
-        
-        // Load Friends & Requests real-time
         listenToFriendsAndRequests();
     }
 });
 
-// Update Offline Status when user leaves tab/page
+// Set User Offline when page closes
 window.addEventListener("beforeunload", () => {
     if (currentUser) {
         updateDoc(doc(db, "users", currentUser.uid), { isOnline: false });
     }
 });
 
-// COPY ID FUNCTION
+// COPY PLAYER ID
 window.copyPlayerId = function() {
+    if (!myPlayerUid) return;
     navigator.clipboard.writeText(myPlayerUid);
     alert(`📋 Player ID Copied: ${myPlayerUid}`);
 };
 
 // ==========================================
-// 🔍 SEARCH PLAYER BY 8-DIGIT ID
+// 🔍 WORKING SEARCH SYSTEM (BY ID / EMAIL)
 // ==========================================
 window.searchPlayerById = async function() {
-    const inputVal = document.getElementById("friend-search-id")?.value.trim();
+    const inputElem = document.getElementById("friend-search-id");
     const container = document.getElementById("search-result-container");
 
-    if (!inputVal || inputVal.length < 5) return alert("Please enter a valid Player ID!");
+    if (!inputElem || !container) return;
 
-    container.innerHTML = "<p style='color:#00e5ff; font-size:12px;'>Searching player...</p>";
+    const inputVal = inputElem.value.trim();
+    if (!inputVal) return alert("Please enter Player ID or Email!");
+
+    container.innerHTML = "<p style='color:#00e5ff; font-size:12px;'>🔍 Searching player...</p>";
 
     try {
         const usersRef = collection(db, "users");
-        const q = query(usersRef, where("playerUid", "==", inputVal));
-        const querySnap = await getDocs(q);
+        let querySnap = null;
+
+        // 1. Search String playerUid
+        let q1 = query(usersRef, where("playerUid", "==", String(inputVal)));
+        querySnap = await getDocs(q1);
+
+        // 2. Search Number playerUid if 1st search is empty
+        if (querySnap.empty && !isNaN(inputVal)) {
+            let q2 = query(usersRef, where("playerUid", "==", Number(inputVal)));
+            querySnap = await getDocs(q2);
+        }
+
+        // 3. Search Email if still empty
+        if (querySnap.empty) {
+            let q3 = query(usersRef, where("email", "==", inputVal.toLowerCase()));
+            querySnap = await getDocs(q3);
+        }
 
         if (querySnap.empty) {
-            container.innerHTML = "<p style='color:#ef4444; font-size:12px;'>❌ Player Not Found!</p>";
+            container.innerHTML = "<p style='color:#ef4444; font-size:12px;'>❌ Player Not Found! Please check the ID or Email.</p>";
             return;
         }
 
@@ -98,21 +121,25 @@ window.searchPlayerById = async function() {
 
             const item = document.createElement("div");
             item.className = "friend-item";
+            item.style.cssText = "background: rgba(30,41,59,0.8); border: 1px solid #00e5ff; border-radius: 12px; padding: 10px; display: flex; justify-content: space-between; align-items: center; margin-top: 10px;";
             item.innerHTML = `
                 <div>
-                    <strong style="color: #fff; font-size: 13px;">${targetData.email || 'Player'}</strong>
-                    <div style="font-size: 10px; color: #94a3b8;">ID: ${targetData.playerUid}</div>
+                    <strong style="color: #fff; font-size: 13px;">${targetData.nickname || targetData.email || 'Player'}</strong>
+                    <div style="font-size: 10px; color: #ffcc00;">ID: ${targetData.playerUid || targetUid.substring(0,8)}</div>
                 </div>
-                <button class="btn-action-small btn-invite" onclick="sendRequest('${targetUid}', '${targetData.playerUid}')">➕ Send Request</button>
+                <button class="btn-action-small btn-invite" style="background:#00e5ff; color:#000; font-weight:900; border:none; padding:6px 12px; border-radius:8px; cursor:pointer;" onclick="sendRequest('${targetUid}', '${targetData.playerUid || targetUid.substring(0,8)}')">➕ Send Request</button>
             `;
             container.appendChild(item);
         });
-    } catch(e) { console.error(e); }
+    } catch(e) { 
+        console.error("Search Error:", e);
+        container.innerHTML = "<p style='color:#ef4444; font-size:12px;'>Search failed. Try again.</p>";
+    }
 };
 
 // SEND REQUEST
 window.sendRequest = async function(targetUid, targetPlayerId) {
-    if (!currentUser) return;
+    if (!currentUser) return alert("Please log in first!");
     try {
         await setDoc(doc(db, "users", targetUid, "friend_requests", currentUser.uid), {
             fromUid: currentUser.uid,
@@ -121,16 +148,19 @@ window.sendRequest = async function(targetUid, targetPlayerId) {
             timestamp: serverTimestamp()
         });
         alert(`✅ Friend Request sent to ID: ${targetPlayerId}!`);
-    } catch(e) { alert("Failed to send request."); }
+    } catch(e) { 
+        console.error("Send request error:", e); 
+        alert("Failed to send request.");
+    }
 };
 
 // ==========================================
-// 👥 LISTEN TO FRIENDS & REQUESTS (REALTIME)
+// 👥 REALTIME FRIENDS & ONLINE STATUS LISTENERS
 // ==========================================
 function listenToFriendsAndRequests() {
     if (!currentUser) return;
 
-    // 1. Pending Requests Listener
+    // 1. Requests Listener
     onSnapshot(collection(db, "users", currentUser.uid, "friend_requests"), (snapshot) => {
         const reqContainer = document.getElementById("pending-requests-list");
         if (!reqContainer) return;
@@ -161,8 +191,8 @@ function listenToFriendsAndRequests() {
         });
     });
 
-    // 2. Friends List Listener
-    onSnapshot(collection(db, "users", currentUser.uid, "friends"), async (snapshot) => {
+    // 2. Realtime Friends Listener with Live Online Status
+    onSnapshot(collection(db, "users", currentUser.uid, "friends"), (snapshot) => {
         const friendsContainer = document.getElementById("my-friends-list");
         if (!friendsContainer) return;
 
@@ -172,58 +202,73 @@ function listenToFriendsAndRequests() {
         }
 
         friendsContainer.innerHTML = "";
-        snapshot.forEach(async (docSnap) => {
+        
+        snapshot.docs.forEach((docSnap) => {
             const friendData = docSnap.data();
             const friendUid = docSnap.id;
 
-            // Fetch live online status of friend
-            const fSnap = await getDoc(doc(db, "users", friendUid));
-            const isOnline = fSnap.exists() ? fSnap.data().isOnline : false;
+            const friendNode = document.createElement("div");
+            friendNode.id = `friend-node-${friendUid}`;
+            friendNode.className = "friend-item";
+            friendsContainer.appendChild(friendNode);
 
-            const item = document.createElement("div");
-            item.className = "friend-item";
-            item.innerHTML = `
-                <div>
-                    <div>
-                        <span class="status-dot ${isOnline ? 'dot-online' : 'dot-offline'}"></span>
-                        <strong style="color: #fff; font-size: 13px;">${friendData.email || 'Friend'}</strong>
+            // Realtime Listener on friend's online status
+            onSnapshot(doc(db, "users", friendUid), (fDoc) => {
+                const node = document.getElementById(`friend-node-${friendUid}`);
+                if (!node) return;
+
+                const isOnline = fDoc.exists() ? fDoc.data().isOnline : false;
+                const fName = friendData.email || 'Friend';
+                const fId = friendData.playerUid || friendUid.substring(0,8);
+
+                node.innerHTML = `
+                    <div style="display: flex; align-items: center; justify-content: space-between; width: 100%; padding: 6px 0;">
+                        <div>
+                            <div style="display: flex; align-items: center; gap: 6px;">
+                                <span style="width: 8px; height: 8px; border-radius: 50%; background: ${isOnline ? '#22c55e' : '#64748b'}; box-shadow: ${isOnline ? '0 0 8px #22c55e' : 'none'}; display: inline-block;"></span>
+                                <strong style="color: #fff; font-size: 13px;">${fName}</strong>
+                            </div>
+                            <div style="font-size: 10px; color: ${isOnline ? '#22c55e' : '#94a3b8'}; margin-left: 14px; font-weight: bold;">
+                                ID: ${fId} | ${isOnline ? '🟢 ONLINE' : '🔴 OFFLINE'}
+                            </div>
+                        </div>
+                        <button class="btn-action-small btn-invite" style="background:${isOnline ? '#ffcc00' : '#334155'}; color:${isOnline ? '#000' : '#fff'}; border:none; padding:6px 12px; border-radius:8px; font-weight:bold; cursor:pointer;" onclick="inviteFriend('${fName}')">
+                            ${isOnline ? '📣 Invite' : '📩 Offline'}
+                        </button>
                     </div>
-                    <div style="font-size: 10px; color: #94a3b8; margin-left: 14px;">ID: ${friendData.playerUid} | ${isOnline ? '🟢 Online' : '🔴 Offline'}</div>
-                </div>
-                <button class="btn-action-small btn-invite" onclick="inviteFriend('${friendData.email}')">${isOnline ? '📣 Call/Invite' : '📩 Message'}</button>
-            `;
-            friendsContainer.appendChild(item);
+                `;
+            });
         });
     });
 }
 
 // ACCEPT REQUEST
 window.acceptRequest = async function(reqUserUid, reqEmail, reqPlayerUid) {
+    if (!currentUser) return;
     try {
-        // Add to My Friends
         await setDoc(doc(db, "users", currentUser.uid, "friends", reqUserUid), {
             uid: reqUserUid,
             email: reqEmail,
             playerUid: reqPlayerUid
         });
 
-        // Add Me to Target's Friends
         await setDoc(doc(db, "users", reqUserUid, "friends", currentUser.uid), {
             uid: currentUser.uid,
             email: currentUser.email || "Gamer",
             playerUid: myPlayerUid
         });
 
-        // Delete Request
         await deleteDoc(doc(db, "users", currentUser.uid, "friend_requests", reqUserUid));
-
         alert(`🎉 You are now friends with ${reqEmail}!`);
     } catch(e) { console.error(e); }
 };
 
 // REJECT REQUEST
 window.rejectRequest = async function(reqUserUid) {
-    await deleteDoc(doc(db, "users", currentUser.uid, "friend_requests", reqUserUid));
+    if (!currentUser) return;
+    try {
+        await deleteDoc(doc(db, "users", currentUser.uid, "friend_requests", reqUserUid));
+    } catch(e) { console.error(e); }
 };
 
 // INVITE FRIEND
@@ -232,14 +277,26 @@ window.inviteFriend = function(email) {
 };
 
 // MODAL CONTROLS
-window.openFriendsModal = () => document.getElementById("friends-modal").style.display = "flex";
-window.closeFriendsModal = () => document.getElementById("friends-modal").style.display = "none";
+window.openFriendsModal = () => {
+    const modal = document.getElementById("friends-modal");
+    if (modal) modal.style.display = "flex";
+};
+
+window.closeFriendsModal = () => {
+    const modal = document.getElementById("friends-modal");
+    if (modal) modal.style.display = "none";
+};
 
 window.switchFriendsTab = (tabName) => {
     document.querySelectorAll(".tab-btn").forEach(b => b.classList.remove("active"));
-    document.getElementById(`tab-${tabName === 'friends' ? 'my-friends' : tabName === 'add' ? 'add-friend' : 'requests'}`).classList.add("active");
+    const activeTabBtn = document.getElementById(`tab-${tabName === 'friends' ? 'my-friends' : tabName === 'add' ? 'add-friend' : 'requests'}`);
+    if (activeTabBtn) activeTabBtn.classList.add("active");
 
-    document.getElementById("panel-friends").style.display = tabName === 'friends' ? 'block' : 'none';
-    document.getElementById("panel-add").style.display = tabName === 'add' ? 'block' : 'none';
-    document.getElementById("panel-requests").style.display = tabName === 'requests' ? 'block' : 'none';
+    const pFriends = document.getElementById("panel-friends");
+    const pAdd = document.getElementById("panel-add");
+    const pRequests = document.getElementById("panel-requests");
+
+    if (pFriends) pFriends.style.display = tabName === 'friends' ? 'block' : 'none';
+    if (pAdd) pAdd.style.display = tabName === 'add' ? 'block' : 'none';
+    if (pRequests) pRequests.style.display = tabName === 'requests' ? 'block' : 'none';
 };

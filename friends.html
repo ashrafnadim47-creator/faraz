@@ -4,29 +4,25 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>🎮 FF Friends System | Faraz Store</title>
+    <title>FF Friends Hub | Faraz Store</title>
     <meta name="theme-color" content="#020617">
     <link rel="icon" href="favicon.ico">
     <link rel="stylesheet" href="css/global.css">
     <style>
-        body { background: #020617; color: #fff; font-family: 'Plus Jakarta Sans', sans-serif; padding: 20px; }
-        .ff-friends-card { max-width: 700px; margin: 20px auto; background: rgba(15, 23, 42, 0.85); backdrop-filter: blur(12px); border: 1px solid rgba(0, 229, 255, 0.3); border-radius: 24px; padding: 24px; box-shadow: 0 0 30px rgba(0, 229, 255, 0.15); }
-        .ff-title { font-family: 'Orbitron', sans-serif; color: #00e5ff; font-size: 22px; margin: 0 0 16px; display: flex; justify-content: space-between; align-items: center; }
+        body { background: #020617; color: #fff; font-family: 'Plus Jakarta Sans', sans-serif; padding: 20px; margin: 0; }
+        .ff-friends-card { max-width: 650px; margin: 15px auto; background: rgba(15, 23, 42, 0.85); backdrop-filter: blur(12px); border: 1px solid rgba(0, 229, 255, 0.3); border-radius: 24px; padding: 24px; box-shadow: 0 0 30px rgba(0, 229, 255, 0.15); }
+        .ff-title { font-family: 'Orbitron', sans-serif; color: #00e5ff; font-size: 20px; margin: 15px 0 16px; display: flex; justify-content: space-between; align-items: center; }
         
         .search-box { display: flex; gap: 10px; margin-bottom: 20px; }
-        .search-box input { flex: 1; background: rgba(30, 41, 59, 0.8); border: 1px solid rgba(255,255,255,0.1); color: #fff; padding: 12px; border-radius: 12px; }
-        .search-box button { background: #00e5ff; color: #000; border: none; padding: 12px 20px; border-radius: 12px; font-weight: 900; cursor: pointer; }
+        .search-box input { flex: 1; background: rgba(30, 41, 59, 0.8); border: 1px solid rgba(255,255,255,0.1); color: #fff; padding: 12px; border-radius: 12px; font-size: 13px; }
+        .search-box button { background: #00e5ff; color: #000; border: none; padding: 12px 20px; border-radius: 12px; font-weight: 900; cursor: pointer; font-family: 'Orbitron', sans-serif; }
 
-        .section-sub { font-size: 13px; color: #ffcc00; font-weight: 800; text-transform: uppercase; margin: 18px 0 10px; border-bottom: 1px dashed rgba(255,255,255,0.1); padding-bottom: 6px; }
+        .section-sub { font-size: 12px; color: #ffcc00; font-weight: 800; text-transform: uppercase; margin: 18px 0 10px; border-bottom: 1px dashed rgba(255,255,255,0.1); padding-bottom: 6px; }
 
-        .friend-node { background: rgba(30, 41, 59, 0.6); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 14px; padding: 12px 16px; display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
-        .friend-info { display: flex; align-items: center; gap: 12px; }
-        .friend-avatar { width: 40px; height: 40px; background: #1e1b4b; border: 2px solid #00e5ff; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 18px; }
-        .friend-name { font-weight: 800; color: #f8fafc; font-size: 14px; }
-        .friend-badge { font-size: 10px; color: #ffcc00; font-weight: bold; }
-
-        .btn-gift { background: linear-gradient(135deg, #22c55e, #16a34a); color: #fff; border: none; padding: 8px 14px; border-radius: 10px; font-weight: 800; cursor: pointer; font-size: 12px; }
-        .btn-add { background: #3b82f6; color: #fff; border: none; padding: 8px 14px; border-radius: 10px; font-weight: 800; cursor: pointer; font-size: 12px; }
+        .friend-item { background: rgba(30, 41, 59, 0.6); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 14px; padding: 12px 16px; display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
+        .btn-action-small { padding: 6px 12px; border-radius: 8px; border: none; font-weight: 800; font-size: 11px; cursor: pointer; }
+        .btn-accept { background: #22c55e; color: #000; }
+        .btn-reject { background: #ef4444; color: #fff; margin-left: 4px; }
     </style>
 </head>
 
@@ -34,29 +30,27 @@
 
     <main class="ff-friends-card">
         <a href="index.html" style="color: #00e5ff; text-decoration: none; font-weight: bold; font-size: 13px;">← Back to Shop</a>
-        <h1 class="ff-title" style="margin-top: 15px;">
+        <h1 class="ff-title">
             🎮 FREE FIRE FRIENDS HUB
-            <span style="font-size: 12px; color: #94a3b8;">Send Gifts & Connect</span>
+            <span style="font-size: 11px; color: #94a3b8;">Send Gifts & Connect</span>
         </h1>
 
-        <!-- SEARCH PLAYER -->
+        <!-- SEARCH INPUT & BUTTON -->
         <div class="search-box">
-            <input type="text" id="friend-search-input" placeholder="Search Player User ID or Email...">
-            <button id="search-friend-btn">🔍 Search</button>
+            <input type="text" id="friend-search-id" placeholder="Search Player ID or Email...">
+            <button id="search-friend-btn" onclick="searchPlayerById()">🔍 Search</button>
         </div>
 
-        <div id="search-results-area"></div>
+        <div id="search-result-container"></div>
 
-        <!-- FRIEND REQUESTS -->
-        <div class="section-sub">📩 Pending Friend Requests</div>
-        <div id="requests-list-area">
-            <p style="color: #64748b; font-size: 13px;">No pending requests.</p>
+        <div class="section-sub">📩 PENDING FRIEND REQUESTS</div>
+        <div id="pending-requests-list">
+            <p style="color: #64748b; font-size: 12px;">No pending requests.</p>
         </div>
 
-        <!-- MY FRIENDS LIST -->
-        <div class="section-sub">👥 My Friends List</div>
-        <div id="friends-list-area">
-            <p style="color: #64748b; font-size: 13px;">Loading Friends List...</p>
+        <div class="section-sub">👥 MY FRIENDS LIST</div>
+        <div id="my-friends-list">
+            <p style="color: #64748b; font-size: 12px;">Loading Friends List...</p>
         </div>
     </main>
 

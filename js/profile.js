@@ -1,5 +1,5 @@
 import { auth, db } from "./firebase-config.js";
-import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+import { onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 import { 
     doc, 
     getDoc, 
@@ -16,7 +16,6 @@ let currentUser = null;
 let userDataState = {};
 let activeVaultTab = "avatars";
 
-// Default Inventory Items
 const defaultVaultItems = [
     { id: "avatar_default", name: "Classic Avatar", img: "images/avtar.png", type: "avatar" },
     { id: "banner_default", name: "Diwali Banner", img: "images/diwali_bundle.png", type: "banner" }
@@ -34,6 +33,24 @@ onAuthStateChanged(auth, async (user) => {
         });
         checkLoginStreak(user.uid);
         loadOrdersCount(user.uid);
+    } else {
+        window.location.href = "login.html";
+    }
+});
+
+// LOGOUT HANDLER
+document.getElementById("profile-logout-btn")?.addEventListener("click", async () => {
+    if (confirm("Are you sure you want to log out?")) {
+        try {
+            if (currentUser) {
+                await updateDoc(doc(db, "users", currentUser.uid), { isOnline: false });
+            }
+            await signOut(auth);
+            window.location.href = "login.html";
+        } catch (e) {
+            console.error("Logout Error:", e);
+            alert("Logout failed!");
+        }
     }
 });
 
@@ -42,26 +59,22 @@ function renderProfileData() {
     const diamonds = data.diamonds ?? data.wallet ?? 0;
     const playerUid = data.playerUid || Math.floor(10000000 + Math.random() * 90000000).toString();
 
-    // 1. Nickname & Player ID
     const nameElem = document.getElementById("display-nickname");
     const idElem = document.getElementById("display-player-id");
     if (nameElem) nameElem.innerText = data.nickname || (currentUser?.email ? currentUser.email.split("@")[0] : "Gamer");
     if (idElem) idElem.innerText = playerUid;
 
-    // 2. EQUIPPED AVATAR
     const avatarImgElem = document.getElementById("user-avatar-img");
     if (avatarImgElem) {
         avatarImgElem.src = data.equippedAvatar || "images/avtar.png";
     }
 
-    // 3. EQUIPPED BANNER FIX
     const bannerBgElem = document.getElementById("profile-banner-bg");
     if (bannerBgElem) {
         const bannerUrl = data.equippedBanner || "images/diwali_bundle.png";
         bannerBgElem.style.backgroundImage = `url('${bannerUrl}')`;
     }
 
-    // 4. Stats Row
     const streakElem = document.getElementById("display-streak");
     const likesElem = document.getElementById("display-likes");
     const xpElem = document.getElementById("display-xp");
@@ -70,7 +83,6 @@ function renderProfileData() {
     if (likesElem) likesElem.innerText = data.likes || 0;
     if (xpElem) xpElem.innerText = (data.xp || data.points || 0).toLocaleString();
 
-    // 5. Prime Level Tier
     let primeTitle = "LEVEL 1 (BRONZE)";
     let target = 500;
 
@@ -141,9 +153,7 @@ async function loadOrdersCount(uid) {
     } catch(e){}
 }
 
-// ==========================================
-// 🧰 VAULT INVENTORY & EQUIP LOGIC
-// ==========================================
+// VAULT INVENTORY MODAL
 window.openVaultModal = () => {
     const modal = document.getElementById("vault-modal");
     if (modal) {
@@ -183,7 +193,6 @@ function renderVaultItems() {
     if (!container) return;
     container.innerHTML = "";
 
-    // Combine default items + items won by user in Vault
     const userVault = userDataState.vault && userDataState.vault.length > 0 
         ? [...defaultVaultItems, ...userDataState.vault] 
         : defaultVaultItems;
@@ -210,9 +219,7 @@ function renderVaultItems() {
             </button>
         `;
 
-        // Click handler for entire card
         card.onclick = () => equipVaultItem(targetType, item.img);
-
         container.appendChild(card);
     });
 }
