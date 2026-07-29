@@ -16,9 +16,12 @@ import {
 
 let currentUser = null;
 let myPlayerUid = "";
+let myNickname = "";
+let currentSquadId = null;
+let squadUnsubscribe = null;
 
 // ==========================================
-// 🔑 AUTH CHECK & ONLINE PRESENCE TRACKER
+// 🔑 AUTH CHECK & ONLINE PRESENCE
 // ==========================================
 onAuthStateChanged(auth, async (user) => {
     currentUser = user;
@@ -32,6 +35,7 @@ onAuthStateChanged(auth, async (user) => {
 
             if (userSnap.exists()) {
                 const data = userSnap.data();
+                myNickname = data.nickname || user.email.split("@")[0];
                 if (data.playerUid) {
                     myPlayerUid = String(data.playerUid);
                 } else {
@@ -40,30 +44,24 @@ onAuthStateChanged(auth, async (user) => {
                 }
             } else {
                 myPlayerUid = String(Math.floor(10000000 + Math.random() * 90000000));
-                await setDoc(userRef, { playerUid: myPlayerUid, isOnline: true }, { merge: true });
+                await setDoc(userRef, { playerUid: myPlayerUid, email: user.email, isOnline: true }, { merge: true });
             }
 
             const playerUidElem = document.getElementById("user-player-uid");
             if (playerUidElem) playerUidElem.innerText = myPlayerUid;
 
-            // Set User Online State in Database
+            // Set Presence Online
             await updateDoc(userRef, { isOnline: true, lastSeen: serverTimestamp() });
         } catch (e) {
             console.error("Auth init error:", e);
         }
 
         listenToFriendsAndRequests();
+        listenToTeamInvites();
     }
 });
 
-// Set User Offline when page closes
-window.addEventListener("beforeunload", () => {
-    if (currentUser) {
-        updateDoc(doc(db, "users", currentUser.uid), { isOnline: false });
-    }
-});
-
-// COPY PLAYER ID
+// COPY ID
 window.copyPlayerId = function() {
     if (!myPlayerUid) return;
     navigator.clipboard.writeText(myPlayerUid);
@@ -71,7 +69,7 @@ window.copyPlayerId = function() {
 };
 
 // ==========================================
-// 🔍 WORKING SEARCH SYSTEM (BY ID / EMAIL)
+// 🔍 SEARCH PLAYER SYSTEM
 // ==========================================
 window.searchPlayerById = async function() {
     const inputElem = document.getElementById("friend-search-id");
@@ -88,13 +86,10 @@ window.searchPlayerById = async function() {
         const usersRef = collection(db, "users");
         let matchedDocs = [];
 
-        // Search 1: Match playerUid as String
         let q1 = query(usersRef, where("playerUid", "==", String(inputVal)));
         let snap1 = await getDocs(q1);
-
         snap1.forEach(d => matchedDocs.push({ id: d.id, data: d.data() }));
 
-        // Search 2: If empty, match email
         if (matchedDocs.length === 0) {
             let q2 = query(usersRef, where("email", "==", inputVal.toLowerCase()));
             let snap2 = await getDocs(q2);
@@ -102,37 +97,38 @@ window.searchPlayerById = async function() {
         }
 
         if (matchedDocs.length === 0) {
-            container.innerHTML = "<p style='color:#ef4444; font-size:12px;'>❌ Player Not Found! Verify the ID or Email.</p>";
+            container.innerHTML = "<p style='color:#ef4444; font-size:12px;'>❌ Player Not Found!</p>";
             return;
         }
 
         container.innerHTML = "";
-        matchedDocs.forEach((docItem) => {
-            const targetData = docItem.data;
-            const targetUid = docItem.id;
+        const docItem = matchedDocs[0];
+        const targetData = docItem.data;
+        const targetUid = docItem.id;
 
-            if (targetUid === currentUser?.uid) {
-                container.innerHTML = "<p style='color:#ffcc00; font-size:12px;'>⚠️ This is your own Player ID!</p>";
-                return;
-            }
+        if (targetUid === currentUser?.uid) {
+            container.innerHTML = "<p style='color:#ffcc00; font-size:12px;'>⚠️ This is your own Player ID!</p>";
+            return;
+        }
 
-            const item = document.createElement("div");
-            item.className = "friend-item";
-            item.style.cssText = "background: rgba(30,41,59,0.8); border: 1px solid #00e5ff; border-radius: 12px; padding: 10px; display: flex; justify-content: space-between; align-items: center; margin-top: 10px;";
-            item.innerHTML = `
-                <div>
-                    <strong style="color: #fff; font-size: 13px;">${targetData.nickname || targetData.email || 'Player'}</strong>
-                    <div style="font-size: 10px; color: #ffcc00;">ID: ${targetData.playerUid || targetUid.substring(0,8)}</div>
-                </div>
-                <button class="btn-action-small btn-invite" style="background:#00e5ff; color:#000; font-weight:900; border:none; padding:6px 12px; border-radius:8px; cursor:pointer;" onclick="sendRequest('${targetUid}', '${targetData.playerUid || targetUid.substring(0,8)}')">➕ Send Request</button>
-            `;
-            container.appendChild(item);
-        });
+        const item = document.createElement("div");
+        item.className = "friend-item";
+        item.style.cssText = "background: rgba(30,41,59,0.8); border: 1px solid #00e5ff; border-radius: 12px; padding: 10px; display: flex; justify-content: space-between; align-items: center; margin-top: 10px;";
+        item.innerHTML = `
+            <div>
+                <strong style="color: #fff; font-size: 13px;">${targetData.nickname || targetData.email || 'Player'}</strong>
+                <div style="font-size: 10px; color: #ffcc00;">ID: ${targetData.playerUid || targetUid.substring(0,8)}</div>
+            </div>
+            <button class="btn-action-small btn-invite" style="background:#00e5ff; color:#000; font-weight:900; border:none; padding:6px 12px; border-radius:8px; cursor:pointer;" onclick="sendRequest('${targetUid}', '${targetData.playerUid || targetUid.substring(0,8)}')">➕ Send Request</button>
+        `;
+        container.appendChild(item);
+
     } catch(e) { 
         console.error("Search Error:", e);
-        container.innerHTML = "<p style='color:#ef4444; font-size:12px;'>Search failed. Try again.</p>";
+        container.innerHTML = "<p style='color:#ef4444; font-size:12px;'>Search failed.</p>";
     }
 };
+
 // SEND REQUEST
 window.sendRequest = async function(targetUid, targetPlayerId) {
     if (!currentUser) return alert("Please log in first!");
@@ -151,12 +147,12 @@ window.sendRequest = async function(targetUid, targetPlayerId) {
 };
 
 // ==========================================
-// 👥 REALTIME FRIENDS & ONLINE STATUS LISTENERS
+// 👥 FRIENDS LISTENERS
 // ==========================================
 function listenToFriendsAndRequests() {
     if (!currentUser) return;
 
-    // 1. Requests Listener
+    // Requests Listener
     onSnapshot(collection(db, "users", currentUser.uid, "friend_requests"), (snapshot) => {
         const reqContainer = document.getElementById("pending-requests-list");
         if (!reqContainer) return;
@@ -187,13 +183,13 @@ function listenToFriendsAndRequests() {
         });
     });
 
-    // 2. Realtime Friends Listener with Live Online Status
+    // Friends Listener
     onSnapshot(collection(db, "users", currentUser.uid, "friends"), (snapshot) => {
         const friendsContainer = document.getElementById("my-friends-list");
         if (!friendsContainer) return;
 
         if (snapshot.empty) {
-            friendsContainer.innerHTML = "<p style='color: #64748b; font-size: 12px; text-align: center;'>No friends added yet. Click 'Add Friend' tab!</p>";
+            friendsContainer.innerHTML = "<p style='color: #64748b; font-size: 12px; text-align: center;'>No friends added yet. Search Player ID to add!</p>";
             return;
         }
 
@@ -208,7 +204,6 @@ function listenToFriendsAndRequests() {
             friendNode.className = "friend-item";
             friendsContainer.appendChild(friendNode);
 
-            // Realtime Listener on friend's online status
             onSnapshot(doc(db, "users", friendUid), (fDoc) => {
                 const node = document.getElementById(`friend-node-${friendUid}`);
                 if (!node) return;
@@ -228,8 +223,8 @@ function listenToFriendsAndRequests() {
                                 ID: ${fId} | ${isOnline ? '🟢 ONLINE' : '🔴 OFFLINE'}
                             </div>
                         </div>
-                        <button class="btn-action-small btn-invite" style="background:${isOnline ? '#ffcc00' : '#334155'}; color:${isOnline ? '#000' : '#fff'}; border:none; padding:6px 12px; border-radius:8px; font-weight:bold; cursor:pointer;" onclick="inviteFriend('${fName}')">
-                            ${isOnline ? '📣 Invite' : '📩 Offline'}
+                        <button class="btn-action-small btn-invite" style="background:${isOnline ? '#ffcc00' : '#334155'}; color:${isOnline ? '#000' : '#fff'}; border:none; padding:6px 12px; border-radius:8px; font-weight:bold; cursor:${isOnline ? 'pointer' : 'default'};" ${isOnline ? `onclick="inviteFriend('${friendUid}', '${fName}')"` : 'disabled'}>
+                            ${isOnline ? '📣 Invite Team' : '🔴 Offline'}
                         </button>
                     </div>
                 `;
@@ -267,32 +262,159 @@ window.rejectRequest = async function(reqUserUid) {
     } catch(e) { console.error(e); }
 };
 
-// INVITE FRIEND
-window.inviteFriend = function(email) {
-    alert(`📣 Invitation alert sent to ${email}!`);
+// ==========================================
+// 🎮 REAL-TIME TEAM INVITE & LOBBY SYSTEM
+// ==========================================
+window.inviteFriend = async function(targetUid, friendName) {
+    if (!currentUser) return;
+
+    // Create or use existing squad ID
+    currentSquadId = currentSquadId || `squad_${currentUser.uid}`;
+
+    try {
+        // Create/Update Squad Document
+        const userSnap = await getDoc(doc(db, "users", currentUser.uid));
+        const uData = userSnap.data() || {};
+
+        await setDoc(doc(db, "squads", currentSquadId, "members", currentUser.uid), {
+            uid: currentUser.uid,
+            name: myNickname || currentUser.email.split("@")[0],
+            avatar: uData.equippedAvatar || "images/avtar.png",
+            banner: uData.equippedBanner || "images/diwali_bundle.png",
+            isLeader: true
+        });
+
+        // Send invite to friend
+        await setDoc(doc(db, "users", targetUid, "invites", currentUser.uid), {
+            fromUid: currentUser.uid,
+            squadId: currentSquadId,
+            fromName: myNickname || currentUser.email.split("@")[0],
+            timestamp: serverTimestamp()
+        });
+
+        alert(`📣 Team Invite sent to ${friendName}! Opening Lobby...`);
+        openSquadLobby(currentSquadId);
+
+    } catch(e) { console.error("Invite error:", e); }
 };
 
-// MODAL CONTROLS
-window.openFriendsModal = () => {
-    const modal = document.getElementById("friends-modal");
+function listenToTeamInvites() {
+    if (!currentUser) return;
+
+    onSnapshot(collection(db, "users", currentUser.uid, "invites"), (snapshot) => {
+        snapshot.docChanges().forEach((change) => {
+            if (change.type === "added") {
+                const invite = change.doc.data();
+                showInvitePopup(change.doc.id, invite.fromName, invite.squadId);
+            }
+        });
+    });
+}
+
+function showInvitePopup(inviteId, fromName, squadId) {
+    let popup = document.getElementById("ff-team-invite-popup");
+    if (!popup) {
+        popup = document.createElement("div");
+        popup.id = "ff-team-invite-popup";
+        popup.style.cssText = `
+            position: fixed; top: 20px; right: 20px; z-index: 9999;
+            background: linear-gradient(135deg, #0f172a, #1e293b);
+            border: 2px solid #ffcc00; border-radius: 16px; padding: 16px;
+            box-shadow: 0 0 25px rgba(255, 204, 0, 0.4); max-width: 320px; text-align: center;
+        `;
+        document.body.appendChild(popup);
+    }
+
+    popup.innerHTML = `
+        <div style="font-family:'Orbitron', sans-serif; color:#ffcc00; font-weight:900; font-size:14px; margin-bottom:6px;">
+            🎮 TEAM INVITE RECEIVED!
+        </div>
+        <p style="color:#fff; font-size:12px; margin:0 0 12px;"><strong>${fromName}</strong> invited you to join their squad!</p>
+        <div style="display:flex; gap:8px;">
+            <button onclick="respondInvite('${inviteId}', '${squadId}', true)" style="flex:1; background:#22c55e; color:#000; border:none; padding:8px; border-radius:8px; font-weight:900; cursor:pointer;">ACCEPT</button>
+            <button onclick="respondInvite('${inviteId}', '${squadId}', false)" style="flex:1; background:#ef4444; color:#fff; border:none; padding:8px; border-radius:8px; font-weight:900; cursor:pointer;">DECLINE</button>
+        </div>
+    `;
+
+    popup.style.display = "block";
+}
+
+window.respondInvite = async function(inviteId, squadId, accepted) {
+    const popup = document.getElementById("ff-team-invite-popup");
+    if (popup) popup.style.display = "none";
+
+    if (currentUser) {
+        await deleteDoc(doc(db, "users", currentUser.uid, "invites", inviteId));
+    }
+
+    if (accepted && squadId) {
+        // Add member to Squad
+        const userSnap = await getDoc(doc(db, "users", currentUser.uid));
+        const uData = userSnap.data() || {};
+
+        await setDoc(doc(db, "squads", squadId, "members", currentUser.uid), {
+            uid: currentUser.uid,
+            name: myNickname || currentUser.email.split("@")[0],
+            avatar: uData.equippedAvatar || "images/avtar.png",
+            banner: uData.equippedBanner || "images/diwali_bundle.png",
+            isLeader: false
+        });
+
+        openSquadLobby(squadId);
+    }
+};
+
+// ==========================================
+// ⚔️ LIVE SQUAD LOBBY ROOM (AAMNE-SAAMNE SLOTS)
+// ==========================================
+function openSquadLobby(squadId) {
+    currentSquadId = squadId;
+    const modal = document.getElementById("squad-lobby-modal");
     if (modal) modal.style.display = "flex";
-};
 
-window.closeFriendsModal = () => {
-    const modal = document.getElementById("friends-modal");
+    // Listen to real-time squad members changes
+    if (squadUnsubscribe) squadUnsubscribe();
+
+    squadUnsubscribe = onSnapshot(collection(db, "squads", squadId, "members"), (snapshot) => {
+        const slotsContainer = document.getElementById("squad-slots-container");
+        if (!slotsContainer) return;
+
+        slotsContainer.innerHTML = "";
+        const members = [];
+        snapshot.forEach(d => members.push(d.data()));
+
+        // Create 2 to 4 Slots
+        for (let i = 0; i < 2; i++) {
+            const member = members[i];
+            const slot = document.createElement("div");
+
+            if (member) {
+                slot.className = "slot-card filled";
+                slot.style.backgroundImage = `url('${member.banner}')`;
+                slot.innerHTML = `
+                    <img src="${member.avatar}" class="slot-avatar">
+                    <div class="slot-name">${member.name} ${member.isLeader ? '👑' : ''}</div>
+                    <div class="slot-status">🟢 IN LOBBY</div>
+                `;
+            } else {
+                slot.className = "slot-card";
+                slot.innerHTML = `
+                    <div style="font-size:24px; color:#475569;">➕</div>
+                    <div style="font-size:11px; color:#64748b; font-weight:bold; margin-top:4px;">OPEN SLOT</div>
+                `;
+            }
+            slotsContainer.appendChild(slot);
+        }
+    });
+}
+
+window.leaveSquadLobby = async function() {
+    if (currentUser && currentSquadId) {
+        await deleteDoc(doc(db, "squads", currentSquadId, "members", currentUser.uid));
+    }
+    if (squadUnsubscribe) squadUnsubscribe();
+    currentSquadId = null;
+
+    const modal = document.getElementById("squad-lobby-modal");
     if (modal) modal.style.display = "none";
-};
-
-window.switchFriendsTab = (tabName) => {
-    document.querySelectorAll(".tab-btn").forEach(b => b.classList.remove("active"));
-    const activeTabBtn = document.getElementById(`tab-${tabName === 'friends' ? 'my-friends' : tabName === 'add' ? 'add-friend' : 'requests'}`);
-    if (activeTabBtn) activeTabBtn.classList.add("active");
-
-    const pFriends = document.getElementById("panel-friends");
-    const pAdd = document.getElementById("panel-add");
-    const pRequests = document.getElementById("panel-requests");
-
-    if (pFriends) pFriends.style.display = tabName === 'friends' ? 'block' : 'none';
-    if (pAdd) pAdd.style.display = tabName === 'add' ? 'block' : 'none';
-    if (pRequests) pRequests.style.display = tabName === 'requests' ? 'block' : 'none';
 };

@@ -4,10 +4,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>FF Friends Hub | Faraz Store</title>
+    <title>FF Friends & Squad Lobby | Faraz Store</title>
     <meta name="theme-color" content="#020617">
     <link rel="icon" href="favicon.ico">
     <link rel="stylesheet" href="css/global.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700;900&family=Plus+Jakarta+Sans:wght@700;800;900&display=swap" rel="stylesheet">
+
     <style>
         body { background: #020617; color: #fff; font-family: 'Plus Jakarta Sans', sans-serif; padding: 20px; margin: 0; }
         .ff-friends-card { max-width: 650px; margin: 15px auto; background: rgba(15, 23, 42, 0.85); backdrop-filter: blur(12px); border: 1px solid rgba(0, 229, 255, 0.3); border-radius: 24px; padding: 24px; box-shadow: 0 0 30px rgba(0, 229, 255, 0.15); }
@@ -23,6 +27,39 @@
         .btn-action-small { padding: 6px 12px; border-radius: 8px; border: none; font-weight: 800; font-size: 11px; cursor: pointer; }
         .btn-accept { background: #22c55e; color: #000; }
         .btn-reject { background: #ef4444; color: #fff; margin-left: 4px; }
+
+        /* 🎮 FREE FIRE SQUAD LOBBY MODAL (AAMNE-SAAMNE SLOTS) */
+        .lobby-overlay { position: fixed; inset: 0; background: rgba(2, 6, 23, 0.95); backdrop-filter: blur(15px); display: flex; align-items: center; justify-content: center; z-index: 10000; }
+        .lobby-card { background: #0f172a; border: 2px solid #ffcc00; border-radius: 24px; width: 92%; max-width: 600px; padding: 24px; box-shadow: 0 0 40px rgba(255, 204, 0, 0.3); text-align: center; }
+        
+        .squad-slots-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 14px; margin: 20px 0; }
+        
+        .slot-card {
+            background: rgba(30, 41, 59, 0.8);
+            border: 2px dashed rgba(255, 255, 255, 0.2);
+            border-radius: 16px;
+            padding: 16px;
+            min-height: 120px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            background-size: cover;
+            background-position: center;
+        }
+
+        .slot-card.filled {
+            border: 2px solid #00e5ff;
+            box-shadow: 0 0 15px rgba(0, 229, 255, 0.25);
+            background-color: rgba(15, 23, 42, 0.9);
+        }
+
+        .slot-avatar { width: 54px; height: 54px; border-radius: 12px; border: 2px solid #ffcc00; object-fit: cover; margin-bottom: 6px; }
+        .slot-name { font-family: 'Orbitron', sans-serif; font-size: 13px; font-weight: 900; color: #fff; }
+        .slot-status { font-size: 10px; color: #22c55e; font-weight: 800; margin-top: 2px; }
+
+        .btn-leave-squad { background: #ef4444; color: #fff; border: none; padding: 12px 24px; border-radius: 12px; font-weight: 900; font-family: 'Orbitron', sans-serif; cursor: pointer; width: 100%; box-shadow: 0 0 15px rgba(239, 68, 68, 0.4); }
     </style>
 </head>
 
@@ -32,10 +69,9 @@
         <a href="index.html" style="color: #00e5ff; text-decoration: none; font-weight: bold; font-size: 13px;">← Back to Shop</a>
         <h1 class="ff-title">
             🎮 FREE FIRE FRIENDS HUB
-            <span style="font-size: 11px; color: #94a3b8;">Send Gifts & Connect</span>
+            <span style="font-size: 11px; color: #94a3b8;">Send Gifts & Squad Lobby</span>
         </h1>
 
-        <!-- SEARCH INPUT & BUTTON -->
         <div class="search-box">
             <input type="text" id="friend-search-id" placeholder="Search Player ID or Email...">
             <button id="search-friend-btn" onclick="searchPlayerById()">🔍 Search</button>
@@ -54,6 +90,21 @@
         </div>
     </main>
 
+    <div id="squad-lobby-modal" class="lobby-overlay" style="display: none;">
+        <div class="lobby-card">
+            <div style="font-family: 'Orbitron', sans-serif; color: #ffcc00; font-size: 18px; font-weight: 900;">
+                🔥 SQUAD LOBBY ROOM
+            </div>
+            <div style="font-size: 11px; color: #00e5ff; margin-top: 4px;">Connected Real-Time Team</div>
+
+            <div class="squad-slots-grid" id="squad-slots-container">
+                </div>
+
+            <button class="btn-leave-squad" onclick="leaveSquadLobby()">🚪 LEAVE SQUAD</button>
+        </div>
+    </div>
+
+    <script type="module" src="js/auth-guard.js"></script>
     <script type="module" src="js/friends.js"></script>
 </body>
 
