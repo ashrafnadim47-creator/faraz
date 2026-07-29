@@ -20,6 +20,10 @@ let myNickname = "";
 let currentSquadId = null;
 let squadUnsubscribe = null;
 
+// Audio Mic Stream State
+let localAudioStream = null;
+let isMicActive = false;
+
 // ==========================================
 // 🔑 AUTH CHECK & ONLINE PRESENCE
 // ==========================================
@@ -50,7 +54,6 @@ onAuthStateChanged(auth, async (user) => {
             const playerUidElem = document.getElementById("user-player-uid");
             if (playerUidElem) playerUidElem.innerText = myPlayerUid;
 
-            // Set Presence Online
             await updateDoc(userRef, { isOnline: true, lastSeen: serverTimestamp() });
         } catch (e) {
             console.error("Auth init error:", e);
@@ -61,7 +64,7 @@ onAuthStateChanged(auth, async (user) => {
     }
 });
 
-// COPY ID
+// COPY PLAYER ID
 window.copyPlayerId = function() {
     if (!myPlayerUid) return;
     navigator.clipboard.writeText(myPlayerUid);
@@ -69,7 +72,7 @@ window.copyPlayerId = function() {
 };
 
 // ==========================================
-// 🔍 SEARCH PLAYER SYSTEM
+// 🔍 SEARCH SYSTEM
 // ==========================================
 window.searchPlayerById = async function() {
     const inputElem = document.getElementById("friend-search-id");
@@ -152,7 +155,6 @@ window.sendRequest = async function(targetUid, targetPlayerId) {
 function listenToFriendsAndRequests() {
     if (!currentUser) return;
 
-    // Requests Listener
     onSnapshot(collection(db, "users", currentUser.uid, "friend_requests"), (snapshot) => {
         const reqContainer = document.getElementById("pending-requests-list");
         if (!reqContainer) return;
@@ -183,7 +185,6 @@ function listenToFriendsAndRequests() {
         });
     });
 
-    // Friends Listener
     onSnapshot(collection(db, "users", currentUser.uid, "friends"), (snapshot) => {
         const friendsContainer = document.getElementById("my-friends-list");
         if (!friendsContainer) return;
@@ -263,16 +264,59 @@ window.rejectRequest = async function(reqUserUid) {
 };
 
 // ==========================================
-// 🎮 REAL-TIME TEAM INVITE & LOBBY SYSTEM
+// 🎙️ WORKING REAL MIC STREAM ENGINE
+// ==========================================
+window.toggleMicStream = async function() {
+    const micBtn = document.getElementById("lobby-mic-btn");
+
+    if (!isMicActive) {
+        try {
+            localAudioStream = await navigator.mediaDevices.getUserMedia({ audio: true, video: false });
+            isMicActive = true;
+
+            if (micBtn) {
+                micBtn.innerText = "🎙️ MIC ON";
+                micBtn.style.background = "#22c55e";
+            }
+
+            if (currentUser && currentSquadId) {
+                await updateDoc(doc(db, "squads", currentSquadId, "members", currentUser.uid), {
+                    isMicOn: true
+                });
+            }
+        } catch (err) {
+            alert("⚠️ Microphone permission denied or mic not connected!");
+            console.error("Mic error:", err);
+        }
+    } else {
+        if (localAudioStream) {
+            localAudioStream.getTracks().forEach(track => track.stop());
+            localAudioStream = null;
+        }
+        isMicActive = false;
+
+        if (micBtn) {
+            micBtn.innerText = "🔇 MIC OFF";
+            micBtn.style.background = "#ef4444";
+        }
+
+        if (currentUser && currentSquadId) {
+            await updateDoc(doc(db, "squads", currentSquadId, "members", currentUser.uid), {
+                isMicOn: false
+            });
+        }
+    }
+};
+
+// ==========================================
+// ⚔️ LANDSCAPE LOBBY & STANDING CHARACTERS
 // ==========================================
 window.inviteFriend = async function(targetUid, friendName) {
     if (!currentUser) return;
 
-    // Create or use existing squad ID
     currentSquadId = currentSquadId || `squad_${currentUser.uid}`;
 
     try {
-        // Create/Update Squad Document
         const userSnap = await getDoc(doc(db, "users", currentUser.uid));
         const uData = userSnap.data() || {};
 
@@ -280,11 +324,10 @@ window.inviteFriend = async function(targetUid, friendName) {
             uid: currentUser.uid,
             name: myNickname || currentUser.email.split("@")[0],
             avatar: uData.equippedAvatar || "images/avtar.png",
-            banner: uData.equippedBanner || "images/diwali_bundle.png",
+            isMicOn: isMicActive,
             isLeader: true
         });
 
-        // Send invite to friend
         await setDoc(doc(db, "users", targetUid, "invites", currentUser.uid), {
             fromUid: currentUser.uid,
             squadId: currentSquadId,
@@ -292,8 +335,8 @@ window.inviteFriend = async function(targetUid, friendName) {
             timestamp: serverTimestamp()
         });
 
-        alert(`📣 Team Invite sent to ${friendName}! Opening Lobby...`);
-        openSquadLobby(currentSquadId);
+        alert(`📣 Team Invite sent to ${friendName}! Opening Landscape Lobby...`);
+        openLandscapeLobby(currentSquadId);
 
     } catch(e) { console.error("Invite error:", e); }
 };
@@ -348,7 +391,6 @@ window.respondInvite = async function(inviteId, squadId, accepted) {
     }
 
     if (accepted && squadId) {
-        // Add member to Squad
         const userSnap = await getDoc(doc(db, "users", currentUser.uid));
         const uData = userSnap.data() || {};
 
@@ -356,65 +398,72 @@ window.respondInvite = async function(inviteId, squadId, accepted) {
             uid: currentUser.uid,
             name: myNickname || currentUser.email.split("@")[0],
             avatar: uData.equippedAvatar || "images/avtar.png",
-            banner: uData.equippedBanner || "images/diwali_bundle.png",
+            isMicOn: isMicActive,
             isLeader: false
         });
 
-        openSquadLobby(squadId);
+        openLandscapeLobby(squadId);
     }
 };
 
-// ==========================================
-// ⚔️ LIVE SQUAD LOBBY ROOM (AAMNE-SAAMNE SLOTS)
-// ==========================================
-function openSquadLobby(squadId) {
+function openLandscapeLobby(squadId) {
     currentSquadId = squadId;
-    const modal = document.getElementById("squad-lobby-modal");
+    const modal = document.getElementById("landscape-squad-lobby");
     if (modal) modal.style.display = "flex";
 
-    // Listen to real-time squad members changes
     if (squadUnsubscribe) squadUnsubscribe();
 
     squadUnsubscribe = onSnapshot(collection(db, "squads", squadId, "members"), (snapshot) => {
-        const slotsContainer = document.getElementById("squad-slots-container");
-        if (!slotsContainer) return;
+        const stageContainer = document.getElementById("landscape-character-stage");
+        if (!stageContainer) return;
 
-        slotsContainer.innerHTML = "";
+        stageContainer.innerHTML = "";
         const members = [];
         snapshot.forEach(d => members.push(d.data()));
 
-        // Create 2 to 4 Slots
+        // Render 2 Standing Slots Side-By-Side
         for (let i = 0; i < 2; i++) {
             const member = members[i];
-            const slot = document.createElement("div");
+            const podium = document.createElement("div");
 
             if (member) {
-                slot.className = "slot-card filled";
-                slot.style.backgroundImage = `url('${member.banner}')`;
-                slot.innerHTML = `
-                    <img src="${member.avatar}" class="slot-avatar">
-                    <div class="slot-name">${member.name} ${member.isLeader ? '👑' : ''}</div>
-                    <div class="slot-status">🟢 IN LOBBY</div>
+                podium.className = "character-podium active-player";
+                podium.innerHTML = `
+                    <img src="${member.avatar}" class="character-img-standing" onerror="this.src='images/avtar.png'">
+                    <div class="podium-base">
+                        <div class="player-name-tag">${member.name} ${member.isLeader ? '👑' : ''}</div>
+                        <div class="mic-indicator" style="color: ${member.isMicOn ? '#22c55e' : '#ef4444'};">
+                            ${member.isMicOn ? '🎙️ SPEAKING' : '🔇 MUTED'}
+                        </div>
+                    </div>
                 `;
             } else {
-                slot.className = "slot-card";
-                slot.innerHTML = `
-                    <div style="font-size:24px; color:#475569;">➕</div>
-                    <div style="font-size:11px; color:#64748b; font-weight:bold; margin-top:4px;">OPEN SLOT</div>
+                podium.className = "character-podium";
+                podium.innerHTML = `
+                    <div style="font-size:36px; color:#475569; margin-bottom: 60px;">➕</div>
+                    <div class="podium-base">
+                        <div class="player-name-tag" style="color:#64748b;">OPEN SLOT</div>
+                    </div>
                 `;
             }
-            slotsContainer.appendChild(slot);
+            stageContainer.appendChild(podium);
         }
     });
 }
 
 window.leaveSquadLobby = async function() {
+    if (localAudioStream) {
+        localAudioStream.getTracks().forEach(track => track.stop());
+        localAudioStream = null;
+    }
+    isMicActive = false;
+
     if (currentUser && currentSquadId) {
         await deleteDoc(doc(db, "squads", currentSquadId, "members", currentUser.uid));
     }
     if (squadUnsubscribe) squadUnsubscribe();
     currentSquadId = null;
 
-    const modal = document.getElementById("squad-lobby-modal");
+    const modal = document.getElementById("landscape-squad-lobby");
     if (modal) modal.style.display = "none";
 };
