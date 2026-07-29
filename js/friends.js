@@ -421,7 +421,6 @@ function openLandscapeLobby(squadId) {
                     </div>
                 `;
             } else {
-                // OPEN SLOT CLICK HANDLER -> OPENS IN-LOBBY FRIEND OVERLAY
                 podium.className = "character-podium open-slot-podium";
                 podium.onclick = () => openLobbyInviteModal();
                 podium.innerHTML = `
@@ -436,7 +435,7 @@ function openLandscapeLobby(squadId) {
     });
 }
 
-// IN-LOBBY FRIEND LIST MODAL CONTROLS
+// IN-LOBBY FRIEND LIST MODAL CONTROLS (FIXED TYPO HERE)
 window.openLobbyInviteModal = async function() {
     const modal = document.getElementById("inlobby-invite-overlay");
     const container = document.getElementById("inlobby-online-friends-list");
@@ -460,7 +459,8 @@ window.openLobbyInviteModal = async function() {
             const friendUid = docSnap.id;
 
             const fSnap = await getDoc(doc(db, "users", friendUid));
-            const isOnline = fSnap.exists() ? fDocSnap.data().isOnline : false;
+            // TYPO FIX: Changed fDocSnap to fSnap
+            const isOnline = fSnap.exists() ? fSnap.data().isOnline : false;
 
             const fName = friendData.email || 'Friend';
 
@@ -476,6 +476,7 @@ window.openLobbyInviteModal = async function() {
             container.appendChild(item);
         }
     } catch(e) {
+        console.error("Lobby invite error:", e);
         container.innerHTML = "<p style='color:#ef4444; font-size:12px; text-align:center;'>Failed to load friends.</p>";
     }
 };

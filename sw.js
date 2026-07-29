@@ -1,4 +1,4 @@
-const CACHE_NAME = 'faraz-store-v4';
+const CACHE_NAME = 'faraz-store-v5';
 
 const ASSETS_TO_CACHE = [
     '/',
@@ -10,7 +10,6 @@ const ASSETS_TO_CACHE = [
     '/favicon.ico'
 ];
 
-// INSTALL EVENT
 self.addEventListener('install', (event) => {
     self.skipWaiting();
     event.waitUntil(
@@ -20,7 +19,6 @@ self.addEventListener('install', (event) => {
     );
 });
 
-// ACTIVATE EVENT
 self.addEventListener('activate', (event) => {
     event.waitUntil(
         caches.keys().then((keys) => {
@@ -35,12 +33,10 @@ self.addEventListener('activate', (event) => {
     );
 });
 
-// SAFE CACHE-FIRST FETCH EVENT
 self.addEventListener('fetch', (event) => {
     const request = event.request;
     const url = new URL(request.url);
 
-    // Completely bypass non-GET, Firebase, Firestore, Vercel & Chrome extensions
     if (
         request.method !== 'GET' ||
         url.protocol.startsWith('chrome-extension') ||
@@ -55,7 +51,6 @@ self.addEventListener('fetch', (event) => {
     event.respondWith(
         caches.match(request).then((cachedResponse) => {
             if (cachedResponse) {
-                // Return cache and update in background silently
                 fetch(request).then((networkResponse) => {
                     if (networkResponse && networkResponse.status === 200) {
                         caches.open(CACHE_NAME).then((cache) => cache.put(request, networkResponse));
