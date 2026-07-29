@@ -20,13 +20,9 @@ let myNickname = "";
 let currentSquadId = null;
 let squadUnsubscribe = null;
 
-// Audio Mic Stream State
 let localAudioStream = null;
 let isMicActive = false;
 
-// ==========================================
-// 🔑 AUTH CHECK & ONLINE PRESENCE
-// ==========================================
 onAuthStateChanged(auth, async (user) => {
     currentUser = user;
     if (user) {
@@ -64,16 +60,13 @@ onAuthStateChanged(auth, async (user) => {
     }
 });
 
-// COPY PLAYER ID
 window.copyPlayerId = function() {
     if (!myPlayerUid) return;
     navigator.clipboard.writeText(myPlayerUid);
     alert(`📋 Player ID Copied: ${myPlayerUid}`);
 };
 
-// ==========================================
-// 🔍 SEARCH SYSTEM
-// ==========================================
+// SEARCH SYSTEM
 window.searchPlayerById = async function() {
     const inputElem = document.getElementById("friend-search-id");
     const container = document.getElementById("search-result-container");
@@ -132,7 +125,6 @@ window.searchPlayerById = async function() {
     }
 };
 
-// SEND REQUEST
 window.sendRequest = async function(targetUid, targetPlayerId) {
     if (!currentUser) return alert("Please log in first!");
     try {
@@ -149,9 +141,7 @@ window.sendRequest = async function(targetUid, targetPlayerId) {
     }
 };
 
-// ==========================================
-// 👥 FRIENDS LISTENERS
-// ==========================================
+// LISTENERS
 function listenToFriendsAndRequests() {
     if (!currentUser) return;
 
@@ -234,7 +224,7 @@ function listenToFriendsAndRequests() {
     });
 }
 
-// ACCEPT REQUEST
+// ACCEPT / REJECT
 window.acceptRequest = async function(reqUserUid, reqEmail, reqPlayerUid) {
     if (!currentUser) return;
     try {
@@ -255,7 +245,6 @@ window.acceptRequest = async function(reqUserUid, reqEmail, reqPlayerUid) {
     } catch(e) { console.error(e); }
 };
 
-// REJECT REQUEST
 window.rejectRequest = async function(reqUserUid) {
     if (!currentUser) return;
     try {
@@ -263,9 +252,7 @@ window.rejectRequest = async function(reqUserUid) {
     } catch(e) { console.error(e); }
 };
 
-// ==========================================
-// 🎙️ WORKING REAL MIC STREAM ENGINE
-// ==========================================
+// MIC TOGGLE
 window.toggleMicStream = async function() {
     const micBtn = document.getElementById("lobby-mic-btn");
 
@@ -286,7 +273,6 @@ window.toggleMicStream = async function() {
             }
         } catch (err) {
             alert("⚠️ Microphone permission denied or mic not connected!");
-            console.error("Mic error:", err);
         }
     } else {
         if (localAudioStream) {
@@ -308,9 +294,7 @@ window.toggleMicStream = async function() {
     }
 };
 
-// ==========================================
-// ⚔️ LANDSCAPE LOBBY & STANDING CHARACTERS
-// ==========================================
+// LOBBY & INVITE ENGINE
 window.inviteFriend = async function(targetUid, friendName) {
     if (!currentUser) return;
 
@@ -421,7 +405,6 @@ function openLandscapeLobby(squadId) {
         const members = [];
         snapshot.forEach(d => members.push(d.data()));
 
-        // Render 2 Standing Slots Side-By-Side
         for (let i = 0; i < 2; i++) {
             const member = members[i];
             const podium = document.createElement("div");
@@ -438,11 +421,13 @@ function openLandscapeLobby(squadId) {
                     </div>
                 `;
             } else {
-                podium.className = "character-podium";
+                // OPEN SLOT CLICK HANDLER -> OPENS IN-LOBBY FRIEND OVERLAY
+                podium.className = "character-podium open-slot-podium";
+                podium.onclick = () => openLobbyInviteModal();
                 podium.innerHTML = `
-                    <div style="font-size:36px; color:#475569; margin-bottom: 60px;">➕</div>
+                    <div style="font-size:36px; color:#ffcc00; margin-bottom: 60px;">➕</div>
                     <div class="podium-base">
-                        <div class="player-name-tag" style="color:#64748b;">OPEN SLOT</div>
+                        <div class="player-name-tag" style="color:#00e5ff;">TAP TO INVITE</div>
                     </div>
                 `;
             }
@@ -450,6 +435,55 @@ function openLandscapeLobby(squadId) {
         }
     });
 }
+
+// IN-LOBBY FRIEND LIST MODAL CONTROLS
+window.openLobbyInviteModal = async function() {
+    const modal = document.getElementById("inlobby-invite-overlay");
+    const container = document.getElementById("inlobby-online-friends-list");
+    if (!modal || !container) return;
+
+    modal.style.display = "flex";
+    container.innerHTML = "<p style='color:#00e5ff; font-size:12px; text-align:center;'>Loading Online Friends...</p>";
+
+    if (!currentUser) return;
+
+    try {
+        const snap = await getDocs(collection(db, "users", currentUser.uid, "friends"));
+        if (snap.empty) {
+            container.innerHTML = "<p style='color:#64748b; font-size:12px; text-align:center;'>No friends added yet.</p>";
+            return;
+        }
+
+        container.innerHTML = "";
+        for (const docSnap of snap.docs) {
+            const friendData = docSnap.data();
+            const friendUid = docSnap.id;
+
+            const fSnap = await getDoc(doc(db, "users", friendUid));
+            const isOnline = fSnap.exists() ? fDocSnap.data().isOnline : false;
+
+            const fName = friendData.email || 'Friend';
+
+            const item = document.createElement("div");
+            item.style.cssText = "background:rgba(30,41,59,0.8); border:1px solid rgba(255,255,255,0.1); border-radius:12px; padding:10px; display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;";
+            item.innerHTML = `
+                <div>
+                    <strong style="color:#fff; font-size:13px;">${fName}</strong>
+                    <div style="font-size:10px; color:${isOnline ? '#22c55e' : '#94a3b8'}; font-weight:bold;">${isOnline ? '🟢 Online' : '🔴 Offline'}</div>
+                </div>
+                <button style="background:#00e5ff; color:#000; font-weight:900; border:none; padding:6px 12px; border-radius:8px; cursor:pointer;" onclick="inviteFriend('${friendUid}', '${fName}'); closeLobbyInviteModal();">INVITE</button>
+            `;
+            container.appendChild(item);
+        }
+    } catch(e) {
+        container.innerHTML = "<p style='color:#ef4444; font-size:12px; text-align:center;'>Failed to load friends.</p>";
+    }
+};
+
+window.closeLobbyInviteModal = function() {
+    const modal = document.getElementById("inlobby-invite-overlay");
+    if (modal) modal.style.display = "none";
+};
 
 window.leaveSquadLobby = async function() {
     if (localAudioStream) {

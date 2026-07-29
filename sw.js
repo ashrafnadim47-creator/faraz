@@ -1,6 +1,5 @@
-const CACHE_NAME = 'faraz-store-v3';
+const CACHE_NAME = 'faraz-store-v4';
 
-// Static assets to pre-cache
 const ASSETS_TO_CACHE = [
     '/',
     '/index.html',
@@ -11,19 +10,17 @@ const ASSETS_TO_CACHE = [
     '/favicon.ico'
 ];
 
-// 1. INSTALL EVENT
+// INSTALL EVENT
 self.addEventListener('install', (event) => {
     self.skipWaiting();
     event.waitUntil(
         caches.open(CACHE_NAME).then((cache) => {
-            return cache.addAll(ASSETS_TO_CACHE).catch(() => {
-                console.log("Pre-cache complete with minor fallbacks");
-            });
+            return cache.addAll(ASSETS_TO_CACHE).catch(() => {});
         })
     );
 });
 
-// 2. ACTIVATE EVENT (Clear Old Caches)
+// ACTIVATE EVENT
 self.addEventListener('activate', (event) => {
     event.waitUntil(
         caches.keys().then((keys) => {
@@ -38,42 +35,46 @@ self.addEventListener('activate', (event) => {
     );
 });
 
-// 3. SAFE FETCH EVENT WITH NETWORK FALLBACK
+// SAFE CACHE-FIRST FETCH EVENT
 self.addEventListener('fetch', (event) => {
-    const requestUrl = new URL(event.request.url);
+    const request = event.request;
+    const url = new URL(request.url);
 
-    // Bypass Non-GET, Chrome extensions, Firebase API & Firestore streams
+    // Completely bypass non-GET, Firebase, Firestore, Vercel & Chrome extensions
     if (
-        event.request.method !== 'GET' ||
-        requestUrl.protocol.startsWith('chrome-extension') ||
-        requestUrl.hostname.includes('firestore.googleapis.com') ||
-        requestUrl.hostname.includes('identitytoolkit.googleapis.com') ||
-        requestUrl.hostname.includes('firebase')
+        request.method !== 'GET' ||
+        url.protocol.startsWith('chrome-extension') ||
+        url.hostname.includes('firestore.googleapis.com') ||
+        url.hostname.includes('identitytoolkit.googleapis.com') ||
+        url.hostname.includes('firebase') ||
+        url.hostname.includes('vercel')
     ) {
-        return; // Let standard browser fetch handle dynamic Firebase traffic
+        return;
     }
 
     event.respondWith(
-        fetch(event.request)
-            .then((networkResponse) => {
+        caches.match(request).then((cachedResponse) => {
+            if (cachedResponse) {
+                // Return cache and update in background silently
+                fetch(request).then((networkResponse) => {
+                    if (networkResponse && networkResponse.status === 200) {
+                        caches.open(CACHE_NAME).then((cache) => cache.put(request, networkResponse));
+                    }
+                }).catch(() => {});
+                return cachedResponse;
+            }
+
+            return fetch(request).then((networkResponse) => {
                 if (networkResponse && networkResponse.status === 200) {
                     const responseClone = networkResponse.clone();
-                    caches.open(CACHE_NAME).then((cache) => {
-                        cache.put(event.request, responseClone);
-                    });
+                    caches.open(CACHE_NAME).then((cache) => cache.put(request, responseClone));
                 }
                 return networkResponse;
-            })
-            .catch(() => {
-                // Return cached version if network fails instead of throwing unhandled rejection
-                return caches.match(event.request).then((cachedResponse) => {
-                    if (cachedResponse) {
-                        return cachedResponse;
-                    }
-                    if (event.request.mode === 'navigate') {
-                        return caches.match('/index.html');
-                    }
-                });
-            })
+            }).catch(() => {
+                if (request.mode === 'navigate') {
+                    return caches.match('/friends.html') || caches.match('/index.html');
+                }
+            });
+        })
     );
 });

@@ -9,6 +9,7 @@
     <link rel="icon" href="favicon.ico">
     <link rel="stylesheet" href="css/global.css">
     
+    <!-- Google Gaming Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700;900&family=Plus+Jakarta+Sans:wght@700;800;900&display=swap" rel="stylesheet">
@@ -27,7 +28,7 @@
         .friend-item { background: rgba(30, 41, 59, 0.6); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 14px; padding: 12px 16px; display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
         .btn-action-small { padding: 6px 12px; border-radius: 8px; border: none; font-weight: 800; font-size: 11px; cursor: pointer; }
 
-        /* 🎮 LANDSCAPE FREE FIRE LOBBY MODAL */
+        /* LANDSCAPE FREE FIRE LOBBY MODAL */
         .landscape-lobby-overlay {
             position: fixed;
             inset: 0;
@@ -73,12 +74,20 @@
             position: relative;
             box-shadow: 0 10px 30px rgba(0, 229, 255, 0.15);
             padding-bottom: 10px;
+            cursor: pointer;
+            transition: transform 0.2s, border-color 0.2s;
+        }
+
+        .character-podium.open-slot-podium:hover {
+            transform: scale(1.03);
+            border-color: #00e5ff;
         }
 
         .character-podium.active-player {
             border: 2px solid #00e5ff;
             background: linear-gradient(180deg, rgba(0, 229, 255, 0.1) 0%, rgba(30, 41, 59, 0.9) 100%);
             box-shadow: 0 0 25px rgba(0, 229, 255, 0.4);
+            cursor: default;
         }
 
         .character-img-standing {
@@ -124,6 +133,28 @@
 
         .btn-mic-toggle { background: #ef4444; color: #fff; }
         .btn-leave-room { background: #64748b; color: #fff; }
+
+        /* IN-LOBBY INVITE POPUP MODAL */
+        .inlobby-invite-modal {
+            position: fixed;
+            inset: 0;
+            background: rgba(2, 6, 23, 0.85);
+            backdrop-filter: blur(10px);
+            z-index: 20000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .inlobby-invite-card {
+            background: #0f172a;
+            border: 2px solid #00e5ff;
+            border-radius: 20px;
+            width: 90%;
+            max-width: 420px;
+            padding: 20px;
+            box-shadow: 0 0 35px rgba(0, 229, 255, 0.4);
+        }
     </style>
 </head>
 
@@ -154,19 +185,21 @@
         </div>
     </main>
 
+    <!-- LANDSCAPE LOBBY MODAL -->
     <div id="landscape-squad-lobby" class="landscape-lobby-overlay" style="display: none;">
         
         <div class="lobby-top-bar">
             <div style="font-family: 'Orbitron', sans-serif; color: #ffcc00; font-size: 16px; font-weight: 900;">
-                🔥 SQUAD LOBBY (LANDSCAPE)
+                🔥 SQUAD LOBBY ROOM
             </div>
             <div style="font-size: 12px; color: #00e5ff; font-weight: bold;" id="lobby-squad-status">
-                2/2 Players Connected
+                Tap OPEN SLOT to invite friends!
             </div>
         </div>
 
         <div class="lobby-stage-area" id="landscape-character-stage">
-            </div>
+            <!-- Standing characters and clickable open slots -->
+        </div>
 
         <div class="lobby-controls-bottom">
             <button id="lobby-mic-btn" class="btn-ctrl btn-mic-toggle" onclick="toggleMicStream()">
@@ -177,6 +210,19 @@
             </button>
         </div>
 
+    </div>
+
+    <!-- IN-LOBBY INVITE FRIENDS OVERLAY -->
+    <div id="inlobby-invite-overlay" class="inlobby-invite-modal" style="display: none;">
+        <div class="inlobby-invite-card">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px;">
+                <h3 style="font-family: 'Orbitron', sans-serif; color: #ffcc00; margin: 0; font-size: 15px;">📣 INVITE ONLINE FRIENDS</h3>
+                <button onclick="closeLobbyInviteModal()" style="background: none; border: none; color: #ef4444; font-size: 20px; cursor: pointer;">✖</button>
+            </div>
+            <div id="inlobby-online-friends-list" style="max-height: 260px; overflow-y: auto;">
+                <!-- Online friends for quick invite -->
+            </div>
+        </div>
     </div>
 
     <script type="module" src="js/auth-guard.js"></script>
