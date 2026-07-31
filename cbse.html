@@ -1,101 +1,447 @@
 <!DOCTYPE html>
+
 <html lang="en">
 
+
 <head>
+
 
 <meta charset="UTF-8">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Career Guide Academy | CBSE Registration Portal</title>
+
+<meta name="description" content="Career Guide Academy CBSE Registration Portal">
+
+
+<meta name="author" content="Faraz">
+
+
+<title>
+Career Guide Academy | CBSE Registration Portal
+</title>
+
+
+
+<!-- Google Font -->
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+
+
+<!-- Font Awesome -->
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+
+
+
+<!-- CSS -->
 
 <link rel="stylesheet" href="cbse.css">
 
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
 
 </head>
 
+
+
 <body>
 
-<!-- ================= HEADER ================= -->
 
-<header>
 
-<div class="logo">
+<!-- ==================================================
+     PREMIUM LOADER
+================================================== -->
 
-<img src="images/logo.png" alt="Logo">
+
+<div class="pageLoader" id="pageLoader">
+
+    <div class="loaderBox">
+
+        <div class="loaderCircle"></div>
+
+        <h2>
+            Career Guide Academy
+        </h2>
+
+        <p>
+            CBSE Registration Portal
+        </p>
+
+    </div>
 
 </div>
 
-<div class="school">
 
-<h1>CAREER GUIDE ACADEMY</h1>
 
-<h3>CBSE Registration Portal</h3>
 
-<p>Academic Session : 2026 - 2027</p>
+<!-- ==================================================
+     TOP HEADER START
+================================================== -->
+
+
+<header class="topHeader">
+
+
+
+<div class="headerLeft">
+
+
+<img src="images/logo.png"
+class="schoolLogo"
+alt="School Logo">
+
+
+
+<div class="schoolInfo">
+
+
+<h1>
+CAREER GUIDE ACADEMY
+</h1>
+
+
+<p>
+CBSE Registration Portal
+</p>
+
+
+<span>
+Academic Session : 2026 - 2027
+</span>
+
 
 </div>
 
-<div class="live">
+
+</div>
+
+
+
+
+
+<div class="headerCenter">
+
+
+<img src="images/cbse-logo.png"
+class="cbseLogo"
+alt="CBSE Logo">
+
+
+</div>
+
+
+
+
+
+<div class="headerRight">
+
+
+<div class="liveCard">
+
+
+<i class="fa-solid fa-calendar-days"></i>
+
 
 <div>
 
-<h4>Date</h4>
+<h4>
+Date
+</h4>
 
-<p id="currentDate"></p>
+
+<p id="currentDate">
+Loading...
+</p>
+
 
 </div>
+
+
+</div>
+
+
+
+
+
+
+<div class="liveCard">
+
+
+<i class="fa-solid fa-clock"></i>
+
 
 <div>
 
-<h4>Time</h4>
+<h4>
+Time
+</h4>
 
-<p id="currentTime"></p>
+
+<p id="currentTime">
+Loading...
+</p>
+
 
 </div>
 
+
 </div>
+
+
+
+</div>
+
+
 
 </header>
 
-<!-- ================= MAIN ================= -->
 
-<div class="container">
 
-<div class="card">
+<!-- ==================================================
+     NAVIGATION
+================================================== -->
 
-<h2>Student Registration Form</h2>
+
+<nav class="topNav">
+
+
+<ul>
+
+
+<li class="active">
+
+<i class="fa-solid fa-house"></i>
+
+Dashboard
+
+</li>
+
+
+
+<li>
+
+<i class="fa-solid fa-user-graduate"></i>
+
+Student
+
+</li>
+
+
+
+<li>
+
+<i class="fa-solid fa-users"></i>
+
+Parents
+
+</li>
+
+
+
+<li>
+
+<i class="fa-solid fa-book"></i>
+
+Subjects
+
+</li>
+
+
+
+<li>
+
+<i class="fa-solid fa-file"></i>
+
+Documents
+
+</li>
+
+
+
+<li>
+
+<i class="fa-solid fa-eye"></i>
+
+Preview
+
+</li>
+
+
+
+<li>
+
+<i class="fa-solid fa-paper-plane"></i>
+
+Submit
+
+</li>
+
+
+
+</ul>
+
+
+</nav>
+
+
+
+
+
+<!-- ==================================================
+     HERO SECTION
+================================================== -->
+
+
+<section class="heroSection">
+
+
+
+<div class="heroContent">
+
+
+<h1>
+
+Welcome To CBSE Registration Portal
+
+</h1>
+
 
 <p>
 
-Fill all mandatory fields carefully.
+Complete student registration process digitally with secure verification.
 
 </p>
 
-<div class="progressBox">
 
-<div id="progressBar">
+
+<button class="heroBtn">
+
+<i class="fa-solid fa-arrow-right"></i>
+
+Start Registration
+
+</button>
+
+
+</div>
+
+
+
+
+<div class="heroCard">
+
+
+<div>
+
+<i class="fa-solid fa-id-card"></i>
+
+<h3>
+Registration ID
+</h3>
+
+
+<h2 id="registrationID">
+
+CGA-2026-0001
+
+</h2>
+
+
+</div>
+
+
+
+<div>
+
+<i class="fa-solid fa-chart-line"></i>
+
+
+<h3>
+Form Progress
+</h3>
+
+
+<h2 id="completePercent">
 
 0%
 
-</div>
+</h2>
+
 
 </div>
 
-<form id="registrationForm">
 
-<!-- ================= STUDENT DETAILS ================= -->
+</div>
 
-<div class="section">
 
-<h3>Student Information</h3>
 
-<div class="grid">
+</section>
+<!-- ==================================================
+     STUDENT INFORMATION SECTION
+================================================== -->
 
-<div class="inputBox">
 
-<label>Student Name *</label>
+<section class="formSection">
+
+
+
+<div class="sectionTitle">
+
+
+<div class="titleIcon">
+
+<i class="fa-solid fa-user-graduate"></i>
+
+</div>
+
+
+
+<div>
+
+<h2>
+Student Information
+</h2>
+
+
+<p>
+Enter student's personal details carefully
+</p>
+
+
+</div>
+
+
+</div>
+
+
+
+
+
+<div class="formGrid">
+
+
+
+
+
+<!-- Student Name -->
+
+<div class="inputCard">
+
+
+<label>
+
+<i class="fa-solid fa-user"></i>
+
+Student Full Name *
+
+</label>
+
 
 <input
 
@@ -107,15 +453,100 @@ placeholder="Enter Student Name"
 
 required>
 
+
 </div>
 
-<div class="inputBox">
 
-<label>APAAR ID *</label>
+
+
+
+
+
+<!-- Registration Number -->
+
+<div class="inputCard">
+
+
+<label>
+
+<i class="fa-solid fa-hashtag"></i>
+
+Registration Number
+
+</label>
+
 
 <input
 
 type="text"
+
+id="registrationNo"
+
+value="CGA2026-0001"
+
+readonly>
+
+
+</div>
+
+
+
+
+
+
+
+
+<!-- Admission Number -->
+
+<div class="inputCard">
+
+
+<label>
+
+<i class="fa-solid fa-school"></i>
+
+Admission Number *
+
+</label>
+
+
+<input
+
+type="text"
+
+id="admissionNo"
+
+placeholder="Enter Admission Number"
+
+required>
+
+
+</div>
+
+
+
+
+
+
+
+
+<!-- APAAR ID -->
+
+<div class="inputCard">
+
+
+<label>
+
+<i class="fa-solid fa-id-card"></i>
+
+APAAR ID *
+
+</label>
+
+
+<input
+
+type="number"
 
 id="apaar"
 
@@ -125,11 +556,438 @@ placeholder="12 Digit APAAR ID"
 
 required>
 
+
 </div>
 
-<div class="inputBox">
 
-<label>Father Name *</label>
+
+
+
+
+
+<!-- DOB -->
+
+<div class="inputCard">
+
+
+<label>
+
+<i class="fa-solid fa-calendar"></i>
+
+Date Of Birth *
+
+</label>
+
+
+<input
+
+type="date"
+
+id="dob"
+
+required>
+
+
+</div>
+
+
+
+
+
+
+
+
+<!-- Gender -->
+
+<div class="inputCard">
+
+
+<label>
+
+<i class="fa-solid fa-venus-mars"></i>
+
+Gender *
+
+</label>
+
+
+
+<select id="gender">
+
+
+<option value="">
+
+Select Gender
+
+</option>
+
+
+<option>
+
+Male
+
+</option>
+
+
+<option>
+
+Female
+
+</option>
+
+
+<option>
+
+Other
+
+</option>
+
+
+</select>
+
+
+</div>
+
+
+
+
+
+
+
+
+<!-- Category -->
+
+<div class="inputCard">
+
+
+<label>
+
+<i class="fa-solid fa-layer-group"></i>
+
+Category *
+
+</label>
+
+
+
+<select id="category">
+
+
+<option value="">
+
+Select Category
+
+</option>
+
+
+<option>
+
+General
+
+</option>
+
+
+<option>
+
+OBC
+
+</option>
+
+
+<option>
+
+SC
+
+</option>
+
+
+<option>
+
+ST
+
+</option>
+
+
+<option>
+
+EWS
+
+</option>
+
+
+</select>
+
+
+
+</div>
+
+
+
+
+
+
+
+
+
+<!-- Mobile -->
+
+<div class="inputCard">
+
+
+<label>
+
+<i class="fa-solid fa-phone"></i>
+
+Mobile Number *
+
+</label>
+
+
+<input
+
+type="tel"
+
+id="mobile"
+
+maxlength="10"
+
+placeholder="10 Digit Mobile Number"
+
+required>
+
+
+</div>
+
+
+
+
+
+
+
+
+<!-- Email -->
+
+<div class="inputCard">
+
+
+<label>
+
+<i class="fa-solid fa-envelope"></i>
+
+Email Address
+
+</label>
+
+
+<input
+
+type="email"
+
+id="email"
+
+placeholder="Enter Email">
+
+
+</div>
+
+
+
+
+
+
+<!-- Blood Group -->
+
+<div class="inputCard">
+
+
+<label>
+
+<i class="fa-solid fa-droplet"></i>
+
+Blood Group
+
+</label>
+
+
+
+<select id="blood">
+
+
+<option>
+
+Select Blood Group
+
+</option>
+
+
+<option>
+
+A+
+
+</option>
+
+
+<option>
+
+A-
+
+</option>
+
+
+<option>
+
+B+
+
+</option>
+
+
+<option>
+
+B-
+
+</option>
+
+
+<option>
+
+AB+
+
+</option>
+
+
+<option>
+
+AB-
+
+</option>
+
+
+<option>
+
+O+
+
+</option>
+
+
+<option>
+
+O-
+
+</option>
+
+
+</select>
+
+
+
+</div>
+
+
+
+
+
+
+
+
+<!-- Nationality -->
+
+<div class="inputCard">
+
+
+<label>
+
+<i class="fa-solid fa-earth-asia"></i>
+
+Nationality
+
+</label>
+
+
+<input
+
+type="text"
+
+id="nationality"
+
+value="Indian">
+
+
+</div>
+
+
+
+
+
+</div>
+
+
+
+
+</section>
+<!-- ==================================================
+     PARENT INFORMATION SECTION
+================================================== -->
+
+
+<section class="formSection">
+
+
+
+<div class="sectionTitle">
+
+
+<div class="titleIcon">
+
+<i class="fa-solid fa-users"></i>
+
+</div>
+
+
+
+<div>
+
+<h2>
+Parent Information
+</h2>
+
+
+<p>
+Father, Mother and Guardian details
+</p>
+
+
+</div>
+
+
+</div>
+
+
+
+
+
+
+
+<div class="formGrid">
+
+
+
+
+
+
+
+<!-- Father Name -->
+
+<div class="inputCard">
+
+
+<label>
+
+<i class="fa-solid fa-user-tie"></i>
+
+Father Name *
+
+</label>
+
 
 <input
 
@@ -141,11 +999,29 @@ placeholder="Enter Father Name"
 
 required>
 
+
 </div>
 
-<div class="inputBox">
 
-<label>Mother Name *</label>
+
+
+
+
+
+
+<!-- Mother Name -->
+
+<div class="inputCard">
+
+
+<label>
+
+<i class="fa-solid fa-person-dress"></i>
+
+Mother Name *
+
+</label>
+
 
 <input
 
@@ -157,135 +1033,970 @@ placeholder="Enter Mother Name"
 
 required>
 
-</div>
-
-<div class="inputBox">
-
-<label>Date Of Birth *</label>
-
-<input
-
-type="date"
-
-id="dob"
-
-required>
 
 </div>
 
-<div class="inputBox">
 
-<label>Gender *</label>
 
-<div class="gender">
+
+
+
+
+
+<!-- Father Mobile -->
+
+<div class="inputCard">
+
 
 <label>
 
-<input
+<i class="fa-solid fa-phone"></i>
 
-type="radio"
-
-name="gender"
-
-value="Male">
-
-Male
+Father Mobile Number
 
 </label>
 
-<label>
-
-<input
-
-type="radio"
-
-name="gender"
-
-value="Female">
-
-Female
-
-</label>
-
-<label>
-
-<input
-
-type="radio"
-
-name="gender"
-
-value="Other">
-
-Other
-
-</label>
-
-</div>
-
-</div>
-
-<div class="inputBox">
-
-<label>Category *</label>
-
-<select id="category">
-
-<option value="">Select Category</option>
-
-<option>General</option>
-
-<option>OBC</option>
-
-<option>SC</option>
-
-<option>ST</option>
-
-<option>EWS</option>
-
-</select>
-
-</div>
-
-<div class="inputBox">
-
-<label>Mobile Number *</label>
 
 <input
 
 type="tel"
 
-id="mobile"
+id="fatherMobile"
 
 maxlength="10"
 
-placeholder="Enter Mobile Number"
+placeholder="Father Mobile">
 
-required>
-
-</div>
 
 </div>
 
+
+
+
+
+
+
+
+<!-- Mother Mobile -->
+
+<div class="inputCard">
+
+
+<label>
+
+<i class="fa-solid fa-phone"></i>
+
+Mother Mobile Number
+
+</label>
+
+
+<input
+
+type="tel"
+
+id="motherMobile"
+
+maxlength="10"
+
+placeholder="Mother Mobile">
+
+
 </div>
 
-<!-- ================= PHOTO ================= -->
 
-<div class="section">
 
-<h3>Student Photograph</h3>
 
-<div class="photoArea">
 
-<div class="photoCard">
+
+
+
+<!-- Father Occupation -->
+
+<div class="inputCard">
+
+
+<label>
+
+<i class="fa-solid fa-briefcase"></i>
+
+Father Occupation
+
+</label>
+
+
+<select id="fatherOccupation">
+
+
+<option>
+
+Select Occupation
+
+</option>
+
+
+<option>
+
+Business
+
+</option>
+
+
+<option>
+
+Government Employee
+
+</option>
+
+
+<option>
+
+Private Job
+
+</option>
+
+
+<option>
+
+Farmer
+
+</option>
+
+
+<option>
+
+Other
+
+</option>
+
+
+</select>
+
+
+</div>
+
+
+
+
+
+
+
+
+<!-- Mother Occupation -->
+
+<div class="inputCard">
+
+
+<label>
+
+<i class="fa-solid fa-briefcase"></i>
+
+Mother Occupation
+
+</label>
+
+
+<select id="motherOccupation">
+
+
+<option>
+
+Select Occupation
+
+</option>
+
+
+<option>
+
+House Wife
+
+</option>
+
+
+<option>
+
+Government Employee
+
+</option>
+
+
+<option>
+
+Private Job
+
+</option>
+
+
+<option>
+
+Business
+
+</option>
+
+
+<option>
+
+Other
+
+</option>
+
+
+</select>
+
+
+</div>
+
+
+
+
+
+
+
+
+<!-- Father Qualification -->
+
+<div class="inputCard">
+
+
+<label>
+
+<i class="fa-solid fa-graduation-cap"></i>
+
+Father Qualification
+
+</label>
+
+
+<select id="fatherQualification">
+
+
+<option>
+
+Select Qualification
+
+</option>
+
+
+<option>
+
+10th Pass
+
+</option>
+
+
+<option>
+
+12th Pass
+
+</option>
+
+
+<option>
+
+Graduate
+
+</option>
+
+
+<option>
+
+Post Graduate
+
+</option>
+
+
+</select>
+
+
+</div>
+
+
+
+
+
+
+
+
+<!-- Mother Qualification -->
+
+<div class="inputCard">
+
+
+<label>
+
+<i class="fa-solid fa-graduation-cap"></i>
+
+Mother Qualification
+
+</label>
+
+
+<select id="motherQualification">
+
+
+<option>
+
+Select Qualification
+
+</option>
+
+
+<option>
+
+10th Pass
+
+</option>
+
+
+<option>
+
+12th Pass
+
+</option>
+
+
+<option>
+
+Graduate
+
+</option>
+
+
+<option>
+
+Post Graduate
+
+</option>
+
+
+</select>
+
+
+</div>
+
+
+
+
+
+
+
+
+<!-- Annual Income -->
+
+<div class="inputCard">
+
+
+<label>
+
+<i class="fa-solid fa-indian-rupee-sign"></i>
+
+Annual Family Income
+
+</label>
+
+
+<select id="income">
+
+
+<option>
+
+Select Income
+
+</option>
+
+
+<option>
+
+Below ₹1 Lakh
+
+</option>
+
+
+<option>
+
+₹1 - ₹3 Lakh
+
+</option>
+
+
+<option>
+
+₹3 - ₹5 Lakh
+
+</option>
+
+
+<option>
+
+Above ₹5 Lakh
+
+</option>
+
+
+</select>
+
+
+</div>
+
+
+
+
+
+</div>
+
+
+
+
+
+
+<!-- Parent Address -->
+
+
+<div class="largeInputCard">
+
+
+<label>
+
+<i class="fa-solid fa-location-dot"></i>
+
+Parent Complete Address *
+
+</label>
+
+
+
+<textarea
+
+id="parentAddress"
+
+rows="4"
+
+placeholder="Enter Complete Address"
+
+required></textarea>
+
+
+</div>
+
+
+
+
+
+</section>
+<!-- ==================================================
+     CBSE SUBJECT INFORMATION SECTION
+================================================== -->
+
+
+<section class="formSection">
+
+
+
+<div class="sectionTitle">
+
+
+<div class="titleIcon">
+
+<i class="fa-solid fa-book-open"></i>
+
+</div>
+
+
+
+<div>
+
+<h2>
+CBSE Subject Selection
+</h2>
+
+
+<p>
+Select mandatory and additional subjects carefully
+</p>
+
+
+</div>
+
+
+</div>
+
+
+
+
+
+
+<div class="subjectInfoBox">
+
+
+<i class="fa-solid fa-circle-info"></i>
+
+
+<p>
+
+As per CBSE guidelines, select minimum required subjects for registration.
+
+</p>
+
+
+</div>
+
+
+
+
+
+
+
+<div class="formGrid">
+
+
+
+
+
+
+
+<!-- Language Subject -->
+
+
+<div class="inputCard">
+
+
+<label>
+
+<i class="fa-solid fa-language"></i>
+
+Language Subject *
+
+</label>
+
+
+
+<select id="language">
+
+
+<option value="">
+
+Select Language
+
+</option>
+
+
+<option>
+
+English Language (184)
+
+</option>
+
+
+<option>
+
+Hindi Course-A (002)
+
+</option>
+
+
+<option>
+
+Hindi Course-B (085)
+
+</option>
+
+
+<option>
+
+Sanskrit (122)
+
+</option>
+
+
+<option>
+
+Urdu (303)
+
+</option>
+
+
+</select>
+
+
+</div>
+
+
+
+
+
+
+
+
+<!-- Mathematics -->
+
+
+<div class="inputCard">
+
+
+<label>
+
+<i class="fa-solid fa-calculator"></i>
+
+Mathematics *
+
+</label>
+
+
+
+<select id="math">
+
+
+<option value="">
+
+Select Mathematics
+
+</option>
+
+
+<option>
+
+Mathematics Standard (041)
+
+</option>
+
+
+<option>
+
+Mathematics Basic (241)
+
+</option>
+
+
+</select>
+
+
+</div>
+
+
+
+
+
+
+
+
+<!-- Science -->
+
+
+<div class="inputCard">
+
+
+<label>
+
+<i class="fa-solid fa-flask"></i>
+
+Science *
+
+</label>
+
+
+
+<select id="science">
+
+
+<option value="">
+
+Select Science
+
+</option>
+
+
+<option>
+
+Science (086)
+
+</option>
+
+
+</select>
+
+
+</div>
+
+
+
+
+
+
+
+
+<!-- Social Science -->
+
+
+<div class="inputCard">
+
+
+<label>
+
+<i class="fa-solid fa-earth-americas"></i>
+
+Social Science *
+
+</label>
+
+
+
+<select id="socialScience">
+
+
+<option value="">
+
+Select Social Science
+
+</option>
+
+
+<option>
+
+Social Science (087)
+
+</option>
+
+
+</select>
+
+
+</div>
+
+
+
+
+
+
+
+
+<!-- Additional Subject -->
+
+
+<div class="inputCard">
+
+
+<label>
+
+<i class="fa-solid fa-plus"></i>
+
+Additional Subject
+
+</label>
+
+
+
+<select id="additional">
+
+
+<option>
+
+None
+
+</option>
+
+
+<option>
+
+Artificial Intelligence (417)
+
+</option>
+
+
+<option>
+
+Information Technology (402)
+
+</option>
+
+
+<option>
+
+Painting (049)
+
+</option>
+
+
+<option>
+
+Home Science (064)
+
+</option>
+
+
+</select>
+
+
+</div>
+
+
+
+
+
+
+
+
+<!-- Subject Count -->
+
+
+<div class="inputCard">
+
+
+<label>
+
+<i class="fa-solid fa-list-check"></i>
+
+Total Subjects
+
+</label>
+
+
+
+<input
+
+type="text"
+
+id="subjectCount"
+
+value="0 Subjects Selected"
+
+readonly>
+
+
+</div>
+
+
+
+
+
+</div>
+
+
+
+
+
+
+
+
+
+<!-- Subject Summary -->
+
+
+<div class="subjectSummary">
+
+
+<h3>
+
+Selected Subjects Summary
+
+</h3>
+
+
+<div id="subjectList">
+
+
+No Subjects Selected
+
+</div>
+
+
+</div>
+
+
+
+
+
+
+
+</section>
+<!-- ==================================================
+     PHOTO & DOCUMENT UPLOAD SECTION
+================================================== -->
+
+
+<section class="formSection">
+
+
+
+<div class="sectionTitle">
+
+
+<div class="titleIcon">
+
+<i class="fa-solid fa-file-arrow-up"></i>
+
+</div>
+
+
+
+<div>
+
+<h2>
+Document Upload Center
+</h2>
+
+
+<p>
+Upload required documents carefully
+</p>
+
+
+</div>
+
+
+</div>
+
+
+
+
+
+
+
+
+<div class="uploadGrid">
+
+
+
+
+
+
+
+<!-- Student Photo -->
+
+
+<div class="uploadCard">
+
+
+<div class="uploadIcon">
+
+<i class="fa-solid fa-image"></i>
+
+</div>
+
+
+<h3>
+Student Photograph
+</h3>
+
+
+<p>
+Passport Size Photo
+</p>
+
+
 
 <img
 
 id="photoPreview"
 
+class="previewImage"
+
 src=""
 
-alt="Photo Preview">
+alt="Student Photo">
+
+
+
+
 
 <input
 
@@ -295,136 +2006,462 @@ id="photo"
 
 accept="image/*">
 
-</div>
-
-<div class="infoCard">
-
-<h4>Instructions</h4>
-
-<ul>
-
-<li>Upload passport size photo.</li>
-
-<li>Photo should be clear.</li>
-
-<li>JPG / PNG supported.</li>
-
-<li>Maximum size 2 MB.</li>
-
-</ul>
 
 </div>
 
-</div>
 
-</div>
-<!-- ================= SUBJECT DETAILS ================= -->
 
-<div class="section">
 
-<h3>Subject Information</h3>
 
-<div class="grid">
 
-<div class="inputBox">
 
-<label>Mathematics *</label>
 
-<select id="math">
+<!-- Student Signature -->
 
-<option value="">Select Subject</option>
 
-<option>Mathematics Standard (041)</option>
+<div class="uploadCard">
 
-<option>Mathematics Basic (241)</option>
 
-</select>
+<div class="uploadIcon">
+
+<i class="fa-solid fa-pen"></i>
 
 </div>
 
-<div class="inputBox">
 
-<label>Language *</label>
 
-<select id="language">
+<h3>
+Student Signature
+</h3>
 
-<option value="">Select Language</option>
 
-<option>Hindi (085)</option>
+<p>
+Clear Signature Image
+</p>
 
-<option>English (184)</option>
 
-<option>Sanskrit (122)</option>
 
-<option>Urdu (303)</option>
 
-</select>
+<img
 
-</div>
+id="studentPreview"
 
-<div class="inputBox">
+class="previewImage"
 
-<label>Additional Subject</label>
+src=""
 
-<select id="additional">
+alt="Student Signature">
 
-<option>None</option>
 
-<option>Artificial Intelligence</option>
 
-<option>Information Technology</option>
 
-<option>Painting</option>
 
-<option>Home Science</option>
+<input
 
-</select>
+type="file"
 
-</div>
+id="studentSign"
 
-<div class="inputBox">
+accept="image/*">
 
-<label>Blood Group</label>
 
-<select id="blood">
-
-<option>Select Blood Group</option>
-
-<option>A+</option>
-
-<option>A-</option>
-
-<option>B+</option>
-
-<option>B-</option>
-
-<option>AB+</option>
-
-<option>AB-</option>
-
-<option>O+</option>
-
-<option>O-</option>
-
-</select>
 
 </div>
 
-</div>
+
+
+
+
+
+
+
+<!-- Father Signature -->
+
+
+<div class="uploadCard">
+
+
+<div class="uploadIcon">
+
+<i class="fa-solid fa-user-tie"></i>
 
 </div>
 
-<!-- ================= ADDRESS ================= -->
 
-<div class="section">
 
-<h3>Address Information</h3>
+<h3>
+Father Signature
+</h3>
 
-<div class="grid">
 
-<div class="inputBox full">
+<p>
+Parent Signature
+</p>
 
-<label>Full Address *</label>
+
+
+<img
+
+id="fatherPreview"
+
+class="previewImage"
+
+src=""
+
+alt="Father Signature">
+
+
+
+
+
+<input
+
+type="file"
+
+id="fatherSign"
+
+accept="image/*">
+
+
+
+</div>
+
+
+
+
+
+
+
+
+<!-- Mother Signature -->
+
+
+<div class="uploadCard">
+
+
+<div class="uploadIcon">
+
+<i class="fa-solid fa-person-dress"></i>
+
+</div>
+
+
+
+<h3>
+Mother Signature
+</h3>
+
+
+<p>
+Parent Signature
+</p>
+
+
+
+<img
+
+id="motherPreview"
+
+class="previewImage"
+
+src=""
+
+alt="Mother Signature">
+
+
+
+
+
+<input
+
+type="file"
+
+id="motherSign"
+
+accept="image/*">
+
+
+
+</div>
+
+
+
+
+
+
+
+</div>
+
+
+
+
+
+
+
+
+
+
+<!-- DOCUMENT FILES -->
+
+
+<div class="documentGrid">
+
+
+
+
+
+
+
+
+<!-- Aadhaar -->
+
+
+<div class="documentCard">
+
+
+<i class="fa-solid fa-id-card"></i>
+
+
+<h3>
+Aadhaar Card
+</h3>
+
+
+<p>
+Optional Document
+</p>
+
+
+
+<input
+
+type="file"
+
+id="aadhaar"
+
+accept=".jpg,.png,.pdf">
+
+
+</div>
+
+
+
+
+
+
+
+
+
+<!-- Birth Certificate -->
+
+
+<div class="documentCard">
+
+
+<i class="fa-solid fa-certificate"></i>
+
+
+<h3>
+Birth Certificate
+</h3>
+
+
+<p>
+Required Document
+</p>
+
+
+
+<input
+
+type="file"
+
+id="birthCertificate"
+
+accept=".jpg,.png,.pdf">
+
+
+</div>
+
+
+
+
+
+
+
+
+
+<!-- Transfer Certificate -->
+
+
+<div class="documentCard">
+
+
+<i class="fa-solid fa-file-lines"></i>
+
+
+<h3>
+Transfer Certificate
+</h3>
+
+
+<p>
+If Applicable
+</p>
+
+
+
+<input
+
+type="file"
+
+id="transferCertificate"
+
+accept=".jpg,.png,.pdf">
+
+
+</div>
+
+
+
+
+
+
+
+
+
+<!-- Previous Marksheet -->
+
+
+<div class="documentCard">
+
+
+<i class="fa-solid fa-graduation-cap"></i>
+
+
+<h3>
+Previous Marksheet
+</h3>
+
+
+<p>
+Academic Record
+</p>
+
+
+
+<input
+
+type="file"
+
+id="marksheet"
+
+accept=".jpg,.png,.pdf">
+
+
+</div>
+
+
+
+
+
+
+</div>
+
+
+
+
+
+
+
+
+<div class="uploadNotice">
+
+
+<i class="fa-solid fa-circle-info"></i>
+
+
+Supported Format: JPG, PNG, PDF
+
+<br>
+
+Maximum File Size: 2 MB
+
+
+</div>
+
+
+
+
+
+
+
+</section>
+<!-- ==================================================
+     ADDRESS INFORMATION SECTION
+================================================== -->
+
+
+<section class="formSection">
+
+
+
+<div class="sectionTitle">
+
+
+<div class="titleIcon">
+
+<i class="fa-solid fa-location-dot"></i>
+
+</div>
+
+
+
+<div>
+
+<h2>
+Address Information
+</h2>
+
+
+<p>
+Enter student's residential details
+</p>
+
+
+</div>
+
+
+</div>
+
+
+
+
+
+
+
+<div class="formGrid">
+
+
+
+
+
+
+<!-- Address -->
+
+
+<div class="largeInputCard">
+
+
+<label>
+
+<i class="fa-solid fa-house"></i>
+
+Complete Address *
+
+</label>
+
+
 
 <textarea
 
@@ -432,17 +2469,37 @@ id="address"
 
 rows="4"
 
-placeholder="Enter Complete Address"
+placeholder="Enter Full Address"
 
-required>
+required></textarea>
 
-</textarea>
+
 
 </div>
 
-<div class="inputBox">
 
-<label>City *</label>
+
+
+
+
+
+
+
+<!-- City -->
+
+
+<div class="inputCard">
+
+
+<label>
+
+<i class="fa-solid fa-city"></i>
+
+City *
+
+</label>
+
+
 
 <input
 
@@ -454,11 +2511,32 @@ placeholder="Enter City"
 
 required>
 
+
 </div>
 
-<div class="inputBox">
 
-<label>State *</label>
+
+
+
+
+
+
+
+<!-- State -->
+
+
+<div class="inputCard">
+
+
+<label>
+
+<i class="fa-solid fa-map"></i>
+
+State *
+
+</label>
+
+
 
 <input
 
@@ -470,11 +2548,32 @@ placeholder="Enter State"
 
 required>
 
+
 </div>
 
-<div class="inputBox">
 
-<label>Pincode *</label>
+
+
+
+
+
+
+
+<!-- Pincode -->
+
+
+<div class="inputCard">
+
+
+<label>
+
+<i class="fa-solid fa-location-crosshairs"></i>
+
+Pincode *
+
+</label>
+
+
 
 <input
 
@@ -488,113 +2587,79 @@ placeholder="Enter Pincode"
 
 required>
 
-</div>
-
-<div class="inputBox">
-
-<label>Email</label>
-
-<input
-
-type="email"
-
-id="email"
-
-placeholder="Enter Email Address">
 
 </div>
 
-</div>
+
+
+
+
+
+
+
 
 </div>
 
-<!-- ================= SIGNATURE ================= -->
 
-<div class="section">
+</section>
 
-<h3>Signature Upload</h3>
 
-<div class="signatureGrid">
 
-<div class="signCard">
 
-<h4>Student Signature</h4>
 
-<img
 
-id="studentPreview"
 
-src=""
 
-alt="Student Signature">
 
-<input
+<!-- ==================================================
+     DECLARATION SECTION
+================================================== -->
 
-type="file"
 
-id="studentSign"
+<section class="formSection">
 
-accept="image/*">
 
-</div>
 
-<div class="signCard">
+<div class="sectionTitle">
 
-<h4>Mother Signature</h4>
 
-<img
+<div class="titleIcon">
 
-id="motherPreview"
-
-src=""
-
-alt="Mother Signature">
-
-<input
-
-type="file"
-
-id="motherSign"
-
-accept="image/*">
+<i class="fa-solid fa-shield-check"></i>
 
 </div>
 
-<div class="signCard">
 
-<h4>Father Signature</h4>
 
-<img
+<div>
 
-id="fatherPreview"
+<h2>
+Declaration & Verification
+</h2>
 
-src=""
 
-alt="Father Signature">
+<p>
+Confirm all information before submission
+</p>
 
-<input
-
-type="file"
-
-id="fatherSign"
-
-accept="image/*">
 
 </div>
 
-</div>
 
 </div>
 
-<!-- ================= DECLARATION ================= -->
 
-<div class="section">
 
-<h3>Declaration</h3>
 
-<div class="declaration">
+
+
+
+<div class="declarationBox">
+
+
 
 <label>
+
 
 <input
 
@@ -604,174 +2669,276 @@ id="agree"
 
 required>
 
-I hereby declare that all information provided in this registration form is true and correct. If any information is found incorrect, the school has the right to cancel my registration.
+
+
+I hereby declare that all details entered by me are true and correct. I understand that incorrect information may lead to cancellation of registration.
+
+
 
 </label>
 
-</div>
+
 
 </div>
-<!-- ================= ACTION BUTTONS ================= -->
 
-<div class="section">
 
-<div class="buttonArea">
 
-<button type="submit" class="btn submitBtn">
+
+
+
+<div class="verificationBox">
+
+
+<div>
+
+
+<i class="fa-solid fa-check-circle"></i>
+
+
+<h3>
+Data Verification
+</h3>
+
+
+<p>
+Review all details before final submission.
+</p>
+
+
+</div>
+
+
+
+
+
+<div>
+
+
+<i class="fa-solid fa-lock"></i>
+
+
+<h3>
+Secure Submission
+</h3>
+
+
+<p>
+Your registration data is protected.
+</p>
+
+
+</div>
+
+
+
+
+
+
+</div>
+
+
+
+
+
+
+
+<!-- ==================================================
+     FINAL BUTTON AREA
+================================================== -->
+
+
+<div class="actionArea">
+
+
+
+<button
+
+type="submit"
+
+class="primaryBtn">
+
+
+<i class="fa-solid fa-paper-plane"></i>
+
 
 Submit Registration
 
-</button>
-
-<button type="reset" class="btn resetBtn">
-
-Reset Form
 
 </button>
 
-<button type="button" id="printBtn" class="btn printBtn">
 
-Print Form
+
+
+
+
+<button
+
+type="button"
+
+id="previewBtn"
+
+class="secondaryBtn">
+
+
+<i class="fa-solid fa-eye"></i>
+
+
+Preview Form
+
 
 </button>
 
-<button type="button" id="pdfBtn" class="btn pdfBtn">
 
-Download PDF
+
+
+
+
+
+<button
+
+type="button"
+
+id="printBtn"
+
+class="secondaryBtn">
+
+
+<i class="fa-solid fa-print"></i>
+
+
+Print
+
 
 </button>
 
-</div>
+
+
+
+
+
+
+<button
+
+type="reset"
+
+class="dangerBtn">
+
+
+<i class="fa-solid fa-rotate-left"></i>
+
+
+Reset
+
+
+</button>
+
+
+
+
 
 </div>
 
-</form>
 
-</div>
 
-<!-- ================= DASHBOARD ================= -->
 
-<div class="dashboard">
 
-<div class="dashCard">
 
-<div class="dashIcon">
 
-📋
+</section>
+<!-- ==================================================
+     PREVIEW MODAL
+================================================== -->
 
-</div>
 
-<h3>Registration Status</h3>
+<div class="modal" id="previewModal">
 
-<p id="status">
 
-Waiting For Submission
+<div class="modalContent">
 
-</p>
 
-</div>
+<button 
+class="closeModal"
+id="closePreview">
 
-<div class="dashCard">
+×
 
-<div class="dashIcon">
+</button>
 
-📅
 
-</div>
 
-<h3>Today's Date</h3>
+<h2>
 
-<p id="todayDate">
+<i class="fa-solid fa-eye"></i>
 
-Loading...
+Registration Preview
 
-</p>
+</h2>
 
-</div>
 
-<div class="dashCard">
 
-<div class="dashIcon">
+<div id="previewData">
 
-🕒
-
-</div>
-
-<h3>Current Time</h3>
-
-<p id="liveClock">
-
-Loading...
-
-</p>
-
-</div>
-
-<div class="dashCard">
-
-<div class="dashIcon">
-
-📊
-
-</div>
-
-<h3>Progress</h3>
 
 <p>
-
-<span id="completePercent">
-
-0%
-
-</span>
-
-Completed
-
+Student details will appear here.
 </p>
 
-</div>
 
 </div>
 
-</div>
 
-<!-- ================= FLOATING BUTTONS ================= -->
 
-<div class="floatingMenu">
 
 <button
 
-id="darkModeBtn"
+class="primaryBtn"
 
-title="Dark Mode">
+id="confirmSubmit">
 
-🌙
 
-</button>
+<i class="fa-solid fa-check"></i>
 
-<button
 
-id="topBtn"
+Confirm Submission
 
-title="Go To Top">
-
-⬆
 
 </button>
 
-</div>
 
-<!-- ================= SUCCESS POPUP ================= -->
-
-<div class="popup" id="successPopup">
-
-<div class="popupContent">
-
-<div class="popupIcon">
-
-✅
 
 </div>
+
+
+</div>
+
+
+
+
+
+
+
+
+
+<!-- ==================================================
+     SUCCESS POPUP
+================================================== -->
+
+
+<div class="modal" id="successPopup">
+
+
+<div class="successBox">
+
+
+
+<div class="successIcon">
+
+<i class="fa-solid fa-circle-check"></i>
+
+</div>
+
+
+
 
 <h2>
 
@@ -779,29 +2946,118 @@ Registration Successful
 
 </h2>
 
+
+
 <p>
 
-Your registration form has been submitted successfully.
+Your CBSE registration form has been submitted successfully.
 
 </p>
 
-<button id="closePopup">
+
+
+<h3 id="registrationNumber">
+
+CGA2026-0001
+
+</h3>
+
+
+
+
+<button
+
+class="primaryBtn"
+
+id="closeSuccess">
+
 
 Close
 
+
 </button>
 
-</div>
+
 
 </div>
 
-<!-- ================= FOOTER ================= -->
 
-<footer>
+</div>
 
-<div class="footerGrid">
 
-<div>
+
+
+
+
+
+
+
+<!-- ==================================================
+     FLOATING ACTION BUTTONS
+================================================== -->
+
+
+<div class="floatingButtons">
+
+
+
+<button
+
+id="darkModeBtn"
+
+title="Dark Mode">
+
+
+<i class="fa-solid fa-moon"></i>
+
+
+</button>
+
+
+
+
+
+<button
+
+id="topBtn"
+
+title="Go To Top">
+
+
+<i class="fa-solid fa-arrow-up"></i>
+
+
+</button>
+
+
+
+</div>
+
+
+
+
+
+
+
+
+
+<!-- ==================================================
+     FOOTER
+================================================== -->
+
+
+<footer class="mainFooter">
+
+
+
+<div class="footerContainer">
+
+
+
+
+
+<div class="footerBox">
+
 
 <h2>
 
@@ -809,21 +3065,32 @@ Career Guide Academy
 
 </h2>
 
+
 <p>
 
 CBSE Registration Portal
 
 </p>
 
+
 <p>
 
-Academic Session 2026-27
+Academic Session 2026 - 2027
 
 </p>
 
+
 </div>
 
-<div>
+
+
+
+
+
+
+
+<div class="footerBox">
+
 
 <h3>
 
@@ -831,25 +3098,38 @@ Contact
 
 </h3>
 
+
 <p>
 
-Email :
+<i class="fa-solid fa-envelope"></i>
 
 info@careerguideacademy.in
 
 </p>
 
+
+
 <p>
 
-Phone :
+<i class="fa-solid fa-phone"></i>
 
 +91 9876543210
 
 </p>
 
+
 </div>
 
-<div>
+
+
+
+
+
+
+
+
+<div class="footerBox">
+
 
 <h3>
 
@@ -857,11 +3137,13 @@ Technology
 
 </h3>
 
+
 <p>
 
 HTML5
 
 </p>
+
 
 <p>
 
@@ -869,15 +3151,26 @@ CSS3
 
 </p>
 
+
 <p>
 
 JavaScript
 
 </p>
 
+
 </div>
 
-<div>
+
+
+
+
+
+
+
+
+<div class="footerBox">
+
 
 <h3>
 
@@ -885,32 +3178,65 @@ Developer
 
 </h3>
 
+
 <p>
 
 Faraz
 
 </p>
 
+
 <p>
 
-School Project
+Premium School Project
 
 </p>
 
-</div>
 
 </div>
+
+
+
+
+
+</div>
+
+
+
+
+
+
 
 <div class="copyright">
 
-© 2026 Career Guide Academy | All Rights Reserved.
+
+© 2026 Career Guide Academy | All Rights Reserved
+
 
 </div>
 
+
+
+
+
 </footer>
+
+
+
+
+
+
+
+<!-- ==================================================
+     JAVASCRIPT FILE
+================================================== -->
+
 
 <script src="cbse.js"></script>
 
+
+
 </body>
+
 
 </html>
