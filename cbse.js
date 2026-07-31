@@ -1,21 +1,17 @@
-/* ==================================================
+/* =========================================
    CAREER GUIDE ACADEMY
    CBSE REGISTRATION PORTAL
-   JAVASCRIPT P1
-================================================== */
+   PREMIUM JAVASCRIPT P3
+========================================= */
 
 
+/* ===============================
+   LOADER
+================================ */
 
-// ===============================
-// PAGE LOADER
-// ===============================
-
-
-window.addEventListener("load",function(){
-
+window.addEventListener("load",()=>{
 
 const loader=document.getElementById("pageLoader");
-
 
 if(loader){
 
@@ -23,11 +19,9 @@ setTimeout(()=>{
 
 loader.style.display="none";
 
-},1000);
-
+},800);
 
 }
-
 
 });
 
@@ -36,94 +30,59 @@ loader.style.display="none";
 
 
 
-
-// ===============================
-// LIVE DATE & TIME
-// ===============================
+/* ===============================
+   DATE & TIME
+================================ */
 
 
 function updateDateTime(){
 
 
-const now=new Date();
+let now=new Date();
 
 
-
-const date=now.toLocaleDateString(
+let date=now.toLocaleDateString(
 "en-IN",
 {
-
 day:"2-digit",
-
 month:"long",
-
-year:"numeric",
-
-weekday:"long"
-
+year:"numeric"
 }
-
 );
 
 
-
-const time=now.toLocaleTimeString(
+let time=now.toLocaleTimeString(
 "en-IN"
 );
 
 
 
-const currentDate=document.getElementById("currentDate");
+let dateBox=document.getElementById("currentDate");
 
-const currentTime=document.getElementById("currentTime");
-
-
-
-if(currentDate){
-
-currentDate.innerHTML=date;
-
-}
+let timeBox=document.getElementById("currentTime");
 
 
 
-if(currentTime){
+if(dateBox){
 
-currentTime.innerHTML=time;
+dateBox.innerHTML=date;
 
 }
 
 
 
-const today=document.getElementById("todayDate");
+if(timeBox){
 
-const clock=document.getElementById("liveClock");
-
-
-
-if(today){
-
-today.innerHTML=date;
+timeBox.innerHTML=time;
 
 }
 
 
-
-if(clock){
-
-clock.innerHTML=time;
-
 }
-
-
-
-}
-
 
 
 
 updateDateTime();
-
 
 setInterval(updateDateTime,1000);
 
@@ -133,14 +92,166 @@ setInterval(updateDateTime,1000);
 
 
 
+/* ===============================
+   START REGISTRATION
+================================ */
 
 
-// ===============================
-// AUTO CAPITAL LETTER
-// ===============================
+function startRegistration(){
 
 
-const capitalFields=[
+let student=document.getElementById("student");
+
+
+if(student){
+
+
+student.scrollIntoView({
+
+behavior:"smooth",
+
+block:"start"
+
+});
+
+
+}
+
+
+}
+
+
+
+
+
+
+
+/* ===============================
+   FORM PROGRESS
+================================ */
+
+
+const form=document.getElementById(
+"registrationForm"
+);
+
+
+
+function updateProgress(){
+
+
+if(!form)return;
+
+
+
+let fields=[
+
+...form.querySelectorAll(
+"input,select,textarea"
+)
+
+];
+
+
+
+fields=fields.filter(
+field=>field.type!="file"
+);
+
+
+
+let total=fields.length;
+
+
+let filled=fields.filter(
+field=>field.value.trim()!=""
+).length;
+
+
+
+let percent=0;
+
+
+
+if(total){
+
+percent=Math.round(
+(filled/total)*100
+);
+
+}
+
+
+
+
+let bar=document.getElementById(
+"progressBar"
+);
+
+
+let text=document.getElementById(
+"completePercent"
+);
+
+
+
+if(bar){
+
+bar.style.width=percent+"%";
+
+}
+
+
+
+if(text){
+
+text.innerHTML=percent+"%";
+
+}
+
+
+
+}
+
+
+
+
+if(form){
+
+
+form.addEventListener(
+"input",
+updateProgress
+);
+
+
+
+form.addEventListener(
+"change",
+updateProgress
+);
+
+
+}
+
+
+
+updateProgress();
+
+
+
+
+
+
+
+
+
+/* ===============================
+   AUTO CAPITAL LETTER
+================================ */
+
+
+[
 
 "studentName",
 
@@ -152,28 +263,27 @@ const capitalFields=[
 
 "state"
 
-];
+].forEach(id=>{
+
+
+let input=document.getElementById(id);
 
 
 
-capitalFields.forEach(function(id){
+if(input){
 
 
-const field=document.getElementById(id);
-
-
-
-if(field){
-
-
-field.addEventListener("input",function(){
+input.addEventListener(
+"input",
+function(){
 
 
 this.value=this.value.toUpperCase();
 
 
+}
 
-});
+);
 
 
 }
@@ -189,18 +299,20 @@ this.value=this.value.toUpperCase();
 
 
 
-// ===============================
-// MOBILE VALIDATION
-// ===============================
+/* ===============================
+   MOBILE VALIDATION
+================================ */
 
 
-const mobile=document.getElementById("mobile");
+document.querySelectorAll(
+'input[type="tel"]'
+)
+.forEach(input=>{
 
 
-if(mobile){
-
-
-mobile.addEventListener("input",function(){
+input.addEventListener(
+"input",
+function(){
 
 
 this.value=this.value.replace(
@@ -210,20 +322,20 @@ this.value=this.value.replace(
 
 
 
-if(this.value.length>10){
-
-
-this.value=this.value.substring(0,10);
+this.value=this.value.substring(
+0,
+10
+);
 
 
 }
 
+);
 
 
 });
 
 
-}
 
 
 
@@ -231,22 +343,23 @@ this.value=this.value.substring(0,10);
 
 
 
+/* ===============================
+   APAAR VALIDATION
+================================ */
 
 
-
-// ===============================
-// APAAR VALIDATION
-// ===============================
-
-
-const apaar=document.getElementById("apaar");
+let apaar=document.getElementById(
+"apaar"
+);
 
 
 
 if(apaar){
 
 
-apaar.addEventListener("input",function(){
+apaar.addEventListener(
+"input",
+function(){
 
 
 this.value=this.value.replace(
@@ -256,62 +369,16 @@ this.value=this.value.replace(
 
 
 
-if(this.value.length>12){
-
-
-this.value=this.value.substring(0,12);
-
-
-}
-
-
-
-});
-
-
-}
-
-
-
-
-
-
-
-
-
-// ===============================
-// PINCODE VALIDATION
-// ===============================
-
-
-const pincode=document.getElementById("pincode");
-
-
-
-if(pincode){
-
-
-pincode.addEventListener("input",function(){
-
-
-this.value=this.value.replace(
-/[^0-9]/g,
-""
+this.value=this.value.substring(
+0,
+12
 );
 
 
 
-if(this.value.length>6){
-
-
-this.value=this.value.substring(0,6);
-
-
 }
 
-
-
-});
+);
 
 
 }
@@ -324,24 +391,29 @@ this.value=this.value.substring(0,6);
 
 
 
-// ===============================
-// IMAGE PREVIEW FUNCTION
-// ===============================
+/* ===============================
+   IMAGE PREVIEW
+================================ */
 
 
+function imagePreview(
+inputId,
+imageId
+){
 
-function imagePreview(inputId,imageId){
+
+let input=document.getElementById(
+inputId
+);
 
 
-
-const input=document.getElementById(inputId);
-
-const image=document.getElementById(imageId);
+let image=document.getElementById(
+imageId
+);
 
 
 
 if(input && image){
-
 
 
 input.addEventListener(
@@ -349,15 +421,14 @@ input.addEventListener(
 function(){
 
 
-
-const file=this.files[0];
+let file=this.files[0];
 
 
 
 if(file){
 
 
-const reader=new FileReader();
+let reader=new FileReader();
 
 
 
@@ -367,7 +438,7 @@ reader.onload=function(e){
 image.src=e.target.result;
 
 
-};
+}
 
 
 
@@ -393,15 +464,10 @@ reader.readAsDataURL(file);
 
 
 
-
-
-
-
 imagePreview(
 "photo",
 "photoPreview"
 );
-
 
 
 imagePreview(
@@ -410,202 +476,34 @@ imagePreview(
 );
 
 
-
 imagePreview(
 "fatherSign",
 "fatherPreview"
 );
 
 
-
 imagePreview(
 "motherSign",
 "motherPreview"
 );
-/* ==================================================
-   JAVASCRIPT P2
-   PROGRESS + AUTOSAVE + DARK MODE
-================================================== */
 
 
 
 
 
-// ===============================
-// FORM PROGRESS BAR
-// ===============================
 
 
-const form=document.getElementById("registrationForm");
 
 
-
-if(form){
-
-
-
-const allFields=form.querySelectorAll(
-"input,select,textarea"
-);
-
-
-
-function updateProgress(){
-
-
-let total=0;
-
-let filled=0;
-
-
-
-allFields.forEach(function(field){
-
-
-
-// Ignore file input
-
-if(field.type==="file"){
-
-return;
-
-}
-
-
-
-
-total++;
-
-
-
-if(field.type==="checkbox"){
-
-
-if(field.checked){
-
-filled++;
-
-}
-
-
-}
-
-else if(field.type==="radio"){
-
-
-const checked=document.querySelector(
-'input[name="'+field.name+'"]:checked'
-);
-
-
-
-if(checked){
-
-filled++;
-
-}
-
-
-
-}
-
-else{
-
-
-if(field.value.trim()!==""){
-
-
-filled++;
-
-
-}
-
-
-
-}
-
-
-
-});
-
-
-
-
-
-let percent=Math.round(
-(filled/total)*100
-);
-
-
-
-const progress=document.getElementById(
-"completePercent"
-);
-
-
-
-if(progress){
-
-
-progress.innerHTML=percent+"%";
-
-
-}
-
-
-
-
-
-}
-
-
-
-allFields.forEach(function(field){
-
-
-field.addEventListener(
-"input",
-updateProgress
-);
-
-
-field.addEventListener(
-"change",
-updateProgress
-);
-
-
-
-});
-
-
-
-updateProgress();
-
-
-
-}
-
-
-
-
-
-
-
-
-
-// ===============================
-// SUBJECT COUNTER
-// ===============================
-
+/* ===============================
+   SUBJECT SUMMARY
+================================ */
 
 
 function updateSubjects(){
 
 
-
-const subjects=[
-
+let ids=[
 
 "language",
 
@@ -617,37 +515,34 @@ const subjects=[
 
 "additional"
 
-
 ];
 
 
 
-let selected=[];
+let subjects=[];
 
 
 
-subjects.forEach(function(id){
+ids.forEach(id=>{
+
+
+let element=document.getElementById(id);
 
 
 
-const element=document.getElementById(id);
+if(
+element &&
+element.value &&
+element.value!="None"
+){
 
 
-
-if(element && element.value){
-
-if(element.value!=="None"){
-
-
-selected.push(element.value);
-
+subjects.push(
+element.value
+);
 
 
 }
-
-
-}
-
 
 
 });
@@ -655,40 +550,25 @@ selected.push(element.value);
 
 
 
-
-
-const count=document.getElementById(
-"subjectCount"
-);
-
-
-
-const list=document.getElementById(
+let list=document.getElementById(
 "subjectList"
 );
-
-
-
-
-if(count){
-
-
-count.value=
-selected.length+" Subjects Selected";
-
-
-}
 
 
 
 if(list){
 
 
-if(selected.length===0){
+if(subjects.length){
 
 
 list.innerHTML=
-"No Subjects Selected";
+subjects
+.map(
+item=>"✅ "+item
+)
+.join("<br>");
+
 
 
 }
@@ -697,10 +577,7 @@ else{
 
 
 list.innerHTML=
-selected.map(
-item=>"✅ "+item
-).join("<br>");
-
+"No Subject Selected";
 
 
 }
@@ -710,33 +587,35 @@ item=>"✅ "+item
 
 
 
-
-
 }
-
 
 
 
 
 [
+
 "language",
+
 "math",
+
 "science",
+
 "socialScience",
+
 "additional"
 
-].forEach(function(id){
+]
+.forEach(id=>{
+
+
+let select=document.getElementById(id);
 
 
 
-const element=document.getElementById(id);
+if(select){
 
 
-
-if(element){
-
-
-element.addEventListener(
+select.addEventListener(
 "change",
 updateSubjects
 );
@@ -749,437 +628,65 @@ updateSubjects
 
 
 
+updateSubjects();
 
 
 
 
-// ===============================
-// AUTO SAVE FORM
-// ===============================
 
 
 
-function saveData(){
 
 
+/* ===============================
+   PREVIEW MODAL
+================================ */
 
-let data={};
 
-
-
-const fields=document.querySelectorAll(
-"input,select,textarea"
-);
-
-
-
-fields.forEach(function(field){
-
-
-
-if(field.type!=="file"){
-
-
-data[field.id]=field.value;
-
-
-
-}
-
-
-
-});
-
-
-
-
-
-localStorage.setItem(
-"CBSE_FORM_DATA",
-JSON.stringify(data)
-);
-
-
-
-}
-
-
-
-
-document.querySelectorAll(
-"input,select,textarea"
-)
-.forEach(function(field){
-
-
-
-field.addEventListener(
-"input",
-saveData
-);
-
-
-
-field.addEventListener(
-"change",
-saveData
-);
-
-
-
-});
-
-
-
-
-
-
-
-
-
-// ===============================
-// LOAD SAVED DATA
-// ===============================
-
-
-window.addEventListener(
-"load",
-function(){
-
-
-
-const saved=
-localStorage.getItem(
-"CBSE_FORM_DATA"
-);
-
-
-
-if(saved){
-
-
-
-const data=
-JSON.parse(saved);
-
-
-
-for(let key in data){
-
-
-
-const element=
-document.getElementById(key);
-
-
-
-if(element){
-
-
-element.value=data[key];
-
-
-}
-
-
-
-}
-
-
-
-}
-
-
-
-});
-
-
-
-
-
-
-
-
-
-// ===============================
-// DARK MODE
-// ===============================
-
-
-
-const darkBtn=
-document.getElementById(
-"darkModeBtn"
-);
-
-
-
-
-if(darkBtn){
-
-
-
-darkBtn.addEventListener(
-"click",
-function(){
-
-
-
-document.body.classList.toggle(
-"darkMode"
-);
-
-
-
-if(
-document.body.classList.contains(
-"darkMode"
-)
-
-){
-
-
-darkBtn.innerHTML=
-'<i class="fa-solid fa-sun"></i>';
-
-
-}
-
-else{
-
-
-darkBtn.innerHTML=
-'<i class="fa-solid fa-moon"></i>';
-
-
-
-}
-
-
-
-
-});
-
-
-}
-
-
-
-
-
-
-
-
-
-// ===============================
-// BACK TO TOP
-// ===============================
-
-
-const topBtn=
-document.getElementById(
-"topBtn"
-);
-
-
-
-if(topBtn){
-
-
-
-topBtn.addEventListener(
-"click",
-function(){
-
-
-window.scrollTo({
-
-top:0,
-
-behavior:"smooth"
-
-
-});
-
-
-
-});
-
-
-}
-/* ==================================================
-   JAVASCRIPT P3
-   FINAL SUBMISSION SYSTEM
-================================================== */
-
-
-
-
-
-// ===============================
-// GENERATE REGISTRATION ID
-// ===============================
-
-
-function generateRegistrationID(){
-
-
-const year=new Date().getFullYear();
-
-
-const random=Math.floor(
-1000 + Math.random()*9000
-);
-
-
-
-return "CGA-"+year+"-"+random;
-
-
-}
-
-
-
-
-
-
-
-
-// ===============================
-// PREVIEW SYSTEM
-// ===============================
-
-
-const previewBtn=
-document.getElementById(
+let previewBtn=document.getElementById(
 "previewBtn"
 );
 
 
-
-const previewModal=
-document.getElementById(
-"previewModal"
+let preview=document.getElementById(
+"preview"
 );
 
 
-
-const closePreview=
-document.getElementById(
+let closePreview=document.getElementById(
 "closePreview"
 );
-
-
-
-const previewData=
-document.getElementById(
-"previewData"
-);
-
-
 
 
 
 if(previewBtn){
 
 
-
-previewBtn.addEventListener(
-"click",
-function(){
+previewBtn.onclick=function(){
 
 
 
-let name=
-document.getElementById(
+preview.style.display="flex";
+
+
+
+let name=document.getElementById(
 "studentName"
-)?.value || "Not Filled";
+).value;
 
 
 
-let father=
 document.getElementById(
-"fatherName"
-)?.value || "Not Filled";
+"previewData"
+).innerHTML=
 
 
-
-let mother=
-document.getElementById(
-"motherName"
-)?.value || "Not Filled";
-
-
-
-let dob=
-document.getElementById(
-"dob"
-)?.value || "Not Filled";
-
-
-
-let subjects=
-document.getElementById(
-"subjectList"
-)?.innerHTML || "No Subject";
-
-
-
-
-
-
-if(previewData){
-
-
-
-previewData.innerHTML=`
-
-<div class="previewRow">
+`
 
 <h3>Student Name</h3>
 
-<p>${name}</p>
+<p>${name || "Not Entered"}</p>
 
-</div>
-
-
-<div class="previewRow">
-
-<h3>Father Name</h3>
-
-<p>${father}</p>
-
-</div>
-
-
-
-<div class="previewRow">
-
-<h3>Mother Name</h3>
-
-<p>${mother}</p>
-
-</div>
-
-
-
-<div class="previewRow">
-
-<h3>Date Of Birth</h3>
-
-<p>${dob}</p>
-
-</div>
-
-
-
-<div class="previewRow">
-
-<h3>Subjects</h3>
-
-<p>${subjects}</p>
-
-</div>
 
 `;
 
@@ -1189,36 +696,20 @@ previewData.innerHTML=`
 
 
 
-if(previewModal){
-
-previewModal.style.display="flex";
-
 }
-
-
-
-});
-
-
-}
-
-
-
 
 
 
 if(closePreview){
 
 
-closePreview.addEventListener(
-"click",
-function(){
+closePreview.onclick=function(){
 
 
-previewModal.style.display="none";
+preview.style.display="none";
 
 
-});
+}
 
 
 }
@@ -1231,10 +722,15 @@ previewModal.style.display="none";
 
 
 
-// ===============================
-// FINAL FORM SUBMIT
-// ===============================
 
+/* ===============================
+   SUBMIT SUCCESS
+================================ */
+
+
+let success=document.getElementById(
+"successPopup"
+);
 
 
 if(form){
@@ -1246,80 +742,17 @@ form.addEventListener(
 function(e){
 
 
-
 e.preventDefault();
 
 
 
-
-
-const mobile=
-document.getElementById(
-"mobile"
-);
-
-
-
-const apaar=
-document.getElementById(
-"apaar"
-);
-
-
-
-
-
-if(apaar && apaar.value.length!==12){
-
-
-alert(
-"APAAR ID must be 12 digits"
-);
-
-
-apaar.focus();
-
-return;
-
-
-}
-
-
-
-
-
-
-if(mobile && mobile.value.length!==10){
-
-
-alert(
-"Enter valid mobile number"
-);
-
-
-mobile.focus();
-
-
-return;
-
-
-}
-
-
-
-
-
-
-
-const agree=
-document.getElementById(
+let agree=document.getElementById(
 "agree"
 );
 
 
 
-
-if(agree && !agree.checked){
+if(!agree.checked){
 
 
 alert(
@@ -1335,44 +768,6 @@ return;
 
 
 
-
-
-
-const id=
-generateRegistrationID();
-
-
-
-
-
-const regBox=
-document.getElementById(
-"registrationID"
-);
-
-
-
-if(regBox){
-
-
-regBox.innerHTML=id;
-
-
-}
-
-
-
-
-
-
-
-const success=
-document.getElementById(
-"successPopup"
-);
-
-
-
 if(success){
 
 
@@ -1383,17 +778,11 @@ success.style.display="flex";
 
 
 
+}
 
 
-
-
-localStorage.removeItem(
-"CBSE_FORM_DATA"
 );
 
-
-
-});
 
 
 }
@@ -1403,17 +792,7 @@ localStorage.removeItem(
 
 
 
-
-
-
-
-// ===============================
-// CLOSE SUCCESS POPUP
-// ===============================
-
-
-const closeSuccess=
-document.getElementById(
+let closeSuccess=document.getElementById(
 "closeSuccess"
 );
 
@@ -1422,19 +801,14 @@ document.getElementById(
 if(closeSuccess){
 
 
-
-closeSuccess.addEventListener(
-"click",
-function(){
+closeSuccess.onclick=function(){
 
 
-document.getElementById(
-"successPopup"
-).style.display="none";
+success.style.display="none";
 
 
+}
 
-});
 
 
 }
@@ -1446,169 +820,127 @@ document.getElementById(
 
 
 
-
-
-// ===============================
-// CONFIRM SUBMIT BUTTON
-// ===============================
-
-
-const confirmSubmit=
-document.getElementById(
-"confirmSubmit"
-);
-
-
-
-if(confirmSubmit){
-
-
-confirmSubmit.addEventListener(
-"click",
-function(){
-
-
-
-if(previewModal){
-
-previewModal.style.display="none";
-
-}
-
+/* ===============================
+   RESET
+================================ */
 
 
 if(form){
-
-
-form.requestSubmit();
-
-
-}
-
-
-
-});
-
-
-}
-
-
-
-
-
-
-
-
-
-// ===============================
-// PRINT SYSTEM
-// ===============================
-
-
-const printBtn=
-document.getElementById(
-"printBtn"
-);
-
-
-
-if(printBtn){
-
-
-
-printBtn.addEventListener(
-"click",
-function(){
-
-
-window.print();
-
-
-});
-
-
-}
-
-
-
-
-
-
-
-
-
-// ===============================
-// RESET SYSTEM
-// ===============================
-
-
-if(form){
-
 
 
 form.addEventListener(
 "reset",
-function(){
+()=>{
+
+
+setTimeout(()=>{
+
+
+updateProgress();
+
+updateSubjects();
+
+
+},300);
 
 
 
-setTimeout(function(){
+}
 
-
-
-localStorage.removeItem(
-"CBSE_FORM_DATA"
 );
-
-
-
-const percent=
-document.getElementById(
-"completePercent"
-);
-
-
-
-if(percent){
-
-percent.innerHTML="0%";
 
 
 }
 
 
 
-const list=
-document.getElementById(
-"subjectList"
+
+
+
+
+
+
+/* ===============================
+   DARK MODE
+================================ */
+
+
+let darkBtn=document.getElementById(
+"darkModeBtn"
 );
 
 
 
-if(list){
+if(darkBtn){
 
-list.innerHTML=
-"No Subjects Selected";
+
+darkBtn.onclick=function(){
+
+
+document.body.classList.toggle(
+"darkMode"
+);
+
+
+}
 
 
 }
 
 
 
-},200);
 
 
+
+
+
+/* ===============================
+   TOP BUTTON
+================================ */
+
+
+let topBtn=document.getElementById(
+"topBtn"
+);
+
+
+
+if(topBtn){
+
+
+topBtn.onclick=function(){
+
+
+window.scrollTo({
+
+top:0,
+
+behavior:"smooth"
 
 });
 
 
 }
 
+
+
+}
 
 
 
 
 
 console.log(
-"CBSE Premium Portal Loaded Successfully"
+"CBSE Portal JavaScript Loaded Successfully"
 );
+window.addEventListener("load", function(){
+
+let loader = document.getElementById("pageLoader");
+
+if(loader){
+
+loader.remove();
+
+}
+
+});
