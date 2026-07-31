@@ -1,0 +1,1052 @@
+/* ===================================================
+   CAREER GUIDE ACADEMY
+   CBSE REGISTRATION PORTAL
+   STYLE.CSS
+=================================================== */
+
+/* ================= GOOGLE FONT ================= */
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+/* ================= BODY ================= */
+
+body{
+
+    font-family:'Poppins',sans-serif;
+
+    background:linear-gradient(135deg,#0f4c81,#1565c0,#42a5f5);
+
+    min-height:100vh;
+
+    color:#222;
+
+}
+
+/* ================= HEADER ================= */
+
+header{
+
+    width:100%;
+
+    background:#ffffff;
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+    padding:20px 50px;
+
+    box-shadow:0 10px 30px rgba(0,0,0,.15);
+
+    position:sticky;
+
+    top:0;
+
+    z-index:999;
+
+}
+
+.logo img{
+
+    width:90px;
+
+    height:90px;
+
+    object-fit:contain;
+
+}
+
+.school{
+
+    text-align:center;
+
+}
+
+.school h1{
+
+    color:#0f4c81;
+
+    font-size:34px;
+
+    font-weight:700;
+
+}
+
+.school h3{
+
+    color:#1565c0;
+
+    margin-top:5px;
+
+}
+
+.school p{
+
+    margin-top:6px;
+
+    color:#666;
+
+    font-size:15px;
+
+}
+
+.live{
+
+    display:flex;
+
+    gap:20px;
+
+}
+
+.live div{
+
+    background:#f5f8ff;
+
+    padding:12px 18px;
+
+    border-radius:12px;
+
+    text-align:center;
+
+    min-width:120px;
+
+    box-shadow:0 5px 15px rgba(0,0,0,.08);
+
+}
+
+.live h4{
+
+    color:#1565c0;
+
+    margin-bottom:5px;
+
+}
+
+.live p{
+
+    font-weight:600;
+
+}
+
+/* ================= CONTAINER ================= */
+
+.container{
+
+    width:95%;
+
+    max-width:1400px;
+
+    margin:40px auto;
+
+}
+
+/* ================= CARD ================= */
+
+.card{
+
+    background:#ffffff;
+
+    border-radius:18px;
+
+    padding:40px;
+
+    box-shadow:0 20px 45px rgba(0,0,0,.18);
+
+}
+
+.card h2{
+
+    text-align:center;
+
+    color:#0f4c81;
+
+    font-size:30px;
+
+}
+
+.card>p{
+
+    text-align:center;
+
+    color:#666;
+
+    margin:10px 0 30px;
+
+}
+
+/* ================= PROGRESS BAR ================= */
+
+.progressBox{
+
+    width:100%;
+
+    height:28px;
+
+    background:#e0e0e0;
+
+    border-radius:50px;
+
+    overflow:hidden;
+
+    margin-bottom:35px;
+
+}
+
+#progressBar{
+
+    width:0%;
+
+    height:100%;
+
+    background:linear-gradient(90deg,#43a047,#66bb6a);
+
+    color:white;
+
+    text-align:center;
+
+    line-height:28px;
+
+    font-weight:bold;
+
+    transition:.5s;
+
+}
+
+/* ================= SECTION ================= */
+
+.section{
+
+    margin-top:35px;
+
+}
+
+.section h3{
+
+    color:#1565c0;
+
+    margin-bottom:20px;
+
+    border-left:6px solid #1565c0;
+
+    padding-left:12px;
+
+}
+
+/* ================= GRID ================= */
+
+.grid{
+
+    display:grid;
+
+    grid-template-columns:repeat(2,1fr);
+
+    gap:20px;
+
+}
+
+/* ================= INPUT BOX ================= */
+
+.inputBox{
+
+    display:flex;
+
+    flex-direction:column;
+
+}
+
+.inputBox.full{
+
+    grid-column:1/3;
+
+}
+
+.inputBox label{
+
+    margin-bottom:8px;
+
+    font-weight:600;
+
+    color:#333;
+
+}
+
+.inputBox input,
+
+.inputBox select,
+
+.inputBox textarea{
+
+    padding:14px;
+
+    border:1px solid #cfd8dc;
+
+    border-radius:10px;
+
+    font-size:15px;
+
+    font-family:'Poppins',sans-serif;
+
+    transition:.3s;
+
+    background:white;
+
+}
+
+.inputBox textarea{
+
+    resize:vertical;
+
+}
+
+.inputBox input:focus,
+
+.inputBox select:focus,
+
+.inputBox textarea:focus{
+
+    outline:none;
+
+    border:2px solid #1976d2;
+
+    box-shadow:0 0 12px rgba(25,118,210,.20);
+
+}
+
+/* ================= GENDER ================= */
+
+.gender{
+
+    display:flex;
+
+    gap:25px;
+
+    align-items:center;
+
+    height:100%;
+
+}
+
+.gender label{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:8px;
+
+    font-weight:500;
+
+}
+
+/* ================= PHOTO AREA ================= */
+
+.photoArea{
+
+    display:grid;
+
+    grid-template-columns:320px 1fr;
+
+    gap:30px;
+
+}
+
+.photoCard{
+
+    background:#f8fbff;
+
+    border:2px dashed #90caf9;
+
+    border-radius:15px;
+
+    padding:20px;
+
+    text-align:center;
+
+}
+
+.photoCard img{
+
+    width:180px;
+
+    height:220px;
+
+    border-radius:12px;
+
+    border:2px solid #1976d2;
+
+    object-fit:cover;
+
+    background:#eeeeee;
+
+    margin-bottom:15px;
+
+}
+
+.photoCard input{
+
+    width:100%;
+
+}
+
+.infoCard{
+
+    background:#f8fbff;
+
+    border-radius:15px;
+
+    padding:25px;
+
+    border-left:6px solid #1976d2;
+
+}
+
+.infoCard h4{
+
+    color:#1565c0;
+
+    margin-bottom:15px;
+
+}
+
+.infoCard ul{
+
+    padding-left:20px;
+
+}
+
+.infoCard li{
+
+    margin-bottom:12px;
+
+    color:#555;
+
+}
+/* ===================================================
+   SUBJECT SECTION
+=================================================== */
+
+.subjectCard{
+
+display:flex;
+
+align-items:center;
+
+gap:10px;
+
+padding:15px;
+
+background:#f8fbff;
+
+border:1px solid #d6e8ff;
+
+border-radius:12px;
+
+font-weight:500;
+
+transition:.3s;
+
+cursor:pointer;
+
+}
+
+.subjectCard:hover{
+
+transform:translateY(-4px);
+
+box-shadow:0 12px 20px rgba(0,0,0,.10);
+
+background:#eef6ff;
+
+}
+
+.subjectGrid{
+
+display:grid;
+
+grid-template-columns:repeat(3,1fr);
+
+gap:20px;
+
+margin-bottom:25px;
+
+}
+
+/* ===================================================
+   SIGNATURE AREA
+=================================================== */
+
+.signatureGrid{
+
+display:grid;
+
+grid-template-columns:repeat(3,1fr);
+
+gap:25px;
+
+}
+
+.signCard{
+
+background:#fdfdfd;
+
+border:2px dashed #90caf9;
+
+padding:20px;
+
+border-radius:15px;
+
+text-align:center;
+
+transition:.3s;
+
+}
+
+.signCard:hover{
+
+transform:translateY(-5px);
+
+box-shadow:0 15px 30px rgba(0,0,0,.12);
+
+}
+
+.signCard h4{
+
+margin-bottom:15px;
+
+color:#1565c0;
+
+}
+
+.signCard img{
+
+width:220px;
+
+height:90px;
+
+border:2px solid #1976d2;
+
+border-radius:10px;
+
+object-fit:contain;
+
+background:#eeeeee;
+
+margin-bottom:15px;
+
+}
+
+.signCard input{
+
+width:100%;
+
+}
+
+/* ===================================================
+   DECLARATION
+=================================================== */
+
+.declaration{
+
+background:#fff8e6;
+
+padding:20px;
+
+border-left:6px solid orange;
+
+border-radius:10px;
+
+line-height:30px;
+
+font-size:15px;
+
+}
+
+.declaration input{
+
+margin-right:10px;
+
+transform:scale(1.2);
+
+}
+
+/* ===================================================
+   BUTTON AREA
+=================================================== */
+
+.buttonArea{
+
+display:flex;
+
+justify-content:center;
+
+flex-wrap:wrap;
+
+gap:20px;
+
+margin-top:40px;
+
+}
+
+.btn{
+
+padding:14px 30px;
+
+font-size:16px;
+
+border:none;
+
+border-radius:10px;
+
+cursor:pointer;
+
+font-weight:600;
+
+transition:.3s;
+
+font-family:'Poppins',sans-serif;
+
+}
+
+.submitBtn{
+
+background:#1565c0;
+
+color:white;
+
+}
+
+.resetBtn{
+
+background:#e53935;
+
+color:white;
+
+}
+
+.printBtn{
+
+background:#43a047;
+
+color:white;
+
+}
+
+.pdfBtn{
+
+background:#8e24aa;
+
+color:white;
+
+}
+
+.btn:hover{
+
+transform:translateY(-4px);
+
+box-shadow:0 12px 20px rgba(0,0,0,.20);
+
+}
+
+/* ===================================================
+   DASHBOARD
+=================================================== */
+
+.dashboard{
+
+margin-top:40px;
+
+display:grid;
+
+grid-template-columns:repeat(4,1fr);
+
+gap:20px;
+
+}
+
+.dashCard{
+
+background:white;
+
+padding:25px;
+
+border-radius:15px;
+
+text-align:center;
+
+box-shadow:0 15px 30px rgba(0,0,0,.10);
+
+transition:.3s;
+
+}
+
+.dashCard:hover{
+
+transform:translateY(-6px);
+
+}
+
+.dashIcon{
+
+font-size:45px;
+
+margin-bottom:12px;
+
+}
+
+.dashCard h3{
+
+color:#1565c0;
+
+margin-bottom:10px;
+
+}
+
+/* ===================================================
+   FLOATING MENU
+=================================================== */
+
+.floatingMenu{
+
+position:fixed;
+
+right:25px;
+
+bottom:25px;
+
+display:flex;
+
+flex-direction:column;
+
+gap:15px;
+
+z-index:1000;
+
+}
+
+.floatingMenu button{
+
+width:55px;
+
+height:55px;
+
+border:none;
+
+border-radius:50%;
+
+background:#1565c0;
+
+color:white;
+
+font-size:22px;
+
+cursor:pointer;
+
+box-shadow:0 10px 20px rgba(0,0,0,.20);
+
+transition:.3s;
+
+}
+
+.floatingMenu button:hover{
+
+transform:scale(1.1);
+
+}
+
+/* ===================================================
+   POPUP
+=================================================== */
+
+.popup{
+
+display:none;
+
+position:fixed;
+
+top:0;
+
+left:0;
+
+width:100%;
+
+height:100%;
+
+background:rgba(0,0,0,.45);
+
+justify-content:center;
+
+align-items:center;
+
+z-index:9999;
+
+}
+
+.popupContent{
+
+background:white;
+
+padding:35px;
+
+border-radius:20px;
+
+width:420px;
+
+text-align:center;
+
+animation:popup .4s ease;
+
+}
+
+.popupIcon{
+
+font-size:70px;
+
+margin-bottom:15px;
+
+}
+
+.popupContent button{
+
+margin-top:20px;
+
+padding:12px 30px;
+
+background:#1565c0;
+
+border:none;
+
+border-radius:8px;
+
+color:white;
+
+cursor:pointer;
+
+}
+
+/* ===================================================
+   FOOTER
+=================================================== */
+
+footer{
+
+margin-top:60px;
+
+background:#0f4c81;
+
+color:white;
+
+padding:45px 20px;
+
+}
+
+.footerGrid{
+
+display:grid;
+
+grid-template-columns:repeat(4,1fr);
+
+gap:30px;
+
+max-width:1400px;
+
+margin:auto;
+
+}
+
+.footerGrid h2,
+
+.footerGrid h3{
+
+margin-bottom:15px;
+
+}
+
+.footerGrid p{
+
+margin-bottom:8px;
+
+}
+
+.copyright{
+
+margin-top:35px;
+
+padding-top:20px;
+
+border-top:1px solid rgba(255,255,255,.25);
+
+text-align:center;
+
+}
+
+/* ===================================================
+   DARK MODE
+=================================================== */
+
+.darkMode{
+
+background:#121212;
+
+color:white;
+
+}
+
+.darkMode .card,
+
+.darkMode .dashCard,
+
+.darkMode header{
+
+background:#1f1f1f;
+
+color:white;
+
+}
+
+.darkMode input,
+
+.darkMode select,
+
+.darkMode textarea{
+
+background:#2b2b2b;
+
+color:white;
+
+border:1px solid #666;
+
+}
+
+.darkMode footer{
+
+background:black;
+
+}
+
+/* ===================================================
+   RESPONSIVE
+=================================================== */
+
+@media(max-width:992px){
+
+.grid,
+
+.signatureGrid,
+
+.dashboard,
+
+.footerGrid,
+
+.subjectGrid{
+
+grid-template-columns:1fr;
+
+}
+
+.photoArea{
+
+grid-template-columns:1fr;
+
+}
+
+header{
+
+flex-direction:column;
+
+text-align:center;
+
+gap:20px;
+
+}
+
+.live{
+
+flex-direction:column;
+
+}
+
+}
+
+@media(max-width:600px){
+
+.card{
+
+padding:20px;
+
+}
+
+.school h1{
+
+font-size:24px;
+
+}
+
+.buttonArea{
+
+flex-direction:column;
+
+}
+
+.btn{
+
+width:100%;
+
+}
+
+}
+
+/* ===================================================
+   ANIMATIONS
+=================================================== */
+
+.card{
+
+animation:fadeIn .8s ease;
+
+}
+
+@keyframes fadeIn{
+
+from{
+
+opacity:0;
+
+transform:translateY(30px);
+
+}
+
+to{
+
+opacity:1;
+
+transform:translateY(0);
+
+}
+
+}
+
+@keyframes popup{
+
+from{
+
+transform:scale(.6);
+
+opacity:0;
+
+}
+
+to{
+
+transform:scale(1);
+
+opacity:1;
+
+}
+
+}

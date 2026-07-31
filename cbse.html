@@ -1,0 +1,916 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Career Guide Academy | CBSE Registration Portal</title>
+
+<link rel="stylesheet" href="style.css">
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+</head>
+
+<body>
+
+<!-- ================= HEADER ================= -->
+
+<header>
+
+<div class="logo">
+
+<img src="images/logo.png" alt="Logo">
+
+</div>
+
+<div class="school">
+
+<h1>CAREER GUIDE ACADEMY</h1>
+
+<h3>CBSE Registration Portal</h3>
+
+<p>Academic Session : 2026 - 2027</p>
+
+</div>
+
+<div class="live">
+
+<div>
+
+<h4>Date</h4>
+
+<p id="currentDate"></p>
+
+</div>
+
+<div>
+
+<h4>Time</h4>
+
+<p id="currentTime"></p>
+
+</div>
+
+</div>
+
+</header>
+
+<!-- ================= MAIN ================= -->
+
+<div class="container">
+
+<div class="card">
+
+<h2>Student Registration Form</h2>
+
+<p>
+
+Fill all mandatory fields carefully.
+
+</p>
+
+<div class="progressBox">
+
+<div id="progressBar">
+
+0%
+
+</div>
+
+</div>
+
+<form id="registrationForm">
+
+<!-- ================= STUDENT DETAILS ================= -->
+
+<div class="section">
+
+<h3>Student Information</h3>
+
+<div class="grid">
+
+<div class="inputBox">
+
+<label>Student Name *</label>
+
+<input
+
+type="text"
+
+id="studentName"
+
+placeholder="Enter Student Name"
+
+required>
+
+</div>
+
+<div class="inputBox">
+
+<label>APAAR ID *</label>
+
+<input
+
+type="text"
+
+id="apaar"
+
+maxlength="12"
+
+placeholder="12 Digit APAAR ID"
+
+required>
+
+</div>
+
+<div class="inputBox">
+
+<label>Father Name *</label>
+
+<input
+
+type="text"
+
+id="fatherName"
+
+placeholder="Enter Father Name"
+
+required>
+
+</div>
+
+<div class="inputBox">
+
+<label>Mother Name *</label>
+
+<input
+
+type="text"
+
+id="motherName"
+
+placeholder="Enter Mother Name"
+
+required>
+
+</div>
+
+<div class="inputBox">
+
+<label>Date Of Birth *</label>
+
+<input
+
+type="date"
+
+id="dob"
+
+required>
+
+</div>
+
+<div class="inputBox">
+
+<label>Gender *</label>
+
+<div class="gender">
+
+<label>
+
+<input
+
+type="radio"
+
+name="gender"
+
+value="Male">
+
+Male
+
+</label>
+
+<label>
+
+<input
+
+type="radio"
+
+name="gender"
+
+value="Female">
+
+Female
+
+</label>
+
+<label>
+
+<input
+
+type="radio"
+
+name="gender"
+
+value="Other">
+
+Other
+
+</label>
+
+</div>
+
+</div>
+
+<div class="inputBox">
+
+<label>Category *</label>
+
+<select id="category">
+
+<option value="">Select Category</option>
+
+<option>General</option>
+
+<option>OBC</option>
+
+<option>SC</option>
+
+<option>ST</option>
+
+<option>EWS</option>
+
+</select>
+
+</div>
+
+<div class="inputBox">
+
+<label>Mobile Number *</label>
+
+<input
+
+type="tel"
+
+id="mobile"
+
+maxlength="10"
+
+placeholder="Enter Mobile Number"
+
+required>
+
+</div>
+
+</div>
+
+</div>
+
+<!-- ================= PHOTO ================= -->
+
+<div class="section">
+
+<h3>Student Photograph</h3>
+
+<div class="photoArea">
+
+<div class="photoCard">
+
+<img
+
+id="photoPreview"
+
+src=""
+
+alt="Photo Preview">
+
+<input
+
+type="file"
+
+id="photo"
+
+accept="image/*">
+
+</div>
+
+<div class="infoCard">
+
+<h4>Instructions</h4>
+
+<ul>
+
+<li>Upload passport size photo.</li>
+
+<li>Photo should be clear.</li>
+
+<li>JPG / PNG supported.</li>
+
+<li>Maximum size 2 MB.</li>
+
+</ul>
+
+</div>
+
+</div>
+
+</div>
+<!-- ================= SUBJECT DETAILS ================= -->
+
+<div class="section">
+
+<h3>Subject Information</h3>
+
+<div class="grid">
+
+<div class="inputBox">
+
+<label>Mathematics *</label>
+
+<select id="math">
+
+<option value="">Select Subject</option>
+
+<option>Mathematics Standard (041)</option>
+
+<option>Mathematics Basic (241)</option>
+
+</select>
+
+</div>
+
+<div class="inputBox">
+
+<label>Language *</label>
+
+<select id="language">
+
+<option value="">Select Language</option>
+
+<option>Hindi (085)</option>
+
+<option>English (184)</option>
+
+<option>Sanskrit (122)</option>
+
+<option>Urdu (303)</option>
+
+</select>
+
+</div>
+
+<div class="inputBox">
+
+<label>Additional Subject</label>
+
+<select id="additional">
+
+<option>None</option>
+
+<option>Artificial Intelligence</option>
+
+<option>Information Technology</option>
+
+<option>Painting</option>
+
+<option>Home Science</option>
+
+</select>
+
+</div>
+
+<div class="inputBox">
+
+<label>Blood Group</label>
+
+<select id="blood">
+
+<option>Select Blood Group</option>
+
+<option>A+</option>
+
+<option>A-</option>
+
+<option>B+</option>
+
+<option>B-</option>
+
+<option>AB+</option>
+
+<option>AB-</option>
+
+<option>O+</option>
+
+<option>O-</option>
+
+</select>
+
+</div>
+
+</div>
+
+</div>
+
+<!-- ================= ADDRESS ================= -->
+
+<div class="section">
+
+<h3>Address Information</h3>
+
+<div class="grid">
+
+<div class="inputBox full">
+
+<label>Full Address *</label>
+
+<textarea
+
+id="address"
+
+rows="4"
+
+placeholder="Enter Complete Address"
+
+required>
+
+</textarea>
+
+</div>
+
+<div class="inputBox">
+
+<label>City *</label>
+
+<input
+
+type="text"
+
+id="city"
+
+placeholder="Enter City"
+
+required>
+
+</div>
+
+<div class="inputBox">
+
+<label>State *</label>
+
+<input
+
+type="text"
+
+id="state"
+
+placeholder="Enter State"
+
+required>
+
+</div>
+
+<div class="inputBox">
+
+<label>Pincode *</label>
+
+<input
+
+type="text"
+
+id="pincode"
+
+maxlength="6"
+
+placeholder="Enter Pincode"
+
+required>
+
+</div>
+
+<div class="inputBox">
+
+<label>Email</label>
+
+<input
+
+type="email"
+
+id="email"
+
+placeholder="Enter Email Address">
+
+</div>
+
+</div>
+
+</div>
+
+<!-- ================= SIGNATURE ================= -->
+
+<div class="section">
+
+<h3>Signature Upload</h3>
+
+<div class="signatureGrid">
+
+<div class="signCard">
+
+<h4>Student Signature</h4>
+
+<img
+
+id="studentPreview"
+
+src=""
+
+alt="Student Signature">
+
+<input
+
+type="file"
+
+id="studentSign"
+
+accept="image/*">
+
+</div>
+
+<div class="signCard">
+
+<h4>Mother Signature</h4>
+
+<img
+
+id="motherPreview"
+
+src=""
+
+alt="Mother Signature">
+
+<input
+
+type="file"
+
+id="motherSign"
+
+accept="image/*">
+
+</div>
+
+<div class="signCard">
+
+<h4>Father Signature</h4>
+
+<img
+
+id="fatherPreview"
+
+src=""
+
+alt="Father Signature">
+
+<input
+
+type="file"
+
+id="fatherSign"
+
+accept="image/*">
+
+</div>
+
+</div>
+
+</div>
+
+<!-- ================= DECLARATION ================= -->
+
+<div class="section">
+
+<h3>Declaration</h3>
+
+<div class="declaration">
+
+<label>
+
+<input
+
+type="checkbox"
+
+id="agree"
+
+required>
+
+I hereby declare that all information provided in this registration form is true and correct. If any information is found incorrect, the school has the right to cancel my registration.
+
+</label>
+
+</div>
+
+</div>
+<!-- ================= ACTION BUTTONS ================= -->
+
+<div class="section">
+
+<div class="buttonArea">
+
+<button type="submit" class="btn submitBtn">
+
+Submit Registration
+
+</button>
+
+<button type="reset" class="btn resetBtn">
+
+Reset Form
+
+</button>
+
+<button type="button" id="printBtn" class="btn printBtn">
+
+Print Form
+
+</button>
+
+<button type="button" id="pdfBtn" class="btn pdfBtn">
+
+Download PDF
+
+</button>
+
+</div>
+
+</div>
+
+</form>
+
+</div>
+
+<!-- ================= DASHBOARD ================= -->
+
+<div class="dashboard">
+
+<div class="dashCard">
+
+<div class="dashIcon">
+
+📋
+
+</div>
+
+<h3>Registration Status</h3>
+
+<p id="status">
+
+Waiting For Submission
+
+</p>
+
+</div>
+
+<div class="dashCard">
+
+<div class="dashIcon">
+
+📅
+
+</div>
+
+<h3>Today's Date</h3>
+
+<p id="todayDate">
+
+Loading...
+
+</p>
+
+</div>
+
+<div class="dashCard">
+
+<div class="dashIcon">
+
+🕒
+
+</div>
+
+<h3>Current Time</h3>
+
+<p id="liveClock">
+
+Loading...
+
+</p>
+
+</div>
+
+<div class="dashCard">
+
+<div class="dashIcon">
+
+📊
+
+</div>
+
+<h3>Progress</h3>
+
+<p>
+
+<span id="completePercent">
+
+0%
+
+</span>
+
+Completed
+
+</p>
+
+</div>
+
+</div>
+
+</div>
+
+<!-- ================= FLOATING BUTTONS ================= -->
+
+<div class="floatingMenu">
+
+<button
+
+id="darkModeBtn"
+
+title="Dark Mode">
+
+🌙
+
+</button>
+
+<button
+
+id="topBtn"
+
+title="Go To Top">
+
+⬆
+
+</button>
+
+</div>
+
+<!-- ================= SUCCESS POPUP ================= -->
+
+<div class="popup" id="successPopup">
+
+<div class="popupContent">
+
+<div class="popupIcon">
+
+✅
+
+</div>
+
+<h2>
+
+Registration Successful
+
+</h2>
+
+<p>
+
+Your registration form has been submitted successfully.
+
+</p>
+
+<button id="closePopup">
+
+Close
+
+</button>
+
+</div>
+
+</div>
+
+<!-- ================= FOOTER ================= -->
+
+<footer>
+
+<div class="footerGrid">
+
+<div>
+
+<h2>
+
+Career Guide Academy
+
+</h2>
+
+<p>
+
+CBSE Registration Portal
+
+</p>
+
+<p>
+
+Academic Session 2026-27
+
+</p>
+
+</div>
+
+<div>
+
+<h3>
+
+Contact
+
+</h3>
+
+<p>
+
+Email :
+
+info@careerguideacademy.in
+
+</p>
+
+<p>
+
+Phone :
+
++91 9876543210
+
+</p>
+
+</div>
+
+<div>
+
+<h3>
+
+Technology
+
+</h3>
+
+<p>
+
+HTML5
+
+</p>
+
+<p>
+
+CSS3
+
+</p>
+
+<p>
+
+JavaScript
+
+</p>
+
+</div>
+
+<div>
+
+<h3>
+
+Developer
+
+</h3>
+
+<p>
+
+Faraz
+
+</p>
+
+<p>
+
+School Project
+
+</p>
+
+</div>
+
+</div>
+
+<div class="copyright">
+
+© 2026 Career Guide Academy | All Rights Reserved.
+
+</div>
+
+</footer>
+
+<script src="script.js"></script>
+
+</body>
+
+</html>
