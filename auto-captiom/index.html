@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>Faraz Auto Captions</title>
+
+  <link rel="stylesheet" href="./style.css" />
+
+  <!-- FFmpeg -->
+  <script src="https://unpkg.com/@ffmpeg/ffmpeg@0.12.10/dist/umd/ffmpeg.js"></script>
+
+  <!-- Transformers.js -->
+  <script type="module" src="./app.js"></script>
+</head>
+
+<body>
+
+<div class="app">
+
+  <header class="topbar">
+    <div class="brand">
+      <span class="brand-icon">✦</span>
+      <span>Faraz Auto Captions</span>
+    </div>
+  </header>
+
+
+  <main class="workspace">
+
+    <!-- LEFT PANEL -->
+
+    <aside class="left-panel">
+
+      <div class="panel-title">VIDEO</div>
+
+      <label class="upload-box" id="uploadBox">
+
+        <input
+          type="file"
+          id="videoInput"
+          accept="video/*"
+          hidden
+        />
+
+        <div class="upload-icon">＋</div>
+
+        <div class="upload-title">
+          Upload Video
+        </div>
+
+        <div class="upload-subtitle">
+          MP4, MOV, WEBM
+        </div>
+
+      </label>
+
+
+      <button
+        id="generateBtn"
+        class="generate-btn"
+        disabled
+      >
+        ✨ Generate Auto Captions
+      </button>
+
+
+      <button
+        id="stopBtn"
+        class="stop-btn"
+        disabled
+      >
+        Stop
+      </button>
+
+
+      <div class="progress-area">
+
+        <div class="progress-text" id="status">
+          Upload a video to start.
+        </div>
+
+        <div class="progress">
+          <div
+            id="progressBar"
+            class="progress-bar"
+          ></div>
+        </div>
+
+      </div>
+
+
+      <div class="settings">
+
+        <div class="panel-title">
+          LANGUAGE
+        </div>
+
+        <select id="language">
+
+          <option value="auto">
+            Hindi / English
+          </option>
+
+          <option value="hi">
+            Hindi
+          </option>
+
+          <option value="en">
+            English
+          </option>
+
+        </select>
+
+      </div>
+
+    </aside>
+
+
+    <!-- CENTER -->
+
+    <section class="center">
+
+      <div class="preview-wrapper">
+
+        <div
+          class="video-container"
+          id="videoContainer"
+        >
+
+          <video
+            id="video"
+            playsinline
+            controls
+          ></video>
+
+          <div
+            id="captionOverlay"
+            class="caption-overlay style-bold"
+          ></div>
+
+        </div>
+
+      </div>
+
+
+      <div class="timeline">
+
+        <div class="timeline-head">
+
+          <span>CAPTIONS</span>
+
+          <span id="captionCount">
+            0 words
+          </span>
+
+        </div>
+
+        <div
+          id="captionTimeline"
+          class="caption-timeline"
+        >
+
+          <div class="empty-timeline">
+            Generate captions to see them here.
+          </div>
+
+        </div>
+
+      </div>
+
+    </section>
+
+
+    <!-- RIGHT PANEL -->
+
+    <aside class="right-panel">
+
+      <div class="panel-title">
+        CAPTION STYLES
+      </div>
+
+      <div class="styles-grid">
+
+
+        <button
+          class="style-card active"
+          data-style="style-bold"
+        >
+          <span class="demo demo-bold">
+            THIS IS AMAZING
+          </span>
+          <small>Bold</small>
+        </button>
+
+
+        <button
+          class="style-card"
+          data-style="style-karaoke"
+        >
+          <span class="demo demo-karaoke">
+            THIS IS AMAZING
+          </span>
+          <small>Karaoke</small>
+        </button>
+
+
+        <button
+          class="style-card"
+          data-style="style-yellow"
+        >
+          <span class="demo demo-yellow">
+            THIS IS AMAZING
+          </span>
+          <small>Yellow Pop</small>
+        </button>
+
+
+        <button
+          class="style-card"
+          data-style="style-neon"
+        >
+          <span class="demo demo-neon">
+            THIS IS AMAZING
+          </span>
+          <small>Neon</small>
+        </button>
+
+
+        <button
+          class="style-card"
+          data-style="style-box"
+        >
+          <span class="demo demo-box">
+            THIS IS AMAZING
+          </span>
+          <small>Black Box</small>
+        </button>
+
+
+        <button
+          class="style-card"
+          data-style="style-whitebox"
+        >
+          <span class="demo demo-whitebox">
+            THIS IS AMAZING
+          </span>
+          <small>White Box</small>
+        </button>
+
+
+        <button
+          class="style-card"
+          data-style="style-red"
+        >
+          <span class="demo demo-red">
+            THIS IS AMAZING
+          </span>
+          <small>Red Viral</small>
+        </button>
+
+
+        <button
+          class="style-card"
+          data-style="style-green"
+        >
+          <span class="demo demo-green">
+            THIS IS AMAZING
+          </span>
+          <small>Green</small>
+        </button>
+
+
+        <button
+          class="style-card"
+          data-style="style-blue"
+        >
+          <span class="demo demo-blue">
+            THIS IS AMAZING
+          </span>
+          <small>Blue Glow</small>
+        </button>
+
+
+        <button
+          class="style-card"
+          data-style="style-gradient"
+        >
+          <span class="demo demo-gradient">
+            THIS IS AMAZING
+          </span>
+          <small>Gradient</small>
+        </button>
+
+
+        <button
+          class="style-card"
+          data-style="style-punch"
+        >
+          <span class="demo demo-punch">
+            AMAZING!
+          </span>
+          <small>Punch</small>
+        </button>
+
+
+        <button
+          class="style-card"
+          data-style="style-comic"
+        >
+          <span class="demo demo-comic">
+            WOW!
+          </span>
+          <small>Comic</small>
+        </button>
+
+
+        <button
+          class="style-card"
+          data-style="style-minimal"
+        >
+          <span class="demo demo-minimal">
+            this is amazing
+          </span>
+          <small>Minimal</small>
+        </button>
+
+
+        <button
+          class="style-card"
+          data-style="style-creator"
+        >
+          <span class="demo demo-creator">
+            THIS IS AMAZING
+          </span>
+          <small>Creator</small>
+        </button>
+
+
+        <button
+          class="style-card"
+          data-style="style-wordpop"
+        >
+          <span class="demo demo-wordpop">
+            AMAZING
+          </span>
+          <small>Word Pop</small>
+        </button>
+
+
+        <button
+          class="style-card"
+          data-style="style-huge"
+        >
+          <span class="demo demo-huge">
+            BIG!
+          </span>
+          <small>Huge</small>
+        </button>
+
+
+        <button
+          class="style-card"
+          data-style="style-premium"
+        >
+          <span class="demo demo-premium">
+            AMAZING
+          </span>
+          <small>Premium</small>
+        </button>
+
+
+        <button
+          class="style-card"
+          data-style="style-mixed"
+        >
+          <span class="demo demo-mixed">
+            THIS IS AMAZING
+          </span>
+          <small>Mixed</small>
+        </button>
+
+
+        <button
+          class="style-card"
+          data-style="style-orange"
+        >
+          <span class="demo demo-orange">
+            LET'S GO!
+          </span>
+          <small>Orange</small>
+        </button>
+
+
+        <button
+          class="style-card"
+          data-style="style-purple"
+        >
+          <span class="demo demo-purple">
+            AMAZING
+          </span>
+          <small>Purple</small>
+        </button>
+
+      </div>
+
+    </aside>
+
+  </main>
+
+</div>
+
+</body>
+</html>
