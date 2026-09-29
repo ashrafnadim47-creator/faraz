@@ -1,780 +1,271 @@
-import {
-  pipeline,
-  env
-} from "https://cdn.jsdelivr.net/npm/@huggingface/transformers@3.7.2/+esm";
+const videoInput = document.getElementById("videoInput");
+const chooseBtn = document.getElementById("chooseBtn");
+const captionBtn = document.getElementById("captionBtn");
 
+const video = document.getElementById("video");
+const fileName = document.getElementById("fileName");
 
-/* =========================================
-   SETTINGS
-========================================= */
+const previewSection = document.getElementById("previewSection");
+const stylesSection = document.getElementById("stylesSection");
+const captionOutput = document.getElementById("captionOutput");
 
-env.allowLocalModels = false;
+const status = document.getElementById("status");
+const progressBar = document.getElementById("progressBar");
+const captionsBox = document.getElementById("captions");
 
-env.useBrowserCache = true;
+let selectedVideo = null;
+let selectedStyle = "classic";
 
+chooseBtn.addEventListener("click", () => {
+  videoInput.click();
+});
 
-/* =========================================
-   ELEMENTS
-========================================= */
+videoInput.addEventListener("change", () => {
 
-const videoInput =
-  document.getElementById("videoInput");
+  const file = videoInput.files?.[0];
 
-const uploadBox =
-  document.getElementById("uploadBox");
+  if (!file) return;
 
-const generateBtn =
-  document.getElementById("generateBtn");
+  selectedVideo = file;
 
-const stopBtn =
-  document.getElementById("stopBtn");
+  fileName.textContent = file.name;
 
-const video =
-  document.getElementById("video");
+  video.src = URL.createObjectURL(file);
 
-const captionOverlay =
-  document.getElementById("captionOverlay");
+  previewSection.classList.remove("hidden");
+  stylesSection.classList.remove("hidden");
 
-const captionTimeline =
-  document.getElementById("captionTimeline");
+  status.textContent = "Video ready.";
 
-const captionCount =
-  document.getElementById("captionCount");
+});
 
-const statusBox =
-  document.getElementById("status");
+document.querySelectorAll(".style").forEach(button => {
 
-const progressBar =
-  document.getElementById("progressBar");
+  button.addEventListener("click", () => {
 
-const language =
-  document.getElementById("language");
+    document.querySelectorAll(".style")
+      .forEach(x => x.classList.remove("active"));
 
+    button.classList.add("active");
 
-/* =========================================
-   VARIABLES
-========================================= */
+    selectedStyle = button.dataset.style;
 
-let videoURL = null;
+    renderCaptions();
 
-let transcriber = null;
+  });
 
-let captions = [];
+});
 
-let currentStyle = "style-bold";
+captionBtn.addEventListener("click", async () => {
 
-let stopped = false;
-
-
-/* =========================================
-   UPLOAD
-========================================= */
-
-uploadBox.addEventListener(
-  "click",
-  () => videoInput.click()
-);
-
-
-videoInput.addEventListener(
-  "change",
-  () => {
-
-    const file =
-      videoInput.files[0];
-
-    if (!file) return;
-
-
-    if (videoURL) {
-      URL.revokeObjectURL(videoURL);
-    }
-
-
-    videoURL =
-      URL.createObjectURL(file);
-
-
-    video.src = videoURL;
-
-    video.load();
-
-
-    generateBtn.disabled = false;
-
-    statusBox.textContent =
-      "✅ Video ready. Generate Auto Captions dabao.";
-
-    progressBar.style.width = "0%";
-
-
-    captions = [];
-
-    renderTimeline();
-
-    captionOverlay.innerHTML = "";
-
-  }
-);
-
-
-/* =========================================
-   LOAD WHISPER
-========================================= */
-
-async function loadWhisper() {
-
-  if (transcriber) {
-    return transcriber;
+  if (!selectedVideo) {
+    status.textContent = "Please select a video first.";
+    return;
   }
 
+  captionBtn.disabled = true;
 
-  statusBox.textContent =
-    "🤖 AI caption model loading...";
+  progressBar.style.width = "5%";
 
+  status.textContent =
+    "Preparing audio...";
 
-  progressBar.style.width = "10%";
+  try {
 
+    /*
+      STEP 1
+      Extract audio from the uploaded video.
+    */
 
-  transcriber =
-    await pipeline(
-      "automatic-speech-recognition",
-      "Xenova/whisper-tiny",
-      {
-        device:
-          "webgpu"
-      }
-    );
+    const audioBuffer =
+      await extractAudio(selectedVideo);
 
+    progressBar.style.width = "25%";
 
-  progressBar.style.width = "25%";
+    status.textContent =
+      "Transcribing locally...";
 
+    /*
+      STEP 2
 
-  return transcriber;
-}
+      whisper.cpp integration goes here.
 
+      The official whisper.cpp browser build
+      exposes the WASM inference layer.
 
-/* =========================================
-   EXTRACT AUDIO
-========================================= */
+      It must be built/copied into:
+
+      auto-caption/whisper/
+    */
+
+    const result =
+      await transcribeWithWhisper(audioBuffer);
+
+    progressBar.style.width = "100%";
+
+    status.textContent =
+      "Captions generated successfully.";
+
+    window.captionData = result;
+
+    captionOutput.classList.remove("hidden");
+
+    renderCaptions();
+
+  } catch (error) {
+
+    console.error(error);
+
+    status.textContent =
+      "Caption generation failed. Check Console.";
+
+  } finally {
+
+    captionBtn.disabled = false;
+
+  }
+
+});
+
 
 async function extractAudio(file) {
 
-  statusBox.textContent =
-    "🎧 Reading video audio...";
+  const arrayBuffer =
+    await file.arrayBuffer();
 
+  const AudioContext =
+    window.AudioContext ||
+    window.webkitAudioContext;
 
-  const ffmpeg =
-    new FFmpegWASM.FFmpeg();
+  const audioContext =
+    new AudioContext();
 
+  const decoded =
+    await audioContext.decodeAudioData(arrayBuffer);
 
-  await ffmpeg.load({
-    coreURL:
-      "https://unpkg.com/@ffmpeg/core@0.12.6/dist/umd/ffmpeg-core.js"
-  });
+  const mono =
+    convertToMono(decoded);
 
+  await audioContext.close();
 
-  const data =
-    new Uint8Array(
-      await file.arrayBuffer()
-    );
+  return mono;
 
-
-  await ffmpeg.writeFile(
-    "input.mp4",
-    data
-  );
-
-
-  await ffmpeg.exec([
-    "-i",
-    "input.mp4",
-    "-vn",
-    "-ac",
-    "1",
-    "-ar",
-    "16000",
-    "-f",
-    "wav",
-    "audio.wav"
-  ]);
-
-
-  const audioData =
-    await ffmpeg.readFile(
-      "audio.wav"
-    );
-
-
-  return audioData;
 }
 
 
-/* =========================================
-   WAV → FLOAT32
-========================================= */
-
-function wavToFloat32(buffer) {
-
-  const view =
-    new DataView(
-      buffer.buffer,
-      buffer.byteOffset,
-      buffer.byteLength
-    );
-
+function convertToMono(audioBuffer) {
 
   const channels =
-    view.getUint16(22, true);
+    audioBuffer.numberOfChannels;
+
+  const length =
+    audioBuffer.length;
 
   const sampleRate =
-    view.getUint32(24, true);
+    audioBuffer.sampleRate;
 
-  const bits =
-    view.getUint16(34, true);
+  const mono =
+    new Float32Array(length);
 
+  for (let channel = 0; channel < channels; channel++) {
 
-  if (
-    channels !== 1 ||
-    sampleRate !== 16000 ||
-    bits !== 16
-  ) {
+    const data =
+      audioBuffer.getChannelData(channel);
 
-    throw new Error(
-      "Unexpected WAV format."
-    );
+    for (let i = 0; i < length; i++) {
 
-  }
-
-
-  const dataOffset = 44;
-
-  const samples =
-    (buffer.length - dataOffset) / 2;
-
-
-  const output =
-    new Float32Array(samples);
-
-
-  for (
-    let i = 0;
-    i < samples;
-    i++
-  ) {
-
-    const value =
-      view.getInt16(
-        dataOffset + i * 2,
-        true
-      );
-
-
-    output[i] =
-      value / 32768;
-
-  }
-
-
-  return output;
-}
-
-
-/* =========================================
-   GENERATE CAPTIONS
-========================================= */
-
-generateBtn.addEventListener(
-  "click",
-  async () => {
-
-    const file =
-      videoInput.files[0];
-
-    if (!file) {
-
-      statusBox.textContent =
-        "⚠️ Upload a video first.";
-
-      return;
-    }
-
-
-    stopped = false;
-
-    generateBtn.disabled = true;
-
-    stopBtn.disabled = false;
-
-
-    try {
-
-      const model =
-        await loadWhisper();
-
-
-      if (stopped) return;
-
-
-      const audioFile =
-        await extractAudio(file);
-
-
-      if (stopped) return;
-
-
-      statusBox.textContent =
-        "🧠 AI is transcribing...";
-
-
-      progressBar.style.width = "40%";
-
-
-      const audio =
-        wavToFloat32(audioFile);
-
-
-      let languageOption =
-        language.value;
-
-
-      let options = {
-
-        return_timestamps:
-          "word",
-
-        chunk_length_s:
-          30,
-
-        stride_length_s:
-          5,
-
-        task:
-          "transcribe"
-
-      };
-
-
-      if (
-        languageOption !== "auto"
-      ) {
-
-        options.language =
-          languageOption;
-
-      }
-
-
-      const result =
-        await model(
-          audio,
-          options
-        );
-
-
-      if (stopped) return;
-
-
-      progressBar.style.width =
-        "90%";
-
-
-      captions =
-        normalizeCaptions(
-          result
-        );
-
-
-      renderTimeline();
-
-      renderCaption();
-
-
-      statusBox.textContent =
-        `✅ ${captions.length} words generated.`;
-
-
-      progressBar.style.width =
-        "100%";
-
-
-      video.currentTime = 0;
-
-    }
-
-    catch(error) {
-
-      console.error(error);
-
-      statusBox.textContent =
-        "❌ Caption generation failed. Browser console check karo.";
-
-      progressBar.style.width =
-        "0%";
-
-    }
-
-    finally {
-
-      generateBtn.disabled =
-        false;
-
-      stopBtn.disabled =
-        true;
+      mono[i] +=
+        data[i] / channels;
 
     }
 
   }
-);
 
-
-/* =========================================
-   NORMALIZE WHISPER RESULT
-========================================= */
-
-function normalizeCaptions(result) {
-
-  const chunks =
-    result?.chunks || [];
-
-  const output = [];
-
-
-  for (
-    const chunk of chunks
-  ) {
-
-    const text =
-      (chunk.text || "").trim();
-
-
-    const timestamp =
-      chunk.timestamp;
-
-
-    if (
-      !text ||
-      !timestamp
-    ) {
-      continue;
-    }
-
-
-    const start =
-      Number(timestamp[0] ?? 0);
-
-
-    const end =
-      Number(
-        timestamp[1] ??
-        start + .5
-      );
-
-
-    const words =
-      text.split(/\s+/);
-
-
-    const duration =
-      Math.max(
-        .15,
-        (end - start) /
-        words.length
-      );
-
-
-    words.forEach(
-      (word,index) => {
-
-        output.push({
-
-          word,
-
-          start:
-            start +
-            index * duration,
-
-          end:
-            start +
-            (index + 1) *
-            duration
-
-        });
-
-      }
-    );
-
-  }
-
-
-  return output;
-}
-
-
-/* =========================================
-   TIMELINE
-========================================= */
-
-function renderTimeline() {
-
-  captionTimeline.innerHTML = "";
-
-
-  if (!captions.length) {
-
-    captionTimeline.innerHTML =
-      `<div class="empty-timeline">
-        Generate captions to see them here.
-      </div>`;
-
-    captionCount.textContent =
-      "0 words";
-
-    return;
-  }
-
-
-  captionCount.textContent =
-    `${captions.length} words`;
-
-
-  captions.forEach(
-    (item,index) => {
-
-      const div =
-        document.createElement("div");
-
-
-      div.className =
-        "timeline-word";
-
-
-      div.dataset.index =
-        index;
-
-
-      div.textContent =
-        item.word;
-
-
-      captionTimeline.appendChild(
-        div
-      );
-
-    }
-  );
+  return {
+    data: mono,
+    sampleRate
+  };
 
 }
 
 
-/* =========================================
-   LIVE CAPTION
-========================================= */
-
-function renderCaption() {
-
-  captionOverlay.innerHTML = "";
-
-  captionOverlay.className =
-    `caption-overlay ${currentStyle}`;
-
-
-  if (!captions.length) return;
-
+async function transcribeWithWhisper(audio) {
 
   /*
-    Show a small group of words
-    around current playback time.
+    Placeholder for whisper.cpp WASM.
+
+    IMPORTANT:
+
+    whisper.cpp's official browser build is generated
+    with Emscripten. The generated JS/WASM files must
+    be placed in:
+
+    auto-caption/whisper/
+
+    Do NOT use a fake CDN filename here.
   */
 
-  const now =
-    video.currentTime;
+  throw new Error(
+    "whisper.cpp WASM runtime is not installed yet."
+  );
+
+}
 
 
-  let currentIndex = -1;
+function renderCaptions() {
 
+  if (!window.captionData) {
 
-  for (
-    let i = 0;
-    i < captions.length;
-    i++
-  ) {
-
-    if (
-      now >= captions[i].start &&
-      now <= captions[i].end
-    ) {
-
-      currentIndex = i;
-
-      break;
-
-    }
-
-  }
-
-
-  if (currentIndex === -1) {
+    captionsBox.innerHTML =
+      "<div class='caption-line'>No captions yet.</div>";
 
     return;
 
   }
 
+  captionsBox.innerHTML = "";
 
-  const start =
-    Math.max(
-      0,
-      currentIndex - 3
-    );
+  window.captionData.forEach(item => {
 
+    const div =
+      document.createElement("div");
 
-  const end =
-    Math.min(
-      captions.length,
-      currentIndex + 4
-    );
+    div.className =
+      `caption-line ${selectedStyle}`;
 
+    div.innerHTML = `
+      <strong>
+        ${escapeHTML(item.text)}
+      </strong>
+      <small>
+        ${formatTime(item.start)}
+        →
+        ${formatTime(item.end)}
+      </small>
+    `;
 
-  for (
-    let i = start;
-    i < end;
-    i++
-  ) {
+    captionsBox.appendChild(div);
 
-    const span =
-      document.createElement("span");
-
-
-    span.className =
-      "caption-word";
-
-
-    if (
-      i === currentIndex
-    ) {
-
-      span.classList.add(
-        "current"
-      );
-
-    }
-
-
-    span.textContent =
-      captions[i].word;
-
-
-    captionOverlay.appendChild(
-      span
-    );
-
-  }
-
-
-  updateTimeline(
-    currentIndex
-  );
+  });
 
 }
 
 
-/* =========================================
-   TIMELINE ACTIVE WORD
-========================================= */
+function formatTime(seconds) {
 
-function updateTimeline(index) {
-
-  document
-    .querySelectorAll(
-      ".timeline-word"
-    )
-    .forEach(
-      element => {
-
-        element.classList.toggle(
-          "active",
-          Number(
-            element.dataset.index
-          ) === index
-        );
-
-      }
-    );
+  return Number(seconds || 0)
+    .toFixed(2) + "s";
 
 }
 
 
-/* =========================================
-   VIDEO TIME UPDATE
-========================================= */
+function escapeHTML(text) {
 
-video.addEventListener(
-  "timeupdate",
-  renderCaption
-);
+  return String(text)
+    .replaceAll("&", "&amp;")
+    .replaceAll("<", "&lt;")
+    .replaceAll(">", "&gt;")
+    .replaceAll('"', "&quot;")
+    .replaceAll("'", "&#039;");
 
-
-/* =========================================
-   STOP
-========================================= */
-
-stopBtn.addEventListener(
-  "click",
-  () => {
-
-    stopped = true;
-
-    statusBox.textContent =
-      "⏹ Stopped.";
-
-    stopBtn.disabled =
-      true;
-
-    generateBtn.disabled =
-      false;
-
-  }
-);
-
-
-/* =========================================
-   STYLE SWITCHER
-========================================= */
-
-document
-  .querySelectorAll(".style-card")
-  .forEach(
-    card => {
-
-      card.addEventListener(
-        "click",
-        () => {
-
-          currentStyle =
-            card.dataset.style;
-
-
-          document
-            .querySelectorAll(
-              ".style-card"
-            )
-            .forEach(
-              item =>
-                item.classList.remove(
-                  "active"
-                )
-            );
-
-
-          card.classList.add(
-            "active"
-          );
-
-
-          renderCaption();
-
-        }
-      );
-
-    }
-  );
+} 
