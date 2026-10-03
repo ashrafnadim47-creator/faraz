@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FF Friends & Landscape Lobby | Faraz Store</title>
+    <meta name="theme-color" content="#020617">
+    <link rel="icon" href="favicon.ico">
+    <link rel="stylesheet" href="css/global.css">
+    
+    <!-- Google Gaming Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700;900&family=Plus+Jakarta+Sans:wght@700;800;900&display=swap" rel="stylesheet">
+
+    <style>
+        body { background: #020617; color: #fff; font-family: 'Plus Jakarta Sans', sans-serif; padding: 20px; margin: 0; }
+        .ff-friends-card { max-width: 650px; margin: 15px auto; background: rgba(15, 23, 42, 0.85); backdrop-filter: blur(12px); border: 1px solid rgba(0, 229, 255, 0.3); border-radius: 24px; padding: 24px; box-shadow: 0 0 30px rgba(0, 229, 255, 0.15); }
+        .ff-title { font-family: 'Orbitron', sans-serif; color: #00e5ff; font-size: 20px; margin: 15px 0 16px; display: flex; justify-content: space-between; align-items: center; }
+        
+        .search-box { display: flex; gap: 10px; margin-bottom: 20px; }
+        .search-box input { flex: 1; background: rgba(30, 41, 59, 0.8); border: 1px solid rgba(255,255,255,0.1); color: #fff; padding: 12px; border-radius: 12px; font-size: 13px; }
+        .search-box button { background: #00e5ff; color: #000; border: none; padding: 12px 20px; border-radius: 12px; font-weight: 900; cursor: pointer; font-family: 'Orbitron', sans-serif; }
+
+        .section-sub { font-size: 12px; color: #ffcc00; font-weight: 800; text-transform: uppercase; margin: 18px 0 10px; border-bottom: 1px dashed rgba(255,255,255,0.1); padding-bottom: 6px; }
+
+        .friend-item { background: rgba(30, 41, 59, 0.6); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 14px; padding: 12px 16px; display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
+        .btn-action-small { padding: 6px 12px; border-radius: 8px; border: none; font-weight: 800; font-size: 11px; cursor: pointer; }
+
+        /* LANDSCAPE FREE FIRE LOBBY MODAL */
+        .landscape-lobby-overlay {
+            position: fixed;
+            inset: 0;
+            background: radial-gradient(circle, #0f172a 0%, #020617 100%);
+            z-index: 10000;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+
+        .lobby-top-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: rgba(15, 23, 42, 0.8);
+            border: 1px solid rgba(0, 229, 255, 0.3);
+            border-radius: 16px;
+            padding: 10px 20px;
+        }
+
+        .lobby-stage-area {
+            display: flex;
+            justify-content: center;
+            align-items: flex-end;
+            gap: 40px;
+            flex: 1;
+            margin: 20px 0;
+        }
+
+        /* STANDING CHARACTER PODIUM */
+        .character-podium {
+            width: 180px;
+            height: 260px;
+            background: linear-gradient(180deg, rgba(0, 229, 255, 0.05) 0%, rgba(0, 229, 255, 0.2) 100%);
+            border: 2px dashed rgba(0, 229, 255, 0.3);
+            border-radius: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-end;
+            position: relative;
+            box-shadow: 0 10px 30px rgba(0, 229, 255, 0.15);
+            padding-bottom: 10px;
+            cursor: pointer;
+            transition: transform 0.2s, border-color 0.2s;
+        }
+
+        .character-podium.open-slot-podium:hover {
+            transform: scale(1.03);
+            border-color: #00e5ff;
+        }
+
+        .character-podium.active-player {
+            border: 2px solid #00e5ff;
+            background: linear-gradient(180deg, rgba(0, 229, 255, 0.1) 0%, rgba(30, 41, 59, 0.9) 100%);
+            box-shadow: 0 0 25px rgba(0, 229, 255, 0.4);
+            cursor: default;
+        }
+
+        .character-img-standing {
+            height: 180px;
+            object-fit: contain;
+            filter: drop-shadow(0 0 10px rgba(0, 229, 255, 0.6));
+        }
+
+        .podium-base {
+            width: 90%;
+            background: rgba(15, 23, 42, 0.9);
+            border: 1px solid #00e5ff;
+            border-radius: 12px;
+            text-align: center;
+            padding: 6px;
+        }
+
+        .player-name-tag { font-family: 'Orbitron', sans-serif; font-size: 12px; font-weight: 900; color: #fff; }
+        .mic-indicator { font-size: 10px; font-weight: bold; margin-top: 2px; }
+
+        .lobby-controls-bottom {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            background: rgba(15, 23, 42, 0.8);
+            border: 1px solid rgba(255, 204, 0, 0.3);
+            border-radius: 16px;
+            padding: 12px;
+        }
+
+        .btn-ctrl {
+            padding: 10px 20px;
+            border-radius: 12px;
+            border: none;
+            font-family: 'Orbitron', sans-serif;
+            font-weight: 900;
+            font-size: 12px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-mic-toggle { background: #ef4444; color: #fff; }
+        .btn-leave-room { background: #64748b; color: #fff; }
+
+        /* IN-LOBBY INVITE POPUP MODAL */
+        .inlobby-invite-modal {
+            position: fixed;
+            inset: 0;
+            background: rgba(2, 6, 23, 0.85);
+            backdrop-filter: blur(10px);
+            z-index: 20000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .inlobby-invite-card {
+            background: #0f172a;
+            border: 2px solid #00e5ff;
+            border-radius: 20px;
+            width: 90%;
+            max-width: 420px;
+            padding: 20px;
+            box-shadow: 0 0 35px rgba(0, 229, 255, 0.4);
+        }
+    </style>
+</head>
+
+<body>
+
+    <main class="ff-friends-card">
+        <a href="index.html" style="color: #00e5ff; text-decoration: none; font-weight: bold; font-size: 13px;">← Back to Shop</a>
+        <h1 class="ff-title">
+            🎮 FREE FIRE FRIENDS HUB
+            <span style="font-size: 11px; color: #94a3b8;">Send Gifts & Landscape Squad</span>
+        </h1>
+
+        <div class="search-box">
+            <input type="text" id="friend-search-id" placeholder="Search Player ID or Email...">
+            <button id="search-friend-btn" onclick="searchPlayerById()">🔍 Search</button>
+        </div>
+
+        <div id="search-result-container"></div>
+
+        <div class="section-sub">📩 PENDING FRIEND REQUESTS</div>
+        <div id="pending-requests-list">
+            <p style="color: #64748b; font-size: 12px;">No pending requests.</p>
+        </div>
+
+        <div class="section-sub">👥 MY FRIENDS LIST</div>
+        <div id="my-friends-list">
+            <p style="color: #64748b; font-size: 12px;">Loading Friends List...</p>
+        </div>
+    </main>
+
+    <!-- LANDSCAPE LOBBY MODAL -->
+    <div id="landscape-squad-lobby" class="landscape-lobby-overlay" style="display: none;">
+        
+        <div class="lobby-top-bar">
+            <div style="font-family: 'Orbitron', sans-serif; color: #ffcc00; font-size: 16px; font-weight: 900;">
+                🔥 SQUAD LOBBY ROOM
+            </div>
+            <div style="font-size: 12px; color: #00e5ff; font-weight: bold;" id="lobby-squad-status">
+                Tap OPEN SLOT to invite friends!
+            </div>
+        </div>
+
+        <div class="lobby-stage-area" id="landscape-character-stage">
+            <!-- Standing characters and clickable open slots -->
+        </div>
+
+        <div class="lobby-controls-bottom">
+            <button id="lobby-mic-btn" class="btn-ctrl btn-mic-toggle" onclick="toggleMicStream()">
+                🔇 MIC OFF
+            </button>
+            <button class="btn-ctrl btn-leave-room" onclick="leaveSquadLobby()">
+                🚪 LEAVE SQUAD
+            </button>
+        </div>
+
+    </div>
+
+    <!-- IN-LOBBY INVITE FRIENDS OVERLAY -->
+    <div id="inlobby-invite-overlay" class="inlobby-invite-modal" style="display: none;">
+        <div class="inlobby-invite-card">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px;">
+                <h3 style="font-family: 'Orbitron', sans-serif; color: #ffcc00; margin: 0; font-size: 15px;">📣 INVITE ONLINE FRIENDS</h3>
+                <button onclick="closeLobbyInviteModal()" style="background: none; border: none; color: #ef4444; font-size: 20px; cursor: pointer;">✖</button>
+            </div>
+            <div id="inlobby-online-friends-list" style="max-height: 260px; overflow-y: auto;">
+                <!-- Online friends for quick invite -->
+            </div>
+        </div>
+    </div>
+
+    <script type="module" src="js/auth-guard.js"></script>
+    <script type="module" src="js/friends.js"></script>
+</body>
+
+</html>

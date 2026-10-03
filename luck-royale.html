@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>👑 Luck Royale & Ring Events | Faraz Store</title>
+    <meta name="description" content="Spin the wheel, collect tokens, and win exclusive prizes in Faraz Store Luck Royale!">
+    <meta name="theme-color" content="#03000a">
+    <link rel="icon" href="favicon.ico">
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700;900&family=Plus+Jakarta+Sans:wght@600;800&display=swap" rel="stylesheet">
+
+    <!-- CSS Links -->
+    <link rel="stylesheet" href="css/global.css">
+    <link rel="stylesheet" href="css/luck-royale.css">
+</head>
+
+<body>
+
+    <!-- 🎮 MAIN ARENA WRAPPER -->
+    <div class="ff-interface-wrapper">
+        
+        <!-- 👈 LEFT NAVIGATION PANEL -->
+        <aside class="ff-navigation-panel">
+            <div class="ff-panel-title">🎰 LUCK ROYALE</div>
+            
+            <div class="ff-menu-list">
+                <div class="ff-menu-item active" data-event="mystical-ring">
+                    <span class="ff-item-indicator"></span>
+                    <span>🔮 MYSTICAL RING</span>
+                </div>
+                <div class="ff-menu-item" data-event="faded-wheel-event">
+                    <span class="ff-item-indicator"></span>
+                    <span>🎡 FADED WHEEL</span>
+                </div>
+                <div class="ff-menu-item" data-event="wall-royale">
+                    <span class="ff-item-indicator"></span>
+                    <span>🛡️ GLOO WALL STORE</span>
+                </div>
+                <div class="ff-menu-item" data-event="diwali-ring">
+                    <span class="ff-item-indicator"></span>
+                    <span>🪔 DIWALI RING</span>
+                </div>
+                <div class="ff-menu-item faded-link-tab" id="nav-buy-diamonds">
+                    <span class="ff-item-indicator"></span>
+                    <span>💎 BUY DIAMONDS</span>
+                </div>
+            </div>
+
+            <!-- TOKEN & DIAMOND BALANCE BOX -->
+            <div class="token-status-box">
+                <img src="images/token.png" alt="Token">
+                <div>
+                    <div style="font-size: 10px; color: #94a3b8; font-weight: bold;">TOKENS / DIAMONDS</div>
+                    <span id="user-token-balance" style="color: #ffcc00; font-weight: 900; font-size: 14px;">0</span>
+                    <span style="color: #64748b; margin: 0 4px;">|</span>
+                    <span id="user-diamonds-display" style="color: #00e5ff; font-weight: 900; font-size: 14px;">💎 0</span>
+                </div>
+            </div>
+
+            <button id="open-exchange-btn" class="ff-exchange-trigger-btn">
+                🛍️ EXCHANGE STORE
+            </button>
+
+            <button class="ff-close-gate" onclick="location.href='index.html'">
+                🏠 EXIT ARENA
+            </button>
+        </aside>
+
+        <!-- 🎯 CENTER MAIN SPIN ARENA -->
+        <main class="ff-main-stage">
+            <h1 id="event-title-display" class="ff-stage-title">MYSTICAL RING</h1>
+
+            <!-- CIRCULAR RING ARENA -->
+            <div id="ring-wheel-section">
+                <div class="ff-circle-arena-wrapper" style="position: relative;">
+                    <div class="ff-circle-arena">
+                        <div id="wheel-slots-grid" class="ff-slots-container">
+                            <!-- Dynamic Slots via JS -->
+                        </div>
+
+                        <div id="ring-spinner-needle" class="ff-needle-pointer">
+                            <div class="needle-arrow">▲</div>
+                        </div>
+
+                        <div class="ff-center-hub">
+                            <span>🎰</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ACTION CONTROL DECK -->
+                <div class="ff-action-deck">
+                    <button id="btn-spin-1" class="ff-deck-btn normal-spin">
+                        <span class="btn-primary-text">1 SPIN</span>
+                        <span class="btn-sub-text">💎 10 Diamonds</span>
+                    </button>
+                    <button id="btn-spin-10" class="ff-deck-btn grand-spin">
+                        <span class="btn-primary-text">10 SPINS</span>
+                        <span class="btn-sub-text">💎 100 Diamonds</span>
+                    </button>
+            
+                </div>
+            
+            </div>
+
+            <div>THIS IS ONLY FOR FUN</div>
+            <!-- 🎡 FADED WHEEL SECTION -->
+            <div id="faded-wheel-section" style="display: none; width: 100%; max-width: 540px; margin: auto;">
+                <div class="faded-wheel-container">
+                    <div id="status-message" style="text-align: center; color: #ffcc00; font-weight: 800; margin-bottom: 14px; font-size: 15px; letter-spacing: 0.5px;">Select 2 unwanted items to remove</div>
+                    
+                    <div class="faded-grid">
+                        <div class="grid-item" data-index="0"><img src="images/iphone16.png" alt="Item"><span class="item-title">iPhone 16</span></div>
+                        <div class="grid-item" data-index="1"><img src="images/gloowall.png" alt="Item"><span class="item-title">Gloo Wall</span></div>
+                        <div class="grid-item" data-index="2"><img src="images/diwali_bundle.png" alt="Item"><span class="item-title">Diwali Bundle</span></div>
+                        <div class="grid-item" data-index="3"><img src="images/weapon_crate.png" alt="Item"><span class="item-title">Gun Crate</span></div>
+                        <div class="grid-item" data-index="4"><img src="images/token.png" alt="Item"><span class="item-title">10 Tokens</span></div>
+                        <div class="grid-item" data-index="5"><img src="images/loot_box.png" alt="Item"><span class="item-title">Loot Box</span></div>
+                        <div class="grid-item" data-index="6"><img src="images/avtar.png" alt="Item"><span class="item-title">Avatar</span></div>
+                        <div class="grid-item" data-index="7"><img src="images/token.png" alt="Item"><span class="item-title">5 Tokens</span></div>
+                        <div class="grid-item" data-index="8"><img src="images/weapon_crate.png" alt="Item"><span class="item-title">Weapon Box</span></div>
+                        <div class="grid-item" data-index="9"><img src="images/token.png" alt="Item"><span class="item-title">2 Tokens</span></div>
+                    </div>
+
+                    <div style="text-align: center; margin-top: 20px;">
+                        <button id="main-action-trigger" class="ff-cyber-btn" disabled>
+                            REMOVE (0/2)
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <!-- 👉 RIGHT COLUMN SHOWCASE -->
+        <aside class="ff-right-panel">
+            <div id="right-column-prizes" class="right-showcase-container">
+                <!-- Dynamic Showcase via JS -->
+            </div>
+        </aside>
+
+    </div>
+
+    <!-- 🛍️ TOKEN EXCHANGE STORE MODAL -->
+    <div id="exchange-modal" class="royale-modal-overlay" style="display: none;">
+        <div class="exchange-fullscreen-card">
+            <div class="exchange-top-bar">
+                <div class="ex-title">👑 PREMIUM TOKEN EXCHANGE STORE</div>
+                <div class="ex-wallet">
+                    <img src="images/token.png" alt="Token">
+                    <span id="exchange-wallet-tokens">0</span> Tokens
+                </div>
+                <button id="close-exchange-btn" class="ex-close-cross">✖</button>
+            </div>
+
+            <div class="exchange-main-body">
+                <div class="exchange-side-nav">
+                    <button class="ex-nav-btn active" data-shop="grand">🏆 GRAND REWARDS</button>
+                    <button class="ex-nav-btn" data-shop="crates">📦 LOOT CRATES</button>
+                </div>
+
+                <div id="exchange-items-renderer" class="exchange-content-grid">
+                    <!-- Dynamic Catalog -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 🎉 CONGRATULATIONS POPUP MODAL -->
+    <div id="congratulations-popup" class="congratulations-overlay" style="display: none;">
+        <div class="congrats-card">
+            <div class="congrats-badge-header">✨ REWARD UNLOCKED ✨</div>
+            <h1 class="congrats-banner">CONGRATULATIONS!</h1>
+            <p class="congrats-sub">YOU UNLOCKED NEW REWARDS</p>
+
+            <div class="unlocked-reward-display">
+                <!-- Dynamic Rewards / Grid Output -->
+            </div>
+
+            <button id="congrats-dismiss-bstn" class="congrats-close-btn">
+                ⚡ CLAIM NOW
+            </button>
+        </div>
+    </div>
+
+    <!-- SCRIPTS MODULE -->
+    <script type="module" src="js/luck-royale.js"></script>
+
+</body>
+
+</html>

@@ -1,0 +1,216 @@
+/* ==========================================================================
+   🔥 FARAZ STORE v2.0 - XP EXCHANGE STORE STYLING (CYBERPUNK GLASS)
+   ========================================================================== */
+
+.xp-page-bg {
+    background: radial-gradient(circle at top center, #1e1b4b 0%, #020617 75%);
+    color: #e2e8f0;
+    min-height: 100vh;
+    padding: 30px 15px;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    font-family: 'Plus Jakarta Sans', 'Segoe UI', sans-serif;
+}
+
+.exchange-container {
+    width: 100%;
+    max-width: 720px;
+    margin: 20px auto;
+    background: rgba(15, 23, 42, 0.85);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 24px;
+    padding: 35px 25px;
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.8), 0 0 30px rgba(255, 204, 0, 0.15);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+}
+
+.exchange-header {
+    text-align: center;
+    margin-bottom: 25px;
+}
+
+.exchange-title {
+    font-family: 'Orbitron', sans-serif;
+    color: #ffcc00;
+    font-size: 26px;
+    font-weight: 900;
+    letter-spacing: 1px;
+    margin: 12px 0 6px 0;
+    text-shadow: 0 0 15px rgba(255, 204, 0, 0.4);
+}
+
+.exchange-subtext {
+    color: #94a3b8;
+    font-size: 13px;
+}
+
+/* XP Balance Card */
+.xp-box {
+    background: rgba(30, 41, 59, 0.6);
+    border: 1px solid rgba(0, 229, 255, 0.3);
+    border-radius: 18px;
+    padding: 18px 24px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
+    box-shadow: 0 0 20px rgba(0, 229, 255, 0.1);
+}
+
+.xp-label {
+    font-size: 14px;
+    color: #cbd5e1;
+    font-weight: 700;
+}
+
+.xp-value-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.xp-icon {
+    font-size: 22px;
+}
+
+.xp-number {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 24px;
+    font-weight: 900;
+    color: #00e5ff;
+}
+
+.xp-unit {
+    font-size: 13px;
+    color: #00e5ff;
+    font-weight: 800;
+}
+
+/* Rewards Grid */
+.rewards-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 18px;
+    margin-bottom: 25px;
+}
+
+.reward-card {
+    background: rgba(30, 41, 59, 0.5);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 20px;
+    padding: 24px 18px;
+    text-align: center;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    transition: all 0.3s ease;
+}
+
+.reward-card:hover {
+    transform: translateY(-5px);
+    border-color: #00e5ff;
+    box-shadow: 0 10px 25px rgba(0, 229, 255, 0.2);
+}
+
+.vip-glow:hover {
+    border-color: #ffcc00;
+    box-shadow: 0 10px 25px rgba(255, 204, 0, 0.25);
+}
+
+.reward-badge {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    font-size: 9px;
+    font-weight: 900;
+    padding: 3px 8px;
+    border-radius: 12px;
+    background: #00e5ff;
+    color: #020617;
+}
+
+.badge-vip {
+    background: #ffcc00;
+}
+
+.reward-icon {
+    font-size: 40px;
+    margin-bottom: 10px;
+}
+
+.reward-card h2 {
+    font-size: 16px;
+    font-weight: 800;
+    color: #ffffff;
+    margin-bottom: 8px;
+}
+
+.reward-desc {
+    font-size: 12px;
+    color: #94a3b8;
+    line-height: 1.4;
+    margin-bottom: 15px;
+}
+
+.cost-tag {
+    font-size: 13px;
+    color: #cbd5e1;
+    margin-bottom: 15px;
+    font-weight: 700;
+}
+
+.cost-tag span {
+    color: #ffcc00;
+    font-weight: 800;
+}
+
+.exchange-action-btn {
+    width: 100%;
+    padding: 12px;
+    border-radius: 12px;
+    border: none;
+    background: linear-gradient(135deg, #2563eb, #7c3aed);
+    color: #ffffff;
+    font-size: 13px;
+    font-weight: 800;
+    cursor: pointer;
+    text-transform: uppercase;
+    transition: all 0.25s ease;
+}
+
+.exchange-action-btn:hover {
+    filter: brightness(1.15);
+    transform: translateY(-2px);
+}
+
+.vip-btn {
+    background: linear-gradient(135deg, #ffcc00, #ff9900);
+    color: #020617;
+}
+
+.status-message {
+    text-align: center;
+    font-size: 14px;
+    font-weight: 800;
+    min-height: 24px;
+}
+
+/* Mobile Responsive */
+@media (max-width: 600px) {
+    .exchange-container {
+        padding: 20px 14px;
+    }
+
+    .rewards-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .xp-box {
+        flex-direction: column;
+        gap: 8px;
+        text-align: center;
+    }
+}

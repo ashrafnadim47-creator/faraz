@@ -1,0 +1,253 @@
+/* ==========================================================================
+   🔥 FARAZ STORE v2.0 - SETTINGS PAGE CSS (MOBILE RESPONSIVE & GLASS)
+   ========================================================================== */
+
+.settings-page-bg {
+    background: radial-gradient(circle at top center, #1e1b4b 0%, #020617 75%);
+    color: #e2e8f0;
+    min-height: 100vh;
+    padding: 30px 15px;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    font-family: 'Plus Jakarta Sans', 'Segoe UI', sans-serif;
+    box-sizing: border-box;
+}
+
+.settings-container {
+    width: 100%;
+    max-width: 580px;
+    margin: 10px auto;
+    background: rgba(15, 23, 42, 0.85);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 24px;
+    padding: 30px 20px;
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.8), 0 0 30px rgba(0, 229, 255, 0.15);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+}
+
+.settings-header {
+    text-align: center;
+    margin-bottom: 25px;
+    border-bottom: 1px dashed rgba(255, 255, 255, 0.1);
+    padding-bottom: 18px;
+}
+
+.settings-title {
+    font-family: 'Orbitron', sans-serif;
+    color: #00e5ff;
+    font-size: 24px;
+    font-weight: 900;
+    margin: 12px 0 4px 0;
+    text-shadow: 0 0 12px rgba(0, 229, 255, 0.4);
+    letter-spacing: 1px;
+}
+
+.settings-subtitle {
+    color: #94a3b8;
+    font-size: 13px;
+}
+
+/* Sections */
+.settings-section {
+    margin-bottom: 25px;
+}
+
+.section-heading {
+    font-size: 14px;
+    font-weight: 800;
+    color: #ffcc00;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 14px;
+    border-left: 3px solid #ffcc00;
+    padding-left: 8px;
+}
+
+/* Theme Buttons Grid */
+.theme-buttons-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+}
+
+.theme-btn {
+    padding: 14px;
+    border-radius: 14px;
+    font-size: 14px;
+    font-weight: 800;
+    border: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    transition: all 0.25s ease;
+    touch-action: manipulation;
+}
+
+.dark-btn {
+    background: #0f172a;
+    color: #38bdf8;
+    border: 1px solid #38bdf8;
+    box-shadow: 0 4px 15px rgba(56, 189, 248, 0.2);
+}
+
+.light-btn {
+    background: linear-gradient(135deg, #f1f5f9, #e2e8f0);
+    color: #020617;
+    border: 1px solid #ffffff;
+    box-shadow: 0 4px 15px rgba(255, 255, 255, 0.2);
+}
+
+.theme-btn:hover {
+    transform: translateY(-2px);
+    filter: brightness(1.1);
+}
+
+/* Settings List Items & Toggles */
+.setting-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 14px 16px;
+    background: rgba(30, 41, 59, 0.5);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    border-radius: 16px;
+    margin-bottom: 10px;
+}
+
+.setting-info h3 {
+    font-size: 14px;
+    color: #ffffff;
+    margin-bottom: 2px;
+}
+
+.setting-info p {
+    font-size: 11px;
+    color: #94a3b8;
+}
+
+/* Switch Toggle UI */
+.toggle-switch {
+    position: relative;
+    display: inline-block;
+    width: 46px;
+    height: 24px;
+    flex-shrink: 0;
+}
+
+.toggle-switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.slider {
+    position: absolute;
+    cursor: pointer;
+    inset: 0;
+    background-color: #334155;
+    transition: .3s;
+    border-radius: 24px;
+}
+
+.slider:before {
+    position: absolute;
+    content: "";
+    height: 18px;
+    width: 18px;
+    left: 3px;
+    bottom: 3px;
+    background-color: white;
+    transition: .3s;
+    border-radius: 50%;
+}
+
+input:checked + .slider {
+    background-color: #00e5ff;
+}
+
+input:checked + .slider:before {
+    transform: translateX(22px);
+}
+
+/* Actions Group */
+.action-buttons-group {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.setting-action-btn {
+    width: 100%;
+    padding: 13px;
+    border-radius: 14px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    background: rgba(30, 41, 59, 0.8);
+    color: #ffffff;
+    font-size: 13px;
+    font-weight: 800;
+    cursor: pointer;
+    transition: all 0.25s ease;
+    touch-action: manipulation;
+}
+
+.setting-action-btn:hover {
+    background: rgba(51, 65, 85, 0.9);
+    border-color: #00e5ff;
+}
+
+.danger-btn {
+    background: rgba(239, 68, 68, 0.15);
+    border-color: #ef4444;
+    color: #ef4444;
+}
+
+.danger-btn:hover {
+    background: #ef4444;
+    color: #ffffff;
+}
+
+/* Footer Info */
+.app-info-footer {
+    text-align: center;
+    margin-top: 30px;
+    border-top: 1px dashed rgba(255, 255, 255, 0.1);
+    padding-top: 15px;
+}
+
+.version-text {
+    font-size: 12px;
+    color: #00e5ff;
+    font-weight: 800;
+}
+
+.copy-text {
+    font-size: 11px;
+    color: #64748b;
+    margin-top: 2px;
+}
+
+/* ==========================================================================
+   📱 MOBILE PHONE TUNING (< 600px)
+   ========================================================================== */
+@media (max-width: 600px) {
+    .settings-page-bg {
+        padding: 15px 10px;
+    }
+
+    .settings-container {
+        padding: 20px 14px;
+        border-radius: 18px;
+    }
+
+    .settings-title {
+        font-size: 20px;
+    }
+
+    .theme-buttons-grid {
+        grid-template-columns: 1fr;
+    }
+}

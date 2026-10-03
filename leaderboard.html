@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Top Players Leaderboard | Faraz Store</title>
+    <meta name="theme-color" content="#020617">
+    <link rel="icon" href="favicon.ico">
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700;900&family=Plus+Jakarta+Sans:wght@500;700;800&display=swap" rel="stylesheet">
+
+    <!-- CSS Links -->
+    <link rel="stylesheet" href="css/global.css">
+    <style>
+        body { background: #020617; color: #fff; font-family: 'Plus Jakarta Sans', sans-serif; padding: 20px; margin: 0; }
+        .lb-container { max-width: 650px; margin: 20px auto; background: rgba(15, 23, 42, 0.85); backdrop-filter: blur(12px); border: 1px solid rgba(0, 229, 255, 0.3); border-radius: 24px; padding: 24px; box-shadow: 0 0 30px rgba(0, 229, 255, 0.2); }
+        .lb-title { font-family: 'Orbitron', sans-serif; color: #ffcc00; font-size: 22px; text-align: center; margin: 10px 0 20px; }
+        
+        .rank-node { background: rgba(30, 41, 59, 0.7); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 16px; padding: 14px 18px; display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; transition: transform 0.2s; }
+        .rank-node.top-1 { border-color: #ffcc00; background: linear-gradient(135deg, rgba(255, 204, 0, 0.15), rgba(15, 23, 42, 0.9)); box-shadow: 0 0 15px rgba(255, 204, 0, 0.3); }
+        .rank-number { font-family: 'Orbitron', sans-serif; font-size: 18px; font-weight: 900; color: #00e5ff; width: 35px; }
+        .player-info { flex: 1; }
+        .player-name { font-weight: 800; font-size: 14px; color: #fff; margin-bottom: 2px; }
+        .player-tier { font-size: 10px; color: #ffcc00; font-weight: bold; }
+        
+        .score-box { text-align: right; display: flex; flex-direction: column; gap: 2px; }
+        .score-diamonds { font-family: 'Orbitron', sans-serif; color: #00e5ff; font-weight: 800; font-size: 13px; }
+        .score-xp { font-family: 'Orbitron', sans-serif; color: #ffcc00; font-weight: 800; font-size: 12px; }
+    </style>
+</head>
+
+<body>
+
+    <main class="lb-container">
+        <a href="index.html" style="color: #00e5ff; text-decoration: none; font-weight: bold; font-size: 13px;">← Back to Shop</a>
+        <h1 class="lb-title">🏆 TOP PLAYERS LEADERBOARD</h1>
+
+        <div id="leaderboard-list">
+            <p style="text-align: center; color: #94a3b8; font-size: 13px;">Loading Top Players Matrix...</p>
+        </div>
+    </main>
+
+    <script type="module" src="js/leaderboard.js"></script>
+</body>
+
+</html>

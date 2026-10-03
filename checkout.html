@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Secure Checkout | Faraz Store</title>
+    <meta name="description" content="Complete your purchase securely at Faraz Store.">
+    <meta name="theme-color" content="#020617">
+    <link rel="icon" href="favicon.ico">
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700;900&family=Plus+Jakarta+Sans:wght@500;700;800&display=swap" rel="stylesheet">
+
+    <!-- CSS Links -->
+    <link rel="stylesheet" href="css/global.css">
+    <link rel="stylesheet" href="css/header.css">
+    <link rel="stylesheet" href="css/checkout.css">
+    <link rel="stylesheet" href="css/responsive.css">
+</head>
+
+<body>
+
+    <!-- 🚀 HEADER -->
+    <header class="header">
+        <div class="logo-area">
+            <a href="index.html" class="logo">
+                <span>🔥</span> FARAZ <span class="gradient-text">STORE</span>
+            </a>
+        </div>
+
+        <nav class="navbar">
+            <a href="index.html">Home</a>
+            <a href="products.html">Products</a>
+            <a href="cart.html">Cart</a>
+            <a href="orders.html">Orders</a>
+        </nav>
+    </header>
+
+    <!-- 🛍️ CHECKOUT SECTION -->
+    <section class="checkout-section">
+        <h1 class="page-title">🛍️ Secure Checkout</h1>
+
+        <div class="checkout-container">
+
+            <!-- LEFT COLUMN: ITEMS, ADDRESS & PAYMENT -->
+            <div class="checkout-left">
+                
+                <!-- CART ITEMS REVIEW -->
+                <div class="checkout-card glassmorphism" style="padding: 20px; border-radius: 20px; margin-bottom: 20px;">
+                    <h2>📦 Review Your Items</h2>
+                    <div id="checkout-items">
+                        <div class="loading-state">
+                            <div class="spinner"></div>
+                            <p>Loading Selected Products...</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- DELIVERY ADDRESS FORM -->
+                <div class="address-card glassmorphism" style="padding: 20px; border-radius: 20px; margin-bottom: 20px;">
+                    <h2>📍 Shipping Address</h2>
+                    <input type="text" id="address-name" placeholder="Full Name" autocomplete="name">
+                    <input type="text" id="address-phone" placeholder="Mobile Phone Number" autocomplete="tel">
+                    <textarea id="address-full" placeholder="Full Address (House No, Street, Landmark)" rows="3"></textarea>
+                    <input type="text" id="address-pincode" placeholder="Postal Pincode">
+                </div>
+
+                <!-- PAYMENT METHOD SELECTION -->
+                <div class="payment-card glassmorphism" style="padding: 20px; border-radius: 20px;">
+                    <h2>💳 Select Payment Method</h2>
+                    
+                    <label class="payment-option">
+                        <input type="radio" name="payment" value="COD" checked>
+                        <span>🚚 Cash On Delivery (COD)</span>
+                    </label>
+
+                    <label class="payment-option">
+                        <input type="radio" name="payment" value="UPI">
+                        <span>📱 Instant UPI Payment</span>
+                    </label>
+
+                    <label class="payment-option">
+                        <input type="radio" name="payment" value="CARD">
+                        <span>💳 Debit / Credit Card</span>
+                    </label>
+                </div>
+
+            </div>
+
+            <!-- RIGHT COLUMN: COUPON & ORDER SUMMARY -->
+            <div class="checkout-right">
+
+                <!-- COUPON CODE BOX -->
+                <div class="coupon-box glassmorphism" style="padding: 20px; border-radius: 20px; margin-bottom: 20px;">
+                    <h3>🎟️ Apply Store Coupon</h3>
+                    <div style="display: flex; gap: 10px; margin-top: 10px;">
+                        <input type="text" id="coupon-code" placeholder="Enter Coupon Code" style="margin: 0;">
+                        <button onclick="applyCoupon()" class="primary-btn" style="padding: 10px 20px; border-radius: 12px;">Apply</button>
+                    </div>
+                    <p id="coupon-message" style="margin-top: 8px; font-size: 13px; font-weight: bold;"></p>
+                </div>
+
+                <!-- ORDER SUMMARY BOX -->
+                <div class="summary-box glassmorphism" style="padding: 25px; border-radius: 20px;">
+                    <h2>Order Summary</h2>
+                    
+                    <div class="summary-row" style="display: flex; justify-content: space-between; margin: 12px 0;">
+                        <span>Total Items</span>
+                        <span id="item-count" style="font-weight: bold;">0</span>
+                    </div>
+
+                    <div class="summary-row" style="display: flex; justify-content: space-between; margin: 12px 0;">
+                        <span>Delivery Fee</span>
+                        <span class="free" style="color: #22c55e; font-weight: bold;">FREE</span>
+                    </div>
+
+                    <div class="summary-row" style="display: flex; justify-content: space-between; margin: 12px 0;">
+                        <span>Taxes & GST</span>
+                        <span style="color: #94a3b8;">Included</span>
+                    </div>
+
+                    <hr style="border-color: rgba(255, 255, 255, 0.1); margin: 15px 0;">
+
+                    <h2 id="checkout-total" style="color: #ffcc00; text-align: center; margin-bottom: 20px;">
+                        Total : ₹0
+                    </h2>
+
+                    <button id="place-order-btn" class="place-order-btn primary-btn" style="width: 100%; font-size: 16px; padding: 15px;">
+                        🔒 Place Secure Order
+                    </button>
+
+                    <div class="secure-box" style="margin-top: 20px; text-align: center; color: #94a3b8; font-size: 13px; line-height: 1.6;">
+                        🔐 100% Encrypted & Secure Payment<br>
+                        🚚 Express Doorstep Delivery<br>
+                        ⭐ Guaranteed Quality Products
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+    </section>
+
+    <!-- SUCCESS MODAL POPUP -->
+    <div id="success-popup" class="modal-overlay" style="display: none;">
+        <div class="popup-card glassmorphism" style="padding: 35px 25px; border-radius: 24px; text-align: center; max-width: 400px; border: 2px solid #22c55e;">
+            <div class="popup-icon" style="font-size: 50px; margin-bottom: 15px;">✅</div>
+            <h2 style="color: #22c55e; margin-bottom: 10px;">Order Placed Successfully!</h2>
+            <p style="color: #cbd5e1; font-size: 14px; margin-bottom: 20px;">Thank you for shopping with Faraz Store. You can track your order status live.</p>
+            <button class="primary-btn" onclick="location.href='orders.html'" style="width: 100%;">View My Orders</button>
+        </div>
+    </div>
+
+    <!-- SCRIPT MODULES -->
+    <script type="module" src="js/checkout.js"></script>
+    <script src="js/coupon.js"></script>
+</body>
+
+</html>

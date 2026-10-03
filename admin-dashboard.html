@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard | Faraz Store</title>
+    <meta name="description" content="Faraz Store Control Panel & Management System">
+    <meta name="theme-color" content="#020617">
+    <link rel="icon" href="favicon.ico">
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700;900&family=Plus+Jakarta+Sans:wght@500;700;800&display=swap" rel="stylesheet">
+
+    <!-- CSS Links -->
+    <link rel="stylesheet" href="css/global.css">
+    <link rel="stylesheet" href="css/admin-dashboard.css">
+</head>
+
+<body class="admin-page-bg">
+
+    <div class="admin-container">
+
+        <!-- 👑 ADMIN SIDEBAR NAVIGATION -->
+        <aside class="admin-sidebar glassmorphism">
+            <div class="sidebar-brand">
+                <h2>🔥 FARAZ STORE</h2>
+                <p>ADMIN CONTROL PANEL</p>
+            </div>
+
+            <nav class="admin-nav-links">
+                <a href="admin-dashboard.html" class="admin-nav-item active">🏠 Dashboard Overview</a>
+                <a href="admin-products.html" class="admin-nav-item">📦 Product Inventory</a>
+                <a href="admin-orders.html" class="admin-nav-item">🛒 Order Management</a>
+                <a href="admin-users.html" class="admin-nav-item">👥 Registered Users</a>
+            </nav>
+
+            <button id="logout-btn" class="admin-logout-btn">
+                🚪 Logout Admin
+            </button>
+        </aside>
+
+        <!-- 🚀 MAIN DASHBOARD CONTENT -->
+        <main class="admin-main">
+            <header class="admin-header">
+                <div>
+                    <h1>Admin Dashboard 👑</h1>
+                    <p style="color: #94a3b8; font-size: 14px;">Welcome back to your store overview</p>
+                </div>
+                <button class="nav-btn-back" onclick="location.href='index.html'">← Back to Main Shop</button>
+            </header>
+
+            <!-- STATS GRID CARDS -->
+            <div class="stats-grid">
+                
+                <div class="stat-card glassmorphism">
+                    <div style="font-size: 32px; margin-bottom: 6px;">📦</div>
+                    <h3>Products</h3>
+                    <p id="product-count">0</p>
+                </div>
+
+                <div class="stat-card glassmorphism">
+                    <div style="font-size: 32px; margin-bottom: 6px;">🛒</div>
+                    <h3>Orders</h3>
+                    <p id="order-count">0</p>
+                </div>
+
+                <div class="stat-card glassmorphism">
+                    <div style="font-size: 32px; margin-bottom: 6px;">👥</div>
+                    <h3>Users</h3>
+                    <p id="user-count">0</p>
+                </div>
+
+                <div class="stat-card glassmorphism">
+                    <div style="font-size: 32px; margin-bottom: 6px;">⭐</div>
+                    <h3>Points Issued</h3>
+                    <p id="points-count">0</p>
+                </div>
+
+            </div>
+
+            <!-- 🛠️ FADED WHEEL VOUCHER GENERATOR SECTION -->
+            <section class="admin-voucher-card glassmorphism">
+                <h3 class="voucher-title">
+                    🛠️ Faded Wheel Voucher Generator
+                </h3>
+                <p class="voucher-subtext">
+                    Generate single-use diamond voucher codes for top-up. The generated code will copy to your clipboard automatically.
+                </p>
+                
+                <div class="voucher-input-group">
+                    <input type="number" id="admin-diamond-input" placeholder="Enter Diamonds Amount (e.g. 100)">
+                    <button id="admin-gen-btn">
+                        Generate Code
+                    </button>
+                </div>
+                
+                <!-- Output Box for Code -->
+                <div id="admin-code-output"></div>
+            </section>
+
+        </main>
+
+    </div>
+
+    <!-- SCRIPT INTEGRATION -->
+    <script type="module" src="js/admin-guard.js"></script>
+    <script type="module" src="js/admin-dashboard.js"></script>
+    <script type="module" src="js/admin-logout.js"></script>
+
+</body>
+
+</html>

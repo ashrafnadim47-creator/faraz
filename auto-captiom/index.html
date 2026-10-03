@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Auto Caption</title>
+
+  <link rel="icon" href="data:,">
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+  <main class="app">
+
+    <h1>Auto Caption</h1>
+    <p class="sub">Upload a video and generate captions automatically.</p>
+
+    <section class="upload-box">
+
+      <input
+        id="videoInput"
+        type="file"
+        accept="video/*"
+        hidden
+      >
+
+      <button id="chooseBtn" class="primary">
+        📁 Upload Video
+      </button>
+
+      <p id="fileName">No video selected</p>
+
+    </section>
+
+    <section id="previewSection" class="preview-section hidden">
+
+      <video
+        id="video"
+        controls
+        playsinline
+      ></video>
+
+      <div class="controls">
+
+        <button id="captionBtn" class="generate">
+          ✨ Generate Captions
+        </button>
+
+        <div id="status"></div>
+
+        <div class="progress">
+          <div id="progressBar"></div>
+        </div>
+
+      </div>
+
+    </section>
+
+    <section id="stylesSection" class="styles-section hidden">
+
+      <h2>Caption Styles</h2>
+
+      <div class="styles">
+
+        <button class="style active" data-style="classic">
+          <span>HELLO WORLD</span>
+          <small>Classic</small>
+        </button>
+
+        <button class="style yellow" data-style="yellow">
+          <span>HELLO <b>WORLD</b></span>
+          <small>Highlight</small>
+        </button>
+
+        <button class="style pop" data-style="pop">
+          <span>HELLO!</span>
+          <small>Pop</small>
+        </button>
+
+        <button class="style box" data-style="box">
+          <span>HELLO WORLD</span>
+          <small>Box</small>
+        </button>
+
+        <button class="style neon" data-style="neon">
+          <span>HELLO WORLD</span>
+          <small>Neon</small>
+        </button>
+
+        <button class="style karaoke" data-style="karaoke">
+          <span>HELLO <b>WORLD</b></span>
+          <small>Karaoke</small>
+        </button>
+
+        <button class="style big" data-style="big">
+          <span>HELLO</span>
+          <small>Big Text</small>
+        </button>
+
+        <button class="style clean" data-style="clean">
+          <span>Hello world</span>
+          <small>Clean</small>
+        </button>
+
+      </div>
+
+    </section>
+
+    <section id="captionOutput" class="caption-output hidden">
+
+      <h2>Generated Captions</h2>
+
+      <div id="captions"></div>
+
+    </section>
+
+  </main>
+
+  <script src="app.js"></script>
+
+</body>
+</html>
