@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Daily Missions | Faraz Store</title>
+    <meta name="description" content="Complete daily missions to earn exclusive discount coupons on Faraz Store!">
+    <meta name="theme-color" content="#020617">
+    <link rel="icon" href="favicon.ico">
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700;900&family=Plus+Jakarta+Sans:wght@500;700;800&display=swap" rel="stylesheet">
+
+    <!-- CSS Links -->
+    <link rel="stylesheet" href="css/global.css">
+    <link rel="stylesheet" href="css/missions.css">
+</head>
+
+<body class="missions-page-bg">
+
+    <div class="missions-container glassmorphism" style="max-width: 650px; margin: 30px auto; padding: 30px 20px; border-radius: 24px;">
+        
+        <!-- HEADER -->
+        <header class="missions-header" style="text-align: center; margin-bottom: 25px;">
+            <button class="nav-btn-back" onclick="location.href='index.html'" style="margin-bottom: 15px;">← Back to Shop</button>
+            <h1 style="font-family: 'Orbitron', sans-serif; color: #00e5ff; font-size: 26px; font-weight: 900; margin-bottom: 6px;">🎯 DAILY MISSIONS</h1>
+            <p style="color: #94a3b8; font-size: 13px;">Complete simple daily tasks to unlock reward coupons!</p>
+            <h3 id="mission-timer" style="color: #ffcc00; font-size: 14px; margin-top: 10px; font-weight: 800;"></h3>
+        </header>
+
+        <!-- MISSIONS BOX -->
+        <div class="mission-box" style="display: flex; flex-direction: column; gap: 16px;">
+
+            <!-- MISSION 1: YOUTUBE -->
+            <div class="mission-card glassmorphism" style="padding: 20px; border-radius: 18px; border: 1px solid rgba(255, 255, 255, 0.08); display: flex; flex-direction: column; gap: 10px; background: rgba(30, 41, 59, 0.6);">
+                <h2 style="font-size: 18px; color: #ffffff; margin: 0;">▶️ Subscribe TK_RUSH YouTube</h2>
+                
+                <div style="display: flex; gap: 10px; margin-top: 8px;">
+                    <a href="https://www.youtube.com/@TK_RUSH" target="_blank" style="flex: 1;" id="link-yt">
+                        <button class="primary-btn" style="width: 100%; padding: 10px; font-size: 13px; background: #ff0000; color: #fff;">1. Open YouTube</button>
+                    </a>
+                    <button class="claim primary-btn" id="btn-yt" data-task="yt" data-reward="TKRUSH20" data-points="20" disabled style="flex: 1; padding: 10px; font-size: 13px; background: #475569; color: #cbd5e1; cursor: not-allowed;">2. Complete Task First</button>
+                </div>
+            </div>
+
+            <!-- MISSION 2: INSTAGRAM -->
+            <div class="mission-card glassmorphism" style="padding: 20px; border-radius: 18px; border: 1px solid rgba(255, 255, 255, 0.08); display: flex; flex-direction: column; gap: 10px; background: rgba(30, 41, 59, 0.6);">
+                <h2 style="font-size: 18px; color: #ffffff; margin: 0;">📷 Follow Instagram Page</h2>
+                
+                <div style="display: flex; gap: 10px; margin-top: 8px;">
+                    <a href="https://www.instagram.com/faraz_anjum_000" target="_blank" style="flex: 1;" id="link-insta">
+                        <button class="primary-btn" style="width: 100%; padding: 10px; font-size: 13px; background: linear-gradient(135deg, #e1306c, #c13584); color: #fff;">1. Open Instagram</button>
+                    </a>
+                    <button class="claim primary-btn" id="btn-insta" data-task="insta" data-reward="INSTA30" data-points="30" disabled style="flex: 1; padding: 10px; font-size: 13px; background: #475569; color: #cbd5e1; cursor: not-allowed;">2. Complete Task First</button>
+                </div>
+            </div>
+
+            <!-- MISSION 3: DAILY SPIN -->
+            <div class="mission-card glassmorphism" style="padding: 20px; border-radius: 18px; border: 1px solid rgba(255, 255, 255, 0.08); display: flex; flex-direction: column; gap: 10px; background: rgba(30, 41, 59, 0.6);">
+                <h2 style="font-size: 18px; color: #ffffff; margin: 0;">🎡 Complete Daily Wheel Spin</h2>
+                
+                <div style="display: flex; gap: 10px; margin-top: 8px;">
+                    <a href="spin.html" style="flex: 1;" id="link-spin">
+                        <button class="primary-btn" style="width: 100%; padding: 10px; font-size: 13px; background: linear-gradient(135deg, #a855f7, #6366f1); color: #fff;">1. Go To Spin Arena</button>
+                    </a>
+                    <button class="claim primary-btn" id="btn-spin" data-task="spin" data-reward="FARAZ50" data-points="50" disabled style="flex: 1; padding: 10px; font-size: 13px; background: #475569; color: #cbd5e1; cursor: not-allowed;">2. Complete Task First</button>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- SCRIPT MODULE -->
+    <script type="module" src="js/missions.js"></script>
+
+</body>
+
+</html>

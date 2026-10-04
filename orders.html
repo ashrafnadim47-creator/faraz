@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+<title>My Orders | Faraz Store</title>
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<link rel="stylesheet" href="css/global.css">
+<link rel="stylesheet" href="css/orders.css">
+<link rel="stylesheet" href="css/responsive.css">
+
+</head>
+
+
+<body>
+
+
+<section class="orders-section">
+
+
+<h1>
+📦 My Orders
+</h1>
+
+
+
+<div id="orders-container">
+
+Loading Orders...
+
+</div>
+
+
+
+</section>
+
+
+
+
+<!-- Review Popup -->
+
+<div id="review-popup" class="popup">
+
+<div class="popup-box">
+
+<h2>
+⭐ Write Review
+</h2>
+
+
+<select id="rating">
+
+<option value="5">⭐⭐⭐⭐⭐</option>
+<option value="4">⭐⭐⭐⭐</option>
+<option value="3">⭐⭐⭐</option>
+<option value="2">⭐⭐</option>
+<option value="1">⭐</option>
+
+</select>
+
+
+
+<textarea id="review-text"
+placeholder="Write your review...">
+</textarea>
+
+
+
+<div class="popup-buttons">
+
+<button onclick="submitReview()">
+Submit
+</button>
+
+
+<button onclick="closeReview()">
+Close
+</button>
+
+
+</div>
+
+
+</div>
+
+</div>
+
+
+
+
+
+<!-- Invoice Popup -->
+
+<div id="invoice-popup" class="popup">
+
+
+<div class="popup-box">
+
+
+<h2>
+🧾 Invoice
+</h2>
+
+
+
+<div id="invoice-content"></div>
+
+
+
+<div class="popup-buttons">
+
+
+<button onclick="window.print()">
+
+🖨 Print Invoice
+
+</button>
+
+
+
+<button onclick="closeInvoice()">
+
+❌ Close
+
+</button>
+
+
+
+</div>
+
+
+</div>
+
+
+</div>
+
+
+
+
+<script type="module" src="js/orders.js"></script>
+
+
+</body>
+
+</html>

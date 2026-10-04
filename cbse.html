@@ -1,0 +1,1379 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>
+Career Guide Academy | CBSE Registration Portal
+</title>
+
+<link rel="icon" href="images/favicon.png">
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+<link rel="stylesheet" href="cbse.css">
+
+</head>
+
+
+<body>
+
+
+<!-- LOADER -->
+
+<div id="pageLoader" class="pageLoader">
+
+<div class="loaderBox">
+
+<div class="loaderCircle"></div>
+
+<h2>
+Career Guide Academy
+</h2>
+
+<p>
+CBSE Registration Portal
+</p>
+
+</div>
+
+</div>
+
+
+
+<!-- HEADER -->
+
+<header class="topHeader">
+
+
+<div class="schoolInfo">
+
+<img src="images/logo.png" class="schoolLogo">
+
+<div>
+
+<h1>
+CAREER GUIDE ACADEMY
+</h1>
+
+<p>
+CBSE Registration Portal
+</p>
+
+<span>
+Academic Session : 2026 - 2027
+</span>
+
+</div>
+
+</div>
+
+
+
+<div class="cbseBox">
+
+<img src="images/cbse-logo.png" class="cbseLogo">
+
+</div>
+
+
+
+<div class="liveBox">
+
+<div>
+
+<h4>Date</h4>
+
+<p id="currentDate">
+Loading...
+</p>
+
+</div>
+
+
+<div>
+
+<h4>Time</h4>
+
+<p id="currentTime">
+Loading...
+</p>
+
+</div>
+
+
+</div>
+
+
+
+</header>
+
+
+
+
+
+<!-- NAVIGATION -->
+
+
+<nav class="topNav">
+
+<a href="#dashboard">
+🏠 Dashboard
+</a>
+
+<a href="#student">
+👨‍🎓 Student
+</a>
+
+<a href="#subjects">
+📚 Subjects
+</a>
+
+<a href="#documents">
+📄 Documents
+</a>
+
+<a href="#preview">
+👁 Preview
+</a>
+
+
+</nav>
+
+
+
+
+
+
+<!-- HERO -->
+
+
+<section class="heroSection" id="dashboard">
+
+
+<div>
+
+
+<h1>
+Welcome To CBSE Registration Portal
+</h1>
+
+
+<p>
+Complete student registration process digitally with secure verification.
+</p>
+
+
+<button onclick="startRegistration()">
+
+🚀 START REGISTRATION
+
+</button>
+
+
+</div>
+
+
+
+<div class="progressCard">
+
+
+<h3>
+Form Progress
+</h3>
+
+
+<h2 id="completePercent">
+0%
+</h2>
+
+
+<div class="progressOuter">
+
+<div id="progressBar">
+
+</div>
+
+</div>
+
+
+</div>
+
+
+
+</section>
+
+
+
+
+
+
+<!-- MAIN FORM START -->
+
+
+<form id="registrationForm">
+
+
+
+
+
+<!-- STUDENT SECTION -->
+
+
+<section class="formSection" id="student">
+
+
+<div class="sectionTitle">
+
+<h2>
+👨‍🎓 Student Information
+</h2>
+
+<p>
+Enter student's personal details carefully
+</p>
+
+</div>
+
+
+
+<div class="formGrid">
+
+
+<div class="inputCard">
+
+<label>
+Student Full Name *
+</label>
+
+<input 
+id="studentName"
+type="text"
+placeholder="Enter Name"
+required>
+
+</div>
+
+
+
+
+<div class="inputCard">
+
+<label>
+Registration Number
+</label>
+
+<input
+value="CGA2026-0001"
+readonly>
+
+</div>
+
+
+
+
+<div class="inputCard">
+
+<label>
+Admission Number *
+</label>
+
+<input
+id="admissionNo"
+required>
+
+</div>
+
+
+
+
+
+<div class="inputCard">
+
+<label>
+APAAR ID *
+</label>
+
+<input
+id="apaar"
+maxlength="12"
+required>
+
+</div>
+
+
+
+
+
+<div class="inputCard">
+
+<label>
+Date Of Birth *
+</label>
+
+<input
+id="dob"
+type="date"
+required>
+
+</div>
+
+
+
+
+
+<div class="inputCard">
+
+<label>
+Gender *
+</label>
+
+<select id="gender">
+
+<option value="">
+Select Gender
+</option>
+
+<option>
+Male
+</option>
+
+<option>
+Female
+</option>
+
+<option>
+Other
+</option>
+
+</select>
+
+</div>
+
+
+
+
+
+<div class="inputCard">
+
+<label>
+Category *
+</label>
+
+<select id="category">
+
+<option>
+Select Category
+</option>
+
+<option>
+General
+</option>
+
+<option>
+OBC
+</option>
+
+<option>
+SC
+</option>
+
+<option>
+ST
+</option>
+
+<option>
+EWS
+</option>
+
+</select>
+
+</div>
+
+
+
+
+
+<div class="inputCard">
+
+<label>
+Mobile Number *
+</label>
+
+<input
+id="mobile"
+maxlength="10">
+
+</div>
+
+
+
+
+
+<div class="inputCard">
+
+<label>
+Email
+</label>
+
+<input
+id="email"
+type="email">
+
+</div>
+
+
+
+
+</div>
+
+
+</section>
+
+
+
+
+
+<!-- PARENT SECTION -->
+
+
+<section class="formSection">
+
+
+<div class="sectionTitle">
+
+<h2>
+👨‍👩‍👦 Parent Information
+</h2>
+
+<p>
+Father and Mother details
+</p>
+
+
+</div>
+
+
+
+
+<div class="formGrid">
+
+
+<div class="inputCard">
+
+<label>
+Father Name *
+</label>
+
+<input
+id="fatherName"
+required>
+
+</div>
+
+
+
+<div class="inputCard">
+
+<label>
+Mother Name *
+</label>
+
+<input
+id="motherName"
+required>
+
+</div>
+
+
+
+
+<div class="inputCard">
+
+<label>
+Father Mobile
+</label>
+
+<input
+maxlength="10">
+
+</div>
+
+
+
+<div class="inputCard">
+
+<label>
+Mother Mobile
+</label>
+
+<input
+maxlength="10">
+
+</div>
+
+
+
+
+</div>
+
+
+
+
+<div class="largeInputCard">
+
+
+<label>
+Parent Complete Address *
+</label>
+
+
+<textarea
+rows="4"
+required></textarea>
+
+
+</div>
+
+
+
+
+</section>
+<!-- SUBJECT SECTION -->
+
+<section class="formSection" id="subjects">
+
+
+<div class="sectionTitle">
+
+<h2>
+📚 CBSE Subject Selection
+</h2>
+
+<p>
+Select mandatory subjects carefully
+</p>
+
+</div>
+
+
+
+<div class="formGrid">
+
+
+<div class="inputCard">
+
+<label>
+Language Subject *
+</label>
+
+
+<select id="language">
+
+<option value="">
+Select Language
+</option>
+
+<option>
+English Language (184)
+</option>
+
+<option>
+Hindi Course-A (002)
+</option>
+
+<option>
+Hindi Course-B (085)
+</option>
+
+</select>
+
+
+</div>
+
+
+
+
+<div class="inputCard">
+
+<label>
+Mathematics *
+</label>
+
+
+<select id="math">
+
+<option>
+Select Mathematics
+</option>
+
+<option>
+Mathematics Standard (041)
+</option>
+
+<option>
+Mathematics Basic (241)
+</option>
+
+
+</select>
+
+</div>
+
+
+
+
+
+<div class="inputCard">
+
+<label>
+Science *
+</label>
+
+
+<select id="science">
+
+<option>
+Select Science
+</option>
+
+<option>
+Science (086)
+</option>
+
+</select>
+
+</div>
+
+
+
+
+
+<div class="inputCard">
+
+<label>
+Social Science *
+</label>
+
+
+<select id="socialScience">
+
+<option>
+Select Social Science
+</option>
+
+<option>
+Social Science (087)
+</option>
+
+
+</select>
+
+</div>
+
+
+
+
+
+<div class="inputCard">
+
+<label>
+Additional Subject
+</label>
+
+
+<select id="additional">
+
+<option>
+None
+</option>
+
+<option>
+Artificial Intelligence (417)
+</option>
+
+<option>
+Information Technology (402)
+</option>
+
+</select>
+
+
+</div>
+
+
+</div>
+
+
+
+<div class="subjectSummary">
+
+<h3>
+Selected Subjects
+</h3>
+
+
+<div id="subjectList">
+
+No Subject Selected
+
+</div>
+
+
+</div>
+
+
+
+</section>
+
+
+
+
+
+
+<!-- DOCUMENT SECTION -->
+
+
+<section class="formSection" id="documents">
+
+
+<div class="sectionTitle">
+
+<h2>
+📄 Document Upload Center
+</h2>
+
+
+<p>
+Upload required documents
+</p>
+
+
+</div>
+
+
+
+
+<div class="uploadGrid">
+
+
+
+<div class="uploadCard">
+
+<h3>
+Student Photo
+</h3>
+
+<img id="photoPreview" class="previewImage">
+
+
+<input 
+type="file"
+id="photo"
+accept="image/*">
+
+
+</div>
+
+
+
+
+
+<div class="uploadCard">
+
+<h3>
+Student Signature
+</h3>
+
+<img id="studentPreview" class="previewImage">
+
+
+<input 
+type="file"
+id="studentSign"
+accept="image/*">
+
+
+</div>
+
+
+
+
+
+<div class="uploadCard">
+
+<h3>
+Father Signature
+</h3>
+
+<img id="fatherPreview" class="previewImage">
+
+
+<input 
+type="file"
+id="fatherSign"
+accept="image/*">
+
+
+</div>
+
+
+
+
+
+<div class="uploadCard">
+
+<h3>
+Mother Signature
+</h3>
+
+<img id="motherPreview" class="previewImage">
+
+
+<input 
+type="file"
+id="motherSign"
+accept="image/*">
+
+
+</div>
+
+
+
+</div>
+
+
+
+
+
+
+<div class="documentGrid">
+
+
+<div class="documentCard">
+
+<h3>
+Aadhaar Card
+</h3>
+
+<input type="file">
+
+</div>
+
+
+
+<div class="documentCard">
+
+<h3>
+Birth Certificate
+</h3>
+
+<input type="file">
+
+</div>
+
+
+
+<div class="documentCard">
+
+<h3>
+Transfer Certificate
+</h3>
+
+<input type="file">
+
+</div>
+
+
+
+<div class="documentCard">
+
+<h3>
+Previous Marksheet
+</h3>
+
+<input type="file">
+
+</div>
+
+
+
+</div>
+
+
+
+</section>
+
+
+
+
+
+
+<!-- ADDRESS SECTION -->
+
+
+<section class="formSection">
+
+
+<div class="sectionTitle">
+
+<h2>
+📍 Address Information
+</h2>
+
+
+</div>
+
+
+
+
+<div class="formGrid">
+
+
+<div class="largeInputCard">
+
+
+<label>
+Complete Address *
+</label>
+
+
+<textarea
+id="address"
+rows="4"
+required></textarea>
+
+
+</div>
+
+
+
+
+<div class="inputCard">
+
+<label>
+City *
+</label>
+
+<input id="city">
+
+</div>
+
+
+
+
+<div class="inputCard">
+
+<label>
+State *
+</label>
+
+<input id="state">
+
+</div>
+
+
+
+
+<div class="inputCard">
+
+<label>
+Pincode *
+</label>
+
+<input 
+id="pincode"
+maxlength="6">
+
+
+</div>
+
+
+
+
+</div>
+
+
+
+</section>
+
+
+
+
+
+
+
+<!-- DECLARATION -->
+
+
+<section class="formSection">
+
+
+<div class="sectionTitle">
+
+<h2>
+🛡 Declaration & Verification
+</h2>
+
+</div>
+
+
+
+<div class="declarationBox">
+
+
+<label>
+
+<input 
+type="checkbox"
+id="agree">
+
+
+I hereby declare that all details entered by me are true and correct.
+
+
+</label>
+
+
+</div>
+
+
+
+</section>
+<!-- FINAL ACTION AREA -->
+
+<section class="formSection">
+
+
+<div class="actionArea">
+
+
+<button 
+type="submit"
+class="primaryBtn">
+
+✅ Submit Registration
+
+</button>
+
+
+
+
+<button 
+type="button"
+id="previewBtn"
+class="secondaryBtn">
+
+👁 Preview Form
+
+</button>
+
+
+
+
+<button 
+type="button"
+onclick="window.print()"
+class="printBtn">
+
+🖨 Print Form
+
+</button>
+
+
+
+
+<button 
+type="reset"
+class="resetBtn">
+
+🔄 Reset Form
+
+</button>
+
+
+
+</div>
+
+
+
+</section>
+
+
+
+</form>
+
+
+
+
+
+<!-- PREVIEW MODAL -->
+
+
+<div class="modal" id="preview">
+
+
+<div class="modalContent">
+
+
+<button 
+class="closeModal"
+id="closePreview">
+
+×
+
+</button>
+
+
+
+<h2>
+👁 Registration Preview
+</h2>
+
+
+
+<div id="previewData">
+
+<p>
+Student details will appear here.
+</p>
+
+
+</div>
+
+
+
+
+<button 
+class="primaryBtn"
+id="confirmSubmit">
+
+Confirm Submission
+
+</button>
+
+
+
+</div>
+
+
+</div>
+
+
+
+
+
+
+
+<!-- SUCCESS POPUP -->
+
+
+<div class="modal" id="successPopup">
+
+
+<div class="successBox">
+
+
+<h2>
+🎉 Registration Successful
+</h2>
+
+
+<p>
+Your CBSE registration has been submitted successfully.
+</p>
+
+
+
+<h3 id="registrationNumber">
+
+CGA2026-0001
+
+</h3>
+
+
+
+
+<button 
+id="closeSuccess"
+class="primaryBtn">
+
+Close
+
+</button>
+
+
+
+</div>
+
+
+</div>
+
+
+
+
+
+
+
+
+<!-- FLOATING BUTTONS -->
+
+
+<div class="floatingButtons">
+
+
+<button 
+id="darkModeBtn">
+
+🌙
+
+</button>
+
+
+
+<button 
+id="topBtn">
+
+⬆
+
+</button>
+
+
+
+</div>
+
+
+
+
+
+
+
+
+<!-- FOOTER -->
+
+
+<footer class="mainFooter">
+
+
+<div class="footerContainer">
+
+
+
+<div>
+
+<h2>
+Career Guide Academy
+</h2>
+
+<p>
+CBSE Registration Portal
+</p>
+
+<p>
+Academic Session 2026-2027
+</p>
+
+</div>
+
+
+
+
+<div>
+
+<h3>
+Contact
+</h3>
+
+
+<p>
+📧 info@careerguideacademy.in
+</p>
+
+
+<p>
+📞 +91 9876543210
+</p>
+
+
+</div>
+
+
+
+
+
+<div>
+
+<h3>
+Technology
+</h3>
+
+
+<p>
+HTML5
+</p>
+
+<p>
+CSS3
+</p>
+
+<p>
+JavaScript
+</p>
+
+
+</div>
+
+
+
+
+
+
+<div>
+
+<h3>
+Developer
+</h3>
+
+
+<p>
+Faraz
+</p>
+
+
+<p>
+Premium School Project
+</p>
+
+
+</div>
+
+
+
+</div>
+
+
+
+
+
+<div class="copyright">
+
+© 2026 Career Guide Academy | All Rights Reserved
+
+</div>
+
+
+
+</footer>
+
+
+<script src="cbse.js"></script>
+
+
+<!-- CSS + JS SAME FILE ME AAYEGA -->
+
+</body>
+
+</html>

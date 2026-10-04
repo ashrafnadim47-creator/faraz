@@ -1,0 +1,345 @@
+/* ==========================================================================
+   🔥 FARAZ STORE v2.0 - FADED WHEEL EVENT CSS (CYBERPUNK GLASSMORPHIC)
+   ========================================================================== */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Plus Jakarta Sans', 'Segoe UI', Roboto, sans-serif;
+    user-select: none;
+    -webkit-user-select: none;
+}
+
+body {
+    background: radial-gradient(circle at top center, #1e1b4b 0%, #020617 75%);
+    color: #ffffff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    padding: 15px;
+}
+
+/* Main Container Card */
+.faded-wheel-container {
+    width: 100%;
+    max-width: 680px;
+    background: rgba(15, 23, 42, 0.85);
+    border: 2px solid rgba(255, 255, 255, 0.1);
+    border-radius: 20px;
+    padding: 24px;
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.8), 0 0 30px rgba(0, 229, 255, 0.15);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+}
+
+/* Header Area */
+.wheel-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 2px dashed rgba(255, 204, 0, 0.3);
+    padding-bottom: 12px;
+    margin-bottom: 15px;
+}
+
+.wheel-header h1 {
+    font-family: 'Orbitron', sans-serif;
+    color: #ffcc00;
+    font-size: 24px;
+    font-weight: 900;
+    letter-spacing: 2px;
+    text-shadow: 0 0 12px rgba(255, 204, 0, 0.4);
+}
+
+.fun-notice {
+    color: #ef4444;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-top: 4px;
+    font-weight: 800;
+    text-shadow: 0 0 6px rgba(239, 68, 68, 0.4);
+}
+
+.wallet-display {
+    background: #0f172a;
+    padding: 8px 16px;
+    border-radius: 20px;
+    border: 1px solid #334155;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.wallet-label {
+    font-size: 12px;
+    color: #94a3b8;
+    font-weight: 700;
+}
+
+.wallet-amount {
+    color: #00e5ff;
+    font-weight: 900;
+    font-family: 'Orbitron', sans-serif;
+    font-size: 14px;
+}
+
+/* Status Alert Box */
+.status-alert-box {
+    background: rgba(255, 204, 0, 0.08);
+    border: 1px dashed rgba(255, 204, 0, 0.4);
+    color: #ffcc00;
+    text-align: center;
+    padding: 10px 14px;
+    font-size: 13px;
+    border-radius: 10px;
+    margin-bottom: 18px;
+    font-weight: 700;
+}
+
+/* Grid Arena Layout */
+.faded-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 12px;
+    margin-bottom: 18px;
+}
+
+/* Grid Item Card */
+.grid-item {
+    background: rgba(30, 41, 59, 0.6);
+    border: 2px solid rgba(255, 255, 255, 0.08);
+    border-radius: 12px;
+    aspect-ratio: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 8px;
+    cursor: pointer;
+    position: relative;
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    overflow: hidden;
+}
+
+.grid-item:hover:not(.removed):not(.won) {
+    border-color: #ffcc00;
+    background: rgba(51, 65, 85, 0.8);
+    transform: scale(1.03);
+    box-shadow: 0 4px 15px rgba(255, 204, 0, 0.2);
+}
+
+.grid-item img {
+    max-width: 65%;
+    max-height: 65%;
+    object-fit: contain;
+    margin-bottom: 6px;
+    filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.5));
+}
+
+.item-title {
+    font-size: 10px;
+    color: #cbd5e1;
+    text-align: center;
+    font-weight: 700;
+    line-height: 1.2;
+}
+
+.premium-prize {
+    border-color: #a855f7;
+    box-shadow: inset 0 0 12px rgba(168, 85, 247, 0.4);
+}
+
+/* Center Terminal Button */
+.center-action-terminal {
+    grid-column: span 2;
+    background: rgba(15, 23, 42, 0.9);
+    border: 2px solid rgba(255, 204, 0, 0.3);
+    border-radius: 12px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 10px;
+}
+
+#main-action-trigger {
+    width: 95%;
+    height: 85%;
+    background: linear-gradient(135deg, #ffe57f 0%, #ffc107 100%);
+    color: #020617;
+    border: none;
+    border-radius: 8px;
+    font-family: 'Orbitron', sans-serif;
+    font-weight: 900;
+    font-size: 14px;
+    text-transform: uppercase;
+    cursor: pointer;
+    box-shadow: 0 4px 15px rgba(255, 193, 7, 0.4);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    transition: all 0.2s ease;
+}
+
+#main-action-trigger:hover:not(:disabled) {
+    filter: brightness(1.15);
+    transform: translateY(-2px);
+}
+
+#main-action-trigger:disabled {
+    background: #334155;
+    color: #94a3b8;
+    border-color: #475569;
+    box-shadow: none;
+    cursor: not-allowed;
+    transform: none;
+}
+
+/* State Overlays */
+.grid-item.to-remove {
+    border-color: #ef4444;
+    background: rgba(239, 68, 68, 0.15);
+}
+
+.grid-item.to-remove::before {
+    content: "REMOVE";
+    position: absolute;
+    top: 4px;
+    font-size: 8px;
+    background: #ef4444;
+    color: white;
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-weight: 900;
+}
+
+.grid-item.removed::after {
+    content: "REMOVED";
+    position: absolute;
+    inset: 0;
+    background: rgba(2, 6, 23, 0.92);
+    color: #ef4444;
+    font-weight: 900;
+    font-size: 11px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    letter-spacing: 0.5px;
+}
+
+.grid-item.won::after {
+    content: "✓ OWNED";
+    position: absolute;
+    inset: 0;
+    background: rgba(2, 6, 23, 0.88);
+    color: #22c55e;
+    font-weight: 900;
+    font-size: 11px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: 2px solid #22c55e;
+    border-radius: 10px;
+}
+
+.grid-item.active-chase {
+    border-color: #ffcc00;
+    box-shadow: 0 0 25px #ffcc00;
+    background: rgba(255, 204, 0, 0.2);
+    transform: scale(1.06);
+    z-index: 10;
+}
+
+/* Rules Footer */
+.rules-footer {
+    background: #0f172a;
+    border-left: 4px solid #ffcc00;
+    padding: 10px 14px;
+    font-size: 11px;
+    color: #94a3b8;
+    text-align: center;
+    line-height: 1.5;
+    border-radius: 0 8px 8px 0;
+}
+
+/* Congratulations Modal Overlay */
+.congrats-modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(2, 6, 23, 0.92);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 99999;
+    backdrop-filter: blur(10px);
+}
+
+.congrats-card {
+    background: rgba(15, 23, 42, 0.95);
+    border: 2px solid #ffcc00;
+    border-radius: 20px;
+    padding: 35px 25px;
+    text-align: center;
+    width: 90%;
+    max-width: 420px;
+    box-shadow: 0 0 40px rgba(255, 204, 0, 0.4);
+    animation: popupGlow 0.4s ease-out;
+}
+
+@keyframes popupGlow {
+    from { transform: scale(0.7); opacity: 0; }
+    to { transform: scale(1); opacity: 1; }
+}
+
+.congrats-title {
+    font-family: 'Orbitron', sans-serif;
+    color: #ffcc00;
+    font-size: 26px;
+    font-weight: 900;
+    letter-spacing: 2px;
+    margin-bottom: 5px;
+    text-shadow: 0 0 12px rgba(255, 204, 0, 0.5);
+}
+
+.congrats-card img {
+    width: 120px;
+    height: 120px;
+    object-fit: contain;
+    margin: 20px 0;
+    animation: pulseGlow 2s infinite ease-in-out;
+}
+
+@keyframes pulseGlow {
+    0%, 100% { transform: scale(1); filter: drop-shadow(0 0 6px rgba(255, 204, 0, 0.3)); }
+    50% { transform: scale(1.08); filter: drop-shadow(0 0 20px rgba(255, 204, 0, 0.7)); }
+}
+
+.congrats-btn {
+    background: linear-gradient(135deg, #ffe57f 0%, #ffc107 100%);
+    color: #020617;
+    border: none;
+    padding: 12px 35px;
+    font-family: 'Orbitron', sans-serif;
+    font-weight: 900;
+    font-size: 14px;
+    border-radius: 20px;
+    cursor: pointer;
+    box-shadow: 0 4px 15px rgba(255, 193, 7, 0.4);
+    transition: all 0.2s ease;
+}
+
+.congrats-btn:hover {
+    filter: brightness(1.15);
+}
+
+/* Mobile Responsiveness */
+@media (max-width: 480px) {
+    .faded-wheel-container { padding: 16px; border-radius: 16px; }
+    .faded-grid { gap: 8px; }
+    .item-title { font-size: 8px; }
+    .wheel-header h1 { font-size: 18px; }
+    .wallet-display { padding: 6px 10px; }
+}
