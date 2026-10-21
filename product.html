@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Products Catalog | Faraz Store</title>
+    <title>Products Catalog • Faraz Store</title>
     <meta name="description" content="Explore gaming gear, accessories, and electronics on Faraz Store.">
     <meta name="theme-color" content="#020617">
     <link rel="icon" href="favicon.ico">
@@ -20,15 +20,17 @@
     <link rel="stylesheet" href="css/product.css">
     <link rel="stylesheet" href="css/footer.css">
     <link rel="stylesheet" href="css/responsive.css">
+    <link rel="stylesheet" href="css/floating.css">
 </head>
 
-<body>
+<body class="product-page-bg">
 
-    <!-- 🚀 HEADER -->
+    <!-- HEADER -->
     <header class="header">
         <div class="logo-area">
             <a href="index.html" class="logo">
-                <span>🔥</span> FARAZ <span class="gradient-text">STORE</span>
+                <img src="images/logo.png?v=3" alt="Faraz Store" style="width: 36px; height: 36px; border-radius: 50%; object-fit: contain; border: 1.5px solid #00f2fe; box-shadow: 0 0 10px rgba(0, 242, 254, 0.4);">
+                <span class="logo-text">FARAZ <span class="logo-highlight">STORE</span></span>
             </a>
         </div>
 
@@ -41,23 +43,21 @@
         </nav>
 
         <div class="header-buttons">
-            <button onclick="location.href='index.html'" title="Home">🏠</button>
-            <button onclick="location.href='wishlist.html'" title="Wishlist">❤️</button>
-            <button onclick="location.href='cart.html'" title="Cart">🛒</button>
-            <button onclick="location.href='profile.html'" title="Profile">👤</button>
+            <button onclick="location.href='cart.html'" style="background: rgba(0,229,255,0.15); border: 1px solid #00e5ff; color: #00e5ff; padding: 6px 14px; border-radius: 8px; font-weight: 700; cursor: pointer; font-size: 12px;">Cart</button>
+            <button onclick="location.href='orders.html'" style="background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.15); color: #fff; padding: 6px 14px; border-radius: 8px; font-weight: 700; cursor: pointer; font-size: 12px;">Orders</button>
         </div>
     </header>
 
-    <!-- 🛒 MAIN PRODUCTS SECTION -->
+    <!-- MAIN PRODUCTS SECTION -->
     <section class="product-section" style="max-width: 1200px; margin: 30px auto; padding: 0 15px;">
         <div class="section-title-box" style="text-align: center; margin-bottom: 25px;">
-            <h1 style="font-family: 'Orbitron', sans-serif; font-size: 28px; color: #00e5ff;"> Our Store Products</h1>
-            <p style="color: #94a3b8; font-size: 14px;">Browse and search our latest gaming and electronic gear</p>
+            <h1 style="font-family: 'Orbitron', sans-serif; font-size: 28px; color: #00e5ff;">Our Store Products</h1>
+            <p style="color: #94a3b8; font-size: 14px;">Browse and search our latest gaming topups and hardware</p>
         </div>
 
         <!-- SEARCH BAR -->
         <div class="search-box glassmorphism" style="max-width: 500px; margin: 0 auto 30px auto; padding: 4px 10px; border-radius: 25px;">
-            <input id="productSearch" type="text" placeholder="🔍 Search Products by name or category..." autocomplete="off">
+            <input id="productSearch" type="text" placeholder="Search products by name or category..." autocomplete="off">
         </div>
 
         <!-- PRODUCTS GRID CONTAINER -->
@@ -71,12 +71,40 @@
 
     <!-- 🛑 FOOTER -->
     <footer class="footer">
-        <h2>🔥 FARAZ STORE</h2>
-        <p>Gaming + Smart Shopping Experience</p>
-        <p class="copy">© 2026 Faraz Store. All Rights Reserved.</p>
+        <div class="footer-brand">
+            <h2>⚡ FARAZ STORE</h2>
+            <p>Gaming + Smart Shopping Experience</p>
+        </div>
+        <p class="copy">© 2026 Faraz Store • All Rights Reserved</p>
     </footer>
 
+    <!-- FLOATING SOCIAL ACTIONS (RIGHT SIDE) -->
+    <div class="floating-box" id="floatingActions" aria-label="Quick Actions">
+        <a href="luck-royale.html" class="floating-btn spin-btn" title="Luck Royale" aria-label="Spin Wheel">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="12" r="10"/>
+                <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>
+            </svg>
+            <span class="floating-tooltip">Luck Royale</span>
+        </a>
+        <a href="https://www.instagram.com/faraz_anjum_000" class="floating-btn insta-btn" target="_blank" rel="noopener noreferrer" title="Instagram @faraz_anjum_000" aria-label="Instagram">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
+                <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
+                <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
+            </svg>
+            <span class="floating-tooltip">Instagram</span>
+        </a>
+        <a href="https://www.youtube.com/@TK_RUSH" class="floating-btn yt-btn" target="_blank" rel="noopener noreferrer" title="YouTube @TK_RUSH" aria-label="YouTube">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/>
+            </svg>
+            <span class="floating-tooltip">YouTube</span>
+        </a>
+    </div>
+
     <!-- MODULE SCRIPTS -->
+    <script type="module" src="js/support-agent.js"></script>
     <script type="module" src="js/product.js"></script>
     <script type="module" src="js/cart-page.js"></script>
     <script type="module" src="js/wishlist.js"></script>

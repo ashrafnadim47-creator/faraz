@@ -1,0 +1,53 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="100%" height="100%">
+  <defs>
+    <radialGradient id="cyberGlow" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#00f2fe" stop-opacity="0.3"/>
+      <stop offset="100%" stop-color="#020617" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="goldGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#fff089"/>
+      <stop offset="50%" stop-color="#f59e0b"/>
+      <stop offset="100%" stop-color="#b45309"/>
+    </linearGradient>
+    <linearGradient id="cyanGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#67e8f9"/>
+      <stop offset="50%" stop-color="#06b6d4"/>
+      <stop offset="100%" stop-color="#0284c7"/>
+    </linearGradient>
+    <filter id="glow" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur stdDeviation="6" result="blur" />
+      <feComposite in="SourceGraphic" in2="blur" operator="over" />
+    </filter>
+  </defs>
+
+  <!-- Glow Background -->
+  <circle cx="256" cy="256" r="240" fill="url(#cyberGlow)"/>
+  
+  <!-- Outer Shield Ring -->
+  <circle cx="256" cy="256" r="230" fill="#070b16" stroke="url(#goldGrad)" stroke-width="6"/>
+  <circle cx="256" cy="256" r="216" fill="none" stroke="url(#cyanGrad)" stroke-width="2.5" stroke-dasharray="8 4"/>
+
+  <!-- Glowing Cyan Diamond Emblem -->
+  <polygon points="256,80 330,150 256,240 182,150" fill="url(#cyanGrad)" filter="url(#glow)"/>
+  <polygon points="256,80 295,150 256,240" fill="#a5f3fc" opacity="0.6"/>
+  <polygon points="256,80 256,240 217,150" fill="#0891b2" opacity="0.8"/>
+
+  <!-- Golden Crown -->
+  <path d="M140,200 L120,130 L195,165 L256,115 L317,165 L392,130 L372,200 Z" fill="url(#goldGrad)" stroke="#fef08a" stroke-width="2"/>
+  <rect x="140" y="195" width="232" height="22" rx="4" fill="url(#goldGrad)"/>
+
+  <!-- Crown Jewels -->
+  <circle cx="120" cy="130" r="8" fill="#00f2fe" stroke="#ffffff" stroke-width="2"/>
+  <circle cx="195" cy="165" r="7" fill="#00f2fe" stroke="#ffffff" stroke-width="2"/>
+  <circle cx="256" cy="115" r="9" fill="#00f2fe" stroke="#ffffff" stroke-width="2"/>
+  <circle cx="317" cy="165" r="7" fill="#00f2fe" stroke="#ffffff" stroke-width="2"/>
+  <circle cx="392" cy="130" r="8" fill="#00f2fe" stroke="#ffffff" stroke-width="2"/>
+
+  <!-- Lightning Bolt -->
+  <polygon points="270,165 230,230 252,230 236,290 286,215 260,215" fill="#fef08a" stroke="#f59e0b" stroke-width="2" filter="url(#glow)"/>
+
+  <!-- Typography -->
+  <text x="256" y="355" font-family="'Orbitron', sans-serif" font-size="52" font-weight="900" fill="#00f2fe" text-anchor="middle" letter-spacing="4">FARAZ</text>
+  <text x="256" y="410" font-family="'Orbitron', sans-serif" font-size="28" font-weight="800" fill="url(#goldGrad)" text-anchor="middle" letter-spacing="6">STORE</text>
+  <text x="256" y="445" font-family="'Plus Jakarta Sans', sans-serif" font-size="14" font-weight="700" fill="#94a3b8" text-anchor="middle" letter-spacing="3">OFFICIAL GAMING HUB</text>
+</svg>

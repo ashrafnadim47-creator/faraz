@@ -1,52 +1,193 @@
 /* ==========================================================================
-   🔥 FARAZ STORE v2.0 - ULTRA PREMIUM CONTACT CSS
+   🔥 FARAZ STORE - 24/7 SUPPORT DESK & AI AGENT CSS
    ========================================================================== */
 
 .contact-section {
     min-height: 90vh;
-    padding: 50px 5%;
+    padding: 40px 5%;
     display: flex;
     justify-content: center;
-    align-items: center;
+    align-items: flex-start;
     box-sizing: border-box;
     font-family: 'Plus Jakarta Sans', sans-serif;
 }
 
 .contact-box {
-    max-width: 680px;
+    max-width: 820px;
     width: 100%;
-    margin: 0 auto;
-    padding: 40px 30px;
-    text-align: center;
-    background: rgba(15, 23, 42, 0.85);
-    border-radius: 28px;
-    border: 1px solid rgba(255, 255, 255, 0.1);
+    margin: 20px auto;
+    padding: 35px 28px;
+    background: rgba(15, 23, 42, 0.9);
+    border-radius: 24px;
+    border: 1px solid rgba(0, 229, 255, 0.2);
     box-shadow: 0 25px 60px rgba(0, 0, 0, 0.8), 0 0 35px rgba(0, 229, 255, 0.12);
-    backdrop-filter: blur(16px);
-    -webkit-backdrop-filter: blur(16px);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
 }
 
-.contact-box h1 {
+.contact-header {
+    text-align: center;
+    margin-bottom: 24px;
+}
+
+.contact-header h1 {
     font-family: 'Orbitron', sans-serif;
-    font-size: 36px;
+    font-size: 32px;
     font-weight: 900;
-    margin-bottom: 12px;
-    background: linear-gradient(135deg, #00e5ff, #a855f7);
+    margin: 0 0 8px 0;
+    background: linear-gradient(135deg, #00e5ff, #38bdf8, #a855f7);
     -webkit-background-clip: text;
     background-clip: text;
     color: transparent;
     text-shadow: 0 0 20px rgba(0, 229, 255, 0.3);
 }
 
-.contact-box p {
+.contact-header p {
     color: #94a3b8;
-    margin: 10px 0 25px 0;
+    margin: 0;
     font-size: 14px;
 }
 
-/* FORM INPUTS & TEXTAREA */
-.contact-box input,
-.contact-box textarea {
+/* ==========================================
+   SUPPORT TABS NAVIGATION
+   ========================================== */
+.support-tabs {
+    display: flex;
+    gap: 10px;
+    background: rgba(2, 6, 23, 0.7);
+    padding: 6px;
+    border-radius: 16px;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    margin-bottom: 24px;
+}
+
+.support-tab-btn {
+    flex: 1;
+    padding: 12px 16px;
+    border-radius: 12px;
+    border: none;
+    background: transparent;
+    color: #94a3b8;
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-size: 13px;
+    font-weight: 800;
+    cursor: pointer;
+    transition: all 0.25s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+}
+
+.support-tab-btn.active {
+    background: linear-gradient(135deg, #0284c7, #2563eb);
+    color: #ffffff;
+    box-shadow: 0 4px 15px rgba(2, 132, 199, 0.4);
+}
+
+.support-tab-pane {
+    display: none;
+}
+
+.support-tab-pane.active {
+    display: block;
+}
+
+/* ==========================================
+   TAB 1: LIVE IN-PAGE AI SUPPORT AGENT
+   ========================================== */
+.agent-chat-container {
+    background: #020617;
+    border-radius: 18px;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    display: flex;
+    flex-direction: column;
+    height: 480px;
+    overflow: hidden;
+}
+
+.agent-chat-messages {
+    flex: 1;
+    padding: 20px;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.agent-bubble {
+    max-width: 85%;
+    padding: 12px 16px;
+    border-radius: 16px;
+    font-size: 13.5px;
+    line-height: 1.5;
+    word-break: break-word;
+}
+
+.agent-bubble.bot {
+    background: rgba(30, 41, 59, 0.9);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    color: #e2e8f0;
+    align-self: flex-start;
+    border-bottom-left-radius: 4px;
+}
+
+.agent-bubble.user {
+    background: linear-gradient(135deg, #0284c7, #2563eb);
+    color: #ffffff;
+    align-self: flex-end;
+    border-bottom-right-radius: 4px;
+    box-shadow: 0 4px 14px rgba(2, 132, 199, 0.35);
+}
+
+.agent-chat-footer {
+    padding: 14px 18px;
+    background: rgba(15, 23, 42, 0.95);
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+    display: flex;
+    gap: 10px;
+}
+
+.agent-input {
+    flex: 1;
+    background: #020617;
+    border: 1px solid #334155;
+    border-radius: 12px;
+    padding: 12px 16px;
+    color: #ffffff;
+    font-family: inherit;
+    font-size: 14px;
+    outline: none;
+    transition: border-color 0.2s;
+}
+
+.agent-input:focus {
+    border-color: #00e5ff;
+    box-shadow: 0 0 10px rgba(0, 229, 255, 0.25);
+}
+
+.agent-send-btn {
+    background: linear-gradient(135deg, #00e5ff, #3b82f6);
+    border: none;
+    border-radius: 12px;
+    padding: 0 20px;
+    font-weight: 800;
+    color: #020617;
+    font-size: 14px;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.agent-send-btn:hover {
+    filter: brightness(1.15);
+    transform: scale(1.03);
+}
+
+/* ==========================================
+   TAB 2: SUBMIT TICKET TO ADMIN DESK
+   ========================================= */
+.ticket-form input,
+.ticket-form textarea {
     width: 100%;
     padding: 14px 18px;
     margin-bottom: 14px;
@@ -61,17 +202,16 @@
     transition: all 0.25s ease;
 }
 
-.contact-box input:focus,
-.contact-box textarea:focus {
+.ticket-form input:focus,
+.ticket-form textarea:focus {
     border-color: #00e5ff;
     box-shadow: 0 0 15px rgba(0, 229, 255, 0.25);
 }
 
-.contact-box button {
-    margin-top: 15px;
+.ticket-submit-btn {
     width: 100%;
     padding: 15px;
-    border-radius: 16px;
+    border-radius: 14px;
     background: linear-gradient(135deg, #2563eb, #7c3aed);
     color: #ffffff;
     font-family: 'Orbitron', sans-serif;
@@ -83,45 +223,58 @@
     transition: all 0.25s ease;
 }
 
-.contact-box button:hover {
+.ticket-submit-btn:hover {
     filter: brightness(1.15);
     transform: translateY(-2px);
     box-shadow: 0 8px 25px rgba(37, 99, 235, 0.4);
 }
 
-/* CONTACT INFO CARDS GRID */
-.contact-info {
-    margin-top: 30px;
-    display: flex;
-    justify-content: center;
-    gap: 16px;
-    flex-wrap: wrap;
+/* QUICK CONTACT INFO FOOTNOTE */
+.support-info-cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 14px;
+    margin-top: 24px;
 }
 
-.contact-info div {
-    flex: 1;
-    min-width: 180px;
-    padding: 18px;
+.info-card {
     background: rgba(30, 41, 59, 0.5);
-    border-radius: 18px;
+    border-radius: 14px;
     border: 1px solid rgba(255, 255, 255, 0.06);
+    padding: 14px;
+    text-align: center;
     color: #cbd5e1;
-    font-size: 13px;
-    font-weight: 700;
+    font-size: 12px;
 }
 
-/* 📱 MOBILE RESPONSIVE */
+.info-card strong {
+    display: block;
+    color: #00e5ff;
+    font-size: 13px;
+    margin-bottom: 4px;
+}
+
+/* MOBILE RESPONSIVE */
 @media (max-width: 600px) {
     .contact-box {
-        padding: 25px 16px;
-        border-radius: 20px;
+        padding: 20px 14px;
+        margin: 10px auto;
     }
 
-    .contact-box h1 {
-        font-size: 26px;
+    .contact-header h1 {
+        font-size: 24px;
     }
 
-    .contact-info {
-        flex-direction: column;
+    .support-tab-btn {
+        padding: 10px 8px;
+        font-size: 11px;
+    }
+
+    .agent-chat-container {
+        height: 420px;
+    }
+
+    .support-info-cards {
+        grid-template-columns: 1fr;
     }
 }

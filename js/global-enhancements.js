@@ -70,17 +70,6 @@ function injectGlobalElements() {
         document.body.appendChild(bar);
     }
 
-    // Floating Contact Button
-    if (!document.getElementById("floatingContactBtn") && !window.location.pathname.includes("contact.html")) {
-        const floatBtn = document.createElement("a");
-        floatBtn.id = "floatingContactBtn";
-        floatBtn.className = "floating-contact-btn";
-        floatBtn.href = "contact.html";
-        floatBtn.title = "Contact Support";
-        floatBtn.innerHTML = "💬";
-        document.body.appendChild(floatBtn);
-    }
-
     // Back to top button
     if (!document.getElementById("backToTopBtn")) {
         const btt = document.createElement("button");
@@ -91,6 +80,48 @@ function injectGlobalElements() {
         document.body.appendChild(btt);
     }
 }
+
+// ==========================================
+// 🌟 GLOBAL ANIMATED TOAST SYSTEM ("CHOOSTA SA ANIMATED POPUP")
+// ==========================================
+window.showToast = function(message, type = "success", customIcon = null) {
+    let container = document.getElementById("farazToastContainer");
+    if (!container) {
+        container = document.createElement("div");
+        container.id = "farazToastContainer";
+        container.className = "faraz-toast-container";
+        document.body.appendChild(container);
+    }
+
+    const toast = document.createElement("div");
+    toast.className = `faraz-toast ${type}`;
+
+    let iconSvg = "";
+    if (customIcon) {
+        iconSvg = `<div class="toast-icon-wrap">${customIcon}</div>`;
+    } else if (type === "success") {
+        iconSvg = `<div class="toast-icon-wrap" style="color: #10b981;">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
+        </div>`;
+    } else if (type === "error") {
+        iconSvg = `<div class="toast-icon-wrap" style="color: #ef4444;">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="m15 9-6 6"/><path d="m9 9 6 6"/></svg>
+        </div>`;
+    } else {
+        iconSvg = `<div class="toast-icon-wrap" style="color: #00f2fe;">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg>
+        </div>`;
+    }
+
+    toast.innerHTML = `${iconSvg}<span>${message}</span>`;
+    container.appendChild(toast);
+
+    setTimeout(() => {
+        toast.style.opacity = "0";
+        toast.style.transform = "translateY(-15px) scale(0.9)";
+        setTimeout(() => toast.remove(), 300);
+    }, 2800);
+};
 
 // ==========================================
 // B. COOKIE BANNER
@@ -125,23 +156,12 @@ window.declineCookies = function() {
 };
 
 // ==========================================
-// C. DARK / LIGHT THEME TOGGLE
+// C. SIGNATURE DARK THEME (LOCKED FOR ULTRA LUXURY CONTRAST)
 // ==========================================
 function initThemeToggle() {
-    const savedTheme = localStorage.getItem("faraz_theme") || "dark";
-    document.documentElement.setAttribute("data-theme", savedTheme);
-
-    const toggleBtns = document.querySelectorAll(".theme-toggle-btn");
-    toggleBtns.forEach(btn => {
-        btn.innerText = savedTheme === "light" ? "🌙 Dark" : "☀️ Light";
-        btn.addEventListener("click", () => {
-            const current = document.documentElement.getAttribute("data-theme");
-            const next = current === "light" ? "dark" : "light";
-            document.documentElement.setAttribute("data-theme", next);
-            localStorage.setItem("faraz_theme", next);
-            btn.innerText = next === "light" ? "🌙 Dark" : "☀️ Light";
-        });
-    });
+    document.documentElement.setAttribute("data-theme", "dark");
+    localStorage.setItem("faraz_theme", "dark");
+    document.querySelectorAll(".theme-toggle-btn").forEach(btn => btn.remove());
 }
 
 // ==========================================

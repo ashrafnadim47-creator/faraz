@@ -1,4 +1,4 @@
-﻿import { db } from "./firebase-config.js";
+import { db } from "./firebase-config.js";
 import {
     collection,
     getDocs,
@@ -25,8 +25,17 @@ const FALLBACK_PRODUCTS = [
         price: 799,
         category: "Gaming Topup",
         stock: 50,
-        image: "images/freefire-banner.jpg",
+        image: "images/freefire_diamonds.png",
         description: "Instant Free Fire Diamonds Topup directly to Player ID within 60 seconds."
+    },
+    {
+        id: "prod_ff_weekly_5",
+        name: "Free Fire Weekly Diamond Membership",
+        price: 159,
+        category: "Gaming Topup",
+        stock: 100,
+        image: "images/prime_pass.png",
+        description: "Get 450 total diamonds + special VIP badge daily for 7 days."
     },
     {
         id: "prod_headset_rgb_2",
@@ -34,7 +43,7 @@ const FALLBACK_PRODUCTS = [
         price: 2499,
         category: "Audio Accessories",
         stock: 12,
-        image: "images/headset.jpg",
+        image: "images/headphones.png",
         description: "Pro noise-cancelling microphone with deep bass and RGB earcups."
     },
     {
@@ -43,7 +52,7 @@ const FALLBACK_PRODUCTS = [
         price: 1899,
         category: "Gaming Gear",
         stock: 8,
-        image: "images/keyboard.jpg",
+        image: "images/keyboard.png",
         description: "Hot-swappable blue switches with custom macro lighting presets."
     },
     {
@@ -52,31 +61,31 @@ const FALLBACK_PRODUCTS = [
         price: 1299,
         category: "Gaming Gear",
         stock: 15,
-        image: "images/mouse.jpg",
+        image: "images/gaming-mouse.png",
         description: "16000 DPI optical sensor with zero-latency 2.4GHz wireless connection."
     },
     {
-        id: "prod_ff_weekly_5",
-        name: "Free Fire Weekly Diamond Membership",
-        price: 159,
+        id: "prod_gloowall_legend",
+        name: "Legendary Cybernetic Gloo Wall Skin",
+        price: 499,
         category: "Gaming Topup",
-        stock: 100,
-        image: "images/prime-banner.jpg",
-        description: "Get 450 total diamonds + special VIP badge daily for 7 days."
+        stock: 30,
+        image: "images/gloowall.png",
+        description: "Exclusive futuristic cyber barrier Gloo Wall skin for Free Fire Battle Royale."
     },
     {
-        id: "prod_earbuds_anc_6",
-        name: "Pro TWS Wireless Gaming Earbuds (40ms Low Latency)",
-        price: 999,
-        category: "Electronics",
-        stock: 20,
-        image: "images/earbuds.jpg",
-        description: "Ultra-low gaming latency mode with environmental noise reduction."
+        id: "prod_laptop_rtx",
+        name: "ASUS ROG Strix RTX 4070 Gaming Laptop",
+        price: 89999,
+        category: "Gaming Gear",
+        stock: 5,
+        image: "images/laptop.png",
+        description: "High-performance gaming machine with Intel Core i9, 32GB DDR5 RAM, and RTX 4070 GPU."
     }
 ];
 
 // ==========================================
-// ðŸ“¦ FETCH ALL PRODUCTS FROM FIRESTORE
+// 📦 FETCH ALL PRODUCTS FROM FIRESTORE
 // ==========================================
 async function loadProducts() {
     if (!container) return;
@@ -97,10 +106,10 @@ async function loadProducts() {
         const snap = await getDocs(q);
         allProducts = [];
 
-        snap.forEach((doc) => {
+        snap.forEach((docSnap) => {
             allProducts.push({
-                id: doc.id,
-                ...doc.data()
+                id: docSnap.id,
+                ...docSnap.data()
             });
         });
 
@@ -109,6 +118,7 @@ async function loadProducts() {
         }
 
         displayProducts(allProducts);
+
     } catch (error) {
         console.warn("Firestore products load fallback active:", error.message);
         allProducts = FALLBACK_PRODUCTS;
@@ -117,14 +127,14 @@ async function loadProducts() {
 }
 
 // ==========================================
-// ðŸŽ¨ RENDER PRODUCTS GRID CARDS
+// 🎨 RENDER PRODUCTS GRID CARDS
 // ==========================================
 function displayProducts(products) {
     if (!container) return;
     container.innerHTML = "";
 
     if (products.length === 0) {
-        container.innerHTML = `<h3 style="grid-column: 1 / -1; text-align: center; color: #94a3b8; padding: 40px;">No Products Found ðŸ“¦</h3>`;
+        container.innerHTML = `<h3 style="grid-column: 1 / -1; text-align: center; color: #94a3b8; padding: 40px;">No Products Found</h3>`;
         return;
     }
 
@@ -134,33 +144,33 @@ function displayProducts(products) {
         let stockClass = "";
 
         if (stock <= 0) {
-            stockText = "ðŸ”´ Out of Stock";
+            stockText = "Out of Stock";
             stockClass = "out-stock";
         } else if (stock <= 5) {
-            stockText = `ðŸŸ¡ Low Stock (${stock} Left)`;
+            stockText = `Low Stock (${stock} Left)`;
             stockClass = "low-stock";
         } else {
-            stockText = `ðŸŸ¢ In Stock (${stock})`;
+            stockText = `In Stock (${stock})`;
             stockClass = "in-stock";
         }
 
         return `
             <div class="product-card glassmorphism">
                 <div class="product-img">
-                    <img src="${product.image || 'images/no-image.png'}" alt="${product.name}" loading="lazy" onerror="this.src='images/logo.png'">
+                    <img src="${product.image || 'images/logo.png?v=3'}" alt="${product.name}" loading="lazy" onerror="this.src='images/logo.png?v=3'">
                 </div>
                 <h3>${product.name}</h3>
-                <p class="price">â‚¹${product.price}</p>
+                <p class="price">₹${product.price}</p>
                 <p style="font-size: 11px; color: #94a3b8; text-transform: uppercase;">${product.category || "General Gear"}</p>
                 <p class="${stockClass}" style="font-size: 12px; font-weight: 800; margin: 4px 0 12px 0;">${stockText}</p>
                 
                 <div class="product-buttons">
-                    <button class="view-details-btn primary-btn" data-id="${product.id}">ðŸ‘ View Details</button>
+                    <button class="view-details-btn primary-btn" data-id="${product.id}">View Details</button>
                     ${stock > 0 
-                        ? `<button class="add-cart-btn primary-btn" data-id="${product.id}" data-name="${product.name}" data-price="${product.price}" data-image="${product.image || ''}">ðŸ›’ Add To Cart</button>`
-                        : `<button disabled style="background: #334155; color: #94a3b8; cursor: not-allowed;">âŒ Out of Stock</button>`
+                        ? `<button class="add-cart-btn primary-btn" data-id="${product.id}" data-name="${product.name}" data-price="${product.price}" data-image="${product.image || ''}">Add To Cart</button>`
+                        : `<button disabled style="background: #334155; color: #94a3b8; cursor: not-allowed;">Out of Stock</button>`
                     }
-                    <button class="add-wishlist-btn" data-name="${product.name}" data-price="${product.price}" data-image="${product.image || ''}" style="background: rgba(255, 0, 85, 0.15); border: 1px solid #ff0055; color: #ff0055; border-radius: 10px; font-weight: 800; cursor: pointer; padding: 8px;">â¤ï¸ Wishlist</button>
+                    <button class="add-wishlist-btn" data-name="${product.name}" data-price="${product.price}" data-image="${product.image || ''}" style="background: rgba(255, 0, 85, 0.15); border: 1px solid #ff0055; color: #ff0055; border-radius: 10px; font-weight: 800; cursor: pointer; padding: 8px;">Wishlist</button>
                 </div>
             </div>
         `;
@@ -171,16 +181,14 @@ function displayProducts(products) {
 }
 
 // ==========================================
-// âš¡ ATTACH EVENT LISTENERS
+// ⚡ ATTACH EVENT LISTENERS
 // ==========================================
 function attachDynamicListeners() {
     // 1. View Details Button
     document.querySelectorAll('.view-details-btn').forEach((button) => {
         button.addEventListener('click', (e) => {
             const id = e.target.getAttribute('data-id');
-            if (id) {
-                location.href = `product-details.html?id=${id}`;
-            }
+            location.href = `product-details.html?id=${id}`;
         });
     });
 
@@ -192,52 +200,69 @@ function attachDynamicListeners() {
             const price = e.target.getAttribute('data-price');
             const image = e.target.getAttribute('data-image');
 
-            if (window.addToCart) {
+            if (typeof window.addToCart === 'function') {
                 window.addToCart(id, name, price, image);
             } else {
-                let currentCart = JSON.parse(localStorage.getItem('fw_user_cart_memory') || "[]");
-                currentCart.push({ id, name, price: parseFloat(price), image, quantity: 1 });
-                localStorage.setItem('fw_user_cart_memory', JSON.stringify(currentCart));
-                alert(`ðŸŽ‰ Added "${name}" to Cart!`);
+                let cart = JSON.parse(localStorage.getItem('fw_user_cart_memory') || "[]");
+                const existing = cart.find(i => i.id === id);
+                if (existing) {
+                    existing.quantity += 1;
+                } else {
+                    cart.push({ id, name, price: Number(price), image, quantity: 1 });
+                }
+                localStorage.setItem('fw_user_cart_memory', JSON.stringify(cart));
+            }
+            if (window.showToast) {
+                window.showToast(`"${name}" added to Cart! 🛒`, "success");
             }
         });
     });
 
-    // 3. Add To Wishlist Button
+    // 3. Wishlist Button
     document.querySelectorAll('.add-wishlist-btn').forEach((button) => {
         button.addEventListener('click', (e) => {
             const name = e.target.getAttribute('data-name');
             const price = e.target.getAttribute('data-price');
             const image = e.target.getAttribute('data-image');
 
-            if (window.addWishlist) {
-                window.addWishlist(name, price, image);
+            let wish = JSON.parse(localStorage.getItem('fw_user_wishlist') || "[]");
+            if (!wish.some(i => i.name === name)) {
+                wish.push({ name, price: Number(price), image });
+                localStorage.setItem('fw_user_wishlist', JSON.stringify(wish));
+                if (window.showToast) {
+                    window.showToast(`"${name}" saved to Wishlist! ❤️`, "info");
+                }
             } else {
-                let currentWish = JSON.parse(localStorage.getItem('fw_user_wish_memory') || "[]");
-                currentWish.push({ name, price: parseFloat(price), image });
-                localStorage.setItem('fw_user_wish_memory', JSON.stringify(currentWish));
-                alert(`â¤ï¸ Added "${name}" to Wishlist!`);
+                if (window.showToast) {
+                    window.showToast(`"${name}" is already in your Wishlist!`, "info");
+                }
             }
         });
     });
 }
 
 // ==========================================
-// ðŸ” SEARCH FILTER LOGIC
+// 🔍 REAL-TIME PRODUCT SEARCH
 // ==========================================
 const searchInput = document.getElementById("productSearch");
 if (searchInput) {
-    searchInput.addEventListener("input", () => {
-        const queryVal = searchInput.value.toLowerCase().trim();
-        const filtered = allProducts.filter((p) => {
-            const name = (p.name || "").toLowerCase();
-            const category = (p.category || "").toLowerCase();
-            return name.includes(queryVal) || category.includes(queryVal);
+    searchInput.addEventListener("input", (e) => {
+        const queryVal = e.target.value.toLowerCase().trim();
+
+        if (!queryVal) {
+            displayProducts(allProducts);
+            return;
+        }
+
+        const filtered = allProducts.filter((product) => {
+            const nameMatch = (product.name || "").toLowerCase().includes(queryVal);
+            const categoryMatch = (product.category || "").toLowerCase().includes(queryVal);
+            const descMatch = (product.description || "").toLowerCase().includes(queryVal);
+            return nameMatch || categoryMatch || descMatch;
         });
+
         displayProducts(filtered);
     });
 }
 
-// Load on Startup
 loadProducts();
-

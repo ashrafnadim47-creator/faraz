@@ -77,6 +77,9 @@ function sendMessage() {
     messageInput.value = "";
 
     showAlert(`✅ Shukriya ${name}! Ticket #${ticketId} Admin Desk ko bhej diya gaya hai. Admin ka manual reply aapko Notifications page par milega!`, "#10b981", "#064e3b");
+    if (window.showToast) {
+        window.showToast(`Ticket #${ticketId} submitted to Admin Desk! 🚀`, "success");
+    }
 
     sendBtn.disabled = false;
     sendBtn.innerText = "🚀 Send Another Message";

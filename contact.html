@@ -1,52 +1,226 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Contact Support • Faraz Store</title>
-<link rel="stylesheet" href="css/global.css">
-<link rel="stylesheet" href="css/header.css">
-<link rel="stylesheet" href="css/contact.css">
-<link rel="stylesheet" href="css/footer.css">
-<link rel="stylesheet" href="css/responsive.css">
-<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700;900&family=Plus+Jakarta+Sans:wght@500;700;800&display=swap" rel="stylesheet">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>24/7 Support Desk & AI Agent • Faraz Store</title>
+    <meta name="description" content="Faraz Store Official 24/7 Support Desk. Live AI Support Agent and Admin Ticket Desk.">
+    <link rel="stylesheet" href="css/global.css">
+    <link rel="stylesheet" href="css/header.css">
+    <link rel="stylesheet" href="css/contact.css">
+    <link rel="stylesheet" href="css/footer.css">
+    <link rel="stylesheet" href="css/responsive.css">
+    <link rel="stylesheet" href="css/floating.css">
+    <link rel="icon" href="favicon.ico" type="image/x-icon">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700;900&family=Plus+Jakarta+Sans:wght@500;700;800&display=swap" rel="stylesheet">
 </head>
 
 <body class="contact-page-bg">
 
-<header>
-    <div class="logo">🛒 Faraz Store</div>
-    <nav>
-        <a href="index.html">Home</a>
-        <a href="product.html">Products</a>
-        <a href="cart.html">Cart</a>
-        <a href="contact.html" class="active">Support</a>
-        <a href="notifications.html">Notifications</a>
-        <a href="login.html">Login</a>
-    </nav>
-</header>
+    <header>
+        <div class="logo" style="display: flex; align-items: center; gap: 10px;">
+            <img src="images/logo.png?v=3" alt="Faraz Store" style="width: 34px; height: 34px; border-radius: 50%; object-fit: contain; border: 1.5px solid #00f2fe;">
+            <span>Faraz Store</span>
+        </div>
+        <nav>
+            <a href="index.html">Home</a>
+            <a href="product.html">Products</a>
+            <a href="cart.html">Cart</a>
+            <a href="contact.html" class="active">Support</a>
+            <a href="notifications.html">Notifications</a>
+            <a href="orders.html">Orders</a>
+        </nav>
+    </header>
 
-<section class="contact-section">
-    <div class="contact-box glassmorphic">
-        <h1>🎧 24/7 Priority Support</h1>
-        <p>Aapka message sidhe hamare support team ko bhej diya jayega. Replies aapko <a href="notifications.html" style="color: #00e5ff; text-decoration: underline;">Notifications</a> section me dikhai denge.</p>
-        
-        <input type="text" id="name" placeholder="Aapka Naam (Your Name)" required>
-        <input type="email" id="email" placeholder="Aapka Email (Your Email)" required>
-        <textarea id="message" rows="5" placeholder="Aapki samasya ya sawal yahan likhein (Your Query)..." required></textarea>
-        
-        <button id="sendBtn" onclick="sendMessage()">🚀 Send Message to Support</button>
+    <main class="contact-section">
+        <div class="contact-box">
+            <div class="contact-header">
+                <h1>🛡️ 24/7 Official Support Desk</h1>
+                <p>Live AI Support Agent se instant solutions paayein ya Store Admin ko manual ticket bhejein.</p>
+            </div>
 
-        <div id="statusAlert" style="display: none; margin-top: 18px; padding: 12px; border-radius: 12px; font-weight: 700;"></div>
+            <!-- SUPPORT TABS -->
+            <div class="support-tabs">
+                <button id="tabBtnAgent" class="support-tab-btn active" onclick="switchSupportTab('agent')">
+                    🤖 AI Support Agent (Live Instant)
+                </button>
+                <button id="tabBtnAdmin" class="support-tab-btn" onclick="switchSupportTab('admin')">
+                    📝 Submit Ticket to Admin Desk
+                </button>
+            </div>
+
+            <!-- TAB 1: AI SUPPORT AGENT -->
+            <div id="tabPaneAgent" class="support-tab-pane active">
+                <div class="agent-chat-container">
+                    <div id="inPageChatMessages" class="agent-chat-messages">
+                        <div class="agent-bubble bot">
+                            Namaste! 👋 Main hoon <strong>Faraz Store Support Agent</strong>.<br><br>
+                            Main <strong>strict store guidelines</strong> ke sath kaam karta hoon aur aapko Free Fire Diamond top-up rates, Evo Guns, Orders tracking, aur Prime Membership ke baare me instant aur accurate information deta hoon.<br><br>
+                            <em>Aapka kya sawal hai? Niche click karein ya type karein:</em>
+                            <div class="support-chips" style="margin-top: 10px;">
+                                <button class="support-chip" onclick="askInPage('💎 Diamond Top-Up rates kya hain?')">
+                                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 3h12l4 6-10 12L2 9z"/></svg>
+                                    Diamond Rates
+                                </button>
+                                <button class="support-chip" onclick="askInPage('📦 Mera order kaise track hoga?')">
+                                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m7.5 4.27 9 5.15"/><path d="M21 8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16Z"/><path d="m3.3 7 8.7 5 8.7-5"/><path d="M12 22V12"/></svg>
+                                    Track Order
+                                </button>
+                                <button class="support-chip" onclick="askInPage('👑 Prime Membership ke benefits?')">
+                                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11.562 3.266a.5.5 0 0 1 .876 0L15.39 8.87a1 1 0 0 0 1.516.294L21.183 5.5a.5.5 0 0 1 .798.519l-2.834 10.269a4 4 0 0 1-3.83 2.942H8.684a4 4 0 0 1-3.829-2.942L2.02 6.019a.5.5 0 0 1 .798-.519l4.276 3.664a1 1 0 0 0 1.516-.294z"/></svg>
+                                    Prime VIP
+                                </button>
+                                <button class="support-chip" onclick="askInPage('🔥 Evo M1014 Draco Gun details?')">
+                                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.153.433-2.294 1-3a2.5 2.5 0 0 0 2.5 2.5z"/></svg>
+                                    Evo Guns
+                                </button>
+                                <button class="support-chip" onclick="askInPage('🚨 Mujhe Admin se baat karni hai')">
+                                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+                                    Talk to Admin
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="agent-chat-footer">
+                        <input type="text" id="inPageAgentInput" class="agent-input" placeholder="Yahan sawal poochein (e.g. Diamond rate, order status, refund...)" onkeydown="if(event.key==='Enter') sendInPageMessage()">
+                        <button class="agent-send-btn" onclick="sendInPageMessage()">Send ➤</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TAB 2: MANUAL ADMIN TICKET FORM -->
+            <div id="tabPaneAdmin" class="support-tab-pane">
+                <div class="ticket-form">
+                    <p style="color: #cbd5e1; font-size: 13px; margin-bottom: 16px;">
+                        Agar aapko koi customized payment issue, manual transaction review ya critical query hai, toh neeche form fill karein. Hamare <strong>Store Admin</strong> isko personally review karke aapke 
+                        <a href="notifications.html" style="color: #00e5ff; font-weight: 800; text-decoration: underline;">Notifications Page</a> par reply bhejenge.
+                    </p>
+                    
+                    <input type="text" id="name" placeholder="Aapka Naam (Your Full Name)" required>
+                    <input type="email" id="email" placeholder="Aapka Email (Your Email Address)" required>
+                    <textarea id="message" rows="5" placeholder="Aapki samasya ya sawal (Details of your query or order ID)..." required></textarea>
+                    
+                    <button id="sendBtn" class="ticket-submit-btn" onclick="sendMessage()">🚀 Submit Ticket to Admin Desk</button>
+
+                    <div id="statusAlert" style="display: none; margin-top: 18px; padding: 14px; border-radius: 12px; font-weight: 700; font-size: 13px;"></div>
+                </div>
+            </div>
+
+            <!-- QUICK INFO FOOTNOTE -->
+            <div class="support-info-cards">
+                <div class="info-card">
+                    <strong>⚡ Instant Delivery</strong>
+                    Diamonds & codes deliver within 60 seconds
+                </div>
+                <div class="info-card">
+                    <strong>🔒 100% Safe & Secure</strong>
+                    End-to-end encrypted payments & verified UID top-up
+                </div>
+                <div class="info-card">
+                    <strong>📩 Admin Notifications</strong>
+                    Admin replies arrive directly in your Notifications inbox
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- FLOATING SOCIAL ACTIONS (RIGHT SIDE) -->
+    <div class="floating-box" id="floatingActions" aria-label="Quick Actions">
+        <a href="luck-royale.html" class="floating-btn spin-btn" title="Luck Royale" aria-label="Spin Wheel">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="12" r="10"/>
+                <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>
+            </svg>
+            <span class="floating-tooltip">Luck Royale</span>
+        </a>
+        <a href="https://www.instagram.com/faraz_anjum_000" class="floating-btn insta-btn" target="_blank" rel="noopener noreferrer" title="Instagram @faraz_anjum_000" aria-label="Instagram">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
+                <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
+                <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
+            </svg>
+            <span class="floating-tooltip">Instagram</span>
+        </a>
+        <a href="https://www.youtube.com/@TK_RUSH" class="floating-btn yt-btn" target="_blank" rel="noopener noreferrer" title="YouTube @TK_RUSH" aria-label="YouTube">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/>
+            </svg>
+            <span class="floating-tooltip">YouTube</span>
+        </a>
     </div>
-</section>
 
-<footer>
-    <div style="text-align: center; padding: 20px; color: #64748b; font-size: 13px;">
-        © 2026 Faraz Store • All Rights Reserved.
-    </div>
-</footer>
+    <footer>
+        <div style="text-align: center; padding: 24px; color: #64748b; font-size: 13px;">
+            © 2026 Faraz Store • All Rights Reserved.
+        </div>
+    </footer>
 
-<script src="contact.js"></script>
+    <script type="module" src="js/support-agent.js"></script>
+    <script src="contact.js"></script>
+    <script>
+        function switchSupportTab(tab) {
+            const btnAgent = document.getElementById("tabBtnAgent");
+            const btnAdmin = document.getElementById("tabBtnAdmin");
+            const paneAgent = document.getElementById("tabPaneAgent");
+            const paneAdmin = document.getElementById("tabPaneAdmin");
+
+            if (tab === "agent") {
+                btnAgent.classList.add("active");
+                btnAdmin.classList.remove("active");
+                paneAgent.classList.add("active");
+                paneAdmin.classList.remove("active");
+            } else {
+                btnAdmin.classList.add("active");
+                btnAgent.classList.remove("active");
+                paneAdmin.classList.add("active");
+                paneAgent.classList.remove("active");
+            }
+        }
+
+        function askInPage(preset) {
+            const input = document.getElementById("inPageAgentInput");
+            if (input) {
+                input.value = preset;
+                sendInPageMessage();
+            }
+        }
+
+        function sendInPageMessage() {
+            const input = document.getElementById("inPageAgentInput");
+            const box = document.getElementById("inPageChatMessages");
+            if (!input || !box) return;
+
+            const text = input.value.trim();
+            if (!text) return;
+
+            // User bubble
+            const uBubble = document.createElement("div");
+            uBubble.className = "agent-bubble user";
+            uBubble.innerText = text;
+            box.appendChild(uBubble);
+            input.value = "";
+            box.scrollTop = box.scrollHeight;
+
+            // Typing indicator
+            const typing = document.createElement("div");
+            typing.className = "agent-bubble bot";
+            typing.id = "inPageTyping";
+            typing.innerHTML = "<em>Support Agent verifying with strict store rules...</em>";
+            box.appendChild(typing);
+            box.scrollTop = box.scrollHeight;
+
+            setTimeout(() => {
+                const t = document.getElementById("inPageTyping");
+                if (t) t.remove();
+
+                const response = window.processSupportQuery ? window.processSupportQuery(text) : { text: "Main aapka message store database me verify kar raha hoon." };
+                const bBubble = document.createElement("div");
+                bBubble.className = "agent-bubble bot";
+                bBubble.innerHTML = response.text;
+                box.appendChild(bBubble);
+                box.scrollTop = box.scrollHeight;
+            }, 400);
+        }
+    </script>
 </body>
 </html>

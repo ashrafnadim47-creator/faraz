@@ -29,7 +29,7 @@ onAuthStateChanged(auth, (user) => {
 });
 
 // ==========================
-// 🛒 ADD TO CART API (HYBRID FIRESTORE + LOCAL STORAGE)
+//  ADD TO CART API (HYBRID FIRESTORE + LOCAL STORAGE)
 // ==========================
 window.addToCart = async function (productId, name, price, image) {
     // 1. Always update local storage first
@@ -66,7 +66,9 @@ window.addToCart = async function (productId, name, price, image) {
         }
     }
 
-    alert(`🎉 Success! "${name}" added to cart.`);
+    if (window.showToast) {
+        window.showToast(`"${name}" added to cart! `, "success");
+    }
     loadCart();
 };
 
@@ -107,11 +109,11 @@ async function loadCart() {
     if (items.length === 0) {
         container.innerHTML = `
             <div class="cart-empty-box">
-                <span class="cart-empty-icon">🛒</span>
+                <span class="cart-empty-icon"></span>
                 <h2 style="color: #ffffff; font-size: 22px; margin-bottom: 8px;">Your Cart Is Empty</h2>
                 <p style="color: #94a3b8; font-size: 14px; margin-bottom: 20px;">Explore our store and add gaming accessories or topups to your cart!</p>
                 <button onclick="location.href='product.html'" class="checkout-btn" style="padding: 12px 30px; font-size: 14px;">
-                    🚀 Browse Store Products
+                     Browse Store Products
                 </button>
             </div>
         `;
@@ -130,7 +132,7 @@ async function loadCart() {
             <div class="cart-item glassmorphism">
                 <div style="display: flex; align-items: center; gap: 15px;">
                     <div class="product-image">
-                        <img src="${item.image || 'images/no-image.png'}" alt="${item.name}" onerror="this.src='images/logo.png'">
+                        <img src="${item.image || 'images/logo.png?v=3'}" alt="${item.name}" onerror="this.src='images/logo.png?v=3'">
                     </div>
                     <div>
                         <h3>${item.name}</h3>
@@ -138,7 +140,7 @@ async function loadCart() {
                     </div>
                 </div>
                 <button class="remove remove-cart-item-btn" data-id="${itemId}" data-index="${idx}">
-                    ❌ Remove
+                     Remove
                 </button>
             </div>
         `;
@@ -155,7 +157,7 @@ async function loadCart() {
 }
 
 // ==========================
-// ❌ REMOVE ITEM LISTENERS
+//  REMOVE ITEM LISTENERS
 // ==========================
 function attachRemoveItemListeners() {
     document.querySelectorAll('.remove-cart-item-btn').forEach(btn => {
