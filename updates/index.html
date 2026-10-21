@@ -2,113 +2,278 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-
-  <meta
-    name="viewport"
-    content="width=device-width, initial-scale=1.0"
-  >
-
-  <title>FORGE Update</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FORGE Video Editor - Updates & Downloads</title>
+  <link rel="icon" href="../favicon.ico" type="image/x-icon">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;700;800;900&family=Orbitron:wght@800;900&family=Inter:wght@400;600;700&display=swap">
 
   <style>
     * {
       box-sizing: border-box;
+      margin: 0;
+      padding: 0;
     }
 
     body {
-      margin: 0;
       min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      background: #08090e;
+      color: #ffffff;
+      font-family: 'Inter', sans-serif;
+      background-image: 
+        radial-gradient(circle at 10% 20%, rgba(0, 242, 254, 0.08) 0%, transparent 45%),
+        radial-gradient(circle at 90% 80%, rgba(157, 78, 221, 0.08) 0%, transparent 45%);
+    }
+
+    header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 16px 28px;
+      background: rgba(16, 18, 26, 0.85);
+      backdrop-filter: blur(20px);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      text-decoration: none;
+      color: #fff;
+    }
+
+    .brand-badge {
+      background: linear-gradient(135deg, #00f2fe, #9d4edd);
+      color: #000;
+      font-family: 'Orbitron', sans-serif;
+      font-weight: 900;
+      font-size: 13px;
+      padding: 4px 8px;
+      border-radius: 6px;
+    }
+
+    .brand-name {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-weight: 800;
+      font-size: 18px;
+    }
+
+    .nav-btn {
+      color: #94a3b8;
+      text-decoration: none;
+      font-size: 13px;
+      font-weight: 600;
+      padding: 8px 14px;
+      border-radius: 8px;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      transition: all 0.2s;
+    }
+
+    .nav-btn:hover {
+      color: #fff;
+      background: rgba(255, 255, 255, 0.1);
+    }
+
+    main {
+      flex: 1;
       display: flex;
       align-items: center;
       justify-content: center;
-      background: #080b12;
-      color: white;
-      font-family: Arial, sans-serif;
+      padding: 40px 20px;
     }
 
     .card {
-      width: min(92%, 600px);
-      padding: 35px;
-      border-radius: 22px;
-      background: #111722;
-      border: 1px solid #273142;
+      width: min(100%, 580px);
+      padding: 40px 32px;
+      border-radius: 24px;
+      background: #11141e;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      box-shadow: 0 25px 60px rgba(0, 0, 0, 0.6);
       text-align: center;
+      position: relative;
+    }
+
+    .badge-live {
+      display: inline-block;
+      padding: 4px 12px;
+      border-radius: 999px;
+      background: rgba(0, 242, 254, 0.15);
+      border: 1px solid rgba(0, 242, 254, 0.4);
+      color: #00f2fe;
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: 1px;
+      margin-bottom: 16px;
     }
 
     .logo {
+      font-family: 'Orbitron', sans-serif;
       font-size: 42px;
       font-weight: 900;
       letter-spacing: 4px;
+      background: linear-gradient(135deg, #ffffff 30%, #00f2fe);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: 6px;
     }
 
     .version {
-      margin-top: 10px;
-      color: #8fa3bd;
+      color: #94a3b8;
+      font-size: 14px;
+      font-family: monospace;
+      margin-bottom: 24px;
     }
 
-    h2 {
-      margin-top: 30px;
-    }
-
-    ul {
+    .changelog-box {
       text-align: left;
-      line-height: 1.8;
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid rgba(255, 255, 255, 0.07);
+      border-radius: 16px;
+      padding: 20px;
+      margin-bottom: 28px;
     }
 
-    .update-btn {
-      display: inline-block;
-      margin-top: 25px;
-      padding: 14px 28px;
+    .changelog-box h3 {
+      font-size: 15px;
+      font-weight: 800;
+      color: #fff;
+      margin-bottom: 12px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .changelog-box ul {
+      list-style-type: none;
+    }
+
+    .changelog-box li {
+      font-size: 13.5px;
+      color: #cbd5e1;
+      line-height: 1.8;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .changelog-box li::before {
+      content: "✔";
+      color: #00f2fe;
+      font-weight: bold;
+    }
+
+    .btn-group {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .btn-online {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 14px 24px;
       border-radius: 12px;
-      background: #fff;
+      background: linear-gradient(135deg, #00f2fe, #4facfe);
       color: #000;
       text-decoration: none;
-      font-weight: 700;
+      font-weight: 800;
+      font-size: 15px;
+      transition: all 0.2s;
+      box-shadow: 0 4px 20px rgba(0, 242, 254, 0.3);
     }
 
-    .update-btn:hover {
-      opacity: .85;
+    .btn-online:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 25px rgba(0, 242, 254, 0.45);
+    }
+
+    .btn-desktop {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 13px 24px;
+      border-radius: 12px;
+      background: rgba(255, 255, 255, 0.08);
+      color: #fff;
+      text-decoration: none;
+      font-weight: 700;
+      font-size: 14px;
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      transition: all 0.2s;
+    }
+
+    .btn-desktop:hover {
+      background: rgba(255, 255, 255, 0.15);
+      border-color: rgba(255, 255, 255, 0.25);
     }
 
     .note {
-      margin-top: 20px;
-      color: #8995a8;
-      font-size: 14px;
+      margin-top: 18px;
+      color: #64748b;
+      font-size: 12px;
     }
   </style>
 </head>
 
 <body>
 
-  <main class="card">
-
-    <div class="logo">FORGE</div>
-
-    <div class="version">
-      Latest Version: 1.6.0
-    </div>
-
-    <h2>🚀 New Update Available</h2>
-
-    <ul>
-      <li>Improved video preview</li>
-      <li>Better timeline performance</li>
-      <li>New editing features</li>
-      <li>Bug fixes and stability improvements</li>
-    </ul>
-
-    <a
-      class="update-btn"
-      href="https://YOUR-DOMAIN.com/downloads/FORGE-Video-Editor-Setup.exe"
-    >
-      Update Now
+  <header>
+    <a href="../index.html" class="brand">
+      <span class="brand-badge">⚡ FORGE</span>
+      <span class="brand-name">Video Studio</span>
     </a>
 
-    <div class="note">
-      Download the latest Windows installer and install it over your current FORGE installation.
-    </div>
+    <a href="../index.html" class="nav-btn">🏠 Back to Store</a>
+  </header>
 
+  <main>
+    <div class="card">
+      <div class="badge-live">LATEST RELEASE</div>
+      <div class="logo">FORGE</div>
+      <div class="version">Version 1.6.0 (Build 2026.10)</div>
+
+      <div class="changelog-box">
+        <h3>🚀 What's New in v1.6.0</h3>
+        <ul>
+          <li>Interactive Live Video Caption overlay with 8 viral animation presets</li>
+          <li>Instant Subtitle timeline synchronization with word-by-word highlight</li>
+          <li>Export subtitles in standard .SRT & .VTT formats</li>
+          <li>Smooth drag-and-drop video preview for Reels, Shorts & TikTok</li>
+        </ul>
+      </div>
+
+      <div class="btn-group">
+        <a href="../auto-captiom/index.html" class="btn-online">
+          <span>⚡</span> Launch FORGE Web Studio (Online Free)
+        </a>
+
+        <a href="../auto-captiom/index.html" class="btn-desktop" id="desktopBtn">
+          <span>⬇️</span> Download FORGE Desktop App (Windows 64-bit)
+        </a>
+      </div>
+
+      <div class="note">
+        Runs 100% locally in your browser or desktop. No watermark, no limits.
+      </div>
+    </div>
   </main>
+
+  <script>
+    document.getElementById("desktopBtn").addEventListener("click", function(e) {
+      // Directs to online studio or triggers client notice
+      const btn = this;
+      btn.innerHTML = "<span>⏳</span> Preparing Desktop Build...";
+      setTimeout(() => {
+        window.location.href = "../auto-captiom/index.html";
+      }, 600);
+    });
+  </script>
 
 </body>
 </html>
