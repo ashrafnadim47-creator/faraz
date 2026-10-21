@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>The Daily Secret</title>
+  <link rel="icon" href="data:,">
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+<div style="position: fixed; top: 18px; left: 20px; z-index: 9999; display: flex; gap: 10px;"><a href="../index.html" style="background: rgba(15, 23, 42, 0.85); backdrop-filter: blur(10px); color: #00e5ff; border: 1px solid rgba(0, 229, 255, 0.4); border-radius: 999px; padding: 8px 18px; text-decoration: none; font-size: 13px; font-weight: 700; box-shadow: 0 4px 15px rgba(0,0,0,0.5);">? Faraz Store</a><a href="3d.html" style="background: linear-gradient(135deg, #ff0055, #ff5500); color: #fff; border: 0; border-radius: 999px; padding: 8px 18px; text-decoration: none; font-size: 13px; font-weight: 800; box-shadow: 0 4px 15px rgba(255, 0, 85, 0.4);">? ENTER YOUTUBE 3D</a></div>
+<div id="app">
+
+  <!-- BACKGROUND -->
+  <div class="background">
+    <div class="grain"></div>
+    <div class="bg-orb orb-1"></div>
+    <div class="bg-orb orb-2"></div>
+    <div class="bg-orb orb-3"></div>
+  </div>
+
+  <!-- DAILY BADGE -->
+  <div class="daily-badge">
+    <span class="badge-dot"></span>
+    <span id="dailyBadgeText">TODAY'S STORY</span>
+  </div>
+
+  <!-- ================= STORY SCREEN ================= -->
+  <section id="storyScreen" class="story-screen">
+
+    <h1 id="storyTitle" class="story-title">
+      THE BROKEN LAMP
+    </h1>
+
+    <p id="storySubtitle" class="story-subtitle">
+      A tiny light is waiting for someone.
+    </p>
+
+    <div id="introParticles" class="intro-particles"></div>
+
+    <!-- CHILD -->
+    <div id="childWrap" class="child-wrap">
+      <div id="child" class="child">
+
+        <div class="head">
+          <div class="ear ear-left"></div>
+          <div class="ear ear-right"></div>
+          <div class="hair"></div>
+
+          <div class="eye eye-left"></div>
+          <div class="eye eye-right"></div>
+
+          <div class="nose"></div>
+          <div class="mouth"></div>
+        </div>
+
+        <div class="neck"></div>
+
+        <div class="shirt">
+          <div class="shirt-symbol">✦</div>
+        </div>
+
+        <div class="arm arm-left"></div>
+        <div class="arm arm-right"></div>
+
+        <div class="pants"></div>
+
+        <div class="leg leg-left">
+          <div class="shoe"></div>
+        </div>
+
+        <div class="leg leg-right">
+          <div class="shoe"></div>
+        </div>
+
+        <!-- Small lamp carried by child -->
+        <div class="carry-lamp">
+          <div class="carry-light"></div>
+          <div class="carry-handle"></div>
+          <div class="carry-body"></div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- MAIN LAMP -->
+    <div id="mainLampWrap" class="main-lamp-wrap">
+
+      <div id="lampGlow" class="lamp-glow"></div>
+
+      <div id="lamp" class="lamp">
+
+        <div class="lamp-top"></div>
+
+        <div class="glass">
+          <div id="flame" class="flame"></div>
+        </div>
+
+        <div class="lamp-body"></div>
+        <div class="lamp-bottom"></div>
+
+      </div>
+
+      <div class="lamp-shadow"></div>
+
+      <!-- Broken glass -->
+      <div id="glassPieces" class="glass-pieces">
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+      </div>
+
+    </div>
+
+    <!-- REPAIR SPARKS -->
+    <div id="repairSparks" class="repair-sparks">
+      <i></i>
+      <i></i>
+      <i></i>
+      <i></i>
+      <i></i>
+      <i></i>
+    </div>
+
+    <!-- CORD -->
+    <div id="cordArea" class="cord-area">
+
+      <div class="cord-line"></div>
+
+      <button id="cordBall" class="cord-ball" type="button">
+        <span></span>
+      </button>
+
+      <div id="cordLabel" class="cord-label">
+        PULL THE CORD
+      </div>
+
+    </div>
+
+    <!-- STORY MESSAGE -->
+    <div id="storyMessage" class="story-message">
+      The lamp has one last chance.
+    </div>
+
+    <!-- SKIP -->
+    <button id="storySkip" class="story-skip" type="button">
+      <b>›</b>
+      SKIP STORY
+    </button>
+
+  </section>
+
+
+  <!-- ================= LOGIN SCREEN ================= -->
+  <section id="loginScreen" class="login-screen">
+
+    <div class="login-background-glow"></div>
+
+    <div id="loginCard" class="login-card">
+
+      <div class="card-glow"></div>
+
+      <div class="daily-edition">
+        <span></span>
+        DAILY SECRET EDITION
+      </div>
+
+      <div id="loginIcon" class="login-icon">✦</div>
+
+      <h1 id="loginTitle">
+        ENTER THE SECRET
+      </h1>
+
+      <p id="loginDescription">
+        A secret is waiting behind today's story.
+      </p>
+
+      <form id="loginForm">
+
+        <div class="input-box">
+          <span>♙</span>
+          <input
+            id="username"
+            type="text"
+            placeholder="Username"
+            autocomplete="username"
+            required
+          >
+        </div>
+
+        <div class="input-box">
+          <span>⌁</span>
+          <input
+            id="password"
+            type="password"
+            placeholder="Secret password"
+            autocomplete="current-password"
+            required
+          >
+        </div>
+
+        <button
+          id="enterButton"
+          class="enter-button"
+          type="submit"
+        >
+          ENTER SECRET
+          <b>→</b>
+        </button>
+
+      </form>
+
+      <div id="dailyStoryName" class="daily-story-name">
+        THE BROKEN LAMP
+      </div>
+
+    </div>
+
+  </section>
+
+
+  <!-- ================= FINAL SCREEN ================= -->
+  <section id="finalScreen" class="final-screen">
+
+    <div class="final-room">
+
+      <div class="room-light"></div>
+
+      <div class="secret-door">
+        <div id="doorSymbol" class="door-symbol">✦</div>
+        <div class="door-handle"></div>
+      </div>
+
+      <div id="finalParticles" class="final-particles"></div>
+
+      <div class="final-copy">
+        <div id="finalSmall" class="final-small">
+          YOU RESTORED THE LIGHT
+        </div>
+
+        <h2 id="finalTitle">
+          THE SECRET ROOM
+        </h2>
+
+        <p id="finalDescription">
+          Tomorrow, another story will begin.
+        </p>
+
+        <button id="restartButton" type="button">
+          REPLAY STORY
+        </button>
+      </div>
+
+    </div>
+
+  </section>
+
+
+  <!-- BOTTOM CONTROLS -->
+  <div class="bottom-controls">
+
+    <button id="soundButton" type="button">
+      SOUND <span id="soundIcon">◉</span>
+    </button>
+
+    <button id="replayButton" type="button">
+      REPLAY
+    </button>
+
+  </div>
+
+</div>
+
+
+<!-- GSAP -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.7/gsap.min.js"></script>
+
+<!-- APP JS -->
+<script src="script.js"></script>
+
+</body>
+</html>

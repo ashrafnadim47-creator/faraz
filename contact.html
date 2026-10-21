@@ -3,42 +3,50 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Contact - Faraz Store</title>
+<title>Contact Support • Faraz Store</title>
 <link rel="stylesheet" href="css/global.css">
 <link rel="stylesheet" href="css/header.css">
 <link rel="stylesheet" href="css/contact.css">
 <link rel="stylesheet" href="css/footer.css">
 <link rel="stylesheet" href="css/responsive.css">
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700;900&family=Plus+Jakarta+Sans:wght@500;700;800&display=swap" rel="stylesheet">
+</head>
 
-<body>
+<body class="contact-page-bg">
 
 <header>
-
-<div class="logo">🛒 Faraz Store</div>
-
-<nav>
-<a href="index.html">Home</a>
-<a href="about.html">About</a>
-<a href="contact.html">Contact</a>
-<a href="login.html">Login</a>
-</nav>
-
+    <div class="logo">🛒 Faraz Store</div>
+    <nav>
+        <a href="index.html">Home</a>
+        <a href="product.html">Products</a>
+        <a href="cart.html">Cart</a>
+        <a href="contact.html" class="active">Support</a>
+        <a href="notifications.html">Notifications</a>
+        <a href="login.html">Login</a>
+    </nav>
 </header>
 
-<section class="contact">
+<section class="contact-section">
+    <div class="contact-box glassmorphic">
+        <h1>🎧 24/7 Priority Support</h1>
+        <p>Aapka message sidhe hamare support team ko bhej diya jayega. Replies aapko <a href="notifications.html" style="color: #00e5ff; text-decoration: underline;">Notifications</a> section me dikhai denge.</p>
+        
+        <input type="text" id="name" placeholder="Aapka Naam (Your Name)" required>
+        <input type="email" id="email" placeholder="Aapka Email (Your Email)" required>
+        <textarea id="message" rows="5" placeholder="Aapki samasya ya sawal yahan likhein (Your Query)..." required></textarea>
+        
+        <button id="sendBtn" onclick="sendMessage()">🚀 Send Message to Support</button>
 
-<h1>Contact Us</h1>
-<input type="text" id="name" placeholder="Your Name">
-
-<input type="email" id="email" placeholder="Your Email">
-
-<textarea id="message" placeholder="Your Message"></textarea>
-
-<button onclick="sendMessage()">Send Message</button>
-
-
-
+        <div id="statusAlert" style="display: none; margin-top: 18px; padding: 12px; border-radius: 12px; font-weight: 700;"></div>
+    </div>
 </section>
+
+<footer>
+    <div style="text-align: center; padding: 20px; color: #64748b; font-size: 13px;">
+        © 2026 Faraz Store • All Rights Reserved.
+    </div>
+</footer>
+
 <script src="contact.js"></script>
 </body>
 </html>

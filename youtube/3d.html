@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Digital Universe</title>
+    <link rel="stylesheet" href="3d.css">
+</head>
+
+<body>
+
+    <div id="loading">
+        <div class="loading-logo">✦</div>
+        <div class="loading-line">
+            <div id="loadingProgress"></div>
+        </div>
+        <div class="loading-text">INITIALIZING DIGITAL UNIVERSE</div>
+    </div>
+
+    <canvas id="webgl"></canvas>
+
+    <div class="noise"></div>
+    <div class="vignette"></div>
+
+    <div class="top-interface">
+        <div style="position:fixed;top:18px;left:20px;z-index:99999;"><a href="../index.html" style="background:rgba(15,23,42,0.9);color:#00e5ff;padding:8px 16px;border-radius:20px;border:1px solid #00e5ff;font-family:sans-serif;font-size:12px;font-weight:700;text-decoration:none;">&larr; Faraz Store</a></div><div class="brand">
+            <span class="brand-dot"></span>
+            DIGITAL UNIVERSE
+        </div>
+
+        <div class="section-counter" id="counter">
+            01 / 05
+        </div>
+    </div>
+
+    <div class="side-interface">
+        <div class="side-line"></div>
+        <div class="side-text">SCROLL TO EXPLORE</div>
+        <div class="side-line"></div>
+    </div>
+
+    <div class="center-logo">
+        <div class="logo-name" id="logoName">YOUTUBE</div>
+        <div class="logo-sub" id="logoSub">
+            VIDEO • CREATE • SHARE
+        </div>
+    </div>
+<!-- DIGITAL ECOSYSTEM PANEL -->
+
+<div class="ecosystem" id="ecosystem">
+
+    <div class="eco-heading">
+        <span>BEYOND THE SCREEN</span>
+        <h2>DIGITAL<br>ECOSYSTEM</h2>
+    </div>
+
+    <div class="eco-cards">
+
+        <div class="eco-card">
+            <div class="eco-number">01</div>
+            <div class="eco-icon">▶</div>
+            <div class="eco-title">VIDEO</div>
+            <div class="eco-desc">
+                Watch. Create. Share.
+            </div>
+            <div class="eco-line"></div>
+        </div>
+
+        <div class="eco-card">
+            <div class="eco-number">02</div>
+            <div class="eco-icon">◎</div>
+            <div class="eco-title">VISUAL</div>
+            <div class="eco-desc">
+                Capture every moment.
+            </div>
+            <div class="eco-line"></div>
+        </div>
+
+        <div class="eco-card">
+            <div class="eco-number">03</div>
+            <div class="eco-icon">✦</div>
+            <div class="eco-title">INTELLIGENCE</div>
+            <div class="eco-desc">
+                Imagine without limits.
+            </div>
+            <div class="eco-line"></div>
+        </div>
+
+        <div class="eco-card">
+            <div class="eco-number">04</div>
+            <div class="eco-icon">●</div>
+            <div class="eco-title">COMMUNITY</div>
+            <div class="eco-desc">
+                Millions of stories.
+            </div>
+            <div class="eco-line"></div>
+        </div>
+
+    </div>
+
+    <div class="eco-bottom">
+        <span>CONNECTED</span>
+        <div class="eco-pulse"></div>
+        <span>EVERYWHERE</span>
+    </div>
+
+</div>
+
+
+<!-- FINAL MESSAGE -->
+
+<div class="secret-hint" id="secretHint">
+
+    <div class="hint-symbol">✦</div>
+
+    <div class="hint-small">
+        YOU HAVE COME THIS FAR
+    </div>
+
+    <div class="hint-title">
+        SOMETHING<br>
+        IS WAITING.
+    </div>
+
+    <div class="hint-arrow">
+        ↓
+    </div>
+
+</div>
+    <div class="hero-text">
+        <div class="eyebrow" id="eyebrow">
+            THE DIGITAL WORLD
+        </div>
+
+        <h1 id="heroTitle">
+            CONNECT
+        </h1>
+
+        <p id="heroDescription">
+            A journey through the world's digital universe.
+        </p>
+    </div>
+
+    <div class="bottom-interface">
+
+        <div class="progress-wrap">
+            <div class="progress-track">
+                <div id="scrollProgress"></div>
+            </div>
+
+            <span id="progressText">00%</span>
+        </div>
+
+        <div class="bottom-right">
+            PRIVATE EXPERIENCE
+        </div>
+
+    </div>
+
+    <div class="floating-message" id="floatingMessage">
+        MOVE FORWARD
+    </div>
+
+    <button id="skipButton">
+        SKIP INTRO
+        <span>→</span>
+    </button>
+
+    <div id="finalOverlay">
+
+        <div class="final-glow"></div>
+
+        <div class="final-symbol">✦</div>
+
+        <div class="final-small">
+            DESTINATION FOUND
+        </div>
+
+        <h2>
+            SECRET<br>
+            ROOM
+        </h2>
+
+        <div class="final-line"></div>
+
+        <p>
+            ENTERING PRIVATE SPACE...
+        </p>
+
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.7/gsap.min.js"></script>
+    <script src="3d.js"></script>
+
+</body>
+</html>

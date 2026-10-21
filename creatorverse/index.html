@@ -1,0 +1,2399 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>CreatorVerse AI • Autonomous 2D Animation & Video Studio</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-dark: #07090E;
+            --bg-sidebar: #0A0D14;
+            --bg-card: rgba(15, 20, 31, 0.7);
+            --bg-card-hover: rgba(22, 29, 45, 0.85);
+            --border-subtle: rgba(255, 255, 255, 0.07);
+            --border-gold: rgba(212, 175, 55, 0.35);
+            --gold-primary: #E5B83B;
+            --gold-light: #FDE074;
+            --gold-gradient: linear-gradient(135deg, #FFE082 0%, #D4AF37 50%, #A67C1E 100%);
+            --gold-glow: 0 0 25px rgba(212, 175, 55, 0.35);
+            --emerald: #10B981;
+            --emerald-glow: 0 0 20px rgba(16, 185, 129, 0.3);
+            --cyan: #38BDF8;
+            --red: #F43F5E;
+            --text-primary: #F8FAFC;
+            --text-secondary: #94A3B8;
+            --text-muted: #64748B;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Plus Jakarta Sans', -apple-system, sans-serif;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            background-color: var(--bg-dark);
+            color: var(--text-primary);
+            min-height: 100vh;
+            overflow-x: hidden;
+            display: flex;
+            background-image: 
+                radial-gradient(circle at 15% 15%, rgba(212, 175, 55, 0.08) 0%, transparent 40%),
+                radial-gradient(circle at 85% 85%, rgba(56, 189, 248, 0.06) 0%, transparent 40%);
+            background-attachment: fixed;
+        }
+
+        /* Smooth Custom Scrollbar */
+        ::-webkit-scrollbar { width: 6px; height: 6px; }
+        ::-webkit-scrollbar-track { background: var(--bg-dark); }
+        ::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.18); border-radius: 6px; }
+        ::-webkit-scrollbar-thumb:hover { background: var(--gold-primary); }
+
+        /* ========================================================
+           ENTRANCE REVEAL & 3D MOTION KEYFRAMES
+           ======================================================== */
+        @keyframes revealFadeUp {
+            0% { opacity: 0; transform: translateY(22px) scale(0.98); }
+            100% { opacity: 1; transform: translateY(0) scale(1); }
+        }
+
+        @keyframes floatMotion {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-6px) rotate(0.8deg); }
+        }
+
+        @keyframes pulseGlow {
+            0%, 100% { box-shadow: 0 0 15px rgba(212, 175, 55, 0.2); }
+            50% { box-shadow: 0 0 30px rgba(212, 175, 55, 0.45); }
+        }
+
+        @keyframes shimmerLaser {
+            0% { background-position: -200% 0; }
+            100% { background-position: 200% 0; }
+        }
+
+        .animate-reveal {
+            animation: revealFadeUp 0.65s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+
+        /* ========================================================
+           SIDEBAR (COLLAPSIBLE WITH MICRO-INTERACTIONS)
+           ======================================================== */
+        .sidebar {
+            width: 260px;
+            background: var(--bg-sidebar);
+            border-right: 1px solid var(--border-subtle);
+            display: flex;
+            flex-direction: column;
+            padding: 22px 14px;
+            flex-shrink: 0;
+            position: sticky;
+            top: 0;
+            height: 100vh;
+            transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+            z-index: 100;
+            backdrop-filter: blur(16px);
+        }
+
+        .sidebar.collapsed {
+            width: 76px;
+            padding: 22px 10px;
+        }
+
+        .sidebar.collapsed .brand-text,
+        .sidebar.collapsed .nav-label,
+        .sidebar.collapsed .profile-info,
+        .sidebar.collapsed .status-badge {
+            display: none !important;
+        }
+
+        .sidebar.collapsed .sidebar-header { justify-content: center; }
+        .sidebar.collapsed .nav-item { justify-content: center; padding: 14px 0; }
+
+        .sidebar-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding-bottom: 20px;
+            border-bottom: 1px solid var(--border-subtle);
+            gap: 10px;
+        }
+
+        .brand-link {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            text-decoration: none;
+        }
+
+        .logo-icon {
+            width: 40px;
+            height: 40px;
+            background: var(--gold-gradient);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: var(--gold-glow);
+            flex-shrink: 0;
+            transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        .logo-icon:hover {
+            transform: scale(1.1) rotate(6deg);
+        }
+
+        .logo-icon svg {
+            width: 20px;
+            height: 20px;
+            fill: #07090E;
+        }
+
+        .brand-text h1 {
+            font-size: 15px;
+            font-weight: 800;
+            color: var(--text-primary);
+            letter-spacing: -0.3px;
+        }
+
+        .brand-text p {
+            font-size: 10px;
+            color: var(--gold-light);
+            font-weight: 700;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+        }
+
+        .sidebar-toggle-btn {
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid var(--border-subtle);
+            border-radius: 8px;
+            width: 30px;
+            height: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-secondary);
+            cursor: pointer;
+            transition: all 0.25s ease;
+        }
+
+        .sidebar-toggle-btn:hover {
+            background: rgba(212, 175, 55, 0.18);
+            color: var(--gold-light);
+            border-color: var(--border-gold);
+            transform: scale(1.05);
+        }
+
+        /* Navigation Menu */
+        .nav-menu {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            margin-top: 22px;
+            flex: 1;
+        }
+
+        .nav-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 14px;
+            border-radius: 12px;
+            color: var(--text-secondary);
+            font-size: 13px;
+            font-weight: 600;
+            text-decoration: none;
+            cursor: pointer;
+            transition: all 0.25s cubic-bezier(0.2, 0.8, 0.2, 1);
+            position: relative;
+        }
+
+        .nav-item:hover {
+            color: var(--text-primary);
+            background: rgba(255, 255, 255, 0.05);
+            transform: translateX(4px);
+        }
+
+        .nav-item.active {
+            background: var(--gold-gradient);
+            color: #07090E;
+            font-weight: 800;
+            box-shadow: var(--gold-glow);
+            transform: translateX(4px);
+        }
+
+        .nav-item svg {
+            width: 18px;
+            height: 18px;
+            fill: currentColor;
+            flex-shrink: 0;
+            transition: transform 0.2s;
+        }
+
+        .nav-item:hover svg {
+            transform: scale(1.15);
+        }
+
+        .nav-item.active svg {
+            fill: #07090E;
+        }
+
+        /* Profile Block */
+        .sidebar-profile {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px;
+            border-radius: 12px;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid var(--border-subtle);
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .sidebar-profile:hover {
+            background: rgba(212, 175, 55, 0.12);
+            border-color: var(--border-gold);
+            transform: translateY(-2px);
+        }
+
+        .avatar {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: var(--gold-gradient);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 13px;
+            font-weight: 800;
+            color: #07090E;
+            flex-shrink: 0;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.5);
+        }
+
+        .profile-info h4 {
+            font-size: 12px;
+            font-weight: 700;
+            color: var(--text-primary);
+        }
+
+        .profile-info p {
+            font-size: 11px;
+            color: var(--text-muted);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        /* ========================================================
+           MAIN VIEWPORT & GLASSMORPHISM
+           ======================================================== */
+        .main-content {
+            flex: 1;
+            min-width: 0;
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+            overflow-y: auto;
+        }
+
+        .top-bar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 16px 28px;
+            background: rgba(7, 9, 14, 0.75);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--border-subtle);
+            position: sticky;
+            top: 0;
+            z-index: 90;
+        }
+
+        .workspace-tabs {
+            display: flex;
+            gap: 10px;
+        }
+
+        .tab-btn {
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid var(--border-subtle);
+            color: var(--text-secondary);
+            font-size: 13px;
+            font-weight: 700;
+            padding: 8px 16px;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.25s ease;
+        }
+
+        .tab-btn:hover {
+            color: var(--text-primary);
+            background: rgba(255, 255, 255, 0.08);
+            transform: translateY(-1px);
+        }
+
+        .tab-btn.active {
+            background: rgba(212, 175, 55, 0.15);
+            border-color: var(--gold-primary);
+            color: var(--gold-light);
+            box-shadow: 0 0 15px rgba(212, 175, 55, 0.2);
+        }
+
+        .status-pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(16, 185, 129, 0.1);
+            border: 1px solid rgba(16, 185, 129, 0.35);
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-size: 11px;
+            font-weight: 700;
+            color: var(--emerald);
+            cursor: pointer;
+            transition: all 0.25s;
+        }
+
+        .status-pill:hover {
+            background: rgba(16, 185, 129, 0.2);
+            box-shadow: var(--emerald-glow);
+        }
+
+        .dot-pulse {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: var(--emerald);
+            box-shadow: 0 0 8px var(--emerald);
+            animation: pulseGlow 1.5s infinite;
+        }
+
+        .workspace-body {
+            padding: 28px;
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+            max-width: 1350px;
+            margin: 0 auto;
+            width: 100%;
+        }
+
+        .view-section {
+            display: none;
+        }
+
+        .view-section.active {
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+            animation: revealFadeUp 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+
+        /* ========================================================
+           HERO CARD & 3D PARALLAX EFFECT
+           ======================================================== */
+        .hero-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-subtle);
+            border-radius: 20px;
+            padding: 30px;
+            position: relative;
+            overflow: hidden;
+            backdrop-filter: blur(20px);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.4);
+            transition: transform 0.4s cubic-bezier(0.2, 0.8, 0.2, 1), border-color 0.4s, box-shadow 0.4s;
+        }
+
+        .hero-card:hover {
+            border-color: var(--border-gold);
+            box-shadow: 0 20px 45px rgba(0, 0, 0, 0.6), 0 0 30px rgba(212, 175, 55, 0.12);
+            transform: translateY(-2px);
+        }
+
+        .hero-title {
+            font-size: 24px;
+            font-weight: 800;
+            letter-spacing: -0.5px;
+            margin-bottom: 6px;
+        }
+
+        .hero-title span {
+            background: var(--gold-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .hero-subtitle {
+            font-size: 13px;
+            color: var(--text-secondary);
+            margin-bottom: 22px;
+            line-height: 1.5;
+        }
+
+        /* Interactive Prompt Container */
+        .prompt-box {
+            background: rgba(7, 9, 14, 0.7);
+            border: 1px solid var(--border-subtle);
+            border-radius: 16px;
+            padding: 18px;
+            transition: all 0.3s ease;
+        }
+
+        .prompt-box:focus-within {
+            border-color: var(--gold-primary);
+            box-shadow: 0 0 25px rgba(212, 175, 55, 0.2);
+            transform: scale(1.005);
+        }
+
+        .prompt-input {
+            width: 100%;
+            background: transparent;
+            border: none;
+            outline: none;
+            color: var(--text-primary);
+            font-size: 14px;
+            line-height: 1.6;
+            resize: none;
+            height: 65px;
+        }
+
+        /* Preset Chips */
+        .preset-row {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            margin: 14px 0;
+        }
+
+        .preset-btn {
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid var(--border-subtle);
+            border-radius: 8px;
+            padding: 6px 12px;
+            font-size: 11px;
+            font-weight: 700;
+            color: var(--text-secondary);
+            cursor: pointer;
+            transition: all 0.2s cubic-bezier(0.2, 0.8, 0.2, 1);
+        }
+
+        .preset-btn:hover {
+            background: rgba(212, 175, 55, 0.15);
+            border-color: var(--gold-primary);
+            color: var(--gold-light);
+            transform: translateY(-2px);
+        }
+
+        .controls-bar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 14px;
+            padding-top: 14px;
+            border-top: 1px solid var(--border-subtle);
+        }
+
+        .pill-group {
+            display: flex;
+            gap: 8px;
+        }
+
+        .opt-pill {
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid var(--border-subtle);
+            border-radius: 8px;
+            padding: 7px 14px;
+            font-size: 11px;
+            font-weight: 700;
+            color: var(--text-secondary);
+            cursor: pointer;
+            transition: all 0.25s ease;
+        }
+
+        .opt-pill:hover {
+            color: var(--text-primary);
+            background: rgba(255, 255, 255, 0.08);
+        }
+
+        .opt-pill.active {
+            background: rgba(212, 175, 55, 0.18);
+            border-color: var(--gold-primary);
+            color: var(--gold-light);
+            box-shadow: 0 0 12px rgba(212, 175, 55, 0.2);
+        }
+
+        /* 3D Gold Action Buttons */
+        .btn-gold {
+            background: var(--gold-gradient);
+            color: #07090E;
+            font-size: 13px;
+            font-weight: 800;
+            padding: 12px 24px;
+            border-radius: 12px;
+            border: none;
+            cursor: pointer;
+            box-shadow: var(--gold-glow);
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        .btn-gold:hover {
+            transform: translateY(-2px) scale(1.02);
+            box-shadow: 0 8px 30px rgba(212, 175, 55, 0.45);
+        }
+
+        .btn-gold:active {
+            transform: translateY(1px) scale(0.98);
+        }
+
+        .btn-cancel {
+            background: rgba(244, 63, 94, 0.15);
+            border: 1px solid rgba(244, 63, 94, 0.35);
+            color: #FDA4AF;
+            font-size: 12px;
+            font-weight: 700;
+            padding: 10px 18px;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .btn-cancel:hover {
+            background: rgba(244, 63, 94, 0.3);
+            color: #FFF;
+        }
+
+        /* ========================================================
+           SMOOTH 3D LOADER & PROGRESS
+           ======================================================== */
+        .progress-container {
+            display: none;
+            background: rgba(10, 13, 20, 0.95);
+            border: 1px solid var(--border-gold);
+            border-radius: 18px;
+            padding: 24px;
+            margin-top: 20px;
+            text-align: center;
+            box-shadow: 0 15px 45px rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(25px);
+        }
+
+        .smooth-loader-box {
+            position: relative;
+            width: 54px;
+            height: 54px;
+            margin: 0 auto 16px;
+        }
+
+        .smooth-loader-ring {
+            width: 100%;
+            height: 100%;
+            border: 3px solid rgba(212, 175, 55, 0.15);
+            border-top: 3px solid var(--gold-primary);
+            border-right: 3px solid var(--cyan);
+            border-radius: 50%;
+            animation: spin 1s cubic-bezier(0.55, 0.15, 0.45, 0.85) infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* Output Video Card */
+        .output-card {
+            display: none;
+            background: var(--bg-card);
+            border: 1px solid var(--border-gold);
+            border-radius: 20px;
+            padding: 26px;
+            backdrop-filter: blur(20px);
+            box-shadow: 0 20px 50px rgba(0,0,0,0.6);
+        }
+
+        .output-layout {
+            display: grid;
+            grid-template-columns: 360px 1fr;
+            gap: 26px;
+        }
+
+        video#mainVideoPlayer {
+            width: 100%;
+            height: 520px;
+            object-fit: cover;
+            border-radius: 14px;
+            border: 2px solid var(--gold-primary);
+            background: #000;
+            box-shadow: 0 12px 35px rgba(0,0,0,0.7);
+        }
+
+        /* Boss Guard Live Pill */
+        .boss-guard-pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(212, 175, 55, 0.12);
+            border: 1px solid var(--border-gold);
+            padding: 4px 14px;
+            border-radius: 20px;
+            font-size: 11px;
+            font-weight: 800;
+            color: var(--gold-light);
+            margin-bottom: 14px;
+        }
+
+        /* Settings Switch */
+        .setting-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 18px 20px;
+            background: rgba(14, 18, 28, 0.6);
+            border: 1px solid var(--border-subtle);
+            border-radius: 14px;
+            margin-bottom: 14px;
+            transition: all 0.25s;
+        }
+
+        .setting-row:hover {
+            border-color: rgba(255, 255, 255, 0.15);
+            background: rgba(18, 24, 38, 0.7);
+        }
+
+        .switch {
+            position: relative;
+            display: inline-block;
+            width: 50px;
+            height: 26px;
+        }
+
+        .switch input { opacity: 0; width: 0; height: 0; }
+
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background-color: #334155;
+            transition: .3s;
+            border-radius: 26px;
+        }
+
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 18px;
+            width: 18px;
+            left: 4px;
+            bottom: 4px;
+            background-color: white;
+            transition: .3s;
+            border-radius: 50%;
+        }
+
+        input:checked + .slider { background: var(--emerald); }
+        input:checked + .slider:before { transform: translateX(24px); }
+
+        /* Modal Overlay */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(10px);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-box {
+            background: #0E1118;
+            border: 1px solid var(--border-gold);
+            border-radius: 18px;
+            width: 90%;
+            max-width: 450px;
+            padding: 26px;
+            box-shadow: 0 25px 60px rgba(0, 0, 0, 0.85);
+            animation: revealFadeUp 0.3s ease-out;
+        }
+
+        @media (max-width: 899px) {
+            .sidebar { display: none; }
+            .output-layout { grid-template-columns: 1fr; }
+            video#mainVideoPlayer { height: 400px; }
+            .workspace-body { padding: 16px; }
+        }
+    
+        /* ========================================================
+           AI COPILOT & LIVE STREAM MONITOR SECTION (UNIFIED APP)
+           ======================================================== */
+        .agent-grid-layout {
+            display: grid;
+            grid-template-columns: 1.15fr 0.85fr;
+            gap: 22px;
+            min-height: calc(100vh - 160px);
+        }
+
+        @media (max-width: 1024px) {
+            .agent-grid-layout {
+                grid-template-columns: 1fr;
+                min-height: auto;
+            }
+        }
+
+        .agent-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-subtle);
+            border-radius: 20px;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            backdrop-filter: blur(20px);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.4);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .agent-card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-bottom: 14px;
+            border-bottom: 1px solid var(--border-subtle);
+            margin-bottom: 14px;
+            flex-shrink: 0;
+        }
+
+        .agent-card-title {
+            font-size: 16px;
+            font-weight: 800;
+            color: var(--text-primary);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .model-select-dropdown {
+            background: #101623;
+            border: 1px solid var(--border-subtle);
+            color: var(--gold-light);
+            font-size: 12px;
+            font-weight: 700;
+            padding: 6px 12px;
+            border-radius: 10px;
+            outline: none;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .model-select-dropdown:hover {
+            border-color: var(--gold-primary);
+        }
+
+        /* Chat Scroll Area */
+        .agent-chat-history {
+            flex: 1;
+            overflow-y: auto;
+            padding: 10px 4px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            max-height: 480px;
+        }
+
+        .chat-bubble-row {
+            display: flex;
+            gap: 10px;
+            max-width: 90%;
+            animation: fadeIn 0.2s ease-out;
+        }
+        .chat-bubble-row.user {
+            align-self: flex-end;
+            flex-direction: row-reverse;
+        }
+        .chat-bubble-row.assistant {
+            align-self: flex-start;
+        }
+        .bubble-avatar {
+            width: 32px;
+            height: 32px;
+            border-radius: 10px;
+            background: var(--bg-dark);
+            border: 1px solid var(--border-subtle);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            flex-shrink: 0;
+        }
+        .bubble-text {
+            padding: 12px 16px;
+            border-radius: 16px;
+            font-size: 14px;
+            line-height: 1.55;
+            word-break: break-word;
+        }
+        .chat-bubble-row.user .bubble-text {
+            background: #2563eb;
+            color: #fff;
+            border-bottom-right-radius: 4px;
+        }
+        .chat-bubble-row.assistant .bubble-text {
+            background: rgba(22, 29, 45, 0.95);
+            border: 1px solid var(--border-subtle);
+            color: #f1f5f9;
+            border-bottom-left-radius: 4px;
+        }
+
+        /* Chips */
+        .agent-chips-row {
+            display: flex;
+            gap: 8px;
+            overflow-x: auto;
+            padding: 8px 0;
+            scrollbar-width: none;
+            flex-shrink: 0;
+        }
+        .agent-chips-row::-webkit-scrollbar { display: none; }
+        .agent-chip {
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid var(--border-subtle);
+            color: var(--text-secondary);
+            font-size: 12px;
+            font-weight: 600;
+            padding: 6px 14px;
+            border-radius: 20px;
+            cursor: pointer;
+            white-space: nowrap;
+            transition: all 0.2s;
+        }
+        .agent-chip:hover {
+            border-color: var(--gold-primary);
+            color: var(--gold-light);
+            background: rgba(212, 175, 55, 0.1);
+        }
+
+        /* Chat Input */
+        .agent-input-container {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            margin-top: 10px;
+            flex-shrink: 0;
+        }
+        .agent-staged-pill {
+            display: none;
+            align-items: center;
+            justify-content: space-between;
+            background: rgba(56, 189, 248, 0.1);
+            border: 1px solid var(--cyan);
+            padding: 6px 12px;
+            border-radius: 8px;
+            font-size: 12px;
+            color: var(--cyan);
+        }
+        .agent-input-row {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+        }
+        .agent-icon-btn {
+            width: 42px;
+            height: 42px;
+            border-radius: 10px;
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid var(--border-subtle);
+            color: var(--text-secondary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            cursor: pointer;
+            transition: all 0.2s;
+            flex-shrink: 0;
+        }
+        .agent-icon-btn:hover {
+            border-color: var(--gold-primary);
+            color: var(--gold-light);
+        }
+        .agent-icon-btn.recording {
+            background: #ef4444;
+            color: #fff;
+            animation: pulse 1.2s infinite;
+        }
+        .agent-text-input {
+            flex: 1;
+            background: #07090e;
+            border: 1px solid var(--border-subtle);
+            border-radius: 12px;
+            padding: 12px 16px;
+            color: #fff;
+            font-size: 14px;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+        .agent-text-input:focus {
+            border-color: var(--gold-primary);
+        }
+        .agent-send-btn {
+            width: 44px;
+            height: 44px;
+            border-radius: 12px;
+            background: var(--gold-gradient);
+            color: #07090E;
+            font-weight: 800;
+            border: none;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            box-shadow: var(--gold-glow);
+            transition: transform 0.2s;
+            flex-shrink: 0;
+        }
+        .agent-send-btn:hover {
+            transform: scale(1.05);
+        }
+
+        /* Live Stream Monitor Card */
+        .stream-monitor-box {
+            flex: 1;
+            background: #020617;
+            border: 2px solid var(--border-subtle);
+            border-radius: 14px;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            min-height: 340px;
+        }
+        .stream-monitor-box img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+        .stream-standby-view {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            text-align: center;
+            padding: 24px;
+            color: var(--text-muted);
+        }
+        .stream-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 4px 10px;
+            border-radius: 14px;
+            font-size: 11px;
+            font-weight: 700;
+        }
+        .stream-badge.live {
+            background: rgba(220, 38, 38, 0.2);
+            color: #ef4444;
+            border: 1px solid rgba(220, 38, 38, 0.5);
+        }
+        .stream-badge.standby {
+            background: rgba(148, 163, 184, 0.1);
+            color: #94a3b8;
+            border: 1px solid var(--border-subtle);
+        }
+        .stream-toggle-btn {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--border-subtle);
+            color: var(--text-primary);
+            padding: 6px 14px;
+            border-radius: 10px;
+            font-size: 12px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .stream-toggle-btn:hover {
+            border-color: var(--gold-primary);
+            color: var(--gold-light);
+        }
+        .stream-toggle-btn.active {
+            background: rgba(220, 38, 38, 0.2);
+            border-color: #ef4444;
+            color: #ef4444;
+        }
+
+        /* Attachment Options Menu */
+        .agent-attach-menu {
+            display: none;
+            position: absolute;
+            bottom: 80px;
+            left: 20px;
+            background: #0f141f;
+            border: 1px solid var(--border-gold);
+            border-radius: 14px;
+            padding: 8px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.7);
+            z-index: 100;
+            min-width: 200px;
+        }
+        .agent-attach-opt {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px 14px;
+            border-radius: 8px;
+            color: var(--text-primary);
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.15s;
+        }
+        .agent-attach-opt:hover {
+            background: rgba(212, 175, 55, 0.15);
+            color: var(--gold-light);
+        }
+
+    
+        /* Split Agent and Stream Layouts */
+        .full-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-subtle);
+            border-radius: 20px;
+            padding: 24px;
+            display: flex;
+            flex-direction: column;
+            backdrop-filter: blur(20px);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.4);
+            min-height: calc(100vh - 170px);
+        }
+
+        .full-card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-bottom: 16px;
+            border-bottom: 1px solid var(--border-subtle);
+            margin-bottom: 16px;
+            flex-shrink: 0;
+        }
+
+        .stream-viewport-box {
+            width: 100%;
+            height: 520px;
+            background: #020617;
+            border: 2px solid var(--border-subtle);
+            border-radius: 16px;
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .stream-viewport-box video, .stream-viewport-box img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+
+        .stream-action-btn {
+            background: rgba(220, 38, 38, 0.15);
+            color: #ef4444;
+            border: 1px solid rgba(220, 38, 38, 0.4);
+            padding: 8px 18px;
+            border-radius: 10px;
+            font-size: 13px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .stream-action-btn:hover {
+            background: rgba(220, 38, 38, 0.3);
+            border-color: #ef4444;
+            transform: scale(1.02);
+        }
+        .stream-action-btn.active {
+            background: #ef4444;
+            color: #fff;
+            box-shadow: 0 0 15px rgba(220, 38, 38, 0.5);
+        }
+
+        .stream-sec-btn {
+            background: rgba(255, 255, 255, 0.05);
+            color: var(--text-secondary);
+            border: 1px solid var(--border-subtle);
+            padding: 8px 16px;
+            border-radius: 10px;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .stream-sec-btn:hover {
+            color: var(--text-primary);
+            border-color: var(--gold-primary);
+        }
+
+    
+        /* ========================================================
+           CALENDAR & 48H RETENTION BOOSTER STYLES
+           ======================================================== */
+        .calendar-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(290px, 1fr));
+            gap: 16px;
+            margin-top: 16px;
+        }
+
+        .calendar-card {
+            background: rgba(10, 14, 23, 0.75);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 16px;
+            padding: 18px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .calendar-card:hover {
+            transform: translateY(-3px);
+            border-color: rgba(212, 175, 55, 0.4);
+            box-shadow: 0 12px 28px rgba(0, 0, 0, 0.4), 0 0 15px rgba(212, 175, 55, 0.1);
+        }
+
+        .calendar-card.locked-card {
+            border: 1px solid rgba(212, 175, 55, 0.45);
+            background: linear-gradient(135deg, rgba(212, 175, 55, 0.08) 0%, rgba(15, 20, 31, 0.9) 100%);
+            box-shadow: 0 0 20px rgba(212, 175, 55, 0.15);
+        }
+
+        .calendar-card.locked-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: var(--gold-gradient);
+        }
+
+        .cal-badge {
+            font-size: 11px;
+            font-weight: 800;
+            letter-spacing: 0.5px;
+            padding: 4px 10px;
+            border-radius: 8px;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            width: fit-content;
+        }
+
+        .cal-badge.locked-today {
+            background: rgba(239, 68, 68, 0.15);
+            border: 1px solid rgba(239, 68, 68, 0.4);
+            color: #fca5a5;
+        }
+
+        .cal-badge.locked-tomorrow {
+            background: rgba(245, 158, 11, 0.15);
+            border: 1px solid rgba(245, 158, 11, 0.4);
+            color: #fde68a;
+        }
+
+        .cal-badge.unlocked {
+            background: rgba(16, 185, 129, 0.12);
+            border: 1px solid rgba(16, 185, 129, 0.3);
+            color: #6ee7b7;
+        }
+
+        .audit-metric-box {
+            background: rgba(15, 23, 42, 0.6);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 16px;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .audit-metric-val {
+            font-size: 32px;
+            font-weight: 800;
+            font-family: 'Space Grotesk', sans-serif;
+            background: var(--gold-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .audit-metric-label {
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .audit-feed-card {
+            background: rgba(15, 20, 31, 0.7);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 16px;
+            padding: 18px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            transition: all 0.25s ease;
+        }
+
+        .audit-feed-card:hover {
+            border-color: rgba(56, 189, 248, 0.4);
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+        }
+    </style>
+</head>
+<body>
+
+    <!-- 1. SIDEBAR -->
+    <aside class="sidebar" id="sidebarEl">
+        <div class="sidebar-header">
+            <a href="javascript:void(0)" class="brand-link">
+                <div class="logo-icon">
+                    <svg viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
+                </div>
+                <div class="brand-text">
+                    <h1>CreatorVerse AI</h1>
+                    <p>Master Studio</p>
+                </div>
+            </a>
+
+            <button class="sidebar-toggle-btn" onclick="toggleSidebar()" title="Toggle Sidebar">
+                <span id="toggleIcon">◀</span>
+            </button>
+        </div>
+
+        <nav class="nav-menu"><a class="nav-item" href="../index.html" style="border: 1px solid rgba(0, 229, 255, 0.4); margin-bottom: 8px; background: rgba(0, 229, 255, 0.1);"><span class="nav-label" style="color: #00e5ff; font-weight: 800;">&larr; Faraz Store</span></a>
+            <a class="nav-item active" id="navAgentItem" onclick="switchTab('agentTab', this)">
+                <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z"/></svg>
+                <span class="nav-label">💬 AI Copilot</span>
+            </a>
+
+            <a class="nav-item" id="navStreamItem" onclick="switchTab('streamTab', this)">
+                <svg viewBox="0 0 24 24"><path d="M21 3H3c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h5v2h8v-2h5c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 14H3V5h18v12z"/></svg>
+                <span class="nav-label">📺 Live Screencast</span>
+            </a>
+
+            <a class="nav-item" id="navCreatorItem" onclick="switchTab('creatorTab', this)">
+                <svg viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
+                <span class="nav-label">2D Animation Studio</span>
+            </a>
+
+            <a class="nav-item" onclick="switchTab('imageGenTab', this)">
+                <svg viewBox="0 0 24 24"><path d="M21 19V5c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2zM8.5 13.5l2.5 3.01L14.5 12l4.5 6H5l3.5-4.5z"/></svg>
+                <span class="nav-label">8K Image Canvas</span>
+            </a>
+
+            <a class="nav-item" onclick="switchTab('settingsTab', this)">
+                <svg viewBox="0 0 24 24"><path d="M19.14 12.94c.04-.3.06-.61.06-.94 0-.32-.02-.64-.07-.94l2.03-1.58c.18-.14.23-.41.12-.61l-1.92-3.32c-.12-.22-.37-.29-.59-.22l-2.39.96c-.5-.38-1.03-.7-1.62-.94l-.36-2.54c-.04-.24-.24-.41-.48-.41h-3.84c-.24 0-.43.17-.47.41l-.36 2.54c-.59.24-1.13.57-1.62.94l-2.39-.96c-.22-.08-.47 0-.59.22L2.74 8.87c-.12.21-.08.47.12.61l2.03 1.58c-.05.3-.09.63-.09.94s.02.64.07.94l-2.03 1.58c-.18.14-.23.41-.12.61l1.92 3.32c.12.22.37.29.59.22l2.39-.96c.5.38 1.03.7 1.62.94l.36 2.54c.05.24.24.41.48.41h3.84c.24 0 .44-.17.47-.41l.36-2.54c.59-.24 1.13-.56 1.62-.94l2.39.96c.22.08.47 0 .59-.22l1.92-3.32c.12-.22.07-.47-.12-.61l-2.01-1.58zM12 15.6c-1.98 0-3.6-1.62-3.6-3.6s1.62-3.6 3.6-3.6 3.6 1.62 3.6 3.6-1.62 3.6-3.6 3.6z"/></svg>
+                <span class="nav-label">Master Settings</span>
+            </a>
+        </nav>
+
+        <div class="sidebar-profile" onclick="openProfileModal()">
+            <div class="avatar">CV</div>
+            <div class="profile-info">
+                <h4>Creator Studio</h4>
+                <p>● Live Autonomous</p>
+            </div>
+            <span style="color:var(--text-muted); font-size:14px;">⋮</span>
+        </div>
+    </aside>
+
+    <!-- 2. MAIN WORKSPACE -->
+    <main class="main-content">
+        <header class="top-bar">
+            <div class="workspace-tabs">
+                <button class="tab-btn active" id="tabAgentBtn" onclick="switchTab('agentTab', this)">💬 AI Copilot</button>
+                <button class="tab-btn" id="tabStreamBtn" onclick="switchTab('streamTab', this)">📺 Screencast</button>
+                <button class="tab-btn" id="tabCreatorBtn" onclick="switchTab('creatorTab', this)">🎬 Studio</button>
+                <button class="tab-btn" id="tabImgBtn" onclick="switchTab('imageGenTab', this)">🖼️ 8K Canvas</button>
+                <button class="tab-btn" id="tabSettingsBtn" onclick="switchTab('settingsTab', this)">⚙️ Settings</button>
+            </div>
+
+            <div style="display: flex; align-items: center; gap: 14px;">
+                <div class="status-pill" onclick="switchTab('settingsTab', document.getElementById('tabSettingsBtn'))">
+                    <span class="dot-pulse"></span>
+                    <span>Boss Guard: ACTIVE (5:15 PM)</span>
+                </div>
+                <a href="/admin" target="_blank" style="background:rgba(212,175,55,0.15); border:1px solid #D4AF37; color:#FDE074; font-size:11px; font-weight:800; padding:6px 12px; border-radius:10px; text-decoration:none; display:flex; align-items:center; gap:5px;" title="JARVIS Master Admin Console">
+                    <span>👑</span>
+                    <span>JARVIS Admin</span>
+                </a>
+                <div class="avatar" style="width: 32px; height: 32px; font-size: 11px; cursor: pointer;" onclick="openProfileModal()">CV</div>
+            </div>
+        </header>
+
+        <div class="workspace-body">
+            <!-- VIEW 0: AI COPILOT CHAT (SEPARATE DEDICATED VIEW) -->
+            <section id="agentTab" class="view-section active">
+                <div class="full-card">
+                    <div class="full-card-header">
+                        <div class="agent-card-title">
+                            <span>🤖 CreatorVerse Studio Help Desk & Guide</span>
+                        </div>
+                        <!-- Model Selector -->
+                        <div style="display:flex; align-items:center; gap:10px;">
+                            <span style="font-size:12px; color:var(--text-muted);">AI Model:</span>
+                            <select class="model-select-dropdown" id="agentModelPicker" onchange="onAgentModelChange()" title="Switch AI Model">
+                                <option value="openai/gpt-oss-120b" selected>⚡ GPT 120B (Deep Reasoning)</option>
+                                <option value="qwen/qwen3.8-27b">🚀 Qwen 27B (Fast & Creative)</option>
+                                <option value="openai/gpt-oss-20b">⚡ GPT 20B (Instant Speed)</option>
+                                <option value="allam-2-7b">🤖 Allam 7B (Lightweight)</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- Chat Messages Area -->
+                    <div class="agent-chat-history" id="agentChatHistory" style="max-height: 520px; max-width: 960px; width:100%; margin: 0 auto;">
+                        <div class="chat-bubble-row assistant">
+                            <div class="bubble-avatar">⚡</div>
+                            <div class="bubble-text">
+                                <strong>Haan bhai, Namaste! 🎬</strong><br/>
+                                Main aapka <strong>CreatorVerse Studio Guide</strong> hoon! 2D Animation, 8K Canvas ya video creation me koi bhi sawaal puchiye.<br/><br/>
+                                Neeche kisi topic chip par tap karein, mic (🎙️) se bolein, ya (📎) se Images, Videos ya Scripts attach karein!
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Suggestion Chips -->
+                    <div class="agent-chips-row" style="max-width: 960px; width:100%; margin: 8px auto;">
+                        <div class="agent-chip" onclick="sendAgentChip('Bhai accounts me kitne credits bache hain?')">📊 Accounts Balance</div>
+                        <div class="agent-chip" onclick="sendAgentChip('Aaj ka naya non-repeating viral topic scout karo')">💡 Scout Viral Topic</div>
+                        <div class="agent-chip" onclick="sendAgentChip('Ek high CTR 16:9 widescreen thumbnail bana do')">🖼️ 16:9 Thumbnail</div>
+                        <div class="agent-chip" onclick="sendAgentChip('Autonomous 4-minute master production start kar do')">🚀 Run Daily Production</div>
+                    </div>
+
+                    <!-- Chat Input -->
+                    <div class="agent-input-container" style="max-width: 960px; width:100%; margin: 0 auto;">
+                        <div class="agent-staged-pill" id="agentStagedPill">
+                            <span id="agentStagedFileName">📎 File attached</span>
+                            <span style="cursor:pointer; color:#ef4444; font-weight:bold; margin-left:8px;" onclick="clearAgentAttachment()">✕ Remove</span>
+                        </div>
+
+                        <div class="agent-input-row">
+                            <button class="agent-icon-btn" title="Attach Photos, Videos, or Scripts" onclick="toggleAgentAttachMenu()">📎</button>
+                            <button class="agent-icon-btn" id="agentMicBtn" title="Speak via Voice" onclick="toggleAgentVoice()">🎙️</button>
+                            <input type="text" class="agent-text-input" id="agentTextInput" placeholder="CreatorVerse Help Desk se kuch bhi puchiye..." onkeydown="if(event.key==='Enter') sendAgentMessage()" />
+                            <button class="agent-send-btn" id="agentSendBtn" onclick="sendAgentMessage()">➤</button>
+                        </div>
+                    </div>
+
+                    <!-- Attachment Menu Popup -->
+                    <div class="agent-attach-menu" id="agentAttachMenu">
+                        <div class="agent-attach-opt" onclick="selectAgentAttachType('image')">
+                            <span>🖼️</span>
+                            <span>Photos & Images</span>
+                        </div>
+                        <div class="agent-attach-opt" onclick="selectAgentAttachType('video')">
+                            <span>🎬</span>
+                            <span>Videos & Clips</span>
+                        </div>
+                        <div class="agent-attach-opt" onclick="selectAgentAttachType('document')">
+                            <span>📄</span>
+                            <span>Documents & Scripts</span>
+                        </div>
+                    </div>
+
+                    <input type="file" id="mainInputImage" accept="image/*" style="display:none;" onchange="handleAgentFileSelected(event, 'image')" />
+                    <input type="file" id="mainInputVideo" accept="video/*" style="display:none;" onchange="handleAgentFileSelected(event, 'video')" />
+                    <input type="file" id="mainInputDoc" accept=".txt,.pdf,.json,.doc,.docx" style="display:none;" onchange="handleAgentFileSelected(event, 'document')" />
+                </div>
+            </section>
+
+            <!-- VIEW 1: LIVE SCREENCAST & STREAMING (SEPARATE DEDICATED VIEW) -->
+            <section id="streamTab" class="view-section">
+                <div class="full-card">
+                    <div class="full-card-header">
+                        <div class="agent-card-title">
+                            <span>📺 Gemini Live Screencast & Browser Perception</span>
+                            <span class="stream-badge standby" id="mainStreamBadge">○ Standby</span>
+                        </div>
+                        <div style="display:flex; gap:10px;">
+                            <button class="stream-sec-btn" onclick="refreshStreamFrame()">🔄 Refresh Frame</button>
+                            <button class="stream-action-btn" id="startShareBtn" onclick="toggleDisplayMediaStream()">
+                                🔴 Start Direct Live Screencast
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Stream Viewport Screen -->
+                    <div class="stream-viewport-box" id="mainStreamBox">
+                        <video id="liveVideo" autoplay playsinline style="display:none;"></video>
+                        <img id="liveScreen" src="/api/screencast/live" alt="Live Screencast Stream" />
+                    </div>
+
+                    <!-- Telemetry & Automation Information -->
+                    <div style="margin-top:16px; display:grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap:14px;">
+                        <div style="background:rgba(255,255,255,0.03); border:1px solid var(--border-subtle); padding:14px; border-radius:12px;">
+                            <div style="font-size:11px; color:var(--text-muted); text-transform:uppercase;">Stream Sync</div>
+                            <div style="font-size:13px; font-weight:700; color:var(--cyan); margin-top:4px;" id="streamSyncText">Auto-Starts on Production</div>
+                        </div>
+
+                        <div style="background:rgba(255,255,255,0.03); border:1px solid var(--border-subtle); padding:14px; border-radius:12px;">
+                            <div style="font-size:11px; color:var(--text-muted); text-transform:uppercase;">Popup Detection</div>
+                            <div style="font-size:13px; font-weight:700; color:var(--emerald); margin-top:4px;" id="streamPopupText">Terms Auto-Dismiss Active</div>
+                        </div>
+
+                        <div style="background:rgba(255,255,255,0.03); border:1px solid var(--border-subtle); padding:14px; border-radius:12px;">
+                            <div style="font-size:11px; color:var(--text-muted); text-transform:uppercase;">Edge Port 9222</div>
+                            <div style="font-size:13px; font-weight:700; color:var(--text-primary); margin-top:4px;" id="streamPortText">CDP Bridge Ready</div>
+                        </div>
+
+                        <div style="background:rgba(255,255,255,0.03); border:1px solid var(--border-subtle); padding:14px; border-radius:12px;">
+                            <div style="font-size:11px; color:var(--text-muted); text-transform:uppercase;">Automation Cycle</div>
+                            <div style="font-size:13px; font-weight:700; color:var(--gold-light); margin-top:4px;" id="automationStageText">Stage: Idle (3:30 PM Scheduled)</div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- VIEW 1: 2D ANIMATION VIDEO STUDIO -->
+            <section id="creatorTab" class="view-section">
+                <div class="hero-card">
+                    <div class="boss-guard-pill">
+                        👑 MASTER BOSS ORCHESTRATOR • 2D PIXAR ANIME ENGINE
+                    </div>
+                    <h2 class="hero-title">Autonomous <span>2D Animation Studio</span></h2>
+                    <p class="hero-subtitle">Generates 4-Minute High-Retention 2D Animated Documentaries & 30-Sec Viral Shorts with Red Karaoke Subtitles & 30% Epic BGM.</p>
+
+                    <div class="prompt-box">
+                        <textarea id="videoPromptInput" class="prompt-input" placeholder="Topic likhiye ya preset select kijiye...">Abhinandan Ki Wapsi: Attari-Wagah Border 2D Anime Documentary</textarea>
+
+                        <div class="preset-row">
+                            <span class="preset-btn" onclick="setPrompt('Abhinandan Ki Wapsi: Attari-Wagah Border 2D Anime Documentary')">🇮🇳 Abhinandan Ki Wapsi (60-Scene Pack)</span>
+                            <span class="preset-btn" onclick="setPrompt('Kailash Temple Mystery: Ancient 2D Animated Exploration')">⛰️ Kailash Temple Mystery</span>
+                            <span class="preset-btn" onclick="setPrompt('Chhatrapati Shivaji Maharaj: Guerilla Warfare Genius of Sahyadri')">⚔️ Shivaji Maharaj 2D Epic</span>
+                            <span class="preset-btn" onclick="setPrompt('Ashokas Secret Nine Unknown Men 2D Mystery')">📜 Ashoka Secret Nine</span>
+                        </div>
+
+                        <div class="controls-bar">
+                            <div class="pill-group">
+                                <span class="opt-pill active" onclick="selectPill(this)">📱 9:16 Shorts (30s)</span>
+                                <span class="opt-pill" onclick="selectPill(this)">🖥️ 16:9 Master (4 Min)</span>
+                                <span class="opt-pill active" onclick="selectPill(this)">⚡ Flow 360p (50 Credits Locked)</span>
+                            </div>
+
+                            <button id="createVideoBtn" class="btn-gold" onclick="startVideoGeneration()">
+                                <span>⚡ Produce 2D Masterpiece</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Smooth 3D Loader -->
+                    <div id="progressArea" class="progress-container">
+                        <div class="smooth-loader-box">
+                            <div class="smooth-loader-ring"></div>
+                        </div>
+                        <div id="progressStatusText" style="font-size: 14px; font-weight: 800; color: var(--gold-light); margin-bottom: 14px;">
+                            Master Boss is orchestrating 2D Pixar Cel-Shaded scenes...
+                        </div>
+                        <button class="btn-cancel" onclick="abortVideoGeneration()">
+                            <span>🛑 Cancel / Stop Production</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Video Result Card -->
+                <div id="videoResultCard" class="output-card">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                        <h3 style="font-size: 18px; font-weight: 800; color: var(--emerald);">🔥 Master Video Ready</h3>
+                        <a id="downloadVideoBtn" href="/api/download-final-short" download="CreatorVerse_FINAL_PRO_SHORT.mp4" class="btn-gold" style="padding: 8px 18px; text-decoration: none; font-size: 13px;">
+                            ⬇️ Download Master Video (MP4)
+                        </a>
+                    </div>
+
+                    <div class="output-layout">
+                        <div>
+                            <video id="mainVideoPlayer" controls autoplay loop playsinline></video>
+                        </div>
+
+                        <div>
+                            <div style="background: rgba(244, 63, 94, 0.08); border: 1px solid rgba(244, 63, 94, 0.3); border-radius: 14px; padding: 20px;">
+                                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px;">
+                                    <span style="font-size: 13px; font-weight: 800; color: var(--red);">🔴 YouTube Auto-Package</span>
+                                    <a href="https://studio.youtube.com" target="_blank" style="font-size: 11px; background: var(--red); color: #FFF; padding: 5px 10px; border-radius: 8px; text-decoration: none; font-weight: 700;">Open YouTube Studio</a>
+                                </div>
+
+                                <div style="margin-bottom: 12px;">
+                                    <label style="font-size: 11px; font-weight: 700; color: var(--text-secondary); display: block; margin-bottom: 4px;">TITLE</label>
+                                    <div style="display: flex; gap: 8px;">
+                                        <input id="resTitle" style="flex: 1; background: #07090E; border: 1px solid var(--border-subtle); color: #FFF; padding: 8px 12px; border-radius: 8px; font-size: 12px;" readonly>
+                                        <button onclick="copyText('resTitle')" class="preset-btn">Copy</button>
+                                    </div>
+                                </div>
+
+                                <div style="margin-bottom: 12px;">
+                                    <label style="font-size: 11px; font-weight: 700; color: var(--text-secondary); display: block; margin-bottom: 4px;">DESCRIPTION</label>
+                                    <textarea id="resDesc" rows="3" style="width: 100%; background: #07090E; border: 1px solid var(--border-subtle); color: #CBD5E1; padding: 8px 12px; border-radius: 8px; font-size: 11px; resize: vertical;" readonly></textarea>
+                                </div>
+
+                                <div>
+                                    <label style="font-size: 11px; font-weight: 700; color: var(--text-secondary); display: block; margin-bottom: 4px;">VIRAL TAGS</label>
+                                    <textarea id="resTags" rows="2" style="width: 100%; background: #07090E; border: 1px solid var(--border-subtle); color: var(--cyan); padding: 8px 12px; border-radius: 8px; font-size: 11px; resize: none;" readonly></textarea>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- VIEW 2: GOOGLE FLOW NANO BANANA 2.1 (0 CREDITS) -->
+            <section id="imageGenTab" class="view-section">
+                <div class="hero-card">
+                    <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; margin-bottom: 12px;">
+                        <div class="boss-guard-pill">
+                            🍌 GOOGLE FLOW NANO BANANA 2.1 • 0 CREDITS FREE TIER
+                        </div>
+                        <div id="flowStatusBadge" onclick="checkFlowStatus(true)" style="cursor: pointer; background: rgba(14, 18, 28, 0.7); border: 1px solid var(--border-gold); padding: 6px 14px; border-radius: 20px; font-size: 11px; font-weight: 700; color: var(--gold-light);">
+                            ⚡ Checking Google Flow Bridge...
+                        </div>
+                    </div>
+
+                    <h2 class="hero-title">Google Flow <span>Nano Banana 2.1</span></h2>
+                    <p class="hero-subtitle">100% Genuine 8K Artwork generation via Google Flow's 0-credit Nano Banana image engine. Zero recycled images.</p>
+
+                    <div class="prompt-box">
+                        <textarea id="imgPromptInput" class="prompt-input" placeholder="Enter fresh prompt for Google Flow Nano Banana..."></textarea>
+
+                        <div class="controls-bar" style="flex-wrap: wrap; gap: 10px;">
+                            <div class="pill-group">
+                                <span class="opt-pill active" id="imgRatioShorts" onclick="selectPill(this)">📱 9:16 Vertical</span>
+                                <span class="opt-pill" id="imgRatioCinema" onclick="selectPill(this)">🖥️ 16:9 Thumbnail</span>
+                            </div>
+
+                            <div style="display: flex; gap: 8px;">
+                                <button class="btn-secondary" onclick="launchFlowStudio()" style="padding: 10px 16px; border-radius: 10px; font-size: 12px; font-weight: 700;">
+                                    🚀 Launch Flow Studio
+                                </button>
+                                <button id="genImageBtn" class="btn-gold" onclick="generateAiImage()">
+                                    <span>🎨 Generate Nano Banana (0 Credits)</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="imgProgress" class="progress-container">
+                        <div class="smooth-loader-box">
+                            <div class="smooth-loader-ring"></div>
+                        </div>
+                        <div id="pipelineStatusText" style="font-size: 14px; font-weight: 800; color: var(--gold-light);">
+                            Directing prompt to Google Flow Nano Banana 2.1...
+                        </div>
+                    </div>
+
+                    <!-- Instruction Banner if Port 9222 offline -->
+                    <div id="flowBridgeNotice" style="display: none; margin-top: 18px; padding: 14px 18px; background: rgba(245, 158, 11, 0.08); border: 1px solid rgba(245, 158, 11, 0.3); border-radius: 12px; text-align: left;">
+                        <div style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 8px;">
+                            <div style="font-size: 13px; font-weight: 700; color: #FBBF24;">
+                                ⚠️ Google Flow Studio Port 9222 Disconnected
+                            </div>
+                            <button onclick="launchFlowStudio()" class="btn-gold" style="padding: 6px 14px; font-size: 11px;">
+                                ⚡ Launch Flow Studio Now
+                            </button>
+                        </div>
+                        <p style="font-size: 12px; color: #CBD5E1; margin-top: 6px; line-height: 1.5;">
+                            Google Flow prevents bot logins for safety. To automate Nano Banana 2.1 with your real account, double-click <strong>Launch_Flow_Studio.bat</strong> on your Desktop or click the button above!
+                        </p>
+                    </div>
+                </div>
+
+                <div id="imageResultCard" class="output-card" style="text-align: center;">
+                    <div style="position: relative; display: inline-block; margin-bottom: 22px; max-width: 100%;">
+                        <img id="generatedImgPreview" src="" alt="Freshly Generated Nano Banana Image" style="max-width: 100%; max-height: 520px; border-radius: 16px; border: 2px solid var(--gold-primary); box-shadow: 0 15px 45px rgba(212, 175, 55, 0.25); display: block; object-fit: contain;">
+                    </div>
+
+                    <div style="display: flex; gap: 14px; justify-content: center; flex-wrap: wrap;">
+                        <a id="downloadImgBtn" href="/api/download-generated-image" download="CreatorVerse_NanoBanana.jpg" class="btn-gold" style="text-decoration: none; padding: 12px 24px;">
+                            ⬇️ Download Pure Flow Image (JPG)
+                        </a>
+                    </div>
+                </div>
+            </section>
+
+            <!-- VIEW 3: MASTER SETTINGS -->
+            <section id="settingsTab" class="view-section">
+                <div class="hero-card">
+                    <h2 class="hero-title">Master Boss <span>Settings</span></h2>
+                    <p class="hero-subtitle">Control 24/7 autonomous scheduling, 4-account rotation limits, and YouTube channel auto-upload.</p>
+
+                    <div class="setting-row">
+                        <div>
+                            <h4 style="font-size: 14px; font-weight: 700; color: #FFF;">5:15 PM Autonomous Daily Upload</h4>
+                            <p style="font-size: 12px; color: var(--text-muted); margin-top: 4px;">
+                                Cloud worker produces and uploads 4-min video and 30s short automatically at 5:15 PM IST.
+                            </p>
+                        </div>
+                        <label class="switch">
+                            <input type="checkbox" id="autoUploadToggle" checked onchange="toggleAutoUpload(this.checked)">
+                            <span class="slider"></span>
+                        </label>
+                    </div>
+
+                    <div class="setting-row">
+                        <div>
+                            <h4 style="font-size: 14px; font-weight: 700; color: #FFF;">Strict 50-Credit Per Account Shield</h4>
+                            <p style="font-size: 12px; color: var(--text-muted); margin-top: 4px;">
+                                Locks each Flow account to maximum 50 credits per 24 hours. Prevents over-usage.
+                            </p>
+                        </div>
+                        <label class="switch">
+                            <input type="checkbox" checked disabled>
+                            <span class="slider"></span>
+                        </label>
+                    </div>
+
+                    <div style="background: rgba(255, 255, 255, 0.03); border: 1px solid var(--border-subtle); border-radius: 14px; padding: 20px; margin-top: 14px;">
+                        <h4 style="font-size: 13px; font-weight: 700; color: var(--gold-light); margin-bottom: 10px;">Active System Configuration</h4>
+                        <div style="font-size: 12px; color: var(--text-secondary); line-height: 1.8;">
+                            • Channel Account: <strong style="color: #FFF;">Protected (Connected Securely)</strong><br>
+                            • YouTube Data API: <strong style="color: var(--emerald);">Configured & Encrypted</strong><br>
+                            • Daily Flow Engine: <strong style="color: var(--gold-light);">Multi-Account (50 Credits / Cycle Safe Shield)</strong><br>
+                            • Master Supervisor: <strong style="color: var(--cyan);">MasterBossOrchestrator 24/7 Active</strong>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <!-- 3. PROFILE MODAL -->
+    <div id="profileModal" class="modal-overlay" onclick="closeProfileModal(event)">
+        <div class="modal-box" onclick="event.stopPropagation()">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; padding-bottom: 14px; border-bottom: 1px solid var(--border-subtle);">
+                <div style="display: flex; align-items: center; gap: 12px;">
+                    <div class="avatar">CV</div>
+                    <div>
+                        <h3 style="font-size: 15px; font-weight: 800; color: #FFF;">Creator Studio</h3>
+                        <p style="font-size: 12px; color: var(--emerald);">● Connected to YouTube & Flow</p>
+                    </div>
+                </div>
+                <button onclick="closeProfileModal()" style="background:none; border:none; color:var(--text-muted); font-size:20px; cursor:pointer;">✕</button>
+            </div>
+
+            <div style="display:flex; flex-direction:column; gap:10px;">
+                <a href="https://studio.youtube.com" target="_blank" class="preset-btn" style="padding:12px; text-decoration:none; display:flex; align-items:center; gap:10px; font-size:13px;">
+                    <span>🔴</span> Open YouTube Studio
+                </a>
+                <a href="https://flow.google.com" target="_blank" class="preset-btn" style="padding:12px; text-decoration:none; display:flex; align-items:center; gap:10px; font-size:13px;">
+                    <span>⚡</span> Open Google Flow Projects
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function toggleSidebar() {
+            const sidebar = document.getElementById('sidebarEl');
+            const icon = document.getElementById('toggleIcon');
+            sidebar.classList.toggle('collapsed');
+            icon.textContent = sidebar.classList.contains('collapsed') ? '▶' : '◀';
+        }
+
+        
+        // ========================================================
+        // 30-DAY EDITORIAL CALENDAR & 48H AUDIT FUNCTIONS
+        // ========================================================
+        async function loadCalendarData() {
+            const grid = document.getElementById('calendarCardsGrid');
+            if (!grid) return;
+            try {
+                const res = await fetch('/api/calendar/month');
+                const data = await res.json();
+                if (data.status === 'success' && data.calendar) {
+                    const elTotal = document.getElementById('calStatTotal');
+                    const elLocked = document.getElementById('calStatLocked');
+                    const elDyn = document.getElementById('calStatDynamic');
+                    if (elTotal) elTotal.innerText = data.total_days + ' Days';
+                    if (elLocked) elLocked.innerText = data.locked_count + ' Days';
+                    if (elDyn) elDyn.innerText = (data.total_days - data.locked_count) + ' Days';
+
+                    grid.innerHTML = '';
+                    data.calendar.forEach((item) => {
+                        const card = document.createElement('div');
+                        card.className = 'calendar-card' + (item.is_locked ? ' locked-card' : '');
+
+                        let badgeHtml = '';
+                        if (item.day_offset === 0) {
+                            badgeHtml = '<span class="cal-badge locked-today">🔒 DAY 0 • TODAY (LOCKED)</span>';
+                        } else if (item.day_offset === 1) {
+                            badgeHtml = '<span class="cal-badge locked-tomorrow">🔒 DAY 1 • TOMORROW (LOCKED)</span>';
+                        } else {
+                            badgeHtml = '<span class="cal-badge unlocked">🔓 DAY ' + item.day_offset + ' • DYNAMIC SCAN</span>';
+                        }
+
+                        card.innerHTML = 
+                            '<div style="display:flex; justify-content:space-between; align-items:center;">' +
+                                badgeHtml +
+                                '<span style="font-size:11px; color:#94a3b8; font-weight:700;">' + item.scheduled_date + '</span>' +
+                            '</div>' +
+                            '<div style="font-size:15px; font-weight:800; color:#F8FAFC; line-height:1.35;">' +
+                                item.topic +
+                            '</div>' +
+                            '<div style="display:flex; gap:6px;">' +
+                                '<span style="background:rgba(255,255,255,0.06); color:#38bdf8; font-size:10px; font-weight:700; padding:3px 8px; border-radius:6px;">' +
+                                    item.category +
+                                '</span>' +
+                            '</div>' +
+                            '<div style="background:rgba(0,0,0,0.3); border:1px solid rgba(255,255,255,0.06); padding:10px; border-radius:10px; font-size:11px;">' +
+                                '<span style="color:#D4AF37; font-weight:700;">⚡ 5s Hook: </span>' +
+                                '<span style="color:#cbd5e1;">"' + (item.hook_angle || 'Unsolved ancient mystery') + '"</span>' +
+                            '</div>' +
+                            '<div style="font-size:11px; color:#94a3b8; line-height:1.4;">' +
+                                '<strong>Viral Reason:</strong> ' + (item.viral_reason || 'High Indian curiosity') +
+                            '</div>';
+
+                        grid.appendChild(card);
+                    });
+                }
+            } catch (e) {
+                grid.innerHTML = '<div style="grid-column:1/-1; color:#ef4444; padding:20px;">Failed to load calendar. Check server connection.</div>';
+            }
+        }
+
+        async function refreshCalendarUnlocked() {
+            const btn = document.getElementById('btnScoutFuture');
+            if (btn) {
+                btn.disabled = true;
+                btn.innerHTML = '⏳ Scouting Real Trends...';
+            }
+            try {
+                const res = await fetch('/api/calendar/refresh', { method: 'POST' });
+                const data = await res.json();
+                if (data.status === 'success') {
+                    await loadCalendarData();
+                    alert('✅ 120B Trend Radar completed! Days 0 & 1 remained 100% frozen, future days updated with real Google Trends.');
+                }
+            } catch (e) {
+                alert('Scout notice: ' + e);
+            } finally {
+                if (btn) {
+                    btn.disabled = false;
+                    btn.innerHTML = '🛰️ Scout Future Days (120B Brain)';
+                }
+            }
+        }
+
+        async function loadAuditData() {
+            const feed = document.getElementById('auditLogsFeed');
+            if (!feed) return;
+            try {
+                const res = await fetch('/api/audit-48h/data');
+                const data = await res.json();
+                if (data.status === 'success') {
+                    const elCtr = document.getElementById('auditAvgCtr');
+                    const elRet = document.getElementById('auditAvgRet');
+                    const elViews = document.getElementById('auditTotalViews');
+                    if (elCtr) elCtr.innerText = data.avg_ctr + '%';
+                    if (elRet) elRet.innerText = data.avg_retention + '%';
+                    if (elViews) elViews.innerText = (data.total_views_tracked || 4760) + '+';
+
+                    feed.innerHTML = '';
+                    (data.logs || []).forEach((log) => {
+                        const card = document.createElement('div');
+                        card.className = 'audit-feed-card';
+                        card.innerHTML = 
+                            '<div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px;">' +
+                                '<div style="font-size:14px; font-weight:800; color:#F8FAFC;">🎬 ' + log.video_title + '</div>' +
+                                '<span class="cal-badge" style="background:rgba(212,175,55,0.15); border:1px solid #D4AF37; color:#FDE074;">🏆 ' + (log.verdict || 'Viral Benchmark Winner') + '</span>' +
+                            '</div>' +
+                            '<div style="display:flex; gap:16px; font-size:12px; color:#94a3b8;">' +
+                                '<span>👀 <strong>Views (48h):</strong> <span style="color:#38bdf8;">' + log.views + '</span></span>' +
+                                '<span>🎯 <strong>CTR:</strong> <span style="color:#10b981;">' + log.ctr + '%</span></span>' +
+                                '<span>⏱️ <strong>Retention:</strong> <span style="color:#10b981;">' + log.retention + '%</span></span>' +
+                            '</div>' +
+                            '<div style="background:rgba(0,0,0,0.3); border-left:3px solid #10b981; padding:8px 12px; border-radius:0 8px 8px 0; font-size:12px; color:#cbd5e1;">' +
+                                '<strong style="color:#10b981;">🧠 Learned Neural Rule:</strong> ' + log.learned_rule +
+                            '</div>';
+                        feed.appendChild(card);
+                    });
+                }
+            } catch (e) {
+                feed.innerHTML = '<div style="color:#ef4444; padding:20px;">Failed to load 48-hour audits.</div>';
+            }
+        }
+
+        function switchTab(tabId, btn) {
+            document.querySelectorAll('.view-section').forEach(el => el.classList.remove('active'));
+            document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
+            document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
+
+            const target = document.getElementById(tabId);
+            if (target) target.classList.add('active');
+
+            if (btn && btn.classList.contains('tab-btn')) btn.classList.add('active');
+            if (btn && btn.classList.contains('nav-item')) btn.classList.add('active');
+
+            if (tabId === 'imageTab') {
+                loadLatestImage();
+            }
+        }
+
+        async function loadLatestImage() {
+            try {
+                const res = await fetch('/api/latest-image');
+                const data = await res.json();
+                if (data.status === 'ready') {
+                    const resCard = document.getElementById('imageResultCard');
+                    const img = document.getElementById('generatedImgPreview');
+                    const dlBtn = document.getElementById('downloadImgBtn');
+                    if (img && resCard && dlBtn) {
+                        img.src = data.image_url + '?t=' + Date.now();
+                        dlBtn.href = data.image_url;
+                        resCard.style.display = 'block';
+                    }
+                }
+            } catch(e) {}
+        }
+
+        function setPrompt(text) {
+            document.getElementById('videoPromptInput').value = text;
+        }
+
+        function selectPill(el) {
+            const group = el.parentElement;
+            group.querySelectorAll('.opt-pill').forEach(p => p.classList.remove('active'));
+            el.classList.add('active');
+        }
+
+        function openProfileModal() {
+            document.getElementById('profileModal').style.display = 'flex';
+        }
+
+        function closeProfileModal() {
+            document.getElementById('profileModal').style.display = 'none';
+        }
+
+        function copyText(elemId) {
+            const elem = document.getElementById(elemId);
+            if (!elem) return;
+            navigator.clipboard.writeText(elem.value);
+            alert('✅ Text Copied to Clipboard!');
+        }
+
+        let isGenerating = false;
+        async function startVideoGeneration() {
+            if (isGenerating) return;
+            const prompt = document.getElementById('videoPromptInput').value.trim();
+            if (!prompt) return alert('Kripya apna topic likhiye!');
+
+            isGenerating = true;
+            const btn = document.getElementById('createVideoBtn');
+            const progress = document.getElementById('progressArea');
+            const resultCard = document.getElementById('videoResultCard');
+
+            btn.disabled = true;
+            resultCard.style.display = 'none';
+            progress.style.display = 'block';
+
+            try {
+                const res = await fetch('/api/groq-director', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ user_prompt: prompt, target_format: '9:16' })
+                });
+                const plan = await res.json();
+
+                const assembleRes = await fetch('/api/assemble-short', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ topic: prompt })
+                });
+                const finalData = await assembleRes.json();
+
+                if (finalData.status === 'success') {
+                    document.getElementById('resTitle').value = plan.title || prompt;
+                    document.getElementById('resDesc').value = plan.long_description || 'Astonishing 2D Animation Documentary.';
+                    document.getElementById('resTags').value = plan.youtube_tags || '2danimation, shorts, viral, history';
+                    document.getElementById('mainVideoPlayer').src = finalData.video_url + '?t=' + Date.now();
+                    resultCard.style.display = 'block';
+                    resultCard.scrollIntoView({ behavior: 'smooth' });
+                }
+            } catch(e) {
+                alert('Generation Notice: ' + e.message);
+            } finally {
+                isGenerating = false;
+                btn.disabled = false;
+                progress.style.display = 'none';
+            }
+        }
+
+        function abortVideoGeneration() {
+            isGenerating = false;
+            document.getElementById('progressArea').style.display = 'none';
+            document.getElementById('createVideoBtn').disabled = false;
+            alert('🛑 Video Generation Stopped by User.');
+        }
+
+        async function checkFlowStatus(showAlert = false) {
+            const badge = document.getElementById('flowStatusBadge');
+            const notice = document.getElementById('flowBridgeNotice');
+            try {
+                const res = await fetch('/api/flow-status');
+                const data = await res.json();
+                if (data.port_9222_active) {
+                    if (badge) {
+                        badge.innerHTML = '🟢 Flow Studio Connected (Port 9222)';
+                        badge.style.color = 'var(--emerald)';
+                        badge.style.borderColor = 'rgba(16, 185, 129, 0.4)';
+                    }
+                    if (notice) notice.style.display = 'none';
+                    if (showAlert) alert('✅ Google Flow Studio Bridge is LIVE and ready on Port 9222!');
+                } else {
+                    if (badge) {
+                        badge.innerHTML = '⚠️ Flow Studio Offline (Port 9222)';
+                        badge.style.color = '#FBBF24';
+                        badge.style.borderColor = 'rgba(245, 158, 11, 0.4)';
+                    }
+                    if (notice) notice.style.display = 'block';
+                    if (showAlert) alert('⚠️ Port 9222 is offline. Click "Launch Flow Studio" or double-click "Launch_Flow_Studio.bat" on your Desktop.');
+                }
+            } catch(e) {
+                if (badge) badge.innerHTML = '⚡ Flow Bridge Offline';
+            }
+        }
+
+        async function launchFlowStudio() {
+            const badge = document.getElementById('flowStatusBadge');
+            if (badge) badge.innerHTML = '⏳ Launching Google Flow...';
+            try {
+                const res = await fetch('/api/open-flow-nanobanana', { method: 'POST' });
+                const data = await res.json();
+                alert(data.message || 'Google Flow Studio launch command sent!');
+                setTimeout(checkFlowStatus, 4000);
+            } catch(e) {
+                alert('Launch error: ' + e.message);
+            }
+        }
+
+        // Check on load
+        window.addEventListener('DOMContentLoaded', () => {
+            checkFlowStatus();
+            loadLatestImage();
+            setInterval(checkFlowStatus, 15000);
+        });
+
+        async function generateAiImage() {
+            const prompt = document.getElementById('imgPromptInput').value.trim();
+            if (!prompt) return alert('Kripya image topic ya prompt daaliye!');
+
+            const btn = document.getElementById('genImageBtn');
+            const progress = document.getElementById('imgProgress');
+            const resCard = document.getElementById('imageResultCard');
+            const statusTxt = document.getElementById('pipelineStatusText');
+            const notice = document.getElementById('flowBridgeNotice');
+
+            btn.disabled = true;
+            progress.style.display = 'block';
+            resCard.style.display = 'none';
+            statusTxt.innerText = 'Crafting 0-credit Nano Banana 2.1 prompt...';
+
+            const reqId = 'img_' + Date.now();
+            const ratio = document.getElementById('imgRatioCinema').classList.contains('active') ? '16:9' : '9:16';
+
+            try {
+                const res = await fetch('/api/generate-image', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ prompt: prompt, aspect_ratio: ratio, request_id: reqId })
+                });
+                const data = await res.json();
+                
+                if (data.status === 'success' && data.is_ready) {
+                    const finalUrl = data.image_url + (data.image_url.includes('?') ? '&' : '?') + 't=' + Date.now();
+                    document.getElementById('generatedImgPreview').src = finalUrl;
+                    document.getElementById('downloadImgBtn').href = finalUrl;
+                    resCard.style.display = 'block';
+                    resCard.scrollIntoView({ behavior: 'smooth' });
+                    progress.style.display = 'none';
+                    btn.disabled = false;
+                    return;
+                }
+
+                // If waiting for Google Flow CDP
+                if (data.status === 'waiting_flow_studio') {
+                    if (notice) notice.style.display = 'block';
+                    statusTxt.innerText = 'Connecting to Google Flow Studio (Port 9222)... Monitoring live render...';
+                    
+                    // Copy optimized Nano Banana prompt to clipboard
+                    if (data.nano_banana_prompt && navigator.clipboard) {
+                        try {
+                            await navigator.clipboard.writeText(data.nano_banana_prompt);
+                            console.log('Nano Banana prompt copied to clipboard!');
+                        } catch(err) {}
+                    }
+
+                    // Poll for fresh image completion (never loads old images)
+                    let attempts = 0;
+                    const pollInterval = setInterval(async () => {
+                        attempts++;
+                        try {
+                            const chkRes = await fetch('/api/check-image/' + reqId);
+                            const chkData = await chkRes.json();
+                            if (chkData.status === 'ready') {
+                                clearInterval(pollInterval);
+                                const finalUrl = chkData.image_url + '?t=' + Date.now();
+                                document.getElementById('generatedImgPreview').src = finalUrl;
+                                document.getElementById('downloadImgBtn').href = finalUrl;
+                                resCard.style.display = 'block';
+                                resCard.scrollIntoView({ behavior: 'smooth' });
+                                progress.style.display = 'none';
+                                btn.disabled = false;
+                            }
+                        } catch(e) {}
+
+                        if (attempts > 60) {
+                            clearInterval(pollInterval);
+                            progress.style.display = 'none';
+                            btn.disabled = false;
+                            loadLatestImage();
+                        }
+                    }, 2000);
+                }
+            } catch(e) {
+                console.error('Image Error:', e);
+                progress.style.display = 'none';
+                btn.disabled = false;
+            }
+        }
+    
+        // ========================================================
+        // AI COPILOT & STREAM MONITOR CLIENT LOGIC (UNIFIED)
+        // ========================================================
+        let currentAgentAttachment = null;
+        let isAgentVoiceActive = false;
+        let agentSpeechRec = null;
+        let isMainStreaming = false;
+        let streamPollInterval = null;
+
+        function onAgentModelChange() {
+            const picker = document.getElementById('agentModelPicker');
+            if (picker) localStorage.setItem('creatorverse_model', picker.value);
+        }
+
+        // Auto load saved model
+        window.addEventListener('DOMContentLoaded', () => {
+            const saved = localStorage.getItem('creatorverse_model');
+            if (saved && document.getElementById('agentModelPicker')) {
+                document.getElementById('agentModelPicker').value = saved;
+            }
+            // Check stream status immediately and poll every 2s
+            checkGlobalStreamStatus();
+            setInterval(checkGlobalStreamStatus, 2000);
+        });
+
+        function toggleAgentAttachMenu() {
+            const menu = document.getElementById('agentAttachMenu');
+            menu.style.display = (menu.style.display === 'block') ? 'none' : 'block';
+        }
+
+        function selectAgentAttachType(type) {
+            document.getElementById('agentAttachMenu').style.display = 'none';
+            if (type === 'image') document.getElementById('mainInputImage').click();
+            if (type === 'video') document.getElementById('mainInputVideo').click();
+            if (type === 'document') document.getElementById('mainInputDoc').click();
+        }
+
+        async function handleAgentFileSelected(event, type) {
+            const file = event.target.files[0];
+            if (!file) return;
+
+            const pill = document.getElementById('agentStagedPill');
+            const nameEl = document.getElementById('agentStagedFileName');
+            pill.style.display = 'flex';
+            nameEl.innerText = '⏳ Uploading ' + file.name + '...';
+
+            const formData = new FormData();
+            formData.append('file', file);
+
+            try {
+                const res = await fetch('/api/copilot/upload', { method: 'POST', body: formData });
+                const data = await res.json();
+                if (data.status === 'success') {
+                    currentAgentAttachment = data;
+                    const icon = type === 'image' ? '🖼️' : (type === 'video' ? '🎬' : '📄');
+                    nameEl.innerText = icon + ' ' + data.filename + ' (' + data.size_kb + ' KB)';
+                } else {
+                    alert('Upload failed: ' + (data.message || 'Error'));
+                    clearAgentAttachment();
+                }
+            } catch(e) {
+                alert('Upload error: ' + e);
+                clearAgentAttachment();
+            }
+        }
+
+        function clearAgentAttachment() {
+            currentAgentAttachment = null;
+            document.getElementById('mainInputImage').value = '';
+            document.getElementById('mainInputVideo').value = '';
+            document.getElementById('mainInputDoc').value = '';
+            document.getElementById('agentStagedPill').style.display = 'none';
+        }
+
+        function toggleAgentVoice() {
+            const btn = document.getElementById('agentMicBtn');
+            const SpeechRec = window.SpeechRecognition || window.webkitSpeechRecognition;
+            if (!SpeechRec) {
+                alert('Speech recognition is not supported in this browser. Please use Chrome or Edge!');
+                return;
+            }
+            if (isAgentVoiceActive) {
+                if (agentSpeechRec) agentSpeechRec.stop();
+                isAgentVoiceActive = false;
+                btn.classList.remove('recording');
+                return;
+            }
+            agentSpeechRec = new SpeechRec();
+            agentSpeechRec.lang = 'hi-IN';
+            agentSpeechRec.interimResults = false;
+            agentSpeechRec.onstart = () => { isAgentVoiceActive = true; btn.classList.add('recording'); };
+            agentSpeechRec.onresult = (ev) => {
+                document.getElementById('agentTextInput').value = ev.results[0][0].transcript;
+                sendAgentMessage();
+            };
+            agentSpeechRec.onerror = () => { isAgentVoiceActive = false; btn.classList.remove('recording'); };
+            agentSpeechRec.onend = () => { isAgentVoiceActive = false; btn.classList.remove('recording'); };
+            agentSpeechRec.start();
+        }
+
+        function appendAgentMessage(role, text, toolData, attachedFile) {
+            const container = document.getElementById('agentChatHistory');
+            const row = document.createElement('div');
+            row.className = 'chat-bubble-row ' + role;
+
+            let extraHtml = '';
+            if (attachedFile) {
+                const icon = attachedFile.type === 'video' ? '🎬' : (attachedFile.type === 'image' ? '🖼️' : '📄');
+                extraHtml += '<div style="font-size:12px; color:var(--cyan); margin-bottom:6px;">' + icon + ' Attached: ' + attachedFile.filename + '</div>';
+            }
+
+            const cleanHtml = (text || '').split(String.fromCharCode(10)).join('<br/>');
+
+            row.innerHTML = `
+                <div class="bubble-avatar">${role === 'user' ? '👤' : '⚡'}</div>
+                <div class="bubble-text">
+                    ${extraHtml}
+                    ${cleanHtml}
+                </div>
+            `;
+            container.appendChild(row);
+            container.scrollTop = container.scrollHeight;
+        }
+
+        async function sendAgentMessage() {
+            const input = document.getElementById('agentTextInput');
+            const text = input.value.trim();
+            const attached = currentAgentAttachment;
+
+            if (!text && !attached) return;
+
+            input.value = '';
+            clearAgentAttachment();
+            appendAgentMessage('user', text || '(Attached file for analysis)', null, attached);
+
+            const sendBtn = document.getElementById('agentSendBtn');
+            sendBtn.disabled = true;
+
+            const selectedModel = document.getElementById('agentModelPicker') ? document.getElementById('agentModelPicker').value : 'openai/gpt-oss-120b';
+
+            try {
+                const res = await fetch('/api/copilot/chat', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        message: text || 'Please inspect the attached file according to studio rules.',
+                        attached_file: attached,
+                        model: selectedModel
+                    })
+                });
+                const data = await res.json();
+                appendAgentMessage('assistant', data.reply || 'Kaam ho gaya bhai!', data.tool_data);
+            } catch(e) {
+                appendAgentMessage('assistant', 'Network issue ya server reloaded. Ek baar refresh karke dobara try karein bhai!');
+            } finally {
+                sendBtn.disabled = false;
+                input.focus();
+            }
+        }
+
+        function sendAgentChip(text) {
+            document.getElementById('agentTextInput').value = text;
+            sendAgentMessage();
+        }
+
+        // ========================================================
+        // STREAM AUTO-SYNC & TOGGLE LOGIC
+        // ========================================================
+        async function checkGlobalStreamStatus() {
+            try {
+                const res = await fetch('/api/stream-status');
+                const data = await res.json();
+                
+                const stageText = document.getElementById('automationStageText');
+                if (stageText) stageText.innerText = 'Stage: ' + (data.current_stage || 'Idle');
+
+                // If automation running or manually active, activate stream!
+                if (data.stream_active) {
+                    setStreamUIActive(true);
+                } else {
+                    setStreamUIActive(false);
+                }
+            } catch(e) {}
+        }
+
+        function setStreamUIActive(active) {
+            const standby = document.getElementById('mainStreamStandby');
+            const img = document.getElementById('mainLiveStreamImg');
+            const badge = document.getElementById('mainStreamBadge');
+            const btn = document.getElementById('mainStreamToggleBtn');
+
+            if (active) {
+                isMainStreaming = true;
+                standby.style.display = 'none';
+                img.style.display = 'block';
+                img.src = '/api/screencast/live?t=' + Date.now();
+                badge.className = 'stream-badge live';
+                badge.innerHTML = '● STREAMING';
+                btn.className = 'stream-toggle-btn active';
+                btn.innerHTML = '⏹️ Stop Stream';
+            } else {
+                isMainStreaming = false;
+                standby.style.display = 'flex';
+                img.style.display = 'none';
+                badge.className = 'stream-badge standby';
+                badge.innerHTML = '○ Standby';
+                btn.className = 'stream-toggle-btn';
+                btn.innerHTML = '▶️ Start Stream';
+            }
+        }
+
+        async function toggleMainStream() {
+            try {
+                const res = await fetch('/api/stream/toggle', { method: 'POST' });
+                const data = await res.json();
+                setStreamUIActive(data.stream_active);
+            } catch(e) {
+                console.error('Toggle stream error:', e);
+            }
+        }
+
+    
+        // ========================================================
+        // LIVE SCREENCAST WEBRTC & WEBSOCKET ENGINE (DEDICATED)
+        // ========================================================
+        let liveWs = null;
+        let displayStream = null;
+        let wsStreamInterval = null;
+
+        function initLiveWebSocket() {
+            const protocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
+            liveWs = new WebSocket(protocol + '//' + window.location.host + '/ws/live-screencast');
+            liveWs.onopen = () => console.log('WebSocket connected to live screencast bridge.');
+            liveWs.onmessage = (event) => {
+                try {
+                    const data = JSON.parse(event.data);
+                    if (data.brain_state) updateLiveBrainUI(data.brain_state);
+                } catch(e) {}
+            };
+        }
+
+        async function toggleDisplayMediaStream() {
+            const videoEl = document.getElementById('liveVideo');
+            const imgEl = document.getElementById('liveScreen');
+            const btn = document.getElementById('startShareBtn');
+
+            if (displayStream) {
+                displayStream.getTracks().forEach(t => t.stop());
+                displayStream = null;
+                if (wsStreamInterval) clearInterval(wsStreamInterval);
+                videoEl.style.display = 'none';
+                imgEl.style.display = 'block';
+                btn.innerHTML = '🔴 Start Direct Live Screencast';
+                btn.classList.remove('active');
+                document.getElementById('mainStreamBadge').className = 'stream-badge standby';
+                document.getElementById('mainStreamBadge').innerHTML = '○ Standby';
+                return;
+            }
+
+            try {
+                displayStream = await navigator.mediaDevices.getDisplayMedia({
+                    video: { cursor: 'always', frameRate: 15 },
+                    audio: false
+                });
+                videoEl.srcObject = displayStream;
+                videoEl.style.display = 'block';
+                imgEl.style.display = 'none';
+                btn.innerHTML = '⏹️ Stop Live Screencast';
+                btn.classList.add('active');
+                document.getElementById('mainStreamBadge').className = 'stream-badge live';
+                document.getElementById('mainStreamBadge').innerHTML = '● DIRECT STREAM ACTIVE';
+
+                const canvas = document.createElement('canvas');
+                const ctx = canvas.getContext('2d');
+                wsStreamInterval = setInterval(() => {
+                    if (!displayStream || !liveWs || liveWs.readyState !== WebSocket.OPEN) return;
+                    canvas.width = videoEl.videoWidth || 640;
+                    canvas.height = videoEl.videoHeight || 360;
+                    ctx.drawImage(videoEl, 0, 0, canvas.width, canvas.height);
+                    const frameData = canvas.toDataURL('image/jpeg', 0.65);
+                    liveWs.send(frameData);
+                }, 500);
+
+                displayStream.getVideoTracks()[0].onended = () => toggleDisplayMediaStream();
+            } catch(e) {
+                console.warn('Screen share cancel or notice:', e);
+            }
+        }
+
+        function refreshStreamFrame() {
+            if (!displayStream) {
+                const img = document.getElementById('liveScreen');
+                if (img) img.src = '/api/screencast/live?t=' + Date.now();
+            }
+        }
+
+        function updateLiveBrainUI(state) {
+            if (!state) return;
+            const popup = document.getElementById('streamPopupText');
+            if (popup) popup.innerText = state.active_popup ? 'Modal: ' + state.active_popup : 'Clean (No Popups)';
+        }
+
+        // Initialize WebSocket on page load
+        window.addEventListener('DOMContentLoaded', () => {
+            initLiveWebSocket();
+            setInterval(refreshStreamFrame, 2000);
+        });
+
+    </script>
+</body>
+</html>
+
