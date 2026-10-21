@@ -34,7 +34,7 @@
 
         <nav class="navbar">
             <a href="index.html">Home</a>
-            <a href="products.html">Products</a>
+            <a href="product.html">Products</a>
             <a href="wishlist.html">Wishlist</a>
             <a href="tracking.html">Tracking</a>
             <a href="orders.html">Orders</a>
@@ -43,6 +43,7 @@
         <div class="header-buttons">
             <button onclick="location.href='index.html'" title="Home">🏠</button>
             <button onclick="location.href='wishlist.html'" title="Wishlist">❤️</button>
+            <button onclick="location.href='cart.html'" class="active" title="Cart">🛒</button>
             <button onclick="location.href='profile.html'" title="Profile">👤</button>
         </div>
     </header>
@@ -51,16 +52,16 @@
     <section class="cart-section">
         <h1>🛒 My Shopping Cart</h1>
 
-        <div id="cart-container" class="glassmorphism" style="padding: 20px; border-radius: 20px; margin-bottom: 25px;">
+        <div id="cart-container">
             <div class="loading-state">
                 <div class="spinner"></div>
                 <p>Loading Cart Items...</p>
             </div>
         </div>
 
-        <div class="cart-total glassmorphism" style="padding: 25px; border-radius: 20px; text-align: center;">
-            <h2 id="total-price" style="color: #ffcc00; font-size: 24px; margin-bottom: 20px;">Total : ₹0</h2>
-            <button class="checkout-btn primary-btn" onclick="location.href='checkout.html'" style="font-size: 16px; padding: 14px 35px;">
+        <div class="cart-total">
+            <h2 id="total-price">Total : ₹0</h2>
+            <button class="checkout-btn" onclick="location.href='checkout.html'">
                 Proceed To Checkout 🚀
             </button>
         </div>

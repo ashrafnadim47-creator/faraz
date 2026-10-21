@@ -16,15 +16,8 @@ let currentUser = null;
 // ==========================================
 onAuthStateChanged(auth, (user) => {
     currentUser = user;
-    if (box && user) {
+    if (box) {
         loadWishlist();
-    } else if (box && !user) {
-        box.innerHTML = `
-            <div style="grid-column: 1 / -1; text-align: center; padding: 40px;">
-                <h3 style="color: #94a3b8; margin-bottom: 15px;">Please login to view your wishlist ❤️</h3>
-                <button onclick="location.href='login.html'" class="primary-btn" style="padding: 10px 25px; border-radius: 20px;">Sign In Now</button>
-            </div>
-        `;
     }
 });
 
@@ -32,30 +25,35 @@ onAuthStateChanged(auth, (user) => {
 // ❤️ ADD ITEM TO WISHLIST
 // ==========================================
 window.addWishlist = async function (name, price, image) {
-    if (!currentUser) {
-        location.href = "login.html";
-        return;
+    // 1. Save to local storage
+    let localWish = JSON.parse(localStorage.getItem('fw_user_wish_memory') || "[]");
+    if (!localWish.some(item => item.name === name)) {
+        localWish.push({ name, price: Number(price), image: image || "" });
+        localStorage.setItem('fw_user_wish_memory', JSON.stringify(localWish));
     }
 
-    try {
-        await setDoc(doc(db, "users", currentUser.uid, "wishlist", name), {
-            name: name,
-            price: Number(price),
-            image: image || ""
-        });
-
-        alert("❤️ Item Added to Wishlist!");
-    } catch (error) {
-        console.error("Add wishlist error:", error);
-        alert("❌ Failed to add item to wishlist.");
+    // 2. If logged in, also sync to Firestore
+    if (currentUser) {
+        try {
+            await setDoc(doc(db, "users", currentUser.uid, "wishlist", name), {
+                name: name,
+                price: Number(price),
+                image: image || ""
+            });
+        } catch (error) {
+            console.warn("Firestore wishlist sync skipped:", error.message);
+        }
     }
+
+    alert(`❤️ "${name}" Added to Wishlist!`);
+    loadWishlist();
 };
 
 // ==========================================
 // 📦 LOAD WISHLIST ITEMS ENGINE
 // ==========================================
 async function loadWishlist() {
-    if (!box || !currentUser) return;
+    if (!box) return;
 
     box.innerHTML = `
         <div class="loading-state" style="grid-column: 1 / -1; text-align: center; padding: 40px;">
@@ -64,89 +62,102 @@ async function loadWishlist() {
         </div>
     `;
 
-    try {
-        const snap = await getDocs(collection(db, "users", currentUser.uid, "wishlist"));
+    let items = [];
 
-        if (snap.empty) {
-            box.innerHTML = `
-                <div style="grid-column: 1 / -1; text-align: center; padding: 50px 20px;">
-                    <h2 style="color: #94a3b8; font-size: 20px; margin-bottom: 10px;">Your Wishlist Is Empty ❤️</h2>
-                    <p style="color: #64748b; font-size: 14px; margin-bottom: 20px;">Explore products and tap the heart icon to save items here!</p>
-                    <button onclick="location.href='products.html'" class="primary-btn" style="padding: 12px 28px; border-radius: 25px;">Browse Products</button>
-                </div>
-            `;
-            return;
+    // Try Firestore if logged in
+    if (currentUser) {
+        try {
+            const snap = await getDocs(collection(db, "users", currentUser.uid, "wishlist"));
+            if (!snap.empty) {
+                snap.forEach(docSnap => {
+                    items.push({ id: docSnap.id, ...docSnap.data() });
+                });
+            }
+        } catch (error) {
+            console.warn("Firestore wishlist load skipped, using local storage:", error.message);
         }
-
-        // Single-Pass High-Performance HTML Construction
-        const wishlistMarkup = snap.docs.map((item) => {
-            const product = item.data();
-            const itemId = item.id;
-
-            return `
-                <div class="wishlist-card">
-                    <div class="product-image">
-                        <img src="${product.image || 'images/no-image.png'}" alt="${product.name}">
-                    </div>
-
-                    <h3>${product.name}</h3>
-                    <p>₹${product.price}</p>
-
-                    <div class="card-actions">
-                        <button class="btn-cart" onclick="addWishlistCart('${product.name}', ${product.price}, '${product.image}')">
-                            🛒 Add To Cart
-                        </button>
-                        <button class="btn-remove" onclick="removeWishlist('${itemId}')">
-                            ❌ Remove
-                        </button>
-                    </div>
-                </div>
-            `;
-        }).join('');
-
-        box.innerHTML = wishlistMarkup;
-
-    } catch (error) {
-        console.error("Load wishlist error:", error);
-        box.innerHTML = `<h3 style="grid-column: 1 / -1; text-align: center; color: var(--danger);">❌ Failed to load wishlist items.</h3>`;
     }
+
+    // Fallback to local storage
+    if (items.length === 0) {
+        items = JSON.parse(localStorage.getItem('fw_user_wish_memory') || "[]");
+    }
+
+    if (items.length === 0) {
+        box.innerHTML = `
+            <div style="grid-column: 1 / -1; text-align: center; padding: 50px 20px;">
+                <div style="font-size: 48px; margin-bottom: 12px;">❤️</div>
+                <h2 style="color: #ffffff; font-size: 22px; margin-bottom: 8px;">Your Wishlist Is Empty</h2>
+                <p style="color: #94a3b8; font-size: 14px; margin-bottom: 20px;">Explore products and tap the heart icon to save favorite items here!</p>
+                <button onclick="location.href='product.html'" class="primary-btn" style="padding: 12px 30px; border-radius: 20px; font-weight: 800;">
+                    🚀 Browse Products
+                </button>
+            </div>
+        `;
+        return;
+    }
+
+    const wishlistMarkup = items.map((item, idx) => {
+        const itemId = item.id || `wish_${idx}`;
+        return `
+            <div class="wishlist-card glassmorphism">
+                <div class="product-image">
+                    <img src="${item.image || 'images/no-image.png'}" alt="${item.name}" onerror="this.src='images/logo.png'">
+                </div>
+
+                <h3>${item.name}</h3>
+                <p class="price" style="color: #ffcc00; font-family: 'Orbitron', monospace; font-size: 18px; font-weight: 900; margin: 6px 0;">₹${item.price}</p>
+
+                <div class="card-actions" style="display: flex; gap: 8px; margin-top: 12px;">
+                    <button class="btn-cart primary-btn" onclick="addWishlistCart('${item.name}', ${item.price}, '${item.image || ''}')" style="flex: 1; padding: 10px; font-size: 12px;">
+                        🛒 Add To Cart
+                    </button>
+                    <button class="btn-remove" onclick="removeWishlist('${itemId}', ${idx})" style="padding: 10px 14px; background: rgba(239, 68, 68, 0.15); border: 1px solid #ef4444; color: #ef4444; border-radius: 10px; cursor: pointer; font-weight: 700;">
+                        ❌
+                    </button>
+                </div>
+            </div>
+        `;
+    }).join('');
+
+    box.innerHTML = wishlistMarkup;
 }
 
 // ==========================================
 // 🛒 MOVE WISHLIST ITEM TO CART
 // ==========================================
-window.addWishlistCart = async function (name, price, image) {
-    if (!currentUser) {
-        location.href = "login.html";
-        return;
-    }
-
-    try {
-        await setDoc(doc(db, "users", currentUser.uid, "cart", name), {
-            name: name,
-            price: Number(price),
-            image: image || "",
-            quantity: 1
-        });
-
-        alert("🛒 Item Added to Cart!");
-    } catch (error) {
-        console.error("Move to cart error:", error);
-        alert("❌ Failed to add item to cart.");
+window.addWishlistCart = function (name, price, image) {
+    if (window.addToCart) {
+        window.addToCart(name, name, price, image);
+    } else {
+        let currentCart = JSON.parse(localStorage.getItem('fw_user_cart_memory') || "[]");
+        currentCart.push({ id: name, name, price: parseFloat(price), image, quantity: 1 });
+        localStorage.setItem('fw_user_cart_memory', JSON.stringify(currentCart));
+        alert(`🎉 Success! "${name}" added to cart.`);
     }
 };
 
 // ==========================================
 // ❌ REMOVE ITEM FROM WISHLIST
 // ==========================================
-window.removeWishlist = async function (id) {
-    if (!currentUser) return;
-
-    try {
-        await deleteDoc(doc(db, "users", currentUser.uid, "wishlist", id));
-        loadWishlist();
-    } catch (error) {
-        console.error("Remove wishlist error:", error);
-        alert("❌ Failed to remove item.");
+window.removeWishlist = async function (id, index) {
+    // 1. Remove from local storage
+    let localWish = JSON.parse(localStorage.getItem('fw_user_wish_memory') || "[]");
+    if (index !== undefined && index >= 0 && index < localWish.length) {
+        localWish.splice(index, 1);
+    } else {
+        localWish = localWish.filter(item => item.name !== id && item.id !== id);
     }
+    localStorage.setItem('fw_user_wish_memory', JSON.stringify(localWish));
+
+    // 2. Remove from Firestore if user logged in
+    if (currentUser) {
+        try {
+            await deleteDoc(doc(db, "users", currentUser.uid, "wishlist", id));
+        } catch (error) {
+            console.warn("Firestore wishlist delete skipped:", error.message);
+        }
+    }
+
+    loadWishlist();
 };

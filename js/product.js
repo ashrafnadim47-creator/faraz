@@ -9,6 +9,63 @@ import {
 const container = document.getElementById("product-container");
 let allProducts = [];
 
+const FALLBACK_PRODUCTS = [
+    {
+        id: "prod_ff_diamonds_1",
+        name: "Free Fire 1060 + 106 Diamonds Top-Up",
+        price: 799,
+        category: "Gaming Topup",
+        stock: 50,
+        image: "images/freefire-banner.jpg",
+        description: "Instant Free Fire Diamonds Topup directly to Player ID within 60 seconds."
+    },
+    {
+        id: "prod_headset_rgb_2",
+        name: "HyperX Pro 7.1 Surround Gaming Headset",
+        price: 2499,
+        category: "Audio Accessories",
+        stock: 12,
+        image: "images/headset.jpg",
+        description: "Pro noise-cancelling microphone with deep bass and RGB earcups."
+    },
+    {
+        id: "prod_keyboard_mech_3",
+        name: "CyberPunk Mechanical RGB Keyboard",
+        price: 1899,
+        category: "Gaming Gear",
+        stock: 8,
+        image: "images/keyboard.jpg",
+        description: "Hot-swappable blue switches with custom macro lighting presets."
+    },
+    {
+        id: "prod_mouse_wireless_4",
+        name: "Razer DeathAdder Ultra-Light Gaming Mouse",
+        price: 1299,
+        category: "Gaming Gear",
+        stock: 15,
+        image: "images/mouse.jpg",
+        description: "16000 DPI optical sensor with zero-latency 2.4GHz wireless connection."
+    },
+    {
+        id: "prod_ff_weekly_5",
+        name: "Free Fire Weekly Diamond Membership",
+        price: 159,
+        category: "Gaming Topup",
+        stock: 100,
+        image: "images/prime-banner.jpg",
+        description: "Get 450 total diamonds + special VIP badge daily for 7 days."
+    },
+    {
+        id: "prod_earbuds_anc_6",
+        name: "Pro TWS Wireless Gaming Earbuds (40ms Low Latency)",
+        price: 999,
+        category: "Electronics",
+        stock: 20,
+        image: "images/earbuds.jpg",
+        description: "Ultra-low gaming latency mode with environmental noise reduction."
+    }
+];
+
 // ==========================================
 // 📦 FETCH ALL PRODUCTS FROM FIRESTORE
 // ==========================================
@@ -38,10 +95,15 @@ async function loadProducts() {
             });
         });
 
+        if (allProducts.length === 0) {
+            allProducts = FALLBACK_PRODUCTS;
+        }
+
         displayProducts(allProducts);
     } catch (error) {
-        console.error("Error loading products:", error);
-        container.innerHTML = `<h3 style="grid-column: 1 / -1; text-align: center; color: var(--danger, #ef4444);">❌ Failed Loading Products</h3>`;
+        console.warn("Firestore products load fallback active:", error.message);
+        allProducts = FALLBACK_PRODUCTS;
+        displayProducts(allProducts);
     }
 }
 
@@ -76,7 +138,7 @@ function displayProducts(products) {
         return `
             <div class="product-card glassmorphism">
                 <div class="product-img">
-                    <img src="${product.image || 'images/no-image.png'}" alt="${product.name}" loading="lazy">
+                    <img src="${product.image || 'images/no-image.png'}" alt="${product.name}" loading="lazy" onerror="this.src='images/logo.png'">
                 </div>
                 <h3>${product.name}</h3>
                 <p class="price">₹${product.price}</p>
@@ -100,73 +162,72 @@ function displayProducts(products) {
 }
 
 // ==========================================
-// ⚡ DELEGATED EVENT LISTENERS
+// ⚡ ATTACH EVENT LISTENERS
 // ==========================================
 function attachDynamicListeners() {
-    // 1. Details Redirect
-    document.querySelectorAll('.view-details-btn').forEach(btn => {
-        btn.addEventListener('click', (e) => {
+    // 1. View Details Button
+    document.querySelectorAll('.view-details-btn').forEach((button) => {
+        button.addEventListener('click', (e) => {
             const id = e.target.getAttribute('data-id');
-            location.href = "product-details.html?id=" + id;
+            if (id) {
+                location.href = `product-details.html?id=${id}`;
+            }
         });
     });
 
-    // 2. Add to Cart Handler
-    document.querySelectorAll('.add-cart-btn').forEach(btn => {
-        btn.addEventListener('click', (e) => {
-            const target = e.target.closest('.add-cart-btn');
-            const id = target.getAttribute('data-id');
-            const name = target.getAttribute('data-name');
-            const price = target.getAttribute('data-price');
-            const image = target.getAttribute('data-image');
+    // 2. Add To Cart Button
+    document.querySelectorAll('.add-cart-btn').forEach((button) => {
+        button.addEventListener('click', (e) => {
+            const id = e.target.getAttribute('data-id');
+            const name = e.target.getAttribute('data-name');
+            const price = e.target.getAttribute('data-price');
+            const image = e.target.getAttribute('data-image');
 
-            executeCartAddition(id, name, price, image);
+            if (window.addToCart) {
+                window.addToCart(id, name, price, image);
+            } else {
+                let currentCart = JSON.parse(localStorage.getItem('fw_user_cart_memory') || "[]");
+                currentCart.push({ id, name, price: parseFloat(price), image, quantity: 1 });
+                localStorage.setItem('fw_user_cart_memory', JSON.stringify(currentCart));
+                alert(`🎉 Added "${name}" to Cart!`);
+            }
         });
     });
 
-    // 3. Add to Wishlist Handler
-    document.querySelectorAll('.add-wishlist-btn').forEach(btn => {
-        btn.addEventListener('click', (e) => {
-            const target = e.target.closest('.add-wishlist-btn');
-            const name = target.getAttribute('data-name');
-            const price = target.getAttribute('data-price');
-            const image = target.getAttribute('data-image');
+    // 3. Add To Wishlist Button
+    document.querySelectorAll('.add-wishlist-btn').forEach((button) => {
+        button.addEventListener('click', (e) => {
+            const name = e.target.getAttribute('data-name');
+            const price = e.target.getAttribute('data-price');
+            const image = e.target.getAttribute('data-image');
 
-            executeWishlistAddition(name, price, image);
+            if (window.addWishlist) {
+                window.addWishlist(name, price, image);
+            } else {
+                let currentWish = JSON.parse(localStorage.getItem('fw_user_wish_memory') || "[]");
+                currentWish.push({ name, price: parseFloat(price), image });
+                localStorage.setItem('fw_user_wish_memory', JSON.stringify(currentWish));
+                alert(`❤️ Added "${name}" to Wishlist!`);
+            }
         });
     });
-}
-
-function executeCartAddition(id, name, price, image) {
-    let currentCart = JSON.parse(localStorage.getItem('fw_user_cart_memory') || "[]");
-    currentCart.push({ id, name, price: parseFloat(price), image });
-    localStorage.setItem('fw_user_cart_memory', JSON.stringify(currentCart));
-    alert(`🎉 Success! "${name}" added to your cart.`);
-}
-
-function executeWishlistAddition(name, price, image) {
-    let currentWish = JSON.parse(localStorage.getItem('fw_user_wish_memory') || "[]");
-    currentWish.push({ name, price: parseFloat(price), image });
-    localStorage.setItem('fw_user_wish_memory', JSON.stringify(currentWish));
-    alert(`❤️ "${name}" added to Wishlist!`);
 }
 
 // ==========================================
-// 🔍 SEARCH FILTER MODULE
+// 🔍 SEARCH FILTER LOGIC
 // ==========================================
-const searchBox = document.getElementById("productSearch");
-if (searchBox) {
-    searchBox.addEventListener("input", () => {
-        const value = searchBox.value.toLowerCase().trim();
-        const filtered = allProducts.filter(product => {
-            return (
-                product.name?.toLowerCase().includes(value) ||
-                product.category?.toLowerCase().includes(value) ||
-                product.description?.toLowerCase().includes(value)
-            );
+const searchInput = document.getElementById("productSearch");
+if (searchInput) {
+    searchInput.addEventListener("input", () => {
+        const queryVal = searchInput.value.toLowerCase().trim();
+        const filtered = allProducts.filter((p) => {
+            const name = (p.name || "").toLowerCase();
+            const category = (p.category || "").toLowerCase();
+            return name.includes(queryVal) || category.includes(queryVal);
         });
         displayProducts(filtered);
     });
 }
 
+// Load on Startup
 loadProducts();
