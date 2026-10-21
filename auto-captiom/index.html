@@ -1,208 +1,415 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>FORGE Caption Studio - Auto Video Captions</title>
-  <link rel="icon" href="../favicon.ico" type="image/x-icon">
-  <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>Faraz Auto Captions</title>
+
+  <link rel="stylesheet" href="./style.css" />
+
+  <!-- FFmpeg -->
+  <script src="https://unpkg.com/@ffmpeg/ffmpeg@0.12.10/dist/umd/ffmpeg.js"></script>
+
+  <!-- Transformers.js -->
+  <script type="module" src="./app.js"></script>
 </head>
 
 <body>
 
-  <!-- TOP BAR -->
-  <header class="topbar">
-    <a href="../index.html" class="brand">
-      <span class="brand-badge">⚡ FORGE</span>
-      <span class="brand-title">Caption Studio</span>
-    </a>
+<div class="app">
 
-    <div class="top-actions">
-      <a href="../forge/index.html" class="nav-link" style="color: #00f2fe; font-weight: 800;">🎬 Full Video Editor (CapCut)</a>
-      <a href="../downloads/FORGE-Video-Editor-Setup.exe" download="FORGE-Video-Editor-Setup.exe" class="nav-link" style="color: #4ade80;">⬇️ Download PC App</a>
-      <a href="../updates/index.html" class="nav-link">📦 Updates</a>
-      <a href="../index.html" class="nav-link">🏠 Store</a>
+  <header class="topbar">
+    <div class="brand">
+      <span class="brand-icon">✦</span>
+      <span>Faraz Auto Captions</span>
     </div>
   </header>
 
-  <main class="app-container">
 
-    <div class="header-banner">
-      <h1>Auto Video Captions</h1>
-      <p>Generate viral captions, stylish animations & export subtitles in seconds</p>
-    </div>
+  <main class="workspace">
 
-    <!-- UPLOAD ZONE -->
-    <section id="uploadSection" class="upload-box">
-      <input
-        id="videoInput"
-        type="file"
-        accept="video/*"
-        hidden
+    <!-- LEFT PANEL -->
+
+    <aside class="left-panel">
+
+      <div class="panel-title">VIDEO</div>
+
+      <label class="upload-box" id="uploadBox">
+
+        <input
+          type="file"
+          id="videoInput"
+          accept="video/*"
+          hidden
+        />
+
+        <div class="upload-icon">＋</div>
+
+        <div class="upload-title">
+          Upload Video
+        </div>
+
+        <div class="upload-subtitle">
+          MP4, MOV, WEBM
+        </div>
+
+      </label>
+
+
+      <button
+        id="generateBtn"
+        class="generate-btn"
+        disabled
       >
-      <div class="upload-icon">🎬</div>
-      <div class="upload-title">Drop your video here or browse</div>
-      <div class="upload-sub">Supports MP4, WebM, MOV (Vertical 9:16 or 16:9)</div>
-
-      <button id="chooseBtn" class="primary-btn">
-        📁 Select Video File
+        ✨ Generate Auto Captions
       </button>
 
-      <div id="fileName" class="file-status">No video loaded</div>
-    </section>
 
-    <!-- WORKSPACE (APPEARS WHEN VIDEO SELECTED) -->
-    <div id="workspace" class="workspace-grid hidden">
+      <button
+        id="stopBtn"
+        class="stop-btn"
+        disabled
+      >
+        Stop
+      </button>
 
-      <!-- LEFT: VIDEO PREVIEW & GENERATE -->
-      <section class="video-stage">
-        
-        <div class="video-wrapper">
-          <video
-            id="video"
-            controls
-            playsinline
-          ></video>
 
-          <!-- LIVE ANIMATED CAPTION OVERLAY -->
-          <div id="captionOverlay" class="caption-overlay classic">
-            <div id="captionBubble" class="caption-bubble">
-              <span id="activeCaptionText"></span>
-            </div>
-          </div>
+      <div class="progress-area">
+
+        <div class="progress-text" id="status">
+          Upload a video to start.
         </div>
 
-        <div class="generator-card">
-          <div class="action-row">
-            <button id="captionBtn" class="gen-btn">
-              <span>✨</span> Generate Smart Captions
-            </button>
-            <button id="toggleScriptBtn" class="script-btn" title="Paste your own script">
-              📝 Script
-            </button>
-          </div>
-
-          <!-- SCRIPT DRAWER -->
-          <div id="scriptDrawer" class="script-drawer hidden">
-            <label style="font-size: 12px; font-weight: 700; color: #94a3b8;">
-              Paste Custom Script / Lyrics (auto-timed to video):
-            </label>
-            <textarea id="scriptInput" placeholder="Type or paste sentences here... Every line or sentence will become an animated caption on the video."></textarea>
-            <button id="applyScriptBtn" class="primary-btn" style="margin-top: 8px; width: 100%; padding: 8px 14px; font-size: 13px;">
-              ⚡ Sync Script as Captions
-            </button>
-          </div>
-
-          <div id="status" class="status-indicator">Ready to generate.</div>
-
-          <div class="progress-track">
-            <div id="progressBar" class="progress-fill"></div>
-          </div>
+        <div class="progress">
+          <div
+            id="progressBar"
+            class="progress-bar"
+          ></div>
         </div>
-
-      </section>
-
-      <!-- RIGHT: STYLES & TIMELINE -->
-      <div class="studio-panel">
-
-        <!-- STYLES SELECTOR -->
-        <section class="panel-card">
-          <div class="panel-title">
-            <span>🎨 Caption Animations</span>
-            <small style="color: #64748b; font-weight: 500;">Live Preview</small>
-          </div>
-
-          <div class="styles-grid">
-            <div class="style-card active" data-style="classic">
-              <div class="style-preview-sample" style="color: #fff; text-shadow: 1px 1px 0 #000;">CLASSIC</div>
-              <div class="style-name">Classic</div>
-            </div>
-
-            <div class="style-card" data-style="yellow">
-              <div class="style-preview-sample" style="color: #ffea00; font-weight: 900;">VIRAL</div>
-              <div class="style-name">Highlight</div>
-            </div>
-
-            <div class="style-card" data-style="neon">
-              <div class="style-preview-sample" style="color: #00f2fe; text-shadow: 0 0 8px #00f2fe;">NEON</div>
-              <div class="style-name">Cyberpunk</div>
-            </div>
-
-            <div class="style-card" data-style="pop">
-              <div class="style-preview-sample" style="color: #00f2fe; text-shadow: 2px 2px 0 #ff007f;">POP 3D</div>
-              <div class="style-name">Pop 3D</div>
-            </div>
-
-            <div class="style-card" data-style="box">
-              <div class="style-preview-sample" style="background: #fff; color: #000; border-radius: 4px; padding: 1px 4px; font-size: 11px;">BOXED</div>
-              <div class="style-name">Box</div>
-            </div>
-
-            <div class="style-card" data-style="karaoke">
-              <div class="style-preview-sample" style="color: #00f2fe;">SING!</div>
-              <div class="style-name">Karaoke</div>
-            </div>
-
-            <div class="style-card" data-style="big">
-              <div class="style-preview-sample" style="color: #ffdf00; font-size: 15px; font-weight: 900;">BOLD</div>
-              <div class="style-name">Impact</div>
-            </div>
-
-            <div class="style-card" data-style="clean">
-              <div class="style-preview-sample" style="background: rgba(0,0,0,0.6); padding: 1px 6px; border-radius: 10px; font-size: 11px;">Clean</div>
-              <div class="style-name">Minimal</div>
-            </div>
-          </div>
-        </section>
-
-        <!-- TIMELINE LIST -->
-        <section class="panel-card">
-          <div class="timeline-header">
-            <div class="panel-title" style="margin-bottom: 0;">
-              <span>⏱️ Captions Timeline</span>
-            </div>
-            <div style="display: flex; gap: 8px; align-items: center;">
-              <span id="captionCount" class="timeline-count">0 lines</span>
-              <button id="addCaptionBtn" class="item-btn" style="color: #00f2fe; font-size: 13px; font-weight: 700;" title="Add new caption line">
-                ➕ Add Line
-              </button>
-            </div>
-          </div>
-
-          <div id="captionsList" class="timeline-list">
-            <div style="text-align: center; color: #64748b; padding: 30px; font-size: 13px;">
-              Click "Generate Smart Captions" or use "Script" to add lines.
-            </div>
-          </div>
-        </section>
-
-        <!-- EXPORT CARD -->
-        <section class="export-card">
-          <div>
-            <div style="font-weight: 800; font-size: 14px; color: #fff;">💾 Export Subtitles</div>
-            <div style="font-size: 12px; color: #94a3b8;">Compatible with YouTube, Premiere, DaVinci & CapCut</div>
-          </div>
-
-          <div class="export-btns">
-            <button id="exportSrtBtn" class="secondary-btn">
-              📄 Download .SRT
-            </button>
-            <button id="exportVttBtn" class="secondary-btn">
-              📜 Download .VTT
-            </button>
-            <button id="copyCaptionsBtn" class="secondary-btn">
-              📋 Copy Text
-            </button>
-          </div>
-        </section>
 
       </div>
 
-    </div>
+
+      <div class="settings">
+
+        <div class="panel-title">
+          LANGUAGE
+        </div>
+
+        <select id="language">
+
+          <option value="auto">
+            Hindi / English
+          </option>
+
+          <option value="hi">
+            Hindi
+          </option>
+
+          <option value="en">
+            English
+          </option>
+
+        </select>
+
+      </div>
+
+    </aside>
+
+
+    <!-- CENTER -->
+
+    <section class="center">
+
+      <div class="preview-wrapper">
+
+        <div
+          class="video-container"
+          id="videoContainer"
+        >
+
+          <video
+            id="video"
+            playsinline
+            controls
+          ></video>
+
+          <div
+            id="captionOverlay"
+            class="caption-overlay style-bold"
+          ></div>
+
+        </div>
+
+      </div>
+
+
+      <div class="timeline">
+
+        <div class="timeline-head">
+
+          <span>CAPTIONS</span>
+
+          <span id="captionCount">
+            0 words
+          </span>
+
+        </div>
+
+        <div
+          id="captionTimeline"
+          class="caption-timeline"
+        >
+
+          <div class="empty-timeline">
+            Generate captions to see them here.
+          </div>
+
+        </div>
+
+      </div>
+
+    </section>
+
+
+    <!-- RIGHT PANEL -->
+
+    <aside class="right-panel">
+
+      <div class="panel-title">
+        CAPTION STYLES
+      </div>
+
+      <div class="styles-grid">
+
+
+        <button
+          class="style-card active"
+          data-style="style-bold"
+        >
+          <span class="demo demo-bold">
+            THIS IS AMAZING
+          </span>
+          <small>Bold</small>
+        </button>
+
+
+        <button
+          class="style-card"
+          data-style="style-karaoke"
+        >
+          <span class="demo demo-karaoke">
+            THIS IS AMAZING
+          </span>
+          <small>Karaoke</small>
+        </button>
+
+
+        <button
+          class="style-card"
+          data-style="style-yellow"
+        >
+          <span class="demo demo-yellow">
+            THIS IS AMAZING
+          </span>
+          <small>Yellow Pop</small>
+        </button>
+
+
+        <button
+          class="style-card"
+          data-style="style-neon"
+        >
+          <span class="demo demo-neon">
+            THIS IS AMAZING
+          </span>
+          <small>Neon</small>
+        </button>
+
+
+        <button
+          class="style-card"
+          data-style="style-box"
+        >
+          <span class="demo demo-box">
+            THIS IS AMAZING
+          </span>
+          <small>Black Box</small>
+        </button>
+
+
+        <button
+          class="style-card"
+          data-style="style-whitebox"
+        >
+          <span class="demo demo-whitebox">
+            THIS IS AMAZING
+          </span>
+          <small>White Box</small>
+        </button>
+
+
+        <button
+          class="style-card"
+          data-style="style-red"
+        >
+          <span class="demo demo-red">
+            THIS IS AMAZING
+          </span>
+          <small>Red Viral</small>
+        </button>
+
+
+        <button
+          class="style-card"
+          data-style="style-green"
+        >
+          <span class="demo demo-green">
+            THIS IS AMAZING
+          </span>
+          <small>Green</small>
+        </button>
+
+
+        <button
+          class="style-card"
+          data-style="style-blue"
+        >
+          <span class="demo demo-blue">
+            THIS IS AMAZING
+          </span>
+          <small>Blue Glow</small>
+        </button>
+
+
+        <button
+          class="style-card"
+          data-style="style-gradient"
+        >
+          <span class="demo demo-gradient">
+            THIS IS AMAZING
+          </span>
+          <small>Gradient</small>
+        </button>
+
+
+        <button
+          class="style-card"
+          data-style="style-punch"
+        >
+          <span class="demo demo-punch">
+            AMAZING!
+          </span>
+          <small>Punch</small>
+        </button>
+
+
+        <button
+          class="style-card"
+          data-style="style-comic"
+        >
+          <span class="demo demo-comic">
+            WOW!
+          </span>
+          <small>Comic</small>
+        </button>
+
+
+        <button
+          class="style-card"
+          data-style="style-minimal"
+        >
+          <span class="demo demo-minimal">
+            this is amazing
+          </span>
+          <small>Minimal</small>
+        </button>
+
+
+        <button
+          class="style-card"
+          data-style="style-creator"
+        >
+          <span class="demo demo-creator">
+            THIS IS AMAZING
+          </span>
+          <small>Creator</small>
+        </button>
+
+
+        <button
+          class="style-card"
+          data-style="style-wordpop"
+        >
+          <span class="demo demo-wordpop">
+            AMAZING
+          </span>
+          <small>Word Pop</small>
+        </button>
+
+
+        <button
+          class="style-card"
+          data-style="style-huge"
+        >
+          <span class="demo demo-huge">
+            BIG!
+          </span>
+          <small>Huge</small>
+        </button>
+
+
+        <button
+          class="style-card"
+          data-style="style-premium"
+        >
+          <span class="demo demo-premium">
+            AMAZING
+          </span>
+          <small>Premium</small>
+        </button>
+
+
+        <button
+          class="style-card"
+          data-style="style-mixed"
+        >
+          <span class="demo demo-mixed">
+            THIS IS AMAZING
+          </span>
+          <small>Mixed</small>
+        </button>
+
+
+        <button
+          class="style-card"
+          data-style="style-orange"
+        >
+          <span class="demo demo-orange">
+            LET'S GO!
+          </span>
+          <small>Orange</small>
+        </button>
+
+
+        <button
+          class="style-card"
+          data-style="style-purple"
+        >
+          <span class="demo demo-purple">
+            AMAZING
+          </span>
+          <small>Purple</small>
+        </button>
+
+      </div>
+
+    </aside>
 
   </main>
 
-  <script src="app.js"></script>
+</div>
 
 </body>
 </html>

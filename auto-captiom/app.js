@@ -1,442 +1,780 @@
-// FORGE Auto Caption Studio Engine
+import {
+  pipeline,
+  env
+} from "https://cdn.jsdelivr.net/npm/@huggingface/transformers@3.7.2/+esm";
 
-const videoInput = document.getElementById("videoInput");
-const chooseBtn = document.getElementById("chooseBtn");
-const uploadSection = document.getElementById("uploadSection");
-const fileName = document.getElementById("fileName");
-const workspace = document.getElementById("workspace");
 
-const video = document.getElementById("video");
-const captionOverlay = document.getElementById("captionOverlay");
-const activeCaptionText = document.getElementById("activeCaptionText");
+/* =========================================
+   SETTINGS
+========================================= */
 
-const captionBtn = document.getElementById("captionBtn");
-const toggleScriptBtn = document.getElementById("toggleScriptBtn");
-const scriptDrawer = document.getElementById("scriptDrawer");
-const scriptInput = document.getElementById("scriptInput");
-const applyScriptBtn = document.getElementById("applyScriptBtn");
+env.allowLocalModels = false;
 
-const status = document.getElementById("status");
-const progressBar = document.getElementById("progressBar");
+env.useBrowserCache = true;
 
-const styleCards = document.querySelectorAll(".style-card");
-const captionsList = document.getElementById("captionsList");
-const captionCount = document.getElementById("captionCount");
-const addCaptionBtn = document.getElementById("addCaptionBtn");
 
-const exportSrtBtn = document.getElementById("exportSrtBtn");
-const exportVttBtn = document.getElementById("exportVttBtn");
-const copyCaptionsBtn = document.getElementById("copyCaptionsBtn");
+/* =========================================
+   ELEMENTS
+========================================= */
 
-let selectedVideo = null;
-let selectedStyle = "classic";
+const videoInput =
+  document.getElementById("videoInput");
+
+const uploadBox =
+  document.getElementById("uploadBox");
+
+const generateBtn =
+  document.getElementById("generateBtn");
+
+const stopBtn =
+  document.getElementById("stopBtn");
+
+const video =
+  document.getElementById("video");
+
+const captionOverlay =
+  document.getElementById("captionOverlay");
+
+const captionTimeline =
+  document.getElementById("captionTimeline");
+
+const captionCount =
+  document.getElementById("captionCount");
+
+const statusBox =
+  document.getElementById("status");
+
+const progressBar =
+  document.getElementById("progressBar");
+
+const language =
+  document.getElementById("language");
+
+
+/* =========================================
+   VARIABLES
+========================================= */
+
+let videoURL = null;
+
+let transcriber = null;
+
 let captions = [];
-let activeIndex = -1;
 
-// --- UPLOAD & DRAG DROP ---
-chooseBtn.addEventListener("click", () => videoInput.click());
-uploadSection.addEventListener("click", (e) => {
-  if (e.target !== chooseBtn && !e.target.closest("#chooseBtn")) {
-    videoInput.click();
-  }
-});
+let currentStyle = "style-bold";
 
-uploadSection.addEventListener("dragover", (e) => {
-  e.preventDefault();
-  uploadSection.classList.add("dragover");
-});
+let stopped = false;
 
-uploadSection.addEventListener("dragleave", () => {
-  uploadSection.classList.remove("dragover");
-});
 
-uploadSection.addEventListener("drop", (e) => {
-  e.preventDefault();
-  uploadSection.classList.remove("dragover");
-  if (e.dataTransfer.files?.length > 0) {
-    handleVideoFile(e.dataTransfer.files[0]);
-  }
-});
+/* =========================================
+   UPLOAD
+========================================= */
 
-videoInput.addEventListener("change", () => {
-  const file = videoInput.files?.[0];
-  if (file) handleVideoFile(file);
-});
+uploadBox.addEventListener(
+  "click",
+  () => videoInput.click()
+);
 
-function handleVideoFile(file) {
-  if (!file.type.startsWith("video/")) {
-    alert("Please select a valid video file.");
-    return;
-  }
 
-  selectedVideo = file;
-  fileName.textContent = `Loaded: ${file.name} (${(file.size / (1024 * 1024)).toFixed(1)} MB)`;
-  
-  if (video.src) URL.revokeObjectURL(video.src);
-  video.src = URL.createObjectURL(file);
+videoInput.addEventListener(
+  "change",
+  () => {
 
-  workspace.classList.remove("hidden");
-  uploadSection.style.padding = "20px";
-  
-  status.textContent = "Video loaded. Ready to generate captions.";
-  progressBar.style.width = "0%";
+    const file =
+      videoInput.files[0];
 
-  video.addEventListener("loadedmetadata", () => {
-    // If no captions yet, create quick demo lines matching video duration
-    if (captions.length === 0) {
-      const dur = Math.max(video.duration || 10, 6);
-      captions = [
-        { start: 0.5, end: Math.min(dur * 0.35, 3.5), text: "Welcome to FORGE Video Studio" },
-        { start: Math.min(dur * 0.38, 3.8), end: Math.min(dur * 0.7, 7.0), text: "Automated Dynamic Subtitles" },
-        { start: Math.min(dur * 0.72, 7.2), end: Math.min(dur * 0.95, 9.8), text: "Export ready for Reels & Shorts" }
-      ];
-      renderTimeline();
+    if (!file) return;
+
+
+    if (videoURL) {
+      URL.revokeObjectURL(videoURL);
     }
-  }, { once: true });
-}
 
-// --- STYLES SELECTOR ---
-styleCards.forEach(card => {
-  card.addEventListener("click", () => {
-    styleCards.forEach(c => c.classList.remove("active"));
-    card.classList.add("active");
-    selectedStyle = card.dataset.style;
-    
-    // Update overlay classes
-    captionOverlay.className = `caption-overlay ${selectedStyle}`;
-    updateLiveOverlay();
-  });
-});
 
-// --- TOGGLE SCRIPT DRAWER ---
-toggleScriptBtn.addEventListener("click", () => {
-  scriptDrawer.classList.toggle("hidden");
-});
+    videoURL =
+      URL.createObjectURL(file);
 
-applyScriptBtn.addEventListener("click", () => {
-  const text = scriptInput.value.trim();
-  if (!text) {
-    alert("Please enter some text in the script box.");
-    return;
+
+    video.src = videoURL;
+
+    video.load();
+
+
+    generateBtn.disabled = false;
+
+    statusBox.textContent =
+      "✅ Video ready. Generate Auto Captions dabao.";
+
+    progressBar.style.width = "0%";
+
+
+    captions = [];
+
+    renderTimeline();
+
+    captionOverlay.innerHTML = "";
+
+  }
+);
+
+
+/* =========================================
+   LOAD WHISPER
+========================================= */
+
+async function loadWhisper() {
+
+  if (transcriber) {
+    return transcriber;
   }
 
-  const duration = video.duration || 10;
-  // Split script into sentences or chunks
-  const lines = text.split(/[\n.!?]+/).map(s => s.trim()).filter(s => s.length > 0);
-  
-  if (lines.length === 0) return;
 
-  const timePerLine = Math.max(1.2, duration / lines.length);
-  captions = lines.map((line, idx) => {
-    const start = parseFloat((idx * timePerLine).toFixed(2));
-    const end = parseFloat(Math.min(duration, start + timePerLine - 0.2).toFixed(2));
-    return { start, end, text: line };
-  });
+  statusBox.textContent =
+    "🤖 AI caption model loading...";
 
-  renderTimeline();
-  scriptDrawer.classList.add("hidden");
-  status.textContent = `Applied ${lines.length} captions from custom script!`;
-});
 
-// --- GENERATE SMART CAPTIONS ---
-captionBtn.addEventListener("click", async () => {
-  if (!selectedVideo) {
-    status.textContent = "Please select a video first.";
-    return;
-  }
-
-  captionBtn.disabled = true;
   progressBar.style.width = "10%";
-  status.textContent = "Analyzing audio tracks...";
 
-  try {
-    let audioDuration = video.duration || 10;
 
-    // Simulate audio processing progression
-    await new Promise(r => setTimeout(r, 400));
-    progressBar.style.width = "40%";
-    status.textContent = "Detecting voice cadences & speech intervals...";
+  transcriber =
+    await pipeline(
+      "automatic-speech-recognition",
+      "Xenova/whisper-tiny",
+      {
+        device:
+          "webgpu"
+      }
+    );
 
-    // Attempt Web Speech recognition or smart cadence segmentation
-    await new Promise(r => setTimeout(r, 600));
-    progressBar.style.width = "80%";
-    status.textContent = "Formatting high-impact subtitle timings...";
 
-    await new Promise(r => setTimeout(r, 400));
-    progressBar.style.width = "100%";
+  progressBar.style.width = "25%";
 
-    // If script input has text, prioritize it, otherwise produce viral hooks
-    if (scriptInput.value.trim()) {
-      applyScriptBtn.click();
-    } else {
-      const dur = audioDuration;
-      const step = Math.min(2.8, Math.max(1.4, dur / 6));
-      const samplePhrases = [
-        "Create viral video captions",
-        "Engage your audience instantly",
-        "Clean animations and effects",
-        "Styled for TikTok and Reels",
-        "High retention subtitles",
-        "Export anywhere with one click"
-      ];
 
-      captions = [];
-      let cur = 0.4;
-      let phraseIdx = 0;
-      while (cur < dur - 0.5 && phraseIdx < samplePhrases.length) {
-        const nextEnd = Math.min(dur, parseFloat((cur + step).toFixed(2)));
-        captions.push({
-          start: parseFloat(cur.toFixed(2)),
-          end: nextEnd,
-          text: samplePhrases[phraseIdx % samplePhrases.length]
+  return transcriber;
+}
+
+
+/* =========================================
+   EXTRACT AUDIO
+========================================= */
+
+async function extractAudio(file) {
+
+  statusBox.textContent =
+    "🎧 Reading video audio...";
+
+
+  const ffmpeg =
+    new FFmpegWASM.FFmpeg();
+
+
+  await ffmpeg.load({
+    coreURL:
+      "https://unpkg.com/@ffmpeg/core@0.12.6/dist/umd/ffmpeg-core.js"
+  });
+
+
+  const data =
+    new Uint8Array(
+      await file.arrayBuffer()
+    );
+
+
+  await ffmpeg.writeFile(
+    "input.mp4",
+    data
+  );
+
+
+  await ffmpeg.exec([
+    "-i",
+    "input.mp4",
+    "-vn",
+    "-ac",
+    "1",
+    "-ar",
+    "16000",
+    "-f",
+    "wav",
+    "audio.wav"
+  ]);
+
+
+  const audioData =
+    await ffmpeg.readFile(
+      "audio.wav"
+    );
+
+
+  return audioData;
+}
+
+
+/* =========================================
+   WAV → FLOAT32
+========================================= */
+
+function wavToFloat32(buffer) {
+
+  const view =
+    new DataView(
+      buffer.buffer,
+      buffer.byteOffset,
+      buffer.byteLength
+    );
+
+
+  const channels =
+    view.getUint16(22, true);
+
+  const sampleRate =
+    view.getUint32(24, true);
+
+  const bits =
+    view.getUint16(34, true);
+
+
+  if (
+    channels !== 1 ||
+    sampleRate !== 16000 ||
+    bits !== 16
+  ) {
+
+    throw new Error(
+      "Unexpected WAV format."
+    );
+
+  }
+
+
+  const dataOffset = 44;
+
+  const samples =
+    (buffer.length - dataOffset) / 2;
+
+
+  const output =
+    new Float32Array(samples);
+
+
+  for (
+    let i = 0;
+    i < samples;
+    i++
+  ) {
+
+    const value =
+      view.getInt16(
+        dataOffset + i * 2,
+        true
+      );
+
+
+    output[i] =
+      value / 32768;
+
+  }
+
+
+  return output;
+}
+
+
+/* =========================================
+   GENERATE CAPTIONS
+========================================= */
+
+generateBtn.addEventListener(
+  "click",
+  async () => {
+
+    const file =
+      videoInput.files[0];
+
+    if (!file) {
+
+      statusBox.textContent =
+        "⚠️ Upload a video first.";
+
+      return;
+    }
+
+
+    stopped = false;
+
+    generateBtn.disabled = true;
+
+    stopBtn.disabled = false;
+
+
+    try {
+
+      const model =
+        await loadWhisper();
+
+
+      if (stopped) return;
+
+
+      const audioFile =
+        await extractAudio(file);
+
+
+      if (stopped) return;
+
+
+      statusBox.textContent =
+        "🧠 AI is transcribing...";
+
+
+      progressBar.style.width = "40%";
+
+
+      const audio =
+        wavToFloat32(audioFile);
+
+
+      let languageOption =
+        language.value;
+
+
+      let options = {
+
+        return_timestamps:
+          "word",
+
+        chunk_length_s:
+          30,
+
+        stride_length_s:
+          5,
+
+        task:
+          "transcribe"
+
+      };
+
+
+      if (
+        languageOption !== "auto"
+      ) {
+
+        options.language =
+          languageOption;
+
+      }
+
+
+      const result =
+        await model(
+          audio,
+          options
+        );
+
+
+      if (stopped) return;
+
+
+      progressBar.style.width =
+        "90%";
+
+
+      captions =
+        normalizeCaptions(
+          result
+        );
+
+
+      renderTimeline();
+
+      renderCaption();
+
+
+      statusBox.textContent =
+        `✅ ${captions.length} words generated.`;
+
+
+      progressBar.style.width =
+        "100%";
+
+
+      video.currentTime = 0;
+
+    }
+
+    catch(error) {
+
+      console.error(error);
+
+      statusBox.textContent =
+        "❌ Caption generation failed. Browser console check karo.";
+
+      progressBar.style.width =
+        "0%";
+
+    }
+
+    finally {
+
+      generateBtn.disabled =
+        false;
+
+      stopBtn.disabled =
+        true;
+
+    }
+
+  }
+);
+
+
+/* =========================================
+   NORMALIZE WHISPER RESULT
+========================================= */
+
+function normalizeCaptions(result) {
+
+  const chunks =
+    result?.chunks || [];
+
+  const output = [];
+
+
+  for (
+    const chunk of chunks
+  ) {
+
+    const text =
+      (chunk.text || "").trim();
+
+
+    const timestamp =
+      chunk.timestamp;
+
+
+    if (
+      !text ||
+      !timestamp
+    ) {
+      continue;
+    }
+
+
+    const start =
+      Number(timestamp[0] ?? 0);
+
+
+    const end =
+      Number(
+        timestamp[1] ??
+        start + .5
+      );
+
+
+    const words =
+      text.split(/\s+/);
+
+
+    const duration =
+      Math.max(
+        .15,
+        (end - start) /
+        words.length
+      );
+
+
+    words.forEach(
+      (word,index) => {
+
+        output.push({
+
+          word,
+
+          start:
+            start +
+            index * duration,
+
+          end:
+            start +
+            (index + 1) *
+            duration
+
         });
-        cur = nextEnd + 0.2;
-        phraseIdx++;
+
       }
+    );
 
-      renderTimeline();
-      status.textContent = `✨ Successfully generated ${captions.length} captions!`;
-    }
-
-  } catch (err) {
-    console.error(err);
-    status.textContent = "Caption generation failed. Check console.";
-  } finally {
-    captionBtn.disabled = false;
-  }
-});
-
-// --- LIVE VIDEO SYNC & ANIMATION ---
-video.addEventListener("timeupdate", () => {
-  updateLiveOverlay();
-});
-
-function updateLiveOverlay() {
-  const curTime = video.currentTime;
-  let activeCaption = null;
-  let newActiveIndex = -1;
-
-  for (let i = 0; i < captions.length; i++) {
-    if (curTime >= captions[i].start && curTime <= captions[i].end) {
-      activeCaption = captions[i];
-      newActiveIndex = i;
-      break;
-    }
   }
 
-  if (activeCaption) {
-    captionOverlay.style.opacity = "1";
 
-    if (selectedStyle === "yellow") {
-      // Highlight middle or active word
-      const words = activeCaption.text.split(" ");
-      const progress = (curTime - activeCaption.start) / Math.max(0.1, (activeCaption.end - activeCaption.start));
-      const targetWordIdx = Math.min(words.length - 1, Math.floor(progress * words.length));
-      
-      const formatted = words.map((w, i) => 
-        i === targetWordIdx ? `<span class="highlight">${escapeHTML(w)}</span>` : escapeHTML(w)
-      ).join(" ");
-      activeCaptionText.innerHTML = formatted;
-
-    } else if (selectedStyle === "karaoke") {
-      // Karaoke glow
-      const words = activeCaption.text.split(" ");
-      const progress = (curTime - activeCaption.start) / Math.max(0.1, (activeCaption.end - activeCaption.start));
-      const activeWordCount = Math.ceil(progress * words.length);
-
-      const formatted = words.map((w, i) => 
-        i < activeWordCount ? `<span class="active-word">${escapeHTML(w)}</span>` : escapeHTML(w)
-      ).join(" ");
-      activeCaptionText.innerHTML = formatted;
-
-    } else {
-      activeCaptionText.textContent = activeCaption.text;
-    }
-
-  } else {
-    captionOverlay.style.opacity = "0";
-  }
-
-  // Update timeline item active highlight
-  if (newActiveIndex !== activeIndex) {
-    activeIndex = newActiveIndex;
-    document.querySelectorAll(".caption-item").forEach((el, idx) => {
-      if (idx === activeIndex) {
-        el.classList.add("current-playing");
-        el.scrollIntoView({ behavior: "smooth", block: "nearest" });
-      } else {
-        el.classList.remove("current-playing");
-      }
-    });
-  }
+  return output;
 }
 
-// --- RENDER TIMELINE LIST ---
+
+/* =========================================
+   TIMELINE
+========================================= */
+
 function renderTimeline() {
-  captionsList.innerHTML = "";
-  captionCount.textContent = `${captions.length} lines`;
 
-  if (captions.length === 0) {
-    captionsList.innerHTML = `<div style="text-align: center; color: #64748b; padding: 30px; font-size: 13px;">No captions added yet.</div>`;
+  captionTimeline.innerHTML = "";
+
+
+  if (!captions.length) {
+
+    captionTimeline.innerHTML =
+      `<div class="empty-timeline">
+        Generate captions to see them here.
+      </div>`;
+
+    captionCount.textContent =
+      "0 words";
+
     return;
   }
 
-  captions.forEach((cap, index) => {
-    const item = document.createElement("div");
-    item.className = "caption-item";
-    if (index === activeIndex) item.classList.add("current-playing");
 
-    item.innerHTML = `
-      <div class="caption-item-top">
-        <div class="time-range">
-          <input type="number" step="0.1" min="0" class="time-input start-input" value="${cap.start}">
-          <span>→</span>
-          <input type="number" step="0.1" min="0" class="time-input end-input" value="${cap.end}">
-          <span style="font-size: 10px; color: #64748b;">sec</span>
-        </div>
-        <div class="caption-item-actions">
-          <button class="item-btn seek-btn" title="Seek to this line">▶</button>
-          <button class="item-btn delete-btn" title="Delete line">✕</button>
-        </div>
-      </div>
-      <input type="text" class="caption-text-input" value="${escapeHTML(cap.text)}">
-    `;
+  captionCount.textContent =
+    `${captions.length} words`;
 
-    // Events
-    const textInput = item.querySelector(".caption-text-input");
-    textInput.addEventListener("input", (e) => {
-      cap.text = e.target.value;
-      updateLiveOverlay();
-    });
 
-    const startInput = item.querySelector(".start-input");
-    startInput.addEventListener("change", (e) => {
-      cap.start = parseFloat(e.target.value) || 0;
-      updateLiveOverlay();
-    });
+  captions.forEach(
+    (item,index) => {
 
-    const endInput = item.querySelector(".end-input");
-    endInput.addEventListener("change", (e) => {
-      cap.end = parseFloat(e.target.value) || cap.start + 1;
-      updateLiveOverlay();
-    });
+      const div =
+        document.createElement("div");
 
-    item.querySelector(".seek-btn").addEventListener("click", (e) => {
-      e.stopPropagation();
-      video.currentTime = cap.start;
-      video.play();
-    });
 
-    item.querySelector(".delete-btn").addEventListener("click", (e) => {
-      e.stopPropagation();
-      captions.splice(index, 1);
-      renderTimeline();
-      updateLiveOverlay();
-    });
+      div.className =
+        "timeline-word";
 
-    // Clicking card seeks
-    item.addEventListener("click", (e) => {
-      if (!e.target.classList.contains("time-input") && !e.target.classList.contains("caption-text-input")) {
-        video.currentTime = cap.start;
+
+      div.dataset.index =
+        index;
+
+
+      div.textContent =
+        item.word;
+
+
+      captionTimeline.appendChild(
+        div
+      );
+
+    }
+  );
+
+}
+
+
+/* =========================================
+   LIVE CAPTION
+========================================= */
+
+function renderCaption() {
+
+  captionOverlay.innerHTML = "";
+
+  captionOverlay.className =
+    `caption-overlay ${currentStyle}`;
+
+
+  if (!captions.length) return;
+
+
+  /*
+    Show a small group of words
+    around current playback time.
+  */
+
+  const now =
+    video.currentTime;
+
+
+  let currentIndex = -1;
+
+
+  for (
+    let i = 0;
+    i < captions.length;
+    i++
+  ) {
+
+    if (
+      now >= captions[i].start &&
+      now <= captions[i].end
+    ) {
+
+      currentIndex = i;
+
+      break;
+
+    }
+
+  }
+
+
+  if (currentIndex === -1) {
+
+    return;
+
+  }
+
+
+  const start =
+    Math.max(
+      0,
+      currentIndex - 3
+    );
+
+
+  const end =
+    Math.min(
+      captions.length,
+      currentIndex + 4
+    );
+
+
+  for (
+    let i = start;
+    i < end;
+    i++
+  ) {
+
+    const span =
+      document.createElement("span");
+
+
+    span.className =
+      "caption-word";
+
+
+    if (
+      i === currentIndex
+    ) {
+
+      span.classList.add(
+        "current"
+      );
+
+    }
+
+
+    span.textContent =
+      captions[i].word;
+
+
+    captionOverlay.appendChild(
+      span
+    );
+
+  }
+
+
+  updateTimeline(
+    currentIndex
+  );
+
+}
+
+
+/* =========================================
+   TIMELINE ACTIVE WORD
+========================================= */
+
+function updateTimeline(index) {
+
+  document
+    .querySelectorAll(
+      ".timeline-word"
+    )
+    .forEach(
+      element => {
+
+        element.classList.toggle(
+          "active",
+          Number(
+            element.dataset.index
+          ) === index
+        );
+
       }
-    });
+    );
 
-    captionsList.appendChild(item);
-  });
 }
 
-// --- ADD NEW CAPTION LINE ---
-addCaptionBtn.addEventListener("click", () => {
-  const curTime = parseFloat(video.currentTime.toFixed(2));
-  const newCap = {
-    start: curTime,
-    end: parseFloat((curTime + 2.5).toFixed(2)),
-    text: "New subtitle line"
-  };
-  captions.push(newCap);
-  captions.sort((a, b) => a.start - b.start);
-  renderTimeline();
-});
 
-// --- EXPORT SUBTITLES ---
-exportSrtBtn.addEventListener("click", () => {
-  if (captions.length === 0) {
-    alert("No captions to export!");
-    return;
+/* =========================================
+   VIDEO TIME UPDATE
+========================================= */
+
+video.addEventListener(
+  "timeupdate",
+  renderCaption
+);
+
+
+/* =========================================
+   STOP
+========================================= */
+
+stopBtn.addEventListener(
+  "click",
+  () => {
+
+    stopped = true;
+
+    statusBox.textContent =
+      "⏹ Stopped.";
+
+    stopBtn.disabled =
+      true;
+
+    generateBtn.disabled =
+      false;
+
   }
-  let srt = "";
-  captions.forEach((cap, i) => {
-    srt += `${i + 1}\n`;
-    srt += `${formatSrtTime(cap.start)} --> ${formatSrtTime(cap.end)}\n`;
-    srt += `${cap.text}\n\n`;
-  });
-  downloadFile(srt, "captions.srt", "text/plain");
-});
+);
 
-exportVttBtn.addEventListener("click", () => {
-  if (captions.length === 0) {
-    alert("No captions to export!");
-    return;
-  }
-  let vtt = "WEBVTT\n\n";
-  captions.forEach((cap, i) => {
-    vtt += `${i + 1}\n`;
-    vtt += `${formatVttTime(cap.start)} --> ${formatVttTime(cap.end)}\n`;
-    vtt += `${cap.text}\n\n`;
-  });
-  downloadFile(vtt, "captions.vtt", "text/vtt");
-});
 
-copyCaptionsBtn.addEventListener("click", () => {
-  if (captions.length === 0) {
-    alert("No captions to copy!");
-    return;
-  }
-  const fullText = captions.map(c => `[${c.start.toFixed(1)}s - ${c.end.toFixed(1)}s] ${c.text}`).join("\n");
-  navigator.clipboard.writeText(fullText).then(() => {
-    const oldText = copyCaptionsBtn.textContent;
-    copyCaptionsBtn.textContent = "✅ Copied!";
-    setTimeout(() => copyCaptionsBtn.textContent = oldText, 1800);
-  });
-});
+/* =========================================
+   STYLE SWITCHER
+========================================= */
 
-function formatSrtTime(seconds) {
-  const date = new Date(0);
-  date.setUTCMilliseconds(seconds * 1000);
-  const hh = String(date.getUTCHours()).padStart(2, "0");
-  const mm = String(date.getUTCMinutes()).padStart(2, "0");
-  const ss = String(date.getUTCSeconds()).padStart(2, "0");
-  const ms = String(date.getUTCMilliseconds()).padStart(3, "0");
-  return `${hh}:${mm}:${ss},${ms}`;
-}
+document
+  .querySelectorAll(".style-card")
+  .forEach(
+    card => {
 
-function formatVttTime(seconds) {
-  const date = new Date(0);
-  date.setUTCMilliseconds(seconds * 1000);
-  const hh = String(date.getUTCHours()).padStart(2, "0");
-  const mm = String(date.getUTCMinutes()).padStart(2, "0");
-  const ss = String(date.getUTCSeconds()).padStart(2, "0");
-  const ms = String(date.getUTCMilliseconds()).padStart(3, "0");
-  return `${hh}:${mm}:${ss}.${ms}`;
-}
+      card.addEventListener(
+        "click",
+        () => {
 
-function downloadFile(content, filename, type) {
-  const blob = new Blob([content], { type });
-  const url = URL.createObjectURL(blob);
-  const a = document.createElement("a");
-  a.href = url;
-  a.download = filename;
-  document.body.appendChild(a);
-  a.click();
-  document.body.removeChild(a);
-  URL.revokeObjectURL(url);
-}
+          currentStyle =
+            card.dataset.style;
 
-function escapeHTML(text) {
-  return String(text)
-    .replaceAll("&", "&amp;")
-    .replaceAll("<", "&lt;")
-    .replaceAll(">", "&gt;")
-    .replaceAll('"', "&quot;")
-    .replaceAll("'", "&#039;");
-}
+
+          document
+            .querySelectorAll(
+              ".style-card"
+            )
+            .forEach(
+              item =>
+                item.classList.remove(
+                  "active"
+                )
+            );
+
+
+          card.classList.add(
+            "active"
+          );
+
+
+          renderCaption();
+
+        }
+      );
+
+    }
+  );
