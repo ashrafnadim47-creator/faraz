@@ -1,4 +1,4 @@
-import { db, auth } from "./firebase-config.js";
+﻿import { db, auth } from "./firebase-config.js";
 import {
     collection,
     getDocs,
@@ -13,9 +13,18 @@ const productBox = document.getElementById("productGrid") || document.getElement
 let allProducts = [];
 
 // ==========================================
-// 🛡️ DEFAULT CURATED PRODUCTS (FALLBACK)
+// ðŸ›¡ï¸ DEFAULT CURATED PRODUCTS (FALLBACK)
 // ==========================================
 const FALLBACK_PRODUCTS = [
+    {
+        id: "prod_evo_m1014_draco",
+        name: "Evo M1014 Green Flame Draco (Max Lv.7)",
+        price: 1499,
+        category: "gaming",
+        stock: 25,
+        image: "images/evo_m1014.svg",
+        description: "Official Free Fire Legendary Evo M1014 Draco Shotgun with max stats, exclusive kill feed animation and dragon wings effect."
+    },
     {
         id: "prod_ff_diamonds_1",
         name: "Free Fire 1060 + 106 Diamonds Top-Up",
@@ -145,11 +154,11 @@ function displayProducts(products) {
                 <img src="${product.image || 'images/no-image.png'}" alt="${product.name}" loading="lazy" onerror="this.src='images/logo.png'">
             </div>
             <h3>${product.name}</h3>
-            <p class="price">₹${product.price}</p>
+            <p class="price">â‚¹${product.price}</p>
             <div style="display: flex; gap: 8px; margin-top: 10px;">
-                <button class="view-prod-btn primary-btn" data-id="${product.id}" style="flex: 1; padding: 8px 12px; font-size: 12px;">👁 View</button>
-                <button class="add-to-cart-btn primary-btn" data-id="${product.id}" data-name="${product.name}" data-price="${product.price}" data-image="${product.image || ''}" style="flex: 1; padding: 8px 12px; font-size: 12px; background: linear-gradient(135deg, #00f2fe, #4facfe); color: #000;">🛒 Cart</button>
-                <button class="add-wish-btn" data-name="${product.name}" data-price="${product.price}" data-image="${product.image || ''}" style="padding: 8px 12px; border-radius: 10px; border: 1px solid #ff0055; background: rgba(255,0,85,0.15); color: #ff0055; cursor: pointer;">❤️</button>
+                <button class="view-prod-btn primary-btn" data-id="${product.id}" style="flex: 1; padding: 8px 12px; font-size: 12px;">ðŸ‘ View</button>
+                <button class="add-to-cart-btn primary-btn" data-id="${product.id}" data-name="${product.name}" data-price="${product.price}" data-image="${product.image || ''}" style="flex: 1; padding: 8px 12px; font-size: 12px; background: linear-gradient(135deg, #00f2fe, #4facfe); color: #000;">ðŸ›’ Cart</button>
+                <button class="add-wish-btn" data-name="${product.name}" data-price="${product.price}" data-image="${product.image || ''}" style="padding: 8px 12px; border-radius: 10px; border: 1px solid #ff0055; background: rgba(255,0,85,0.15); color: #ff0055; cursor: pointer;">â¤ï¸</button>
             </div>
         </div>
     `).join('');
@@ -207,14 +216,14 @@ function executeCartAdditionLogic(id, name, price, image) {
     let currentCart = JSON.parse(localStorage.getItem('fw_user_cart_memory') || "[]");
     currentCart.push({ id, name, price: parseFloat(price), image, quantity: 1 });
     localStorage.setItem('fw_user_cart_memory', JSON.stringify(currentCart));
-    alert(`🎉 Success! "${name}" added to shopping cart.`);
+    alert(`ðŸŽ‰ Success! "${name}" added to shopping cart.`);
 }
 
 function executeWishlistAdditionLogic(name, price, image) {
     let currentWish = JSON.parse(localStorage.getItem('fw_user_wish_memory') || "[]");
     currentWish.push({ name, price: parseFloat(price), image });
     localStorage.setItem('fw_user_wish_memory', JSON.stringify(currentWish));
-    alert(`❤️ "${name}" added to Wishlist!`);
+    alert(`â¤ï¸ "${name}" added to Wishlist!`);
 }
 
 // ======================
@@ -281,3 +290,4 @@ setInterval(() => {
 
     if (timer) timer.innerHTML = `${h}h : ${m}m : ${s}s`;
 }, 1000);
+

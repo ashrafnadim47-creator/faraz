@@ -1,4 +1,4 @@
-import { db, auth } from "./firebase-config.js";
+﻿import { db, auth } from "./firebase-config.js";
 import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 import {
     doc,
@@ -18,6 +18,15 @@ const id = new URLSearchParams(location.search).get("id");
 let currentUser = null;
 
 const FALLBACK_PRODUCTS = [
+    {
+        id: "prod_evo_m1014_draco",
+        name: "Evo M1014 Green Flame Draco (Max Lv.7)",
+        price: 1499,
+        category: "Gaming Topup",
+        stock: 25,
+        image: "images/evo_m1014.svg",
+        description: "Official Free Fire Legendary Evo M1014 Draco Shotgun with max stats, exclusive kill feed animation and dragon wings effect."
+    },
     {
         id: "prod_ff_diamonds_1",
         name: "Free Fire 1060 + 106 Diamonds Top-Up",
@@ -79,7 +88,7 @@ onAuthStateChanged(auth, (user) => {
 });
 
 // ==========================================
-// 👁️ SAVE RECENTLY VIEWED PRODUCT
+// ðŸ‘ï¸ SAVE RECENTLY VIEWED PRODUCT
 // ==========================================
 async function saveRecentlyViewed(product) {
     if (!currentUser || !id) return;
@@ -97,7 +106,7 @@ async function saveRecentlyViewed(product) {
 }
 
 // ==========================================
-// 🛍️ LOAD PRODUCT DETAILS ENGINE
+// ðŸ›ï¸ LOAD PRODUCT DETAILS ENGINE
 // ==========================================
 async function loadProduct() {
     if (!box) return;
@@ -105,7 +114,7 @@ async function loadProduct() {
     if (!id) {
         box.innerHTML = `
             <div style="text-align: center; padding: 40px;">
-                <h2 style="color: #ef4444;">❌ Product ID Missing</h2>
+                <h2 style="color: #ef4444;">âŒ Product ID Missing</h2>
                 <p style="color: #94a3b8; margin-top: 10px;">Please select a valid product from the store catalog.</p>
                 <button onclick="location.href='product.html'" class="primary-btn" style="margin-top: 15px; padding: 10px 25px;">Back to Catalog</button>
             </div>
@@ -164,7 +173,7 @@ async function loadProduct() {
                         ${product.category || "General Gear"}
                     </span>
                     <h1 style="font-size: 26px; color: #ffffff; margin: 0; font-weight: 900;">${product.name}</h1>
-                    <h2 style="font-size: 28px; color: #ffcc00; margin: 0; font-weight: 900; font-family: 'Orbitron', monospace;">₹${product.price}</h2>
+                    <h2 style="font-size: 28px; color: #ffcc00; margin: 0; font-weight: 900; font-family: 'Orbitron', monospace;">â‚¹${product.price}</h2>
                     
                     <p style="color: #cbd5e1; font-size: 14px; line-height: 1.6; background: rgba(0,0,0,0.2); padding: 15px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.05);">
                         ${product.description || "Premium quality gaming hardware and shopping accessory from Faraz Store."}
@@ -172,10 +181,10 @@ async function loadProduct() {
 
                     <div style="display: flex; gap: 12px; margin-top: 10px; flex-wrap: wrap;">
                         ${inStock 
-                            ? `<button class="details-cart-btn primary-btn" style="flex: 1; min-width: 160px; padding: 14px; font-size: 14px;">🛒 Add To Cart</button>`
-                            : `<button disabled style="flex: 1; min-width: 160px; padding: 14px; background: #334155; color: #94a3b8; border: none; border-radius: 12px; font-weight: 800;">❌ Out of Stock</button>`
+                            ? `<button class="details-cart-btn primary-btn" style="flex: 1; min-width: 160px; padding: 14px; font-size: 14px;">ðŸ›’ Add To Cart</button>`
+                            : `<button disabled style="flex: 1; min-width: 160px; padding: 14px; background: #334155; color: #94a3b8; border: none; border-radius: 12px; font-weight: 800;">âŒ Out of Stock</button>`
                         }
-                        <button class="details-wish-btn" style="flex: 1; min-width: 140px; padding: 14px; background: rgba(255, 0, 85, 0.15); border: 1px solid #ff0055; color: #ff0055; border-radius: 12px; font-weight: 800; cursor: pointer;">❤️ Wishlist</button>
+                        <button class="details-wish-btn" style="flex: 1; min-width: 140px; padding: 14px; background: rgba(255, 0, 85, 0.15); border: 1px solid #ff0055; color: #ff0055; border-radius: 12px; font-weight: 800; cursor: pointer;">â¤ï¸ Wishlist</button>
                     </div>
                 </div>
             </div>
@@ -183,7 +192,7 @@ async function loadProduct() {
             <hr style="border-color: rgba(255, 255, 255, 0.1); margin: 20px 0;">
 
             <div>
-                <h2 style="font-size: 20px; color: #ffcc00; margin-bottom: 15px; font-family: 'Orbitron', sans-serif;">⭐ Verified Customer Reviews</h2>
+                <h2 style="font-size: 20px; color: #ffcc00; margin-bottom: 15px; font-family: 'Orbitron', sans-serif;">â­ Verified Customer Reviews</h2>
                 <div id="reviews" style="display: flex; flex-direction: column; gap: 10px; margin-bottom: 20px;">
                     <!-- Injected reviews -->
                 </div>
@@ -201,7 +210,7 @@ async function loadProduct() {
 }
 
 // ==========================================
-// ⚡ DOM INTERACTION EVENT LISTENERS
+// âš¡ DOM INTERACTION EVENT LISTENERS
 // ==========================================
 function attachDetailsListeners(product) {
     const cartBtn = document.querySelector('.details-cart-btn');
@@ -228,7 +237,7 @@ function attachDetailsListeners(product) {
                 }
             }
 
-            alert(`🎉 Success! "${product.name}" added to Cart.`);
+            alert(`ðŸŽ‰ Success! "${product.name}" added to Cart.`);
         });
     }
 
@@ -250,7 +259,7 @@ function attachDetailsListeners(product) {
                 }
             }
 
-            alert(`❤️ "${product.name}" added to Wishlist!`);
+            alert(`â¤ï¸ "${product.name}" added to Wishlist!`);
         });
     }
 
@@ -268,29 +277,29 @@ function attachDetailsListeners(product) {
                 newRev.innerHTML = `
                     <div style="display:flex; justify-content:space-between; margin-bottom: 4px;">
                         <span style="font-weight: 800; color: #00e5ff; font-size: 13px;">${currentUser ? (currentUser.displayName || "Verified Customer") : "Verified Buyer"}</span>
-                        <span style="color: #ffcc00; font-size: 12px;">⭐⭐⭐⭐⭐</span>
+                        <span style="color: #ffcc00; font-size: 12px;">â­â­â­â­â­</span>
                     </div>
                     <p style="margin: 0; color: #cbd5e1; font-size: 13px;">${text}</p>
                 `;
                 rBox.prepend(newRev);
                 input.value = "";
-                alert("⭐ Thank you! Your review has been posted.");
+                alert("â­ Thank you! Your review has been posted.");
             }
         });
     }
 }
 
 // ==========================================
-// ⭐ LOAD VERIFIED CUSTOMER REVIEWS
+// â­ LOAD VERIFIED CUSTOMER REVIEWS
 // ==========================================
 async function loadReviews(prodId) {
     const rBox = document.getElementById("reviews");
     if (!rBox) return;
 
     const defaultReviews = [
-        { name: "Rahul S.", rating: "⭐⭐⭐⭐⭐", text: "Top-up credited to my Free Fire ID in under 45 seconds. Very reliable!" },
-        { name: "Aman K.", rating: "⭐⭐⭐⭐⭐", text: "Original product with warranty. Fast delivery and secure packaging." },
-        { name: "Farhan M.", rating: "⭐⭐⭐⭐⭐", text: "Best prices compared to any other gaming store in India. 10/10 recommended!" }
+        { name: "Rahul S.", rating: "â­â­â­â­â­", text: "Top-up credited to my Free Fire ID in under 45 seconds. Very reliable!" },
+        { name: "Aman K.", rating: "â­â­â­â­â­", text: "Original product with warranty. Fast delivery and secure packaging." },
+        { name: "Farhan M.", rating: "â­â­â­â­â­", text: "Best prices compared to any other gaming store in India. 10/10 recommended!" }
     ];
 
     rBox.innerHTML = defaultReviews.map(r => `
@@ -305,3 +314,4 @@ async function loadReviews(prodId) {
 }
 
 loadProduct();
+

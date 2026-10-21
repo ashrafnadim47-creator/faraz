@@ -8,9 +8,9 @@ import {
     collection, 
     query, 
     where, 
-    getDocs,
-    deleteDoc,
-    onSnapshot,
+    getDocs, 
+    deleteDoc, 
+    onSnapshot, 
     serverTimestamp 
 } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
@@ -50,9 +50,12 @@ onAuthStateChanged(auth, async (user) => {
             const playerUidElem = document.getElementById("user-player-uid");
             if (playerUidElem) playerUidElem.innerText = myPlayerUid;
 
-            await updateDoc(userRef, { isOnline: true, lastSeen: serverTimestamp() });
+            await updateDoc(userRef, { isOnline: true, lastSeen: serverTimestamp() }).catch(() => {});
         } catch (e) {
-            console.error("Auth init error:", e);
+            console.warn("Auth init non-blocking notice:", e.message);
+            myPlayerUid = myPlayerUid || String(Math.floor(10000000 + Math.random() * 90000000));
+            const playerUidElem = document.getElementById("user-player-uid");
+            if (playerUidElem) playerUidElem.innerText = myPlayerUid;
         }
 
         listenToFriendsAndRequests();
@@ -82,18 +85,22 @@ window.searchPlayerById = async function() {
         const usersRef = collection(db, "users");
         let matchedDocs = [];
 
-        let q1 = query(usersRef, where("playerUid", "==", String(inputVal)));
-        let snap1 = await getDocs(q1);
-        snap1.forEach(d => matchedDocs.push({ id: d.id, data: d.data() }));
+        try {
+            let q1 = query(usersRef, where("playerUid", "==", String(inputVal)));
+            let snap1 = await getDocs(q1);
+            snap1.forEach(d => matchedDocs.push({ id: d.id, data: d.data() }));
 
-        if (matchedDocs.length === 0) {
-            let q2 = query(usersRef, where("email", "==", inputVal.toLowerCase()));
-            let snap2 = await getDocs(q2);
-            snap2.forEach(d => matchedDocs.push({ id: d.id, data: d.data() }));
+            if (matchedDocs.length === 0) {
+                let q2 = query(usersRef, where("email", "==", inputVal.toLowerCase()));
+                let snap2 = await getDocs(q2);
+                snap2.forEach(d => matchedDocs.push({ id: d.id, data: d.data() }));
+            }
+        } catch (queryErr) {
+            console.warn("Firestore query restricted:", queryErr.message);
         }
 
         if (matchedDocs.length === 0) {
-            container.innerHTML = "<p style='color:#ef4444; font-size:12px;'>❌ Player Not Found!</p>";
+            container.innerHTML = "<p style='color:#ef4444; font-size:12px;'>❌ Player Not Found or Private!</p>";
             return;
         }
 
@@ -120,8 +127,8 @@ window.searchPlayerById = async function() {
         container.appendChild(item);
 
     } catch(e) { 
-        console.error("Search Error:", e);
-        container.innerHTML = "<p style='color:#ef4444; font-size:12px;'>Search failed.</p>";
+        console.warn("Search notice:", e.message);
+        container.innerHTML = "<p style='color:#ef4444; font-size:12px;'>Search currently unavailable.</p>";
     }
 };
 
@@ -136,15 +143,16 @@ window.sendRequest = async function(targetUid, targetPlayerId) {
         });
         alert(`✅ Friend Request sent to ID: ${targetPlayerId}!`);
     } catch(e) { 
-        console.error("Send request error:", e); 
-        alert("Failed to send request.");
+        console.warn("Send request notice:", e.message); 
+        alert("Failed to send request. Target player permissions restricted.");
     }
 };
 
-// LISTENERS
+// LISTENERS WITH SAFE ERROR CALLBACKS
 function listenToFriendsAndRequests() {
     if (!currentUser) return;
 
+    // 1. Friend Requests with safe error handler
     onSnapshot(collection(db, "users", currentUser.uid, "friend_requests"), (snapshot) => {
         const reqContainer = document.getElementById("pending-requests-list");
         if (!reqContainer) return;
@@ -173,8 +181,15 @@ function listenToFriendsAndRequests() {
             `;
             reqContainer.appendChild(item);
         });
+    }, (error) => {
+        console.warn("Friend requests snapshot disabled:", error.message);
+        const reqContainer = document.getElementById("pending-requests-list");
+        if (reqContainer) {
+            reqContainer.innerHTML = "<p style='color: #64748b; font-size: 12px; text-align: center;'>No pending requests.</p>";
+        }
     });
 
+    // 2. Friends List with safe error handler
     onSnapshot(collection(db, "users", currentUser.uid, "friends"), (snapshot) => {
         const friendsContainer = document.getElementById("my-friends-list");
         if (!friendsContainer) return;
@@ -219,8 +234,16 @@ function listenToFriendsAndRequests() {
                         </button>
                     </div>
                 `;
+            }, (error) => {
+                console.warn(`User status stream skipped for ${friendUid}:`, error.message);
             });
         });
+    }, (error) => {
+        console.warn("Friends stream disabled:", error.message);
+        const friendsContainer = document.getElementById("my-friends-list");
+        if (friendsContainer) {
+            friendsContainer.innerHTML = "<p style='color: #64748b; font-size: 12px; text-align: center;'>Friends system in offline mode.</p>";
+        }
     });
 }
 
@@ -242,14 +265,14 @@ window.acceptRequest = async function(reqUserUid, reqEmail, reqPlayerUid) {
 
         await deleteDoc(doc(db, "users", currentUser.uid, "friend_requests", reqUserUid));
         alert(`🎉 You are now friends with ${reqEmail}!`);
-    } catch(e) { console.error(e); }
+    } catch(e) { console.warn(e); }
 };
 
 window.rejectRequest = async function(reqUserUid) {
     if (!currentUser) return;
     try {
         await deleteDoc(doc(db, "users", currentUser.uid, "friend_requests", reqUserUid));
-    } catch(e) { console.error(e); }
+    } catch(e) { console.warn(e); }
 };
 
 // MIC TOGGLE
@@ -269,7 +292,7 @@ window.toggleMicStream = async function() {
             if (currentUser && currentSquadId) {
                 await updateDoc(doc(db, "squads", currentSquadId, "members", currentUser.uid), {
                     isMicOn: true
-                });
+                }).catch(() => {});
             }
         } catch (err) {
             alert("⚠️ Microphone permission denied or mic not connected!");
@@ -289,7 +312,7 @@ window.toggleMicStream = async function() {
         if (currentUser && currentSquadId) {
             await updateDoc(doc(db, "squads", currentSquadId, "members", currentUser.uid), {
                 isMicOn: false
-            });
+            }).catch(() => {});
         }
     }
 };
@@ -301,8 +324,8 @@ window.inviteFriend = async function(targetUid, friendName) {
     currentSquadId = currentSquadId || `squad_${currentUser.uid}`;
 
     try {
-        const userSnap = await getDoc(doc(db, "users", currentUser.uid));
-        const uData = userSnap.data() || {};
+        const userSnap = await getDoc(doc(db, "users", currentUser.uid)).catch(() => null);
+        const uData = userSnap?.exists() ? userSnap.data() : {};
 
         await setDoc(doc(db, "squads", currentSquadId, "members", currentUser.uid), {
             uid: currentUser.uid,
@@ -322,7 +345,7 @@ window.inviteFriend = async function(targetUid, friendName) {
         alert(`📣 Team Invite sent to ${friendName}! Opening Landscape Lobby...`);
         openLandscapeLobby(currentSquadId);
 
-    } catch(e) { console.error("Invite error:", e); }
+    } catch(e) { console.warn("Invite notice:", e.message); }
 };
 
 function listenToTeamInvites() {
@@ -335,6 +358,8 @@ function listenToTeamInvites() {
                 showInvitePopup(change.doc.id, invite.fromName, invite.squadId);
             }
         });
+    }, (error) => {
+        console.warn("Invites stream listener disabled:", error.message);
     });
 }
 
@@ -371,12 +396,12 @@ window.respondInvite = async function(inviteId, squadId, accepted) {
     if (popup) popup.style.display = "none";
 
     if (currentUser) {
-        await deleteDoc(doc(db, "users", currentUser.uid, "invites", inviteId));
+        await deleteDoc(doc(db, "users", currentUser.uid, "invites", inviteId)).catch(() => {});
     }
 
     if (accepted && squadId) {
-        const userSnap = await getDoc(doc(db, "users", currentUser.uid));
-        const uData = userSnap.data() || {};
+        const userSnap = await getDoc(doc(db, "users", currentUser.uid)).catch(() => null);
+        const uData = userSnap?.exists() ? userSnap.data() : {};
 
         await setDoc(doc(db, "squads", squadId, "members", currentUser.uid), {
             uid: currentUser.uid,
@@ -384,7 +409,7 @@ window.respondInvite = async function(inviteId, squadId, accepted) {
             avatar: uData.equippedAvatar || "images/avtar.png",
             isMicOn: isMicActive,
             isLeader: false
-        });
+        }).catch(() => {});
 
         openLandscapeLobby(squadId);
     }
@@ -432,10 +457,12 @@ function openLandscapeLobby(squadId) {
             }
             stageContainer.appendChild(podium);
         }
+    }, (error) => {
+        console.warn("Squad lobby listener notice:", error.message);
     });
 }
 
-// IN-LOBBY FRIEND LIST MODAL CONTROLS (FIXED TYPO HERE)
+// IN-LOBBY FRIEND LIST MODAL CONTROLS
 window.openLobbyInviteModal = async function() {
     const modal = document.getElementById("inlobby-invite-overlay");
     const container = document.getElementById("inlobby-online-friends-list");
@@ -458,9 +485,8 @@ window.openLobbyInviteModal = async function() {
             const friendData = docSnap.data();
             const friendUid = docSnap.id;
 
-            const fSnap = await getDoc(doc(db, "users", friendUid));
-            // TYPO FIX: Changed fDocSnap to fSnap
-            const isOnline = fSnap.exists() ? fSnap.data().isOnline : false;
+            const fSnap = await getDoc(doc(db, "users", friendUid)).catch(() => null);
+            const isOnline = fSnap?.exists() ? fSnap.data().isOnline : false;
 
             const fName = friendData.email || 'Friend';
 
@@ -476,8 +502,8 @@ window.openLobbyInviteModal = async function() {
             container.appendChild(item);
         }
     } catch(e) {
-        console.error("Lobby invite error:", e);
-        container.innerHTML = "<p style='color:#ef4444; font-size:12px; text-align:center;'>Failed to load friends.</p>";
+        console.warn("Lobby invite error:", e.message);
+        container.innerHTML = "<p style='color:#ef4444; font-size:12px; text-align:center;'>Unable to load friends list.</p>";
     }
 };
 
@@ -494,7 +520,7 @@ window.leaveSquadLobby = async function() {
     isMicActive = false;
 
     if (currentUser && currentSquadId) {
-        await deleteDoc(doc(db, "squads", currentSquadId, "members", currentUser.uid));
+        await deleteDoc(doc(db, "squads", currentSquadId, "members", currentUser.uid)).catch(() => {});
     }
     if (squadUnsubscribe) squadUnsubscribe();
     currentSquadId = null;

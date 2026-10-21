@@ -1,4 +1,4 @@
-import { db } from "./firebase-config.js";
+﻿import { db } from "./firebase-config.js";
 import {
     collection,
     getDocs,
@@ -10,6 +10,15 @@ const container = document.getElementById("product-container");
 let allProducts = [];
 
 const FALLBACK_PRODUCTS = [
+    {
+        id: "prod_evo_m1014_draco",
+        name: "Evo M1014 Green Flame Draco (Max Lv.7)",
+        price: 1499,
+        category: "Gaming Topup",
+        stock: 25,
+        image: "images/evo_m1014.svg",
+        description: "Official Free Fire Legendary Evo M1014 Draco Shotgun with max stats, exclusive kill feed animation and dragon wings effect."
+    },
     {
         id: "prod_ff_diamonds_1",
         name: "Free Fire 1060 + 106 Diamonds Top-Up",
@@ -67,7 +76,7 @@ const FALLBACK_PRODUCTS = [
 ];
 
 // ==========================================
-// 📦 FETCH ALL PRODUCTS FROM FIRESTORE
+// ðŸ“¦ FETCH ALL PRODUCTS FROM FIRESTORE
 // ==========================================
 async function loadProducts() {
     if (!container) return;
@@ -108,14 +117,14 @@ async function loadProducts() {
 }
 
 // ==========================================
-// 🎨 RENDER PRODUCTS GRID CARDS
+// ðŸŽ¨ RENDER PRODUCTS GRID CARDS
 // ==========================================
 function displayProducts(products) {
     if (!container) return;
     container.innerHTML = "";
 
     if (products.length === 0) {
-        container.innerHTML = `<h3 style="grid-column: 1 / -1; text-align: center; color: #94a3b8; padding: 40px;">No Products Found 📦</h3>`;
+        container.innerHTML = `<h3 style="grid-column: 1 / -1; text-align: center; color: #94a3b8; padding: 40px;">No Products Found ðŸ“¦</h3>`;
         return;
     }
 
@@ -125,13 +134,13 @@ function displayProducts(products) {
         let stockClass = "";
 
         if (stock <= 0) {
-            stockText = "🔴 Out of Stock";
+            stockText = "ðŸ”´ Out of Stock";
             stockClass = "out-stock";
         } else if (stock <= 5) {
-            stockText = `🟡 Low Stock (${stock} Left)`;
+            stockText = `ðŸŸ¡ Low Stock (${stock} Left)`;
             stockClass = "low-stock";
         } else {
-            stockText = `🟢 In Stock (${stock})`;
+            stockText = `ðŸŸ¢ In Stock (${stock})`;
             stockClass = "in-stock";
         }
 
@@ -141,17 +150,17 @@ function displayProducts(products) {
                     <img src="${product.image || 'images/no-image.png'}" alt="${product.name}" loading="lazy" onerror="this.src='images/logo.png'">
                 </div>
                 <h3>${product.name}</h3>
-                <p class="price">₹${product.price}</p>
+                <p class="price">â‚¹${product.price}</p>
                 <p style="font-size: 11px; color: #94a3b8; text-transform: uppercase;">${product.category || "General Gear"}</p>
                 <p class="${stockClass}" style="font-size: 12px; font-weight: 800; margin: 4px 0 12px 0;">${stockText}</p>
                 
                 <div class="product-buttons">
-                    <button class="view-details-btn primary-btn" data-id="${product.id}">👁 View Details</button>
+                    <button class="view-details-btn primary-btn" data-id="${product.id}">ðŸ‘ View Details</button>
                     ${stock > 0 
-                        ? `<button class="add-cart-btn primary-btn" data-id="${product.id}" data-name="${product.name}" data-price="${product.price}" data-image="${product.image || ''}">🛒 Add To Cart</button>`
-                        : `<button disabled style="background: #334155; color: #94a3b8; cursor: not-allowed;">❌ Out of Stock</button>`
+                        ? `<button class="add-cart-btn primary-btn" data-id="${product.id}" data-name="${product.name}" data-price="${product.price}" data-image="${product.image || ''}">ðŸ›’ Add To Cart</button>`
+                        : `<button disabled style="background: #334155; color: #94a3b8; cursor: not-allowed;">âŒ Out of Stock</button>`
                     }
-                    <button class="add-wishlist-btn" data-name="${product.name}" data-price="${product.price}" data-image="${product.image || ''}" style="background: rgba(255, 0, 85, 0.15); border: 1px solid #ff0055; color: #ff0055; border-radius: 10px; font-weight: 800; cursor: pointer; padding: 8px;">❤️ Wishlist</button>
+                    <button class="add-wishlist-btn" data-name="${product.name}" data-price="${product.price}" data-image="${product.image || ''}" style="background: rgba(255, 0, 85, 0.15); border: 1px solid #ff0055; color: #ff0055; border-radius: 10px; font-weight: 800; cursor: pointer; padding: 8px;">â¤ï¸ Wishlist</button>
                 </div>
             </div>
         `;
@@ -162,7 +171,7 @@ function displayProducts(products) {
 }
 
 // ==========================================
-// ⚡ ATTACH EVENT LISTENERS
+// âš¡ ATTACH EVENT LISTENERS
 // ==========================================
 function attachDynamicListeners() {
     // 1. View Details Button
@@ -189,7 +198,7 @@ function attachDynamicListeners() {
                 let currentCart = JSON.parse(localStorage.getItem('fw_user_cart_memory') || "[]");
                 currentCart.push({ id, name, price: parseFloat(price), image, quantity: 1 });
                 localStorage.setItem('fw_user_cart_memory', JSON.stringify(currentCart));
-                alert(`🎉 Added "${name}" to Cart!`);
+                alert(`ðŸŽ‰ Added "${name}" to Cart!`);
             }
         });
     });
@@ -207,14 +216,14 @@ function attachDynamicListeners() {
                 let currentWish = JSON.parse(localStorage.getItem('fw_user_wish_memory') || "[]");
                 currentWish.push({ name, price: parseFloat(price), image });
                 localStorage.setItem('fw_user_wish_memory', JSON.stringify(currentWish));
-                alert(`❤️ Added "${name}" to Wishlist!`);
+                alert(`â¤ï¸ Added "${name}" to Wishlist!`);
             }
         });
     });
 }
 
 // ==========================================
-// 🔍 SEARCH FILTER LOGIC
+// ðŸ” SEARCH FILTER LOGIC
 // ==========================================
 const searchInput = document.getElementById("productSearch");
 if (searchInput) {
@@ -231,3 +240,4 @@ if (searchInput) {
 
 // Load on Startup
 loadProducts();
+
