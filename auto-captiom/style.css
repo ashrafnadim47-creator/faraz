@@ -584,3 +584,200 @@ select {
     grid-template-columns: repeat(2, 1fr);
   }
 }
+
+
+/* =========================================
+   CAPCUT PRO FEATURES ADDITIONS
+========================================= */
+
+.ratio-switch {
+  display: flex;
+  gap: 6px;
+  background: #191920;
+  border: 1px solid #30303a;
+  padding: 3px;
+  border-radius: 8px;
+}
+
+.ratio-btn {
+  background: transparent;
+  border: none;
+  color: #888;
+  font-size: 11px;
+  font-weight: 700;
+  padding: 5px 10px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+
+.ratio-btn.active {
+  background: #252530;
+  color: #00f2fe;
+}
+
+.video-container.ratio-16-9 {
+  aspect-ratio: 16 / 9;
+  width: min(600px, 95%);
+}
+
+.video-container.ratio-1-1 {
+  aspect-ratio: 1 / 1;
+  width: min(420px, 90%);
+}
+
+.topbar-right {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.sub-btn {
+  background: #1d1d26;
+  border: 1px solid #32323e;
+  color: #cbd5e1;
+  font-size: 11px;
+  font-weight: 700;
+  padding: 6px 10px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+
+.sub-btn:hover {
+  background: #282834;
+  color: #fff;
+}
+
+.export-video-btn {
+  background: linear-gradient(135deg, #00f2fe, #38bdf8);
+  border: none;
+  color: #000;
+  font-size: 12px;
+  font-weight: 900;
+  padding: 8px 16px;
+  border-radius: 8px;
+  cursor: pointer;
+  box-shadow: 0 0 15px rgba(0, 242, 254, 0.4);
+  transition: all 0.2s;
+}
+
+.export-video-btn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 0 22px rgba(0, 242, 254, 0.6);
+}
+
+.home-btn {
+  background: #191920;
+  border: 1px solid #30303a;
+  color: #94a3b8;
+  text-decoration: none;
+  font-size: 12px;
+  font-weight: 700;
+  padding: 7px 12px;
+  border-radius: 8px;
+  transition: all 0.15s;
+}
+
+.home-btn:hover {
+  color: #fff;
+  background: #252530;
+}
+
+#customScriptInput {
+  width: 100%;
+  height: 75px;
+  background: #191920;
+  border: 1px solid #30303a;
+  border-radius: 8px;
+  color: #fff;
+  padding: 8px;
+  font-size: 12px;
+  resize: vertical;
+  margin-top: 6px;
+  outline: none;
+}
+
+#customScriptInput:focus {
+  border-color: #00f2fe;
+}
+
+.script-apply-btn {
+  width: 100%;
+  margin-top: 8px;
+  background: #22222c;
+  border: 1px solid #333342;
+  color: #fff;
+  padding: 8px;
+  font-size: 11px;
+  font-weight: 700;
+  border-radius: 7px;
+  cursor: pointer;
+}
+
+.script-apply-btn:hover {
+  background: #2c2c38;
+  border-color: #00f2fe;
+}
+
+.timeline-word {
+  cursor: pointer;
+  transition: all 0.12s;
+  padding: 3px 6px;
+  border-radius: 4px;
+}
+
+.timeline-word:hover {
+  background: rgba(0, 242, 254, 0.2);
+  color: #00f2fe;
+  transform: scale(1.05);
+}
+
+.timeline-word.active {
+  background: #00f2fe;
+  color: #000;
+  font-weight: 800;
+  transform: scale(1.1);
+}
+
+/* EXPORT MODAL */
+.export-modal {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.85);
+  backdrop-filter: blur(12px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+}
+
+.export-card {
+  background: #111116;
+  border: 1px solid #282834;
+  border-radius: 20px;
+  padding: 34px 28px;
+  width: min(90%, 460px);
+  text-align: center;
+  box-shadow: 0 25px 60px rgba(0, 0, 0, 0.9);
+}
+
+.export-bar-track {
+  width: 100%;
+  height: 8px;
+  background: #202028;
+  border-radius: 99px;
+  overflow: hidden;
+  margin: 18px 0 8px;
+}
+
+.export-bar-fill {
+  width: 0%;
+  height: 100%;
+  background: linear-gradient(90deg, #00f2fe, #a855f7);
+  transition: width 0.1s linear;
+}
+
+.hidden {
+  display: none !important;
+}

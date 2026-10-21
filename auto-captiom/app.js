@@ -778,3 +778,267 @@ document
 
     }
   );
+
+
+/* =========================================
+   CAPCUT PRO FEATURES (TIMELINE, EXPORT, RATIO)
+========================================= */
+
+// 1. ASPECT RATIO
+const videoContainer = document.getElementById("videoContainer");
+document.querySelectorAll(".ratio-btn").forEach(btn => {
+  btn.addEventListener("click", () => {
+    document.querySelectorAll(".ratio-btn").forEach(b => b.classList.remove("active"));
+    btn.classList.add("active");
+    videoContainer.className = `video-container ratio-${btn.dataset.ratio}`;
+  });
+});
+
+// 2. TIMELINE CLICK-TO-SEEK & DOUBLE-CLICK-TO-EDIT
+captionTimeline.addEventListener("click", (e) => {
+  const wordEl = e.target.closest(".timeline-word");
+  if (!wordEl) return;
+  const idx = Number(wordEl.dataset.index);
+  if (captions[idx]) {
+    video.currentTime = captions[idx].start;
+    video.play();
+  }
+});
+
+captionTimeline.addEventListener("dblclick", (e) => {
+  const wordEl = e.target.closest(".timeline-word");
+  if (!wordEl) return;
+  const idx = Number(wordEl.dataset.index);
+  if (captions[idx]) {
+    const newWord = prompt("Edit word text:", captions[idx].word);
+    if (newWord !== null && newWord.trim() !== "") {
+      captions[idx].word = newWord.trim();
+      wordEl.textContent = captions[idx].word;
+      renderCaption();
+    }
+  }
+});
+
+// 3. CAPTION POSITION & SIZE
+const captionPosition = document.getElementById("captionPosition");
+const captionSizeSlider = document.getElementById("captionSizeSlider");
+
+if (captionPosition) {
+  captionPosition.addEventListener("change", (e) => {
+    const val = e.target.value;
+    captionOverlay.style.top = "";
+    captionOverlay.style.bottom = "";
+    captionOverlay.style.transform = "translateX(-50%)";
+
+    if (val === "top") {
+      captionOverlay.style.top = "15%";
+    } else if (val === "middle") {
+      captionOverlay.style.top = "50%";
+      captionOverlay.style.transform = "translate(-50%, -50%)";
+    } else {
+      captionOverlay.style.bottom = "10%";
+    }
+  });
+}
+
+if (captionSizeSlider) {
+  captionSizeSlider.addEventListener("input", (e) => {
+    captionOverlay.style.fontSize = `${e.target.value}px`;
+  });
+}
+
+// 4. CUSTOM SCRIPT / PASTE TEXT SYNC
+const customScriptInput = document.getElementById("customScriptInput");
+const applyScriptBtn = document.getElementById("applyScriptBtn");
+
+if (applyScriptBtn && customScriptInput) {
+  applyScriptBtn.addEventListener("click", () => {
+    const text = customScriptInput.value.trim();
+    if (!text) {
+      alert("Please paste text or script first.");
+      return;
+    }
+
+    const dur = video.duration || 10;
+    const words = text.split(/\s+/).filter(w => w.length > 0);
+    if (!words.length) return;
+
+    const timePerWord = Math.max(0.2, dur / words.length);
+    captions = words.map((w, i) => ({
+      word: w,
+      start: parseFloat((i * timePerWord).toFixed(2)),
+      end: parseFloat(((i + 1) * timePerWord).toFixed(2))
+    }));
+
+    renderTimeline();
+    renderCaption();
+    statusBox.textContent = `✅ Synced ${captions.length} words to video!`;
+  });
+}
+
+// 5. EXPORT SUBTITLES (.SRT & .VTT)
+const exportSrtBtn = document.getElementById("exportSrtBtn");
+const exportVttBtn = document.getElementById("exportVttBtn");
+
+if (exportSrtBtn) {
+  exportSrtBtn.addEventListener("click", () => {
+    if (!captions.length) {
+      alert("No captions to export!");
+      return;
+    }
+    let srt = "";
+    captions.forEach((c, i) => {
+      srt += `${i + 1}\n${formatSrtTime(c.start)} --> ${formatSrtTime(c.end)}\n${c.word}\n\n`;
+    });
+    downloadBlob(srt, "Faraz_Captions.srt", "text/plain");
+  });
+}
+
+if (exportVttBtn) {
+  exportVttBtn.addEventListener("click", () => {
+    if (!captions.length) {
+      alert("No captions to export!");
+      return;
+    }
+    let vtt = "WEBVTT\n\n";
+    captions.forEach((c, i) => {
+      vtt += `${i + 1}\n${formatVttTime(c.start)} --> ${formatVttTime(c.end)}\n${c.word}\n\n`;
+    });
+    downloadBlob(vtt, "Faraz_Captions.vtt", "text/vtt");
+  });
+}
+
+// 6. REAL CAPCUT VIDEO EXPORTER (BURN-IN CAPTIONS TO MP4/WEBM)
+const exportVideoBtn = document.getElementById("exportVideoBtn");
+const exportModal = document.getElementById("exportModal");
+const exportProgressFill = document.getElementById("exportProgressFill");
+const exportStatusText = document.getElementById("exportStatusText");
+
+if (exportVideoBtn) {
+  exportVideoBtn.addEventListener("click", async () => {
+    if (!video.src) {
+      alert("Please upload a video first!");
+      return;
+    }
+
+    exportModal.classList.remove("hidden");
+    exportProgressFill.style.width = "0%";
+    exportStatusText.textContent = "Setting up CapCut video canvas...";
+
+    video.pause();
+    video.currentTime = 0;
+
+    const canvas = document.createElement("canvas");
+    canvas.width = video.videoWidth || 720;
+    canvas.height = video.videoHeight || 1280;
+    const ctx = canvas.getContext("2d");
+
+    const stream = canvas.captureStream(30);
+    let mime = MediaRecorder.isTypeSupported("video/webm;codecs=vp9")
+      ? "video/webm;codecs=vp9"
+      : "video/webm";
+
+    const recorder = new MediaRecorder(stream, {
+      mimeType: mime,
+      videoBitsPerSecond: 6000000
+    });
+
+    const chunks = [];
+    recorder.ondataavailable = e => {
+      if (e.data.size > 0) chunks.push(e.data);
+    };
+
+    recorder.onstop = () => {
+      const blob = new Blob(chunks, { type: "video/webm" });
+      downloadBlob(blob, "Faraz_FORGE_CapCut.webm", "video/webm");
+      exportStatusText.textContent = "✅ Export Complete! Video saved to your PC.";
+      exportProgressFill.style.width = "100%";
+      setTimeout(() => exportModal.classList.add("hidden"), 1500);
+    };
+
+    recorder.start();
+
+    const duration = video.duration || 5;
+    const fps = 25;
+    const totalFrames = Math.floor(duration * fps);
+    let currentFrame = 0;
+
+    function renderNextFrame() {
+      if (currentFrame >= totalFrames || stopped) {
+        recorder.stop();
+        return;
+      }
+
+      video.currentTime = currentFrame / fps;
+      ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+
+      // Burn in current word or group
+      const now = video.currentTime;
+      const activeWord = captions.find(c => now >= c.start && now <= c.end);
+
+      if (activeWord) {
+        ctx.save();
+        ctx.textAlign = "center";
+        ctx.textBaseline = "middle";
+        ctx.font = `900 ${canvas.width * 0.08}px Arial, Impact, sans-serif`;
+        
+        const posX = canvas.width / 2;
+        const posY = canvas.height * 0.85;
+
+        // Shadow & Stroke
+        ctx.strokeStyle = "#000000";
+        ctx.lineWidth = 10;
+        ctx.strokeText(activeWord.word.toUpperCase(), posX, posY);
+
+        // Fill color
+        ctx.fillStyle = "#ffea00";
+        ctx.shadowColor = "rgba(0,0,0,0.8)";
+        ctx.shadowBlur = 15;
+        ctx.fillText(activeWord.word.toUpperCase(), posX, posY);
+
+        ctx.restore();
+      }
+
+      currentFrame++;
+      const pct = Math.floor((currentFrame / totalFrames) * 100);
+      exportProgressFill.style.width = `${pct}%`;
+      exportStatusText.textContent = `Encoding frame ${currentFrame} / ${totalFrames} (${pct}%)...`;
+
+      setTimeout(renderNextFrame, 1000 / fps);
+    }
+
+    renderNextFrame();
+  });
+}
+
+function formatSrtTime(seconds) {
+  const date = new Date(0);
+  date.setUTCMilliseconds(seconds * 1000);
+  const hh = String(date.getUTCHours()).padStart(2, "0");
+  const mm = String(date.getUTCMinutes()).padStart(2, "0");
+  const ss = String(date.getUTCSeconds()).padStart(2, "0");
+  const ms = String(date.getUTCMilliseconds()).padStart(3, "0");
+  return `${hh}:${mm}:${ss},${ms}`;
+}
+
+function formatVttTime(seconds) {
+  const date = new Date(0);
+  date.setUTCMilliseconds(seconds * 1000);
+  const hh = String(date.getUTCHours()).padStart(2, "0");
+  const mm = String(date.getUTCMinutes()).padStart(2, "0");
+  const ss = String(date.getUTCSeconds()).padStart(2, "0");
+  const ms = String(date.getUTCMilliseconds()).padStart(3, "0");
+  return `${hh}:${mm}:${ss}.${ms}`;
+}
+
+function downloadBlob(content, filename, type) {
+  const blob = content instanceof Blob ? content : new Blob([content], { type });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = filename;
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+}

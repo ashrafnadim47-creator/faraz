@@ -3,15 +3,14 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-
-  <title>Faraz Auto Captions</title>
-
+  <title>Faraz Auto Captions - CapCut Pro Studio</title>
+  <link rel="icon" href="../favicon.ico" type="image/x-icon" />
   <link rel="stylesheet" href="./style.css" />
 
-  <!-- FFmpeg -->
+  <!-- FFmpeg WASM -->
   <script src="https://unpkg.com/@ffmpeg/ffmpeg@0.12.10/dist/umd/ffmpeg.js"></script>
 
-  <!-- Transformers.js -->
+  <!-- Transformers.js / CapCut Engine -->
   <script type="module" src="./app.js"></script>
 </head>
 
@@ -19,43 +18,49 @@
 
 <div class="app">
 
+  <!-- TOPBAR -->
   <header class="topbar">
     <div class="brand">
       <span class="brand-icon">✦</span>
-      <span>Faraz Auto Captions</span>
+      <span>Faraz Auto Captions <small style="font-size:11px; color:#00f2fe; margin-left:6px; font-weight:800;">CAPCUT PRO</small></span>
+    </div>
+
+    <!-- CAPCUT ASPECT RATIO SWITCHER -->
+    <div class="ratio-switch">
+      <button class="ratio-btn active" data-ratio="9-16" title="Vertical 9:16 (Shorts/Reels/TikTok)">📱 9:16</button>
+      <button class="ratio-btn" data-ratio="16-9" title="Horizontal 16:9 (YouTube)">🖥️ 16:9</button>
+      <button class="ratio-btn" data-ratio="1-1" title="Square 1:1 (Instagram)">🔲 1:1</button>
+    </div>
+
+    <div class="topbar-right">
+      <button id="exportSrtBtn" class="sub-btn" title="Download .SRT Subtitle File">📄 .SRT</button>
+      <button id="exportVttBtn" class="sub-btn" title="Download .VTT Subtitle File">📜 .VTT</button>
+      <button id="exportVideoBtn" class="export-video-btn" title="Export MP4 Video with Burn-In Captions">
+        🎬 Export Video
+      </button>
+      <a href="../index.html" class="home-btn" title="Back to Faraz Store">🏠 Store</a>
     </div>
   </header>
 
 
   <main class="workspace">
 
-    <!-- LEFT PANEL -->
-
+    <!-- LEFT PANEL: MEDIA & AI ENGINE -->
     <aside class="left-panel">
 
       <div class="panel-title">VIDEO</div>
 
       <label class="upload-box" id="uploadBox">
-
         <input
           type="file"
           id="videoInput"
           accept="video/*"
           hidden
         />
-
         <div class="upload-icon">＋</div>
-
-        <div class="upload-title">
-          Upload Video
-        </div>
-
-        <div class="upload-subtitle">
-          MP4, MOV, WEBM
-        </div>
-
+        <div class="upload-title">Upload Video</div>
+        <div class="upload-subtitle">MP4, MOV, WEBM</div>
       </label>
-
 
       <button
         id="generateBtn"
@@ -65,7 +70,6 @@
         ✨ Generate Auto Captions
       </button>
 
-
       <button
         id="stopBtn"
         class="stop-btn"
@@ -74,61 +78,61 @@
         Stop
       </button>
 
-
       <div class="progress-area">
-
         <div class="progress-text" id="status">
           Upload a video to start.
         </div>
-
         <div class="progress">
           <div
             id="progressBar"
             class="progress-bar"
           ></div>
         </div>
-
       </div>
 
-
       <div class="settings">
-
-        <div class="panel-title">
-          LANGUAGE
-        </div>
-
+        <div class="panel-title">LANGUAGE</div>
         <select id="language">
-
-          <option value="auto">
-            Hindi / English
-          </option>
-
-          <option value="hi">
-            Hindi
-          </option>
-
-          <option value="en">
-            English
-          </option>
-
+          <option value="auto">Hindi / English (Auto)</option>
+          <option value="hi">Hindi (हिंदी)</option>
+          <option value="en">English (US/UK)</option>
         </select>
+      </div>
 
+      <!-- SCRIPT / CUSTOM TEXT DRAWER -->
+      <div class="settings" style="margin-top:16px;">
+        <div class="panel-title">CUSTOM SCRIPT / TEXT</div>
+        <textarea id="customScriptInput" placeholder="Paste script or lyrics here to auto-time to video..."></textarea>
+        <button id="applyScriptBtn" class="script-apply-btn">
+          ⚡ Apply Script to Timeline
+        </button>
+      </div>
+
+      <!-- POSITION CONTROLS -->
+      <div class="settings" style="margin-top:16px;">
+        <div class="panel-title">POSITION & SIZE</div>
+        <select id="captionPosition">
+          <option value="bottom">Bottom (10%)</option>
+          <option value="middle">Middle (Center)</option>
+          <option value="top">Top (15%)</option>
+        </select>
+        <div style="display:flex; align-items:center; gap:8px; margin-top:8px;">
+          <label style="font-size:11px; color:#888;">Size:</label>
+          <input type="range" id="captionSizeSlider" min="20" max="80" value="38" style="flex:1; accent-color:#00f2fe;">
+        </div>
       </div>
 
     </aside>
 
 
-    <!-- CENTER -->
-
+    <!-- CENTER: PREVIEW & INTERACTIVE TIMELINE -->
     <section class="center">
 
       <div class="preview-wrapper">
-
         <div
-          class="video-container"
+          class="video-container ratio-9-16"
           id="videoContainer"
         >
-
           <video
             id="video"
             playsinline
@@ -139,267 +143,140 @@
             id="captionOverlay"
             class="caption-overlay style-bold"
           ></div>
-
         </div>
-
       </div>
 
-
+      <!-- CAPCUT MULTI-TRACK / WORD TIMELINE -->
       <div class="timeline">
-
         <div class="timeline-head">
-
-          <span>CAPTIONS</span>
-
-          <span id="captionCount">
-            0 words
-          </span>
-
+          <div style="display:flex; align-items:center; gap:10px;">
+            <span style="font-weight:800; font-size:12px; letter-spacing:0.5px;">⏱️ CAPCUT TIMELINE</span>
+            <span id="captionCount" style="color:#00f2fe; font-size:11px; font-family:monospace;">0 words</span>
+          </div>
+          <div style="font-size:11px; color:#888;">
+            Click any word to seek • Double-click to edit
+          </div>
         </div>
 
         <div
           id="captionTimeline"
           class="caption-timeline"
         >
-
           <div class="empty-timeline">
             Generate captions to see them here.
           </div>
-
         </div>
-
       </div>
 
     </section>
 
 
-    <!-- RIGHT PANEL -->
-
+    <!-- RIGHT PANEL: 20 VIRAL CAPCUT STYLES -->
     <aside class="right-panel">
 
       <div class="panel-title">
-        CAPTION STYLES
+        CAPTION STYLES (20 PRESETS)
       </div>
 
       <div class="styles-grid">
 
-
-        <button
-          class="style-card active"
-          data-style="style-bold"
-        >
-          <span class="demo demo-bold">
-            THIS IS AMAZING
-          </span>
+        <button class="style-card active" data-style="style-bold">
+          <span class="demo demo-bold">THIS IS AMAZING</span>
           <small>Bold</small>
         </button>
 
-
-        <button
-          class="style-card"
-          data-style="style-karaoke"
-        >
-          <span class="demo demo-karaoke">
-            THIS IS AMAZING
-          </span>
+        <button class="style-card" data-style="style-karaoke">
+          <span class="demo demo-karaoke">THIS IS <b>AMAZING</b></span>
           <small>Karaoke</small>
         </button>
 
-
-        <button
-          class="style-card"
-          data-style="style-yellow"
-        >
-          <span class="demo demo-yellow">
-            THIS IS AMAZING
-          </span>
+        <button class="style-card" data-style="style-yellow">
+          <span class="demo demo-yellow">THIS IS AMAZING</span>
           <small>Yellow Pop</small>
         </button>
 
-
-        <button
-          class="style-card"
-          data-style="style-neon"
-        >
-          <span class="demo demo-neon">
-            THIS IS AMAZING
-          </span>
+        <button class="style-card" data-style="style-neon">
+          <span class="demo demo-neon">THIS IS AMAZING</span>
           <small>Neon</small>
         </button>
 
-
-        <button
-          class="style-card"
-          data-style="style-box"
-        >
-          <span class="demo demo-box">
-            THIS IS AMAZING
-          </span>
+        <button class="style-card" data-style="style-box">
+          <span class="demo demo-box">THIS IS AMAZING</span>
           <small>Black Box</small>
         </button>
 
-
-        <button
-          class="style-card"
-          data-style="style-whitebox"
-        >
-          <span class="demo demo-whitebox">
-            THIS IS AMAZING
-          </span>
+        <button class="style-card" data-style="style-whitebox">
+          <span class="demo demo-whitebox">THIS IS AMAZING</span>
           <small>White Box</small>
         </button>
 
-
-        <button
-          class="style-card"
-          data-style="style-red"
-        >
-          <span class="demo demo-red">
-            THIS IS AMAZING
-          </span>
+        <button class="style-card" data-style="style-red">
+          <span class="demo demo-red">THIS IS AMAZING</span>
           <small>Red Viral</small>
         </button>
 
-
-        <button
-          class="style-card"
-          data-style="style-green"
-        >
-          <span class="demo demo-green">
-            THIS IS AMAZING
-          </span>
+        <button class="style-card" data-style="style-green">
+          <span class="demo demo-green">THIS IS AMAZING</span>
           <small>Green</small>
         </button>
 
-
-        <button
-          class="style-card"
-          data-style="style-blue"
-        >
-          <span class="demo demo-blue">
-            THIS IS AMAZING
-          </span>
+        <button class="style-card" data-style="style-blue">
+          <span class="demo demo-blue">THIS IS AMAZING</span>
           <small>Blue Glow</small>
         </button>
 
-
-        <button
-          class="style-card"
-          data-style="style-gradient"
-        >
-          <span class="demo demo-gradient">
-            THIS IS AMAZING
-          </span>
+        <button class="style-card" data-style="style-gradient">
+          <span class="demo demo-gradient">THIS IS AMAZING</span>
           <small>Gradient</small>
         </button>
 
-
-        <button
-          class="style-card"
-          data-style="style-punch"
-        >
-          <span class="demo demo-punch">
-            AMAZING!
-          </span>
+        <button class="style-card" data-style="style-punch">
+          <span class="demo demo-punch">AMAZING!</span>
           <small>Punch</small>
         </button>
 
-
-        <button
-          class="style-card"
-          data-style="style-comic"
-        >
-          <span class="demo demo-comic">
-            WOW!
-          </span>
+        <button class="style-card" data-style="style-comic">
+          <span class="demo demo-comic">WOW!</span>
           <small>Comic</small>
         </button>
 
-
-        <button
-          class="style-card"
-          data-style="style-minimal"
-        >
-          <span class="demo demo-minimal">
-            this is amazing
-          </span>
+        <button class="style-card" data-style="style-minimal">
+          <span class="demo demo-minimal">this is amazing</span>
           <small>Minimal</small>
         </button>
 
-
-        <button
-          class="style-card"
-          data-style="style-creator"
-        >
-          <span class="demo demo-creator">
-            THIS IS AMAZING
-          </span>
+        <button class="style-card" data-style="style-creator">
+          <span class="demo demo-creator">THIS IS AMAZING</span>
           <small>Creator</small>
         </button>
 
-
-        <button
-          class="style-card"
-          data-style="style-wordpop"
-        >
-          <span class="demo demo-wordpop">
-            AMAZING
-          </span>
+        <button class="style-card" data-style="style-wordpop">
+          <span class="demo demo-wordpop">AMAZING</span>
           <small>Word Pop</small>
         </button>
 
-
-        <button
-          class="style-card"
-          data-style="style-huge"
-        >
-          <span class="demo demo-huge">
-            BIG!
-          </span>
+        <button class="style-card" data-style="style-huge">
+          <span class="demo demo-huge">BIG!</span>
           <small>Huge</small>
         </button>
 
-
-        <button
-          class="style-card"
-          data-style="style-premium"
-        >
-          <span class="demo demo-premium">
-            AMAZING
-          </span>
+        <button class="style-card" data-style="style-premium">
+          <span class="demo demo-premium">AMAZING</span>
           <small>Premium</small>
         </button>
 
-
-        <button
-          class="style-card"
-          data-style="style-mixed"
-        >
-          <span class="demo demo-mixed">
-            THIS IS AMAZING
-          </span>
+        <button class="style-card" data-style="style-mixed">
+          <span class="demo demo-mixed">THIS IS AMAZING</span>
           <small>Mixed</small>
         </button>
 
-
-        <button
-          class="style-card"
-          data-style="style-orange"
-        >
-          <span class="demo demo-orange">
-            LET'S GO!
-          </span>
+        <button class="style-card" data-style="style-orange">
+          <span class="demo demo-orange">LET'S GO!</span>
           <small>Orange</small>
         </button>
 
-
-        <button
-          class="style-card"
-          data-style="style-purple"
-        >
-          <span class="demo demo-purple">
-            AMAZING
-          </span>
+        <button class="style-card" data-style="style-purple">
+          <span class="demo demo-purple">AMAZING</span>
           <small>Purple</small>
         </button>
 
@@ -409,6 +286,23 @@
 
   </main>
 
+</div>
+
+<!-- EXPORT PROGRESS MODAL (CAPCUT EXPORTER) -->
+<div class="export-modal hidden" id="exportModal">
+  <div class="export-card">
+    <div style="font-size:36px; margin-bottom:10px;">🎬</div>
+    <div style="font-size:18px; font-weight:800; color:#fff;">Rendering CapCut Video</div>
+    <div style="font-size:12px; color:#888; margin-top:4px;">Burning in animated subtitles with zero watermark...</div>
+
+    <div class="export-bar-track">
+      <div class="export-bar-fill" id="exportProgressFill"></div>
+    </div>
+
+    <div id="exportStatusText" style="font-size:12px; font-family:monospace; color:#00f2fe; margin-top:10px;">
+      Preparing video canvas: 0%
+    </div>
+  </div>
 </div>
 
 </body>
