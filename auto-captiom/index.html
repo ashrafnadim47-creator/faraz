@@ -1,485 +1,224 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="forge-dark">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>FORGE PRO - CapCut Full Video Editor</title>
-  <link rel="icon" href="../favicon.ico" type="image/x-icon">
-  <link rel="stylesheet" href="style.css">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#0b0d10">
+<meta name="referrer" content="no-referrer">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self' blob: data:; script-src 'self' 'unsafe-inline' blob:; style-src 'self' 'unsafe-inline'; img-src 'self' blob: data:; media-src 'self' blob: data:; connect-src 'self' http://127.0.0.1:8787 http://localhost:8787 https://identitytoolkit.googleapis.com https://securetoken.googleapis.com https://firestore.googleapis.com https://*.supabase.co; font-src 'self' data:; object-src 'none'; base-uri 'self'; form-action 'self'">
+<title>FORGE — Professional Video Editor</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 32 32%22><rect width=%2232%22 height=%2232%22 rx=%228%22 fill=%22%230a0c10%22/><path d=%22M8 8h16v4H12v4h10v4H12v4H8z%22 fill=%22%23f5a524%22/></svg>">
+<link rel="stylesheet" href="css/main.css">
+<link rel="stylesheet" href="css/panels.css">
+<link rel="stylesheet" href="css/preview.css">
+<link rel="stylesheet" href="css/timeline.css">
+<link rel="stylesheet" href="css/responsive.css">
+<link rel="stylesheet" href="css/home.css">
 </head>
-
 <body>
-
-  <!-- TOP HEADER -->
-  <header class="editor-header">
-    <div class="brand-section">
-      <a href="../index.html" class="brand-badge">
-        <span>⚡</span> FORGE PRO
-      </a>
-      <input type="text" class="project-name-input" value="CapCut Viral Reel" id="projectTitle">
+<div id="forge-home" class="forge-home" data-testid="forge-home" aria-label="FORGE Home">
+  <div class="home-shell">
+    <div class="home-brand">
+      <div class="logo big"><span class="logo-mark big"></span><span>FORGE</span></div>
+      <span class="home-badge">Creative Studio</span>
     </div>
-
-    <div class="header-center">
-      <div class="aspect-ratio-selector">
-        <button class="aspect-btn active" data-ratio="9-16" title="Vertical 9:16 (TikTok, Reels, Shorts)">
-          📱 9:16
-        </button>
-        <button class="aspect-btn" data-ratio="16-9" title="Horizontal 16:9 (YouTube)">
-          🖥️ 16:9
-        </button>
-        <button class="aspect-btn" data-ratio="1-1" title="Square 1:1 (Instagram)">
-          🔲 1:1
-        </button>
-        <button class="aspect-btn" data-ratio="4-5" title="Portrait 4:5">
-          📐 4:5
-        </button>
-      </div>
-
-      <div class="undo-redo-group">
-        <button class="header-icon-btn" id="undoBtn" title="Undo (Ctrl+Z)">↩️</button>
-        <button class="header-icon-btn" id="redoBtn" title="Redo (Ctrl+Y)">↪️</button>
+    <div class="home-hero">
+      <div>
+        <h1>What do you want to create?</h1>
+        <p>One FORGE. Video, images, projects and the full editing workspace.</p>
       </div>
     </div>
+    <div class="home-actions">
+      <button class="home-card home-card-primary" id="home-new-video" data-testid="home-new-video">
+        <span class="home-card-icon">▶</span><span><b>Video Editor</b><small>Create a new timeline project</small></span>
+      </button>
+      <button class="home-card" id="home-image-editor" data-testid="home-image-editor">
+        <span class="home-card-icon">✦</span><span><b>Image Editor</b><small>Edit, adjust and export images</small></span>
+      </button>
+    </div>
+    <section class="home-projects">
+      <div class="home-section-head"><div><h2>Recent projects</h2><span id="home-project-count">Local projects on this device</span></div><button id="home-refresh-projects" class="home-link">Refresh</button></div>
+      <div id="home-project-list" class="home-project-list"></div>
+    </section>
+    <div class="home-tools"><button class="home-card home-card-small" id="home-shortcuts" data-testid="home-shortcuts"><span class="home-card-icon">⌨</span><span><b>Keyboard Shortcuts</b><small>See all FORGE editing shortcuts</small></span></button></div>
+    <div class="home-footer"><a href="../index.html" class="home-link" style="text-decoration:none;">🏠 Store</a><span>•</span><button class="home-link" id="home-account-link">Account</button><span>•</span><button class="home-link" id="home-terms-link">Terms</button><span>•</span><button class="home-link" id="home-privacy-link">Privacy</button></div>
+  </div>
+</div>
 
-    <div class="header-actions">
-      <input type="file" id="capcutDraftInput" accept=".json" style="display:none;">
-      <button class="header-btn" id="importCapcutDraftBtn" title="Import Real CapCut Project (draft_content.json)">
-        <span style="color:#00f2fe;">⚡</span> Import CapCut
-      </button>
-      <button class="header-btn" id="exportCapcutDraftBtn" title="Export Real CapCut Project (draft_content.json)">
-        <span style="color:#39ff14;">💾</span> Export CapCut
-      </button>
-      <button class="header-btn" id="exportSrtBtn" title="Download .SRT Subtitles">📄 .SRT</button>
-      <button class="header-btn" id="exportVttBtn" title="Download .VTT Subtitles">📜 .VTT</button>
-      <a href="../downloads/FORGE-Video-Editor-Setup.exe" download="FORGE-Video-Editor-Setup.exe" class="header-btn" title="Download Windows Desktop App Installer">
-        <span>⬇️</span> Download PC App
-      </a>
-      <a href="../index.html" class="header-btn" title="Back to Store">
-        <span>🏠</span> Store
-      </a>
-      <button id="exportVideoBtn" class="header-btn export-btn">
-        <span>🎬</span> Export Video
-      </button>
+<div id="forge-image-editor" class="image-editor-screen" hidden data-testid="forge-image-editor">
+  <div class="image-editor-topbar"><button id="image-editor-back" class="tbtn" type="button">← Home</button><div class="image-editor-title">FORGE Image Editor</div><button id="image-export" class="tbtn primary" type="button">Export PNG</button></div>
+  <div class="image-editor-main">
+    <aside class="image-editor-controls">
+      <label class="img-control"><span>Image</span><input id="image-file-input" type="file" accept="image/*" /></label>
+      <label class="img-control"><span>Brightness</span><input id="image-brightness" type="range" min="50" max="150" value="100" /></label>
+      <label class="img-control"><span>Contrast</span><input id="image-contrast" type="range" min="50" max="150" value="100" /></label>
+      <label class="img-control"><span>Saturation</span><input id="image-saturation" type="range" min="0" max="200" value="100" /></label>
+      <div class="image-editor-buttons"><button id="image-rotate-left" class="btn">↶ Rotate</button><button id="image-rotate-right" class="btn">↷ Rotate</button></div>
+    </aside>
+    <div class="image-editor-canvas-wrap"><canvas id="image-editor-canvas"></canvas><div id="image-editor-empty">Choose an image to start editing.</div></div>
+  </div>
+</div>
+
+<div id="app">
+  <header id="topbar">
+    <div class="tb-left">
+      <div class="logo" data-testid="forge-logo" data-tip="FORGE — Professional Video Editor"><span class="logo-mark"></span><span>FORGE</span></div>
+      <div class="tb-divider"></div>
+      <nav class="app-nav" aria-label="Main navigation">
+        <a href="../index.html" class="tbtn nav-btn" style="text-decoration:none; display:inline-flex; align-items:center;" title="Back to Faraz Store">🏠 Store</a>
+        <button class="tbtn nav-btn" id="btn-home" type="button">Home</button>
+        <button class="tbtn nav-btn active" id="btn-editor" type="button">Editor</button>
+      </nav>
+      <input id="project-name-input" data-testid="project-name-input" spellcheck="false" autocomplete="off" aria-label="Project name" />
+      <span id="save-state-label" class="save-state" data-testid="save-state-label">Saved</span>
+    </div>
+    <div class="tb-right">
+      <button class="tbtn" id="btn-import" data-testid="btn-import" data-icon="upload" data-tip="Import media" data-tip-key="Ctrl+O"><span>Import</span></button>
+      <div class="tb-group">
+        <button class="tbtn icon" id="btn-undo" data-testid="btn-undo" data-icon="undo" data-tip="Undo" data-tip-key="Ctrl+Z"></button>
+        <button class="tbtn icon" id="btn-redo" data-testid="btn-redo" data-icon="redo" data-tip="Redo" data-tip-key="Ctrl+Shift+Z"></button>
+      </div>
+      <div class="tb-group">
+        <button class="tbtn icon" id="btn-save" data-testid="btn-save" data-icon="save" data-tip="Save project" data-tip-key="Ctrl+S"></button>
+        <button class="tbtn icon" id="btn-projects" data-testid="btn-projects" data-icon="folder" data-tip="Projects" data-tip-key="Ctrl+Shift+O"></button>
+      </div>
+      <button class="tbtn primary" id="btn-export" data-testid="btn-export" data-icon="download" data-tip="Export video" data-tip-key="Ctrl+E"><span>Export</span></button>
+      <div class="tb-group">
+        <button class="tbtn icon" id="btn-settings" data-testid="btn-settings" data-icon="gear" data-tip="Settings"></button>
+        <button class="tbtn icon" id="btn-shortcuts" data-testid="btn-shortcuts" data-icon="keyboard" data-tip="Keyboard shortcuts"></button>
+        <button class="tbtn icon" id="btn-panels" data-testid="btn-panels" data-icon="sidebar" data-tip="Toggle side panels"></button>
+        <button class="tbtn icon" id="btn-fullscreen-app" data-testid="btn-fullscreen-app" data-icon="expand" data-tip="Fullscreen"></button>
+      </div>
     </div>
   </header>
 
-  <!-- MAIN WORKSPACE -->
-  <main class="editor-workspace">
-
-    <!-- 1. LEFT ICON RAIL (CAPCUT TABS) -->
-    <nav class="left-nav-bar">
-      <div class="nav-tab-item active" data-tab="media">
-        <span class="icon">📁</span>
-        <span>Media</span>
+  <div id="workspace">
+    <aside id="left-panel" data-testid="left-panel">
+      <nav id="left-tabs" data-testid="left-tabs">
+        <button class="ltab active" data-tab="media" data-icon="film" data-testid="tab-media"><span>Media</span></button>
+        <button class="ltab" data-tab="audio" data-icon="music" data-testid="tab-audio"><span>Audio</span></button>
+        <button class="ltab" data-tab="text" data-icon="type" data-testid="tab-text"><span>Text</span></button>
+        <button class="ltab" data-tab="effects" data-icon="wand" data-testid="tab-effects"><span>Effects</span></button>
+        <button class="ltab" data-tab="transitions" data-icon="shuffle" data-testid="tab-transitions"><span>Transitions</span></button>
+        <button class="ltab" data-tab="stickers" data-icon="star" data-testid="tab-stickers"><span>Stickers</span></button>
+        <button class="ltab" data-tab="captions" data-icon="type" data-testid="tab-captions"><span>Captions</span></button>
+      </nav>
+      <div id="left-panes">
+        <div class="tab-pane active" id="pane-media" data-pane="media"></div>
+        <div class="tab-pane" id="pane-audio" data-pane="audio"></div>
+        <div class="tab-pane" id="pane-text" data-pane="text"></div>
+        <div class="tab-pane" id="pane-effects" data-pane="effects"></div>
+        <div class="tab-pane" id="pane-transitions" data-pane="transitions"></div>
+        <div class="tab-pane" id="pane-stickers" data-pane="stickers"></div>
+        <div class="tab-pane" id="pane-captions" data-pane="captions"></div>
       </div>
-      <div class="nav-tab-item" data-tab="audio">
-        <span class="icon">🎵</span>
-        <span>Audio</span>
-      </div>
-      <div class="nav-tab-item" data-tab="captions">
-        <span class="icon">🔤</span>
-        <span>Text</span>
-      </div>
-      <div class="nav-tab-item" data-tab="stickers">
-        <span class="icon">✨</span>
-        <span>Stickers</span>
-      </div>
-      <div class="nav-tab-item" data-tab="effects">
-        <span class="icon">🎨</span>
-        <span>Effects</span>
-      </div>
-      <div class="nav-tab-item" data-tab="filters">
-        <span class="icon">🌈</span>
-        <span>Filters</span>
-      </div>
-    </nav>
-
-    <!-- 2. ASSET DRAWER PANEL -->
-    <aside class="asset-drawer">
-      
-      <!-- TAB 1: MEDIA -->
-      <div class="drawer-pane" id="pane-media">
-        <div class="drawer-header">
-          <span class="drawer-title">Media Library</span>
-        </div>
-        <div class="drawer-content">
-          <input type="file" id="videoFileInput" accept="video/*" hidden>
-          <div class="drawer-upload-box" id="uploadDropZone">
-            <div style="font-size: 28px; margin-bottom: 6px;">📥</div>
-            <div style="font-weight: 800; font-size: 13px; color: #fff;">Import Media Files</div>
-            <div style="font-size: 11px; color: #94a3b8; margin-top: 4px;">Drag & drop video clips or browse</div>
-            <button class="upload-mini-btn" id="browseMediaBtn">Browse Video</button>
-          </div>
-
-          <div style="font-size: 11px; font-weight: 800; color: #94a3b8; margin-top: 10px;">
-            Demo Stock Templates:
-          </div>
-          <div class="media-items-grid">
-            <div class="media-thumbnail-card demo-sample-btn" data-type="gaming" title="Load High-Energy Gaming Template">
-              <div style="height: 100%; display: flex; align-items: center; justify-content: center; background: linear-gradient(135deg, #7c3aed, #06b6d4); font-size: 22px;">🎮</div>
-              <div class="media-badge-duration">Gaming Demo</div>
-            </div>
-            <div class="media-thumbnail-card demo-sample-btn" data-type="neon" title="Load Cyberpunk Synthwave Template">
-              <div style="height: 100%; display: flex; align-items: center; justify-content: center; background: linear-gradient(135deg, #ec4899, #8b5cf6); font-size: 22px;">🌆</div>
-              <div class="media-badge-duration">Neon Synth</div>
-            </div>
-          </div>
-
-          <div class="capcut-rea-card" style="margin-top: 14px; padding: 12px; background: rgba(0, 242, 254, 0.06); border: 1px solid rgba(0, 242, 254, 0.25); border-radius: 8px;">
-            <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 6px;">
-              <span style="font-weight: 800; font-size: 11px; color: #00f2fe; letter-spacing: 0.5px;">⚡ CAPCUT REA SCHEMA</span>
-              <span style="font-size: 10px; color: #39ff14; background: rgba(57, 255, 20, 0.15); padding: 2px 6px; border-radius: 4px; font-weight: 700;">ACTIVE</span>
-            </div>
-            <p style="font-size: 11px; color: #94a3b8; line-height: 1.4; margin: 0 0 10px 0;">
-              Import or Export real CapCut project files (<code>draft_content.json</code>) with full microsecond timeline & styling tracks.
-            </p>
-            <div style="display: flex; gap: 6px;">
-              <button class="upload-mini-btn" id="browseCapcutDraftBtn" style="flex: 1; padding: 6px 8px; font-size: 11px; background: rgba(0, 242, 254, 0.15); color: #00f2fe; border: 1px solid #00f2fe;">📥 Import Draft</button>
-              <button class="upload-mini-btn" id="saveCapcutDraftBtn" style="flex: 1; padding: 6px 8px; font-size: 11px; background: rgba(57, 255, 20, 0.15); border: 1px solid #39ff14; color: #39ff14;">💾 Export Draft</button>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- TAB 2: AUDIO -->
-      <div class="drawer-pane hidden" id="pane-audio">
-        <div class="drawer-header">
-          <span class="drawer-title">Sound FX & Music</span>
-        </div>
-        <div class="drawer-content">
-          <div style="font-size: 11px; font-weight: 800; color: #94a3b8;">CapCut Trending Sound Effects:</div>
-          <div style="display: flex; flex-direction: column; gap: 6px; margin-top: 6px;">
-            <button class="tool-action-btn sfx-btn" data-sfx="whoosh" style="justify-content: flex-start; background: var(--bg-elevated); padding: 8px 10px;">
-              💨 Whoosh Fast Swoosh
-            </button>
-            <button class="tool-action-btn sfx-btn" data-sfx="bass" style="justify-content: flex-start; background: var(--bg-elevated); padding: 8px 10px;">
-              💥 Deep Bass Impact Boom
-            </button>
-            <button class="tool-action-btn sfx-btn" data-sfx="ding" style="justify-content: flex-start; background: var(--bg-elevated); padding: 8px 10px;">
-              🔔 Clean Chime Ding
-            </button>
-            <button class="tool-action-btn sfx-btn" data-sfx="camera" style="justify-content: flex-start; background: var(--bg-elevated); padding: 8px 10px;">
-              📸 Camera Shutter Click
-            </button>
-          </div>
-        </div>
-      </div>
-
-      <!-- TAB 3: TEXT & CAPTIONS -->
-      <div class="drawer-pane hidden" id="pane-captions">
-        <div class="drawer-header">
-          <span class="drawer-title">Text & Auto Captions</span>
-          <button id="generateCaptionsBtn" style="background: var(--accent-cyan); color: #000; border: none; font-size: 10.5px; font-weight: 800; padding: 4px 8px; border-radius: 5px; cursor: pointer;">
-            ✨ Auto
-          </button>
-        </div>
-        <div class="drawer-content">
-          <div style="font-size: 11px; color: #94a3b8;">CapCut Viral Presets:</div>
-          <div class="preset-list">
-            <div class="caption-preset-btn active" data-preset="mrbeast">
-              <div class="preset-preview" style="color: #ffea00; text-shadow: 0 2px 0 #000;">VIRAL</div>
-              <div class="preset-title">MrBeast Yellow</div>
-            </div>
-            <div class="caption-preset-btn" data-preset="neon">
-              <div class="preset-preview" style="color: #00f2fe; text-shadow: 0 0 8px #00f2fe;">CYBER</div>
-              <div class="preset-title">Cyber Neon</div>
-            </div>
-            <div class="caption-preset-btn" data-preset="karaoke">
-              <div class="preset-preview" style="color: #a855f7;">GLOW</div>
-              <div class="preset-title">Karaoke Glow</div>
-            </div>
-            <div class="caption-preset-btn" data-preset="pop">
-              <div class="preset-preview" style="color: #ff007f; text-shadow: 2px 2px 0 #000;">POP 3D</div>
-              <div class="preset-title">Pop 3D</div>
-            </div>
-            <div class="caption-preset-btn" data-preset="box">
-              <div class="preset-preview" style="background: #fff; color: #000; padding: 1px 4px; border-radius: 4px; font-size: 10px;">BOXED</div>
-              <div class="preset-title">Hormozi Box</div>
-            </div>
-            <div class="caption-preset-btn" data-preset="bold">
-              <div class="preset-preview" style="color: #fff; font-size: 13px; font-weight: 900;">IMPACT</div>
-              <div class="preset-title">Bold Impact</div>
-            </div>
-          </div>
-
-          <div style="margin-top: 10px;">
-            <label style="font-size: 11px; font-weight: 700; color: #94a3b8;">Custom Script to Sync:</label>
-            <textarea id="customScriptInput" style="width: 100%; height: 75px; background: var(--bg-elevated); border: 1px solid var(--border-color); border-radius: 6px; color: #fff; padding: 6px; font-size: 11.5px; margin-top: 4px; resize: vertical;" placeholder="Type text or lyrics here..."></textarea>
-            <button id="applyScriptTimelineBtn" style="width: 100%; margin-top: 6px; padding: 7px; background: var(--bg-elevated); border: 1px solid var(--border-color); color: #fff; font-weight: 700; font-size: 11px; border-radius: 6px; cursor: pointer;">
-              ➕ Add Script to Timeline
-            </button>
-          </div>
-        </div>
-      </div>
-
-      <!-- TAB 4: STICKERS -->
-      <div class="drawer-pane hidden" id="pane-stickers">
-        <div class="drawer-header">
-          <span class="drawer-title">CapCut Stickers & Emojis</span>
-        </div>
-        <div class="drawer-content">
-          <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px;">
-            <button class="tool-action-btn sticker-btn" data-sticker="🔥" style="font-size: 24px; padding: 10px; justify-content: center; background: var(--bg-elevated);">🔥</button>
-            <button class="tool-action-btn sticker-btn" data-sticker="⚡" style="font-size: 24px; padding: 10px; justify-content: center; background: var(--bg-elevated);">⚡</button>
-            <button class="tool-action-btn sticker-btn" data-sticker="💯" style="font-size: 24px; padding: 10px; justify-content: center; background: var(--bg-elevated);">💯</button>
-            <button class="tool-action-btn sticker-btn" data-sticker="🎯" style="font-size: 24px; padding: 10px; justify-content: center; background: var(--bg-elevated);">🎯</button>
-            <button class="tool-action-btn sticker-btn" data-sticker="👑" style="font-size: 24px; padding: 10px; justify-content: center; background: var(--bg-elevated);">👑</button>
-            <button class="tool-action-btn sticker-btn" data-sticker="🚀" style="font-size: 24px; padding: 10px; justify-content: center; background: var(--bg-elevated);">🚀</button>
-          </div>
-        </div>
-      </div>
-
-      <!-- TAB 5: EFFECTS -->
-      <div class="drawer-pane hidden" id="pane-effects">
-        <div class="drawer-header">
-          <span class="drawer-title">Video Effects</span>
-        </div>
-        <div class="drawer-content">
-          <div class="filter-card active" data-filter="none">
-            <div class="filter-circle" style="background: #64748b;"></div>
-            <div>
-              <div style="font-size: 12px; font-weight: 700; color: #fff;">Original</div>
-              <div style="font-size: 10px; color: #94a3b8;">Natural colors</div>
-            </div>
-          </div>
-          <div class="filter-card" data-filter="cyberpunk">
-            <div class="filter-circle" style="background: linear-gradient(135deg, #00f2fe, #ec4899);"></div>
-            <div>
-              <div style="font-size: 12px; font-weight: 700; color: #fff;">Cyberpunk Glow</div>
-              <div style="font-size: 10px; color: #94a3b8;">Neon cyan & magenta</div>
-            </div>
-          </div>
-          <div class="filter-card" data-filter="retro-vhs">
-            <div class="filter-circle" style="background: linear-gradient(135deg, #f59e0b, #ef4444);"></div>
-            <div>
-              <div style="font-size: 12px; font-weight: 700; color: #fff;">90s Retro VHS</div>
-              <div style="font-size: 10px; color: #94a3b8;">Vintage tape aesthetic</div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- TAB 6: FILTERS -->
-      <div class="drawer-pane hidden" id="pane-filters">
-        <div class="drawer-header">
-          <span class="drawer-title">Cinematic Color Filters</span>
-        </div>
-        <div class="drawer-content">
-          <div class="filter-card" data-filter="cinema-dark">
-            <div class="filter-circle" style="background: linear-gradient(135deg, #1e293b, #0f172a);"></div>
-            <div>
-              <div style="font-size: 12px; font-weight: 700; color: #fff;">Hollywood Blockbuster</div>
-              <div style="font-size: 10px; color: #94a3b8;">Teal & orange grading</div>
-            </div>
-          </div>
-          <div class="filter-card" data-filter="golden-hour">
-            <div class="filter-circle" style="background: linear-gradient(135deg, #f59e0b, #eab308);"></div>
-            <div>
-              <div style="font-size: 12px; font-weight: 700; color: #fff;">Golden Sunset</div>
-              <div style="font-size: 10px; color: #94a3b8;">Warm radiant glow</div>
-            </div>
-          </div>
-          <div class="filter-card" data-filter="noir">
-            <div class="filter-circle" style="background: linear-gradient(135deg, #ffffff, #000000);"></div>
-            <div>
-              <div style="font-size: 12px; font-weight: 700; color: #fff;">B&W Dramatic Noir</div>
-              <div style="font-size: 10px; color: #94a3b8;">High contrast black & white</div>
-            </div>
-          </div>
-        </div>
-      </div>
-
     </aside>
 
-    <!-- 3. CENTER VIEWPORT -->
-    <section class="viewport-area">
-      
-      <div class="canvas-container">
-        <div class="canvas-wrapper ratio-9-16" id="canvasWrapper">
-          <canvas id="renderCanvas" width="720" height="1280"></canvas>
-        </div>
-      </div>
+    <div class="gutter gutter-v" id="gutter-left" data-testid="gutter-left"></div>
 
-      <video id="hiddenSourceVideo" playsinline></video>
-
-      <!-- VIEWPORT CONTROLS BAR -->
-      <div class="viewport-controls-bar">
-        <div class="timecode-display" id="timecodeDisplay">00:00:00 / 00:00:15</div>
-
-        <div class="playback-controls">
-          <button class="ctrl-btn" id="seekStartBtn" title="Jump to Start">⏮</button>
-          <button class="ctrl-btn" id="stepBackBtn" title="Step Back 1s">⏪</button>
-          <button class="ctrl-btn play-pause-btn" id="playPauseBtn" title="Play / Pause (Space)">▶</button>
-          <button class="ctrl-btn" id="stepForwardBtn" title="Step Forward 1s">⏩</button>
-        </div>
-
-        <div style="display: flex; gap: 6px;">
-          <button class="ctrl-btn" id="fullscreenBtn" title="Fullscreen Preview">⛶</button>
-        </div>
-      </div>
-
-    </section>
-
-    <!-- 4. RIGHT INSPECTOR / PROPERTY PANEL (CAPCUT) -->
-    <aside class="inspector-panel">
-      <div class="inspector-title">Properties & Adjustments</div>
-
-      <!-- TEXT PROPERTIES -->
-      <div class="inspector-group">
-        <label class="inspector-label">Active Text Layer</label>
-        <input type="text" id="inspectorTextInput" class="inspector-input" value="VIRAL REEL HOOK">
-      </div>
-
-      <div class="inspector-group">
-        <label class="inspector-label">Font Family</label>
-        <select id="inspectorFontSelect" class="inspector-input">
-          <option value="'Plus Jakarta Sans', sans-serif">Plus Jakarta Sans (Modern)</option>
-          <option value="'Orbitron', sans-serif">Orbitron (Cyber / Tech)</option>
-          <option value="'Impact', sans-serif">Impact (Viral Punch)</option>
-          <option value="'Arial', sans-serif">Arial Bold</option>
-          <option value="'Georgia', serif">Georgia (Cinematic)</option>
-        </select>
-      </div>
-
-      <div class="inspector-group">
-        <label class="inspector-label">Font Size</label>
-        <input type="range" id="inspectorFontSizeSlider" class="inspector-slider" min="20" max="90" value="48">
-      </div>
-
-      <div class="inspector-group">
-        <label class="inspector-label">Text Color</label>
-        <input type="color" id="inspectorTextColor" class="inspector-color-picker" value="#ffffff">
-      </div>
-
-      <div class="inspector-group">
-        <label class="inspector-label">Highlight Word Color</label>
-        <input type="color" id="inspectorHighlightColor" class="inspector-color-picker" value="#ffea00">
-      </div>
-
-      <!-- VIDEO / AUDIO SPEED & VOLUME -->
-      <div class="inspector-title" style="margin-top: 10px;">Video & Audio Speed</div>
-
-      <div class="inspector-group">
-        <div style="display: flex; justify-content: space-between;">
-          <label class="inspector-label">Playback Speed</label>
-          <span id="speedValueLabel" style="font-size: 11px; color: var(--accent-cyan);">1.0x</span>
-        </div>
-        <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 4px; margin-top: 2px;">
-          <button class="tool-action-btn speed-btn" data-speed="0.5" style="justify-content: center; background: var(--bg-elevated);">0.5x</button>
-          <button class="tool-action-btn speed-btn active" data-speed="1.0" style="justify-content: center; background: var(--bg-elevated); color: var(--accent-cyan); border-color: var(--accent-cyan);">1.0x</button>
-          <button class="tool-action-btn speed-btn" data-speed="1.5" style="justify-content: center; background: var(--bg-elevated);">1.5x</button>
-          <button class="tool-action-btn speed-btn" data-speed="2.0" style="justify-content: center; background: var(--bg-elevated);">2.0x</button>
-        </div>
-      </div>
-
-      <div class="inspector-group">
-        <div style="display: flex; justify-content: space-between;">
-          <label class="inspector-label">Master Volume</label>
-          <span id="volumeValueLabel" style="font-size: 11px; color: var(--accent-cyan);">100%</span>
-        </div>
-        <input type="range" id="inspectorVolumeSlider" class="inspector-slider" min="0" max="100" value="100">
-      </div>
-
-    </aside>
-
-  </main>
-
-  <!-- 5. BOTTOM MULTI-TRACK CAPCUT TIMELINE -->
-  <footer class="timeline-section">
-    
-    <!-- TIMELINE ACTION BAR -->
-    <div class="timeline-actions-bar">
-      <div class="timeline-tools-group">
-        <button class="tool-action-btn" id="splitClipBtn" title="Split clip at playhead (Ctrl+B)">
-          <span>✂️</span> Split
-        </button>
-        <button class="tool-action-btn" id="deleteTrackItemBtn" title="Delete selected clip">
-          <span>🗑️</span> Delete
-        </button>
-        <button class="tool-action-btn" id="addTextLayerBtn" title="Add text layer">
-          <span>➕</span> Add Text
-        </button>
-      </div>
-
-      <div class="timeline-tools-group">
-        <span style="font-size: 11px; color: #64748b;">Timeline Zoom:</span>
-        <button class="tool-action-btn" id="zoomOutBtn">-</button>
-        <button class="tool-action-btn" id="zoomInBtn">+</button>
-      </div>
-    </div>
-
-    <!-- TRACKS WRAPPER -->
-    <div class="timeline-tracks-wrapper">
-      
-      <!-- LEFT TRACK HEADERS -->
-      <div class="track-headers-column">
-        <div class="ruler-header-spacer"></div>
-        <div class="track-header-item">
-          <span class="dot" style="background: var(--accent-purple);"></span>
-          <span>Captions</span>
-        </div>
-        <div class="track-header-item">
-          <span class="dot" style="background: var(--accent-blue);"></span>
-          <span>Video</span>
-        </div>
-        <div class="track-header-item">
-          <span class="dot" style="background: var(--accent-green);"></span>
-          <span>Audio</span>
-        </div>
-        <div class="track-header-item">
-          <span class="dot" style="background: var(--accent-yellow);"></span>
-          <span>Effects</span>
-        </div>
-      </div>
-
-      <!-- RIGHT SCROLLABLE LANES -->
-      <div class="timeline-lanes-scroll" id="timelineScroll">
-        <div class="timeline-content-inner" id="timelineInner">
-          
-          <div class="time-ruler" id="timeRuler"></div>
-
-          <!-- TRACK 1: CAPTIONS -->
-          <div class="track-lane" id="laneCaptions"></div>
-
-          <!-- TRACK 2: VIDEO -->
-          <div class="track-lane" id="laneVideo"></div>
-
-          <!-- TRACK 3: AUDIO -->
-          <div class="track-lane" id="laneAudio"></div>
-
-          <!-- TRACK 4: FX -->
-          <div class="track-lane" id="laneFx"></div>
-
-          <!-- PLAYHEAD SCRUBBER -->
-          <div class="timeline-playhead" id="playhead">
-            <div class="playhead-head"></div>
+    <main id="center">
+      <section id="preview-area">
+        <div id="preview-stage-wrap" data-testid="preview-stage-wrap">
+          <div id="preview-stage">
+            <canvas id="preview-canvas" data-testid="preview-canvas"></canvas>
+            <div id="transform-layer" data-testid="transform-layer"></div>
           </div>
-
         </div>
-      </div>
+        <div id="transport" data-testid="transport">
+          <button class="icon-btn" id="btn-prev-frame" data-testid="btn-prev-frame" data-icon="prev" data-tip="Previous frame" data-tip-key="←"></button>
+          <button class="icon-btn big" id="btn-play" data-testid="btn-play" data-icon="play" data-tip="Play / Pause" data-tip-key="Space"></button>
+          <button class="icon-btn" id="btn-next-frame" data-testid="btn-next-frame" data-icon="next" data-tip="Next frame" data-tip-key="→"></button>
+          <div class="tc" data-testid="timecode">
+            <span id="tc-current" data-testid="tc-current">00:00:00.000</span><span class="tc-sep">/</span><span id="tc-total" data-testid="tc-total">00:00:00.000</span>
+          </div>
+          <div class="transport-spacer"></div>
+          <label class="tr-label" for="playback-speed" data-tip="Preview playback speed">Speed</label>
+          <select id="playback-speed" data-testid="playback-speed" class="sel">
+            <option value="0.25">0.25×</option><option value="0.5">0.5×</option><option value="0.75">0.75×</option>
+            <option value="1" selected>1×</option><option value="1.25">1.25×</option><option value="1.5">1.5×</option>
+            <option value="2">2×</option><option value="4">4×</option><option value="6">6×</option><option value="8">8×</option>
+          </select>
+          <div class="vol-wrap" data-tip="Preview volume">
+            <span class="vol-icon" data-icon="volume"></span>
+            <input type="range" id="preview-volume" data-testid="preview-volume" min="0" max="100" value="100" />
+          </div>
+          <select id="preview-quality" data-testid="preview-quality" class="sel" data-tip="Render quality">
+            <option value="1" selected>Full</option><option value="0.5">Half</option>
+          </select>
+          <select id="preview-zoom" data-testid="preview-zoom" class="sel" data-tip="Preview zoom">
+            <option value="fit" selected>Fit</option><option value="50%">50%</option><option value="100%">100%</option>
+          </select>
+          <button class="icon-btn" id="btn-fullscreen-preview" data-testid="btn-fullscreen-preview" data-icon="expand" data-tip="Fullscreen preview"></button>
+        </div>
+      </section>
 
-    </div>
+      <div class="gutter gutter-h" id="gutter-timeline" data-testid="gutter-timeline"></div>
 
-  </footer>
+      <section id="timeline-area" data-testid="timeline-area">
+        <div id="timeline-toolbar" data-testid="timeline-toolbar">
+          <button class="tool-btn" id="btn-keyframe" data-testid="btn-keyframe" data-tip="Add keyframes at playhead">◆</button>
+          <button class="tool-btn" id="btn-split" data-testid="btn-split" data-icon="scissors" data-tip="Split clip at playhead" data-tip-key="S"></button>
+          <button class="tool-btn" id="btn-delete-clip" data-testid="btn-delete-clip" data-icon="trash" data-tip="Delete selected" data-tip-key="Del"></button>
+          <button class="tool-btn" id="btn-ripple-delete" data-testid="btn-ripple-delete" data-icon="ripple" data-tip="Ripple delete (close gap)"></button>
+          <button class="tool-btn" id="btn-duplicate" data-testid="btn-duplicate" data-icon="copy" data-tip="Duplicate selected" data-tip-key="Ctrl+D"></button>
+          <button class="tool-btn" id="btn-copy-clip" data-testid="btn-copy-clip" data-icon="copy" data-tip="Copy" data-tip-key="Ctrl+C"></button>
+          <button class="tool-btn" id="btn-paste-clip" data-testid="btn-paste-clip" data-icon="paste" data-tip="Paste" data-tip-key="Ctrl+V"></button>
+          <div class="tool-sep"></div>
+          <button class="tool-btn" id="btn-set-in" data-testid="btn-set-in" data-tip="Set In point ["><span>I</span></button>
+          <button class="tool-btn" id="btn-set-out" data-testid="btn-set-out" data-tip="Set Out point ]"><span>O</span></button>
+          <button class="tool-btn" id="btn-add-marker" data-testid="btn-add-marker" data-icon="flag" data-tip="Add marker at playhead"></button>
+          <button class="tool-btn" id="btn-toggle-snap" data-testid="btn-toggle-snap" data-icon="magnet" data-tip="Snapping" data-tip-key="N"></button>
+          <div class="tool-spacer"></div>
+          <button class="tool-btn" id="btn-zoom-out" data-testid="btn-zoom-out" data-icon="minus" data-tip="Zoom out"></button>
+          <input type="range" id="timeline-zoom-slider" data-testid="timeline-zoom-slider" min="4" max="400" value="60" data-tip="Timeline zoom" />
+          <button class="tool-btn" id="btn-zoom-in" data-testid="btn-zoom-in" data-icon="plus" data-tip="Zoom in"></button>
+          <button class="tool-btn text" id="btn-zoom-fit" data-testid="btn-zoom-fit" data-tip="Zoom to fit project"><span>Fit</span></button>
+          <div class="tool-spacer"></div>
+          <button class="tool-btn text" id="btn-add-video-track" data-testid="btn-add-video-track" data-tip="Add video track"><span>+ Video</span></button>
+          <button class="tool-btn text" id="btn-add-audio-track" data-testid="btn-add-audio-track" data-tip="Add audio track"><span>+ Audio</span></button>
+        </div>
+        <div id="timeline-body">
+          <div id="track-headers" data-testid="track-headers">
+            <div id="headers-ruler-spacer"></div>
+            <div id="track-headers-list"></div>
+          </div>
+          <div id="tl-right">
+            <div id="ruler-wrap" data-testid="timeline-ruler"><canvas id="ruler-canvas" height="32"></canvas></div>
+            <div id="tl-scroll" data-testid="timeline-scroll">
+              <div id="tl-inner">
+                <div id="tracks" data-testid="tracks"></div>
+              </div>
+            </div>
+            <div id="playhead" data-testid="playhead"><div id="playhead-handle" data-testid="playhead-handle"></div></div>
+            <div id="drop-indicator" data-testid="drop-indicator"></div>
+          </div>
+        </div>
+      </section>
+    </main>
 
-  <!-- REAL VIDEO EXPORT MODAL -->
-  <div class="modal-backdrop hidden" id="exportModal">
-    <div class="export-modal-card">
-      <div style="font-size: 34px; margin-bottom: 8px;">🎬</div>
-      <h2 style="font-size: 19px; font-weight: 800; color: #fff;">Exporting CapCut Video</h2>
-      <p style="font-size: 12px; color: #94a3b8; margin-top: 4px;">Rendering video layers, audio, filters & animated viral captions...</p>
+    <div class="gutter gutter-v" id="gutter-right" data-testid="gutter-right"></div>
 
-      <div class="export-progress-bar">
-        <div class="export-progress-fill" id="exportProgressBar"></div>
-      </div>
-
-      <div id="exportStatusText" style="font-size: 12px; font-family: monospace; color: var(--accent-cyan);">
-        Encoding frames: 0%
-      </div>
-    </div>
+    <aside id="right-panel" data-testid="right-panel">
+      <header class="panel-header"><span>Inspector</span><span id="inspector-subtitle" data-testid="inspector-subtitle"></span></header>
+      <div id="inspector-body" data-testid="inspector-body"></div>
+    </aside>
   </div>
+</div>
 
-  <script src="app.js"></script>
+<input type="file" id="file-input" multiple accept="video/*,audio/*,image/*" hidden />
 
+<div id="tooltip" role="tooltip" data-testid="tooltip"></div>
+<div id="ctx-menu" data-testid="context-menu"></div>
+<div id="toast-root" data-testid="toast-root" role="status"></div>
+<div id="modal-root" data-testid="modal-root"></div>
+<div id="busy-overlay" data-testid="busy-overlay" hidden><div class="spinner"></div><div id="busy-text" data-testid="busy-text">Working…</div></div>
+<div id="drop-overlay" data-testid="drop-overlay"><div class="drop-box">Drop media files to import</div></div>
+<div id="boot-splash" data-testid="boot-splash">
+  <div class="logo big"><span class="logo-mark big"></span><span>FORGE</span></div>
+  <div class="spinner"></div>
+  <div id="boot-status">Loading project…</div>
+</div>
+
+<script type="module" src="js/app.js"></script>
 </body>
 </html>

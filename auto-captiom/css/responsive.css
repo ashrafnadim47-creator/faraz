@@ -1,0 +1,900 @@
+/* =========================================================
+   FORGE VIDEO EDITOR
+   RESPONSIVE / MOBILE / TABLET STYLES
+   ========================================================= */
+
+
+/* =========================================================
+   LARGE DESKTOP
+   ========================================================= */
+
+@media (min-width: 1500px) {
+
+    .editor-layout {
+        grid-template-columns:
+            78px
+            270px
+            minmax(500px, 1fr)
+            300px;
+    }
+
+    .video-canvas {
+        width: min(100%, 410px);
+    }
+
+    .timeline-section {
+        height: 310px;
+        min-height: 310px;
+    }
+}
+
+
+/* =========================================================
+   NORMAL LAPTOP
+   ========================================================= */
+
+@media (max-width: 1250px) {
+
+    .editor-layout {
+        grid-template-columns:
+            68px
+            210px
+            minmax(350px, 1fr)
+            245px;
+    }
+
+    .brand {
+        width: 160px;
+    }
+
+    .top-actions {
+        width: 220px;
+    }
+
+    .timeline-section {
+        height: 260px;
+        min-height: 260px;
+    }
+
+    .video-canvas {
+        width: min(100%, 320px);
+    }
+}
+
+
+/* =========================================================
+   SMALL LAPTOP / TABLET LANDSCAPE
+   ========================================================= */
+
+@media (max-width: 1050px) {
+
+    .editor-layout {
+        grid-template-columns:
+            64px
+            190px
+            minmax(300px, 1fr)
+            215px;
+    }
+
+    .brand {
+        width: 140px;
+    }
+
+    .brand-name {
+        font-size: 13px;
+    }
+
+    .top-actions {
+        width: 190px;
+    }
+
+    .export-btn {
+        padding: 0 13px;
+    }
+
+    .properties-panel {
+        font-size: 10px;
+    }
+
+    .timeline-section {
+        height: 245px;
+        min-height: 245px;
+    }
+
+    .video-canvas {
+        width: min(100%, 290px);
+    }
+}
+
+
+/* =========================================================
+   TABLET
+   ========================================================= */
+
+@media (max-width: 850px) {
+
+    body {
+        overflow: hidden;
+    }
+
+    .topbar {
+        height: 54px;
+        min-height: 54px;
+
+        padding: 0 10px;
+    }
+
+    .brand {
+        width: auto;
+    }
+
+    .brand-name {
+        display: none;
+    }
+
+    .project-area {
+        justify-content: flex-start;
+
+        padding-left: 10px;
+    }
+
+    .top-actions {
+        width: auto;
+    }
+
+    .top-actions .top-btn {
+        display: none;
+    }
+
+    .editor-layout {
+        grid-template-columns:
+            62px
+            185px
+            minmax(300px, 1fr);
+
+        position: relative;
+    }
+
+    .properties-panel {
+        display: none;
+    }
+
+    .timeline-section {
+        height: 235px;
+        min-height: 235px;
+    }
+
+    .video-canvas {
+        width: min(100%, 280px);
+    }
+
+    .mobile-nav {
+        display: none;
+    }
+}
+
+
+/* =========================================================
+   MOBILE LANDSCAPE / SMALL TABLET
+   ========================================================= */
+
+@media (max-width: 700px) {
+
+    .editor-layout {
+        display: flex;
+        flex-direction: column;
+
+        position: relative;
+    }
+
+    /* -----------------------------------------
+       LEFT SIDEBAR
+       ----------------------------------------- */
+
+    .left-sidebar {
+        position: absolute;
+
+        left: 0;
+        top: 0;
+        bottom: 0;
+
+        z-index: 100;
+
+        width: 58px;
+
+        padding: 7px 4px;
+
+        overflow-y: auto;
+    }
+
+    .tool-btn {
+        width: 50px;
+        min-height: 51px;
+    }
+
+    .tool-icon {
+        width: 21px;
+        height: 21px;
+
+        font-size: 15px;
+    }
+
+    .tool-btn span:last-child {
+        font-size: 8px;
+    }
+
+
+    /* -----------------------------------------
+       ASSET PANEL
+       ----------------------------------------- */
+
+    .asset-panel {
+        position: absolute;
+
+        left: 58px;
+        top: 0;
+        bottom: 0;
+
+        z-index: 90;
+
+        width: 205px;
+    }
+
+
+    /* -----------------------------------------
+       WORKSPACE
+       ----------------------------------------- */
+
+    .workspace {
+        width: 100%;
+        height: 100%;
+    }
+
+    .preview-stage {
+        padding: 10px 8px;
+    }
+
+    .video-canvas {
+        width: min(100%, 240px);
+
+        max-height: calc(100% - 10px);
+    }
+
+
+    /* -----------------------------------------
+       TIMELINE
+       ----------------------------------------- */
+
+    .timeline-section {
+        height: 210px;
+        min-height: 210px;
+    }
+
+    .timeline-toolbar {
+        height: 38px;
+        min-height: 38px;
+    }
+
+    .timeline-center {
+        display: none;
+    }
+
+    .track-label {
+        width: 65px;
+        min-width: 65px;
+    }
+
+    .timeline-playhead {
+        left: 65px;
+    }
+
+
+    /* -----------------------------------------
+       MOBILE NAV
+       ----------------------------------------- */
+
+    .mobile-nav {
+        display: flex;
+
+        height: 60px;
+        min-height: 60px;
+
+        align-items: center;
+        justify-content: space-around;
+
+        background: #17181b;
+
+        border-top: 1px solid #292b2f;
+
+        z-index: 200;
+    }
+
+    .mobile-nav button {
+        width: 20%;
+
+        height: 100%;
+
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+
+        gap: 4px;
+
+        color: #7f828a;
+
+        font-size: 9px;
+    }
+
+    .mobile-nav button span {
+        font-size: 17px;
+    }
+
+    .mobile-nav button:hover,
+    .mobile-nav button.active {
+        color: #ffffff;
+    }
+
+
+    /* -----------------------------------------
+       PLAYER
+       ----------------------------------------- */
+
+    .player-controls {
+        height: 44px;
+        min-height: 44px;
+
+        gap: 7px;
+
+        padding: 0 8px;
+    }
+
+    .play-btn {
+        width: 29px;
+        height: 29px;
+    }
+
+    .time-display {
+        width: 35px;
+
+        font-size: 9px;
+    }
+}
+
+
+/* =========================================================
+   PHONE PORTRAIT
+   ========================================================= */
+
+@media (max-width: 520px) {
+
+    .topbar {
+        height: 50px;
+        min-height: 50px;
+
+        padding: 0 8px;
+    }
+
+    .brand-logo {
+        width: 29px;
+        height: 29px;
+
+        font-size: 15px;
+    }
+
+    .project-name {
+        max-width: 145px;
+
+        font-size: 10px;
+    }
+
+    .icon-btn {
+        width: 30px;
+        height: 30px;
+
+        font-size: 16px;
+    }
+
+    .export-btn {
+        height: 31px;
+
+        padding: 0 11px;
+
+        font-size: 10px;
+    }
+
+
+    /* -----------------------------------------
+       EDITOR
+       ----------------------------------------- */
+
+    .editor-layout {
+        height: calc(100vh - 110px);
+    }
+
+    .left-sidebar {
+        display: none;
+    }
+
+    .asset-panel {
+        position: fixed;
+
+        left: 0;
+        right: 0;
+        bottom: 60px;
+        top: auto;
+
+        width: 100%;
+        height: min(58vh, 430px);
+
+        border-top: 1px solid #36383e;
+        border-right: 0;
+
+        border-radius: 15px 15px 0 0;
+
+        box-shadow:
+            0 -20px 60px rgba(0, 0, 0, 0.5);
+
+        transform: translateY(105%);
+
+        transition:
+            transform 0.25s ease;
+    }
+
+    .asset-panel.mobile-open {
+        transform: translateY(0);
+    }
+
+
+    /* -----------------------------------------
+       PREVIEW
+       ----------------------------------------- */
+
+    .preview-area {
+        min-height: 0;
+    }
+
+    .preview-topbar {
+        height: 34px;
+        min-height: 34px;
+
+        padding: 0 8px;
+    }
+
+    .preview-stage {
+        padding: 5px;
+    }
+
+    .video-canvas {
+        width: min(58vw, 220px);
+
+        border-radius: 4px;
+    }
+
+
+    /* -----------------------------------------
+       TIMELINE
+       ----------------------------------------- */
+
+    .timeline-section {
+        height: 185px;
+        min-height: 185px;
+    }
+
+    .timeline-toolbar {
+        padding: 0 6px;
+    }
+
+    .timeline-left {
+        gap: 2px;
+    }
+
+    .timeline-toolbar button {
+        padding: 5px 6px;
+
+        font-size: 9px;
+    }
+
+    .timeline-right {
+        display: none;
+    }
+
+
+    /* -----------------------------------------
+       TRACKS
+       ----------------------------------------- */
+
+    .track {
+        height: 50px;
+    }
+
+    .track-label {
+        width: 55px;
+        min-width: 55px;
+
+        justify-content: center;
+
+        padding: 0;
+
+        gap: 3px;
+
+        font-size: 8px;
+    }
+
+    .timeline-playhead {
+        left: 55px;
+    }
+
+
+    /* -----------------------------------------
+       MOBILE NAV
+       ----------------------------------------- */
+
+    .mobile-nav {
+        height: 60px;
+        min-height: 60px;
+    }
+
+    .mobile-nav button {
+        font-size: 8px;
+    }
+
+    .mobile-nav button span {
+        font-size: 16px;
+    }
+}
+
+
+/* =========================================================
+   VERY SMALL PHONES
+   ========================================================= */
+
+@media (max-width: 370px) {
+
+    .project-name {
+        max-width: 110px;
+    }
+
+    .export-btn {
+        padding: 0 8px;
+    }
+
+    .icon-btn:nth-child(2) {
+        display: none;
+    }
+
+    .video-canvas {
+        width: min(62vw, 200px);
+    }
+
+    .timeline-section {
+        height: 175px;
+        min-height: 175px;
+    }
+
+    .mobile-nav button span {
+        font-size: 14px;
+    }
+}
+
+
+/* =========================================================
+   PHONE LANDSCAPE
+   ========================================================= */
+
+@media (max-height: 550px) and (orientation: landscape) {
+
+    .topbar {
+        height: 46px;
+        min-height: 46px;
+    }
+
+    .editor-layout {
+        height: calc(100vh - 46px);
+    }
+
+    .preview-stage {
+        padding: 5px;
+    }
+
+    .video-canvas {
+        height: calc(100% - 5px);
+        width: auto;
+
+        aspect-ratio: 9 / 16;
+    }
+
+    .timeline-section {
+        height: 155px;
+        min-height: 155px;
+    }
+
+    .mobile-nav {
+        display: none;
+    }
+}
+
+
+/* =========================================================
+   TOUCH DEVICES
+   ========================================================= */
+
+@media (hover: none) and (pointer: coarse) {
+
+    button {
+        -webkit-touch-callout: none;
+    }
+
+    .timeline-clip {
+        touch-action: none;
+    }
+
+    .timeline-playhead {
+        touch-action: none;
+    }
+
+    .clip-handle {
+        width: 14px;
+    }
+
+    .media-item:hover {
+        transform: none;
+    }
+
+    .tool-btn:hover {
+        background: transparent;
+    }
+
+    .mobile-nav button {
+        touch-action: manipulation;
+    }
+}
+
+
+/* =========================================================
+   REDUCED MOTION
+   ========================================================= */
+
+@media (prefers-reduced-motion: reduce) {
+
+    *,
+    *::before,
+    *::after {
+        scroll-behavior: auto !important;
+
+        animation-duration: 0.001ms !important;
+        animation-iteration-count: 1 !important;
+
+        transition-duration: 0.001ms !important;
+    }
+}
+/* =========================================================
+   FORGE 2.0 PLATFORM UI — actual current editor DOM
+   Shared editor core stays identical; only the shell changes.
+   ========================================================= */
+
+.forge-mobile-nav { display: none; }
+
+@media (max-width: 820px) {
+  html, body { width: 100%; height: 100%; overflow: hidden; }
+  #topbar { height: 52px; min-height: 52px; padding: 0 8px; }
+  #topbar .tb-center { min-width: 0; }
+  #project-name-input { max-width: 150px; }
+  #topbar .tb-group:first-of-type { display: none; }
+  #topbar .tb-group:nth-of-type(2) { gap: 2px; }
+  #btn-shortcuts, #btn-panels, #btn-fullscreen-app { display: none; }
+
+  #workspace { position: relative; min-height: 0; display: flex; }
+  #center { width: 100%; min-width: 0; }
+  #gutter-left, #gutter-right, #gutter-timeline { display: none; }
+
+  #left-panel, #right-panel {
+    position: fixed;
+    left: 0;
+    right: 0;
+    width: 100% !important;
+    max-height: 48vh;
+    z-index: 500;
+    box-shadow: 0 -16px 45px rgba(0,0,0,.42);
+    transition: transform .2s ease, opacity .2s ease;
+  }
+
+  #left-panel {
+    bottom: 58px;
+    top: auto;
+    height: min(48vh, 430px);
+    transform: translateY(calc(100% + 20px));
+    border-right: 0;
+    border-top: 1px solid var(--border);
+    border-radius: 16px 16px 0 0;
+  }
+  #right-panel {
+    bottom: 58px;
+    top: auto;
+    height: min(48vh, 430px);
+    transform: translateY(calc(100% + 20px));
+    border-left: 0;
+    border-top: 1px solid var(--border);
+    border-radius: 16px 16px 0 0;
+  }
+  #left-panel.mobile-open, #right-panel.mobile-open { transform: translateY(0); }
+
+  #left-tabs { overflow-x: auto; flex-wrap: nowrap; }
+  #left-tabs .ltab { min-width: 82px; }
+  #left-panes { min-height: 0; }
+
+  #preview-area { flex: 1 1 auto; min-height: 0; }
+  #preview-stage-wrap { min-height: 0; }
+  #preview-stage { max-width: 100%; max-height: 100%; }
+
+  #transport { min-height: 48px; height: 48px; gap: 5px; padding: 0 7px; }
+  #transport .tr-label, #preview-quality, #preview-zoom { display: none; }
+  #transport .transport-spacer { flex: 1; }
+
+  #timeline-area { height: min(34vh, 240px) !important; min-height: 150px; }
+  #timeline-toolbar { overflow-x: auto; }
+  #timeline-toolbar .tool-spacer { flex: 1 0 8px; }
+  #timeline-body { min-height: 0; }
+
+  .forge-mobile-nav {
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: 58px;
+    z-index: 1000;
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    background: color-mix(in srgb, var(--bg-1) 96%, black);
+    border-top: 1px solid var(--border);
+    padding-bottom: env(safe-area-inset-bottom);
+  }
+  .forge-mobile-nav-item {
+    border: 0;
+    background: transparent;
+    color: var(--text-3);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 3px;
+    font: inherit;
+    font-size: 10px;
+    touch-action: manipulation;
+  }
+  .forge-mobile-nav-item.active { color: var(--accent); }
+  .forge-mobile-nav-item svg { width: 19px; height: 19px; }
+}
+
+@media (max-width: 480px) {
+  #project-name-input { max-width: 110px; }
+  #btn-import span, #btn-export span { display: none; }
+  #btn-import, #btn-export { width: 38px; padding: 0; }
+  #timeline-area { height: min(31vh, 205px) !important; }
+  #timeline-toolbar button { min-width: 34px; }
+  #timeline-toolbar .tool-btn.text { padding-inline: 7px; }
+}
+
+@media (min-width: 821px) {
+  html[data-forge-platform="desktop"] #workspace { min-width: 1000px; }
+}
+
+/* =========================================================
+   FORGE MOBILE 2.1 — native-feeling editor shell
+   ========================================================= */
+
+.forge-mobile-backdrop { display:none; }
+
+@media (max-width: 820px) {
+  :root { --forge-mobile-nav-height: 66px; }
+
+  body { overscroll-behavior: none; }
+  #app { height: 100dvh; min-height: 100dvh; }
+  #topbar {
+    padding-top: env(safe-area-inset-top);
+    height: calc(52px + env(safe-area-inset-top));
+    min-height: calc(52px + env(safe-area-inset-top));
+  }
+  #workspace { height: calc(100dvh - 52px - env(safe-area-inset-top)); padding-bottom: var(--forge-mobile-nav-height); }
+
+  #center { min-height: 0; }
+  #preview-area { min-height: 0; background: radial-gradient(circle at 50% 30%, var(--bg-2), var(--bg-0) 58%); }
+  #preview-stage-wrap { flex: 1; display:flex; align-items:center; justify-content:center; min-height:0; padding:10px; }
+  #preview-stage { max-width: min(78vw, 430px); max-height: min(58dvh, 610px); width:auto; height:auto; }
+
+  #transport {
+    flex: 0 0 50px;
+    height: 50px;
+    min-height: 50px;
+    padding-inline: 10px;
+    background: color-mix(in srgb, var(--bg-1) 94%, black);
+    border-top: 1px solid var(--border);
+  }
+  #transport .icon-btn { flex: 0 0 34px; }
+  #transport .icon-btn.big { flex-basis:40px; width:40px; height:40px; }
+  #transport .tc { margin-left: 2px; font-variant-numeric: tabular-nums; }
+  #transport .vol-wrap { display:none; }
+
+  #timeline-area {
+    flex: 0 0 min(30dvh, 230px) !important;
+    height: min(30dvh, 230px) !important;
+    min-height: 155px;
+    border-top: 1px solid var(--border-strong);
+  }
+  #timeline-toolbar { min-height: 40px; height:40px; padding-inline:6px; }
+  #timeline-toolbar .tool-btn { min-width:36px; height:32px; }
+  #timeline-toolbar .tool-btn.text span { display:block; }
+  #track-headers { width:58px !important; min-width:58px !important; }
+
+  .forge-mobile-backdrop {
+    display:block;
+    position:fixed;
+    inset:0;
+    z-index:490;
+    background:rgba(0,0,0,.38);
+    backdrop-filter: blur(2px);
+    opacity:0;
+    pointer-events:none;
+    transition:opacity .18s ease;
+  }
+  .forge-mobile-backdrop.visible { opacity:1; pointer-events:auto; }
+
+  .forge-mobile-nav {
+    height:calc(var(--forge-mobile-nav-height) + env(safe-area-inset-bottom));
+    padding-bottom:env(safe-area-inset-bottom);
+    background:color-mix(in srgb, var(--bg-1) 96%, black);
+    box-shadow:0 -8px 30px rgba(0,0,0,.28);
+  }
+  .forge-mobile-nav-item {
+    position:relative;
+    min-height:var(--forge-mobile-nav-height);
+    font-size:10px;
+    font-weight:600;
+  }
+  .forge-mobile-nav-item::before {
+    content:"";
+    position:absolute;
+    top:5px;
+    left:50%;
+    width:28px;
+    height:28px;
+    transform:translateX(-50%) scale(.7);
+    border-radius:10px;
+    background:var(--accent-soft);
+    opacity:0;
+    transition:.16s ease;
+  }
+  .forge-mobile-nav-item.active::before { opacity:1; transform:translateX(-50%) scale(1); }
+  .forge-mobile-nav-item.active svg,
+  .forge-mobile-nav-item.active span { color:var(--accent); }
+
+  #left-panel, #right-panel {
+    bottom:calc(var(--forge-mobile-nav-height) + env(safe-area-inset-bottom));
+    max-height:min(62dvh, 540px);
+    height:min(62dvh, 540px);
+    border-radius:18px 18px 0 0;
+    overflow:hidden;
+  }
+  #left-panel::before, #right-panel::before {
+    content:"";
+    display:block;
+    width:38px;
+    height:4px;
+    flex:0 0 4px;
+    margin:7px auto 5px;
+    border-radius:999px;
+    background:var(--bg-4);
+  }
+  #left-tabs { min-height:44px; }
+  #left-tabs .ltab { min-width:82px; }
+}
+
+@media (max-width:480px) {
+  #project-name-input { max-width:100px; }
+  #btn-import span, #btn-export span { display:none; }
+  #btn-import, #btn-export { width:38px; min-width:38px; padding:0; }
+  #preview-stage-wrap { padding:6px; }
+  #preview-stage { max-width:72vw; max-height:52dvh; }
+  #timeline-area { flex-basis:min(29dvh, 205px) !important; height:min(29dvh, 205px) !important; }
+  #timeline-toolbar .tool-btn.text { display:none; }
+}
