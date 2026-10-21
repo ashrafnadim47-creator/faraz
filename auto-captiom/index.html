@@ -42,6 +42,13 @@
     </div>
 
     <div class="header-actions">
+      <input type="file" id="capcutDraftInput" accept=".json" style="display:none;">
+      <button class="header-btn" id="importCapcutDraftBtn" title="Import Real CapCut Project (draft_content.json)">
+        <span style="color:#00f2fe;">⚡</span> Import CapCut
+      </button>
+      <button class="header-btn" id="exportCapcutDraftBtn" title="Export Real CapCut Project (draft_content.json)">
+        <span style="color:#39ff14;">💾</span> Export CapCut
+      </button>
       <button class="header-btn" id="exportSrtBtn" title="Download .SRT Subtitles">📄 .SRT</button>
       <button class="header-btn" id="exportVttBtn" title="Download .VTT Subtitles">📜 .VTT</button>
       <a href="../downloads/FORGE-Video-Editor-Setup.exe" download="FORGE-Video-Editor-Setup.exe" class="header-btn" title="Download Windows Desktop App Installer">
@@ -115,6 +122,20 @@
             <div class="media-thumbnail-card demo-sample-btn" data-type="neon" title="Load Cyberpunk Synthwave Template">
               <div style="height: 100%; display: flex; align-items: center; justify-content: center; background: linear-gradient(135deg, #ec4899, #8b5cf6); font-size: 22px;">🌆</div>
               <div class="media-badge-duration">Neon Synth</div>
+            </div>
+          </div>
+
+          <div class="capcut-rea-card" style="margin-top: 14px; padding: 12px; background: rgba(0, 242, 254, 0.06); border: 1px solid rgba(0, 242, 254, 0.25); border-radius: 8px;">
+            <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 6px;">
+              <span style="font-weight: 800; font-size: 11px; color: #00f2fe; letter-spacing: 0.5px;">⚡ CAPCUT REA SCHEMA</span>
+              <span style="font-size: 10px; color: #39ff14; background: rgba(57, 255, 20, 0.15); padding: 2px 6px; border-radius: 4px; font-weight: 700;">ACTIVE</span>
+            </div>
+            <p style="font-size: 11px; color: #94a3b8; line-height: 1.4; margin: 0 0 10px 0;">
+              Import or Export real CapCut project files (<code>draft_content.json</code>) with full microsecond timeline & styling tracks.
+            </p>
+            <div style="display: flex; gap: 6px;">
+              <button class="upload-mini-btn" id="browseCapcutDraftBtn" style="flex: 1; padding: 6px 8px; font-size: 11px; background: rgba(0, 242, 254, 0.15); color: #00f2fe; border: 1px solid #00f2fe;">📥 Import Draft</button>
+              <button class="upload-mini-btn" id="saveCapcutDraftBtn" style="flex: 1; padding: 6px 8px; font-size: 11px; background: rgba(57, 255, 20, 0.15); border: 1px solid #39ff14; color: #39ff14;">💾 Export Draft</button>
             </div>
           </div>
         </div>

@@ -890,6 +890,309 @@ exportVttBtn.addEventListener("click", () => {
   downloadFile(vtt, "CapCut_Captions.vtt", "text/vtt");
 });
 
+// ==========================================
+// CAPCUT REA (REVERSE-ENGINEERED) DRAFT ENGINE
+// Exact Schema Parser & Generator
+// ==========================================
+
+const capcutDraftInput = document.getElementById("capcutDraftInput");
+const importCapcutDraftBtn = document.getElementById("importCapcutDraftBtn");
+const exportCapcutDraftBtn = document.getElementById("exportCapcutDraftBtn");
+const browseCapcutDraftBtn = document.getElementById("browseCapcutDraftBtn");
+const saveCapcutDraftBtn = document.getElementById("saveCapcutDraftBtn");
+
+if (importCapcutDraftBtn && capcutDraftInput) {
+  importCapcutDraftBtn.addEventListener("click", () => capcutDraftInput.click());
+}
+if (browseCapcutDraftBtn && capcutDraftInput) {
+  browseCapcutDraftBtn.addEventListener("click", () => capcutDraftInput.click());
+}
+if (exportCapcutDraftBtn) {
+  exportCapcutDraftBtn.addEventListener("click", exportCapcutDraft);
+}
+if (saveCapcutDraftBtn) {
+  saveCapcutDraftBtn.addEventListener("click", exportCapcutDraft);
+}
+
+if (capcutDraftInput) {
+  capcutDraftInput.addEventListener("change", (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = (event) => {
+      try {
+        const draftJson = JSON.parse(event.target.result);
+        loadCapcutDraftContent(draftJson, file.name);
+      } catch (err) {
+        alert("Invalid CapCut draft_content.json file: " + err.message);
+      }
+    };
+    reader.readAsText(file);
+    e.target.value = "";
+  });
+}
+
+function loadCapcutDraftContent(d, filename) {
+  try {
+    // 1. Duration (CapCut uses microseconds)
+    if (d.duration && typeof d.duration === "number") {
+      state.duration = Math.max(5, parseFloat((d.duration / 1000000).toFixed(2)));
+    }
+
+    // 2. Canvas Config
+    if (d.canvas_config) {
+      if (d.canvas_config.ratio === "9:16" || (d.canvas_config.width < d.canvas_config.height)) {
+        setAspectRatio("9-16");
+      } else if (d.canvas_config.ratio === "16:9" || (d.canvas_config.width > d.canvas_config.height)) {
+        setAspectRatio("16-9");
+      } else if (d.canvas_config.ratio === "1:1") {
+        setAspectRatio("1-1");
+      }
+    }
+
+    // 3. Materials Lookup Maps
+    const textMaterials = new Map();
+    if (d.materials && Array.isArray(d.materials.texts)) {
+      d.materials.texts.forEach(tm => {
+        let extractedText = "";
+        try {
+          if (tm.content) {
+            const parsedContent = JSON.parse(tm.content);
+            extractedText = parsedContent.text || "";
+          }
+        } catch (_) {
+          extractedText = tm.name || "CapCut Text";
+        }
+        textMaterials.set(tm.id, {
+          raw: tm,
+          text: extractedText,
+          textColor: tm.text_color || "#ffffff",
+          shadowColor: tm.shadow_color || "#ffea00",
+          borderColor: tm.border_color || "#000000",
+          fontSize: tm.font_size || 36
+        });
+      });
+    }
+
+    // 4. Parse Tracks
+    const newCaptions = [];
+    const newVideo = [];
+    const newAudio = [];
+
+    if (Array.isArray(d.tracks)) {
+      d.tracks.forEach(track => {
+        const type = track.type;
+        const segments = track.segments || [];
+
+        segments.forEach((seg, sIdx) => {
+          // Time ranges in microseconds
+          const startSec = (seg.target_timerange && seg.target_timerange.start) ? seg.target_timerange.start / 1000000 : 0;
+          const durSec = (seg.target_timerange && seg.target_timerange.duration) ? seg.target_timerange.duration / 1000000 : 3;
+          const endSec = startSec + durSec;
+
+          if (type === "text") {
+            const mat = textMaterials.get(seg.material_id);
+            const textString = mat ? mat.text : (seg.desc || `Text Layer ${sIdx + 1}`);
+            newCaptions.push({
+              id: seg.id || `c_cc_${sIdx}`,
+              start: parseFloat(startSec.toFixed(2)),
+              end: parseFloat(endSec.toFixed(2)),
+              text: textString.replace(/\r?\n/g, " "),
+              preset: "mrbeast"
+            });
+          } else if (type === "video") {
+            newVideo.push({
+              id: seg.id || `v_cc_${sIdx}`,
+              start: parseFloat(startSec.toFixed(2)),
+              end: parseFloat(endSec.toFixed(2)),
+              title: seg.desc || `Video Clip ${sIdx + 1}`,
+              color: "block-video"
+            });
+          } else if (type === "audio") {
+            newAudio.push({
+              id: seg.id || `a_cc_${sIdx}`,
+              start: parseFloat(startSec.toFixed(2)),
+              end: parseFloat(endSec.toFixed(2)),
+              title: seg.desc || `Audio Clip ${sIdx + 1}`,
+              color: "block-audio"
+            });
+          }
+        });
+      });
+    }
+
+    if (newCaptions.length > 0) {
+      trackData.captions = newCaptions.sort((a, b) => a.start - b.start);
+      state.activeText = trackData.captions[0].text;
+    }
+    if (newVideo.length > 0) {
+      trackData.video = newVideo;
+    }
+    if (newAudio.length > 0) {
+      trackData.audio = newAudio;
+    }
+
+    state.videoName = filename || "CapCut Imported Draft";
+    state.currentTime = 0;
+
+    renderTimelineRuler();
+    renderTimelineBlocks();
+    updatePlayhead();
+    renderCanvasFrame();
+
+    alert(`⚡ CapCut Project Loaded Successfully!\n\nDuration: ${state.duration}s\nCaptions: ${newCaptions.length} segments\nVideo Tracks: ${newVideo.length}\nAudio Tracks: ${newAudio.length}`);
+  } catch (err) {
+    console.error("Error loading CapCut draft:", err);
+    alert("Error loading CapCut draft schema: " + err.message);
+  }
+}
+
+function exportCapcutDraft() {
+  const capcutMicroDuration = Math.round(state.duration * 1000000);
+  
+  // Format CapCut Materials Texts
+  const materialsTexts = trackData.captions.map((cap, i) => {
+    const textClean = cap.text || "FORGE TEXT";
+    const textId = `TEXT_MAT_${i + 1}_${Date.now()}`;
+    return {
+      recognize_task_id: "",
+      id: textId,
+      name: textClean,
+      type: "text",
+      content: JSON.stringify({
+        text: textClean,
+        styles: [
+          {
+            fill: {
+              content: {
+                render_type: "solid",
+                solid: { color: [1.0, 1.0, 1.0] }
+              }
+            },
+            font: {
+              path: "C:/Users/WINDOWS/AppData/Local/CapCut/Apps/Resources/Font/SystemFont/en.ttf",
+              id: ""
+            },
+            size: state.fontSize * 0.5,
+            bold: true,
+            useLetterColor: true,
+            range: [0, textClean.length]
+          }
+        ]
+      }),
+      words: {
+        start_time: [],
+        end_time: [],
+        text: []
+      },
+      has_shadow: true,
+      shadow_color: state.highlightColor,
+      shadow_alpha: 1.0,
+      shadow_distance: 5.0,
+      border_color: "#000000",
+      border_width: 0.08,
+      border_alpha: 1.0,
+      text_color: state.textColor,
+      background_color: "#000000",
+      background_alpha: 0.0
+    };
+  });
+
+  const draftJson = {
+    id: `FORGE_CAPCUT_${Date.now()}`,
+    name: state.videoName || "FORGE_CapCut_Project",
+    version: 360000,
+    fps: 30,
+    duration: capcutMicroDuration,
+    canvas_config: {
+      ratio: state.aspectRatio === "9-16" ? "9:16" : (state.aspectRatio === "16-9" ? "16:9" : "1:1"),
+      width: state.aspectRatio === "16-9" ? 1920 : (state.aspectRatio === "9-16" ? 1080 : 1080),
+      height: state.aspectRatio === "16-9" ? 1080 : (state.aspectRatio === "9-16" ? 1920 : 1080),
+      background: null
+    },
+    tracks: [
+      {
+        id: `track_video_${Date.now()}`,
+        type: "video",
+        segments: trackData.video.map((v, idx) => ({
+          id: `seg_video_${idx}_${Date.now()}`,
+          source_timerange: {
+            start: Math.round(v.start * 1000000),
+            duration: Math.round((v.end - v.start) * 1000000)
+          },
+          target_timerange: {
+            start: Math.round(v.start * 1000000),
+            duration: Math.round((v.end - v.start) * 1000000)
+          },
+          speed: state.speed,
+          volume: state.volume,
+          clip: {
+            scale: { x: 1, y: 1 },
+            rotation: 0,
+            transform: { x: 0, y: 0 },
+            flip: { vertical: false, horizontal: false },
+            alpha: 1
+          },
+          material_id: `mat_video_${idx}`
+        }))
+      },
+      {
+        id: `track_text_${Date.now()}`,
+        type: "text",
+        segments: trackData.captions.map((c, idx) => ({
+          id: `seg_text_${idx}_${Date.now()}`,
+          source_timerange: {
+            start: 0,
+            duration: Math.round((c.end - c.start) * 1000000)
+          },
+          target_timerange: {
+            start: Math.round(c.start * 1000000),
+            duration: Math.round((c.end - c.start) * 1000000)
+          },
+          clip: {
+            scale: { x: 1, y: 1 },
+            rotation: 0,
+            transform: { x: 0, y: 0 },
+            flip: { vertical: false, horizontal: false },
+            alpha: 1
+          },
+          material_id: materialsTexts[idx] ? materialsTexts[idx].id : `mat_text_${idx}`
+        }))
+      },
+      {
+        id: `track_audio_${Date.now()}`,
+        type: "audio",
+        segments: trackData.audio.map((a, idx) => ({
+          id: `seg_audio_${idx}_${Date.now()}`,
+          source_timerange: {
+            start: Math.round(a.start * 1000000),
+            duration: Math.round((a.end - a.start) * 1000000)
+          },
+          target_timerange: {
+            start: Math.round(a.start * 1000000),
+            duration: Math.round((a.end - a.start) * 1000000)
+          },
+          speed: 1.0,
+          volume: state.volume,
+          material_id: `mat_audio_${idx}`
+        }))
+      }
+    ],
+    materials: {
+      texts: materialsTexts,
+      videos: [],
+      audios: [],
+      effects: [],
+      stickers: [],
+      transitions: [],
+      speeds: []
+    }
+  };
+
+  const jsonStr = JSON.stringify(draftJson, null, 2);
+  downloadFile(jsonStr, "draft_content.json", "application/json");
+}
+
 function formatTime(sec) {
   const s = Math.floor(sec || 0);
   const ms = Math.floor(((sec || 0) % 1) * 100);
