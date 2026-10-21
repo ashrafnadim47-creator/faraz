@@ -1,6 +1,6 @@
 // ==========================================
-// 🎧 FARAZ STORE - SUPPORT MESSAGING SYSTEM
-// Saves tickets locally and queues notification replies
+// 🎧 FARAZ STORE - SUPPORT MESSAGING SYSTEM (ADMIN-DRIVEN)
+// Saves tickets for Admin Review & dispatches Admin notification
 // ==========================================
 
 function sendMessage() {
@@ -38,10 +38,12 @@ function sendMessage() {
         email: email,
         message: message,
         timestamp: formattedDate,
-        status: "Received"
+        status: "Pending Admin Review",
+        adminReply: null,
+        repliedAt: null
     };
 
-    // 1. Save in local storage support messages
+    // 1. Save in local storage support messages for Admin Panel
     let supportList = [];
     try {
         supportList = JSON.parse(localStorage.getItem("faraz_support_messages") || "[]");
@@ -51,7 +53,7 @@ function sendMessage() {
     supportList.unshift(newTicket);
     localStorage.setItem("faraz_support_messages", JSON.stringify(supportList));
 
-    // 2. Queue live notification into faraz_notifications
+    // 2. Queue live user notification acknowledging ticket submission
     let notifList = [];
     try {
         notifList = JSON.parse(localStorage.getItem("faraz_notifications") || "[]");
@@ -59,34 +61,14 @@ function sendMessage() {
         notifList = [];
     }
 
-    // A. Submission acknowledgment notification
     notifList.unshift({
-        id: "notif-" + Date.now(),
+        id: "ack-" + Date.now(),
         ticketId: ticketId,
-        title: `🎫 Support Ticket #${ticketId} Acknowledged`,
-        message: `Namaste ${name}, aapka sandesh receive ho gaya hai: "${message.substring(0, 60)}${message.length > 60 ? '...' : ''}". Hamari team ispar action le rahi hai.`,
+        title: `🎫 Ticket #${ticketId} Sent to Admin`,
+        message: `Namaste ${name}, aapka sandesh Faraz Store Admin ko safely receive ho gaya hai: "${message.substring(0, 60)}${message.length > 60 ? '...' : ''}". Hamare Admin isko manually check karke notifications me reply karenge.`,
         time: formattedDate,
         type: "support_ack"
     });
-
-    // B. Direct Support Agent Reply notification
-    setTimeout(() => {
-        let currentNotifs = [];
-        try {
-            currentNotifs = JSON.parse(localStorage.getItem("faraz_notifications") || "[]");
-        } catch (e) { currentNotifs = []; }
-
-        currentNotifs.unshift({
-            id: "reply-" + Date.now(),
-            ticketId: ticketId,
-            title: `💬 Support Team Reply • Ticket #${ticketId}`,
-            message: `Hello ${name}! Faraz Store Official Support ne aapki query check kar li hai. Hamara agent jald hi aapke email (${email}) par rabta karega. Dhanyawad!`,
-            time: "Just now",
-            type: "support_reply"
-        });
-        localStorage.setItem("faraz_notifications", JSON.stringify(currentNotifs));
-    }, 1200);
-
     localStorage.setItem("faraz_notifications", JSON.stringify(notifList));
 
     // 3. Clear inputs and show success
@@ -94,7 +76,7 @@ function sendMessage() {
     emailInput.value = "";
     messageInput.value = "";
 
-    showAlert(`✅ Shukriya ${name}! Ticket #${ticketId} generate ho gaya hai. Reply aapko Notifications page par mil jayega!`, "#10b981", "#064e3b");
+    showAlert(`✅ Shukriya ${name}! Ticket #${ticketId} Admin Desk ko bhej diya gaya hai. Admin ka manual reply aapko Notifications page par milega!`, "#10b981", "#064e3b");
 
     sendBtn.disabled = false;
     sendBtn.innerText = "🚀 Send Another Message";

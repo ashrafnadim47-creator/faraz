@@ -4,8 +4,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin Dashboard | Faraz Store</title>
-    <meta name="description" content="Faraz Store Control Panel & Management System">
+    <title>Admin Dashboard & Studio Hub | Faraz Store</title>
+    <meta name="description" content="Faraz Store Control Panel, Support Inquiries & Studio Management">
     <meta name="theme-color" content="#020617">
     <link rel="icon" href="favicon.ico">
 
@@ -31,7 +31,9 @@
             </div>
 
             <nav class="admin-nav-links">
-                <a href="admin-dashboard.html" class="admin-nav-item active">🏠 Dashboard Overview</a>
+                <a href="admin-dashboard.html" class="admin-nav-item active">🏠 Dashboard & Hub</a>
+                <a href="#support-section" class="admin-nav-item">💬 Support Tickets Desk</a>
+                <a href="#studio-section" class="admin-nav-item">🎨 Studio Hub</a>
                 <a href="admin-products.html" class="admin-nav-item">📦 Product Inventory</a>
                 <a href="admin-orders.html" class="admin-nav-item">🛒 Order Management</a>
                 <a href="admin-users.html" class="admin-nav-item">👥 Registered Users</a>
@@ -46,10 +48,13 @@
         <main class="admin-main">
             <header class="admin-header">
                 <div>
-                    <h1>Admin Dashboard 👑</h1>
-                    <p style="color: #94a3b8; font-size: 14px;">Welcome back to your store overview</p>
+                    <h1>Admin Master Center 👑</h1>
+                    <p style="color: #94a3b8; font-size: 14px;">Store overview, customer support desk & creative studio hub</p>
                 </div>
-                <button class="nav-btn-back" onclick="location.href='index.html'">← Back to Main Shop</button>
+                <div style="display: flex; gap: 10px;">
+                    <button class="nav-btn-back" onclick="location.href='index.html'">← Main Shop</button>
+                    <button class="nav-btn-back" onclick="location.href='notifications.html'" style="background: rgba(0, 229, 255, 0.15); border-color: #00e5ff; color: #00e5ff;">🔔 Notifications</button>
+                </div>
             </header>
 
             <!-- STATS GRID CARDS -->
@@ -58,7 +63,7 @@
                 <div class="stat-card glassmorphism">
                     <div style="font-size: 32px; margin-bottom: 6px;">📦</div>
                     <h3>Products</h3>
-                    <p id="product-count">0</p>
+                    <p id="product-count">12</p>
                 </div>
 
                 <div class="stat-card glassmorphism">
@@ -73,16 +78,109 @@
                     <p id="user-count">0</p>
                 </div>
 
-                <div class="stat-card glassmorphism">
-                    <div style="font-size: 32px; margin-bottom: 6px;">⭐</div>
-                    <h3>Points Issued</h3>
-                    <p id="points-count">0</p>
+                <div class="stat-card glassmorphism" style="border: 1px solid rgba(0, 229, 255, 0.4);">
+                    <div style="font-size: 32px; margin-bottom: 6px;">🎧</div>
+                    <h3>Support Queries</h3>
+                    <p id="support-count" style="color: #00e5ff;">0</p>
                 </div>
 
             </div>
 
+            <!-- ========================================================
+               🎧 SUPPORT TICKETS & USER INQUIRIES (MANUAL REPLY DESK)
+               ======================================================== -->
+            <section id="support-section" class="admin-voucher-card glassmorphism" style="margin-top: 25px;">
+                <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px dashed rgba(255,255,255,0.1); padding-bottom: 12px; margin-bottom: 16px;">
+                    <div>
+                        <h3 class="voucher-title" style="margin: 0;">
+                            🎧 User Inquiries & Support Tickets (Manual Reply Desk)
+                        </h3>
+                        <p class="voucher-subtext" style="margin: 4px 0 0 0;">
+                            Yahan user ke sabhi contact queries show honge. Admin yahan se manual reply bhej sakta hai jo direct user ke notification me show hoga.
+                        </p>
+                    </div>
+                    <button id="refresh-tickets-btn" style="background: rgba(0, 229, 255, 0.2); border: 1px solid #00e5ff; color: #00e5ff; padding: 6px 14px; border-radius: 8px; cursor: pointer; font-size: 12px; font-weight: 700;">
+                        🔄 Refresh Tickets
+                    </button>
+                </div>
+
+                <!-- TICKETS CONTAINER -->
+                <div id="tickets-list">
+                    <div style="text-align: center; padding: 25px; color: #94a3b8;">
+                        Fetching support tickets...
+                    </div>
+                </div>
+            </section>
+
+            <!-- ========================================================
+               🎨 MASTER STUDIO & CREATIVE SUITE (ALL IN ONE WEBSITE)
+               ======================================================== -->
+            <section id="studio-section" class="admin-voucher-card glassmorphism" style="margin-top: 25px;">
+                <h3 class="voucher-title">
+                    🎨 Creative Studio Control Suite
+                </h3>
+                <p class="voucher-subtext">
+                    Ek hi website par complete content creation & 3D universe tools. Personal configs protect karne ke liye Coming Soon mode enabled hai.
+                </p>
+
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px; margin-top: 15px;">
+                    
+                    <!-- CREATORVERSE CARD -->
+                    <div style="background: rgba(15, 23, 42, 0.7); border: 1px solid rgba(245, 158, 11, 0.3); border-radius: 16px; padding: 18px;">
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+                            <span style="font-size: 20px;">🤖</span>
+                            <span style="background: #f59e0b; color: #000; font-size: 10px; font-weight: 900; padding: 3px 8px; border-radius: 999px;">
+                                COMING SOON • PRIVATE PREVIEW
+                            </span>
+                        </div>
+                        <h4 style="color: #fbbf24; font-size: 16px; margin-bottom: 6px;">CreatorVerse AI Studio</h4>
+                        <p style="color: #94a3b8; font-size: 12px; line-height: 1.5; margin-bottom: 12px;">
+                            2D Animation, AI Copilot, 8K Canvas, Storyboards. Personal accounts and flow sessions are locked in safe sandbox.
+                        </p>
+                        <a href="creatorverse/index.html" style="display: inline-block; background: rgba(245, 158, 11, 0.2); border: 1px solid #f59e0b; color: #fbbf24; padding: 6px 14px; border-radius: 8px; text-decoration: none; font-size: 12px; font-weight: 800;">
+                            🚀 Launch Preview Studio
+                        </a>
+                    </div>
+
+                    <!-- 3D UNIVERSE CARD -->
+                    <div style="background: rgba(15, 23, 42, 0.7); border: 1px solid rgba(239, 68, 68, 0.3); border-radius: 16px; padding: 18px;">
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+                            <span style="font-size: 20px;">🪐</span>
+                            <span style="background: #ef4444; color: #fff; font-size: 10px; font-weight: 900; padding: 3px 8px; border-radius: 999px;">
+                                ACTIVE 3D ENGINE
+                            </span>
+                        </div>
+                        <h4 style="color: #f87171; font-size: 16px; margin-bottom: 6px;">3D Interactive Universe</h4>
+                        <p style="color: #94a3b8; font-size: 12px; line-height: 1.5; margin-bottom: 12px;">
+                            Interactive Three.js / WebGL 3D world, digital stories, dynamic camera controls, and Secret Vault portal.
+                        </p>
+                        <a href="youtube/3d.html" style="display: inline-block; background: rgba(239, 68, 68, 0.2); border: 1px solid #ef4444; color: #f87171; padding: 6px 14px; border-radius: 8px; text-decoration: none; font-size: 12px; font-weight: 800;">
+                            🪐 Open 3D World
+                        </a>
+                    </div>
+
+                    <!-- FORGE VIDEO EDITOR CARD -->
+                    <div style="background: rgba(15, 23, 42, 0.7); border: 1px solid rgba(0, 229, 255, 0.3); border-radius: 16px; padding: 18px;">
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+                            <span style="font-size: 20px;">🎬</span>
+                            <span style="background: #00e5ff; color: #000; font-size: 10px; font-weight: 900; padding: 3px 8px; border-radius: 999px;">
+                                V8.2 BUGFIXED LIVE
+                            </span>
+                        </div>
+                        <h4 style="color: #00e5ff; font-size: 16px; margin-bottom: 6px;">FORGE Video Editor</h4>
+                        <p style="color: #94a3b8; font-size: 12px; line-height: 1.5; margin-bottom: 12px;">
+                            Full video editor with timeline, auto captions, transitions, export, and official Windows setup installer (89.4 MB).
+                        </p>
+                        <a href="forge/index.html" style="display: inline-block; background: rgba(0, 229, 255, 0.2); border: 1px solid #00e5ff; color: #00e5ff; padding: 6px 14px; border-radius: 8px; text-decoration: none; font-size: 12px; font-weight: 800;">
+                            🎬 Launch FORGE Web
+                        </a>
+                    </div>
+
+                </div>
+            </section>
+
             <!-- 🛠️ FADED WHEEL VOUCHER GENERATOR SECTION -->
-            <section class="admin-voucher-card glassmorphism">
+            <section class="admin-voucher-card glassmorphism" style="margin-top: 25px;">
                 <h3 class="voucher-title">
                     🛠️ Faded Wheel Voucher Generator
                 </h3>

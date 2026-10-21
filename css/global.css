@@ -380,3 +380,289 @@ input:focus, textarea:focus, select:focus {
         font-size: 24px;
     }
 }
+
+
+/* ==========================================================================
+   ✨ COMPLETE UI/UX ENHANCEMENT SYSTEM
+   ========================================================================== */
+
+/* 1. SCROLL PROGRESS BAR */
+#scrollProgressBar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 4px;
+    background: linear-gradient(90deg, #00e5ff, #8b5cf6, #ff0055);
+    z-index: 100000;
+    width: 0%;
+    transition: width 0.1s ease-out;
+}
+
+/* 2. SKIP TO CONTENT LINK (ACCESSIBILITY) */
+.skip-link {
+    position: absolute;
+    top: -60px;
+    left: 20px;
+    background: #00e5ff;
+    color: #020617;
+    padding: 10px 16px;
+    font-weight: 800;
+    font-size: 13px;
+    border-radius: 8px;
+    z-index: 100001;
+    transition: top 0.2s ease;
+    text-decoration: none;
+}
+.skip-link:focus {
+    top: 15px;
+}
+
+/* 3. FLOATING CONTACT BUTTON */
+.floating-contact-btn {
+    position: fixed;
+    bottom: 25px;
+    right: 25px;
+    background: linear-gradient(135deg, #00e5ff, #0077ff);
+    color: #020617;
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 24px;
+    box-shadow: 0 8px 25px rgba(0, 229, 255, 0.45);
+    z-index: 9999;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+    text-decoration: none;
+}
+.floating-contact-btn:hover {
+    transform: scale(1.1) translateY(-4px);
+    box-shadow: 0 12px 30px rgba(0, 229, 255, 0.65);
+}
+
+/* 4. BACK TO TOP BUTTON */
+.back-to-top-btn {
+    position: fixed;
+    bottom: 95px;
+    right: 25px;
+    background: rgba(15, 23, 42, 0.85);
+    color: #00e5ff;
+    border: 1px solid rgba(0, 229, 255, 0.4);
+    backdrop-filter: blur(10px);
+    width: 46px;
+    height: 46px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+    z-index: 9998;
+    cursor: pointer;
+    opacity: 0;
+    pointer-events: none;
+    transition: all 0.3s ease;
+}
+.back-to-top-btn.visible {
+    opacity: 1;
+    pointer-events: auto;
+}
+.back-to-top-btn:hover {
+    background: #00e5ff;
+    color: #020617;
+    transform: translateY(-3px);
+}
+
+/* 5. SIMPLE COOKIE BANNER */
+.cookie-banner {
+    position: fixed;
+    bottom: 20px;
+    left: 20px;
+    max-width: 380px;
+    background: rgba(15, 23, 42, 0.95);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: 16px;
+    padding: 18px 20px;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.7);
+    backdrop-filter: blur(16px);
+    z-index: 100000;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    animation: cookieSlideUp 0.4s ease-out;
+}
+@keyframes cookieSlideUp {
+    from { transform: translateY(50px); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
+}
+.cookie-banner p {
+    font-size: 12px;
+    color: #cbd5e1;
+    line-height: 1.5;
+    margin: 0;
+}
+.cookie-buttons {
+    display: flex;
+    gap: 10px;
+}
+.cookie-accept-btn {
+    flex: 1;
+    background: linear-gradient(135deg, #00e5ff, #0088cc);
+    color: #020617;
+    padding: 8px;
+    border-radius: 8px;
+    font-size: 12px;
+    font-weight: 800;
+    cursor: pointer;
+}
+.cookie-decline-btn {
+    background: transparent;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    color: #94a3b8;
+    padding: 8px 14px;
+    border-radius: 8px;
+    font-size: 12px;
+    cursor: pointer;
+}
+
+/* 6. NEUMORPHISM DESIGN TOKENS */
+.neumorphic {
+    background: #0f172a;
+    box-shadow: 8px 8px 16px #080d19, -8px -8px 16px #16213b;
+    border-radius: 18px;
+    border: 1px solid rgba(255, 255, 255, 0.03);
+}
+.neumorphic-inset {
+    background: #0f172a;
+    box-shadow: inset 4px 4px 8px #080d19, inset -4px -4px 8px #16213b;
+    border-radius: 12px;
+}
+
+/* 7. GLASSY CAROUSEL ANIMATION */
+.glassy-carousel-wrapper {
+    position: relative;
+    overflow: hidden;
+    width: 100%;
+    padding: 20px 0;
+}
+.glassy-carousel-track {
+    display: flex;
+    gap: 20px;
+    animation: glassyCarouselSlide 35s linear infinite;
+    width: max-content;
+}
+.glassy-carousel-track:hover {
+    animation-play-state: paused;
+}
+@keyframes glassyCarouselSlide {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(-50%); }
+}
+.glassy-carousel-item {
+    width: 280px;
+    background: rgba(30, 41, 59, 0.6);
+    backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 20px;
+    padding: 20px;
+    flex-shrink: 0;
+    transition: all 0.3s ease;
+}
+.glassy-carousel-item:hover {
+    transform: translateY(-6px);
+    border-color: #00e5ff;
+    box-shadow: 0 10px 30px rgba(0, 229, 255, 0.2);
+}
+
+/* 8. EXPANDABLE FAQ ACCORDION */
+.faq-section {
+    max-width: 800px;
+    margin: 40px auto;
+    padding: 0 20px;
+}
+.faq-item {
+    background: rgba(15, 23, 42, 0.8);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 14px;
+    margin-bottom: 12px;
+    overflow: hidden;
+    backdrop-filter: blur(10px);
+}
+.faq-question {
+    padding: 16px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    cursor: pointer;
+    font-weight: 700;
+    font-size: 15px;
+    color: #f8fafc;
+    transition: background 0.2s ease;
+}
+.faq-question:hover {
+    background: rgba(255, 255, 255, 0.03);
+}
+.faq-icon {
+    font-size: 16px;
+    color: #00e5ff;
+    transition: transform 0.3s ease;
+}
+.faq-item.active .faq-icon {
+    transform: rotate(180deg);
+}
+.faq-answer {
+    max-height: 0;
+    overflow: hidden;
+    padding: 0 20px;
+    color: #94a3b8;
+    font-size: 13px;
+    line-height: 1.6;
+    transition: all 0.3s ease;
+}
+.faq-item.active .faq-answer {
+    max-height: 250px;
+    padding: 0 20px 16px 20px;
+}
+
+/* 9. LIGHT THEME SUPPORT */
+[data-theme="light"] {
+    --dark: #f8fafc;
+    --text: #0f172a;
+    --muted: #475569;
+    --card-bg: rgba(255, 255, 255, 0.9);
+    --card-border: rgba(0, 0, 0, 0.1);
+}
+[data-theme="light"] body {
+    background: #f1f5f9;
+    color: #0f172a;
+}
+[data-theme="light"] header {
+    background: rgba(255, 255, 255, 0.95);
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+}
+[data-theme="light"] .glassmorphic,
+[data-theme="light"] .hero-card,
+[data-theme="light"] .product-card,
+[data-theme="light"] .contact-box {
+    background: rgba(255, 255, 255, 0.9);
+    color: #0f172a;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+}
+
+/* 10. PRINT STYLESHEET */
+@media print {
+    body {
+        background: #fff !important;
+        color: #000 !important;
+    }
+    header, footer, .floating-contact-btn, .back-to-top-btn, #cookieBanner, .search-container, .icons {
+        display: none !important;
+    }
+    .hero-card, .product-card, .invoice-box {
+        border: 1px solid #ccc !important;
+        box-shadow: none !important;
+        page-break-inside: avoid;
+    }
+}
