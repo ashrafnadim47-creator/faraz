@@ -197,9 +197,98 @@ window.deleteTicket = function(ticketIndex) {
 // ==========================================
 // 3. VOUCHER GENERATOR ENGINE
 // ==========================================
+// ==========================================
+// 3. NOVA MESSAGING & MODERATION LOADER
+// ==========================================
+async function loadNovaMetricsAndReports() {
+    const userEl = document.getElementById("novaMetricUsers");
+    const msgEl = document.getElementById("novaMetricMessages");
+    const sockEl = document.getElementById("novaMetricSockets");
+    const repEl = document.getElementById("novaMetricReports");
+    const tableBody = document.getElementById("novaReportsTableBody");
+    const statusBadge = document.getElementById("novaStatusBadge");
+
+    if (!userEl) return;
+
+    try {
+        const res = await fetch("http://localhost:4000/api/admin/metrics");
+        if (!res.ok) throw new Error("NOVA server offline");
+        const json = await res.json();
+        const m = json.metrics;
+
+        userEl.innerText = m.totalUsers ?? 0;
+        msgEl.innerText = m.totalMessages ?? 0;
+        sockEl.innerText = m.activeSockets ?? 0;
+        repEl.innerText = m.pendingReports ?? 0;
+
+        if (statusBadge) {
+            statusBadge.innerText = "● Engine Online";
+            statusBadge.style.background = "rgba(34, 197, 94, 0.2)";
+            statusBadge.style.color = "#4ade80";
+        }
+
+        const repRes = await fetch("http://localhost:4000/api/admin/reports");
+        if (repRes.ok && tableBody) {
+            const repJson = await repRes.json();
+            const reports = repJson.reports || [];
+            if (reports.length === 0) {
+                tableBody.innerHTML = `
+                    <tr>
+                        <td colspan="5" style="padding: 24px; text-align: center; color: #94a3b8;">
+                            ✨ No pending reports. Community & channels are clean!
+                        </td>
+                    </tr>
+                `;
+            } else {
+                tableBody.innerHTML = reports.map(r => `
+                    <tr style="border-bottom: 1px solid rgba(255, 255, 255, 0.05);">
+                        <td style="padding: 10px 14px; font-family: monospace; color: #cbd5e1;">${r.id.substring(0, 8)}...</td>
+                        <td style="padding: 10px 14px; text-transform: uppercase; font-weight: 700; color: #a5b4fc;">${r.target_type}</td>
+                        <td style="padding: 10px 14px; color: #f87171;">${r.reason || 'Spam / Abuse'}</td>
+                        <td style="padding: 10px 14px;"><span style="background: rgba(239, 68, 68, 0.15); color: #f87171; padding: 2px 6px; border-radius: 4px; font-size: 10px; font-weight: 700;">${r.status}</span></td>
+                        <td style="padding: 10px 14px;">
+                            <button onclick="dismissNovaReport('${r.id}')" style="background: rgba(148, 163, 184, 0.2); border: 1px solid #64748b; color: #cbd5e1; padding: 4px 10px; border-radius: 6px; font-size: 11px; cursor: pointer;">Dismiss</button>
+                        </td>
+                    </tr>
+                `).join('');
+            }
+        }
+    } catch (err) {
+        console.warn("NOVA Server metric fetch error:", err);
+        if (statusBadge) {
+            statusBadge.innerText = "● Engine Offline (Port 4000)";
+            statusBadge.style.background = "rgba(239, 68, 68, 0.2)";
+            statusBadge.style.color = "#f87171";
+        }
+        if (tableBody) {
+            tableBody.innerHTML = `
+                <tr>
+                    <td colspan="5" style="padding: 20px; text-align: center; color: #94a3b8;">
+                        Start NOVA backend on port 4000 to view live moderation reports.
+                    </td>
+                </tr>
+            `;
+        }
+    }
+}
+
+window.dismissNovaReport = async function(reportId) {
+    try {
+        await fetch(`http://localhost:4000/api/admin/reports/${reportId}`, {
+            method: 'PATCH',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ status: 'dismissed' })
+        });
+        loadNovaMetricsAndReports();
+    } catch (e) {
+        alert("Action failed: " + e.message);
+    }
+};
+
 window.addEventListener('DOMContentLoaded', () => {
     loadStats();
     loadSupportTickets();
+    loadNovaMetricsAndReports();
 
     const refreshBtn = document.getElementById('refresh-tickets-btn');
     if (refreshBtn) {

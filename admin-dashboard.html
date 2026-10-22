@@ -34,6 +34,7 @@
                 <a href="admin-dashboard.html" class="admin-nav-item active">Dashboard & Hub</a>
                 <a href="#support-section" class="admin-nav-item">Support Tickets Desk</a>
                 <a href="#studio-section" class="admin-nav-item">Studio Hub</a>
+                <a href="#nova-section" class="admin-nav-item">NOVA Moderation & Hub</a>
                 <a href="admin-products.html" class="admin-nav-item">Product Inventory</a>
                 <a href="admin-orders.html" class="admin-nav-item">Order Management</a>
                 <a href="admin-users.html" class="admin-nav-item">Registered Users</a>
@@ -176,6 +177,76 @@
                         </a>
                     </div>
 
+                </div>
+            </section>
+
+            <!-- 🛡️ NOVA SUPER APP MODERATION & HUB SECTION -->
+            <section id="nova-section" class="admin-tickets-section glassmorphism" style="margin-top: 25px; border-color: rgba(99, 102, 241, 0.4);">
+                <div class="tickets-header" style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 15px; margin-bottom: 20px;">
+                    <div>
+                        <h2 style="font-family: 'Orbitron', sans-serif; font-size: 20px; color: #818cf8; display: flex; align-items: center; gap: 8px;">
+                            <span>💬</span> NOVA Messaging & Moderation Hub
+                        </h2>
+                        <p style="color: #94a3b8; font-size: 13px; margin-top: 4px;">
+                            Real-time user engagement, direct 1-on-1 signaling, community channels, and reported content desk.
+                        </p>
+                    </div>
+                    <div style="display: flex; gap: 10px;">
+                        <a href="chat/index.html" target="_blank" style="background: rgba(99, 102, 241, 0.2); border: 1px solid #6366f1; color: #a5b4fc; padding: 8px 16px; border-radius: 8px; font-weight: 700; text-decoration: none; font-size: 12px; display: inline-flex; align-items: center; gap: 6px;">
+                            🚀 Launch NOVA App
+                        </a>
+                        <a href="chat/admin.html" target="_blank" style="background: rgba(239, 68, 68, 0.2); border: 1px solid #ef4444; color: #f87171; padding: 8px 16px; border-radius: 8px; font-weight: 700; text-decoration: none; font-size: 12px; display: inline-flex; align-items: center; gap: 6px;">
+                            🛡️ Standalone Desk
+                        </a>
+                    </div>
+                </div>
+
+                <!-- NOVA Mini Metrics Grid -->
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 14px; margin-bottom: 22px;">
+                    <div style="background: rgba(15, 23, 42, 0.6); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 12px; padding: 14px; text-align: center;">
+                        <div style="color: #94a3b8; font-size: 11px; text-transform: uppercase; font-weight: 700; letter-spacing: 0.5px;">Registered Users</div>
+                        <div id="novaMetricUsers" style="color: #38bdf8; font-family: 'Orbitron', sans-serif; font-size: 24px; font-weight: 800; margin-top: 4px;">--</div>
+                    </div>
+                    <div style="background: rgba(15, 23, 42, 0.6); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 12px; padding: 14px; text-align: center;">
+                        <div style="color: #94a3b8; font-size: 11px; text-transform: uppercase; font-weight: 700; letter-spacing: 0.5px;">Messages Exchanged</div>
+                        <div id="novaMetricMessages" style="color: #34d399; font-family: 'Orbitron', sans-serif; font-size: 24px; font-weight: 800; margin-top: 4px;">--</div>
+                    </div>
+                    <div style="background: rgba(15, 23, 42, 0.6); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 12px; padding: 14px; text-align: center;">
+                        <div style="color: #94a3b8; font-size: 11px; text-transform: uppercase; font-weight: 700; letter-spacing: 0.5px;">Active Sockets</div>
+                        <div id="novaMetricSockets" style="color: #a78bfa; font-family: 'Orbitron', sans-serif; font-size: 24px; font-weight: 800; margin-top: 4px;">--</div>
+                    </div>
+                    <div style="background: rgba(15, 23, 42, 0.6); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 12px; padding: 14px; text-align: center;">
+                        <div style="color: #94a3b8; font-size: 11px; text-transform: uppercase; font-weight: 700; letter-spacing: 0.5px;">Pending Reports</div>
+                        <div id="novaMetricReports" style="color: #f87171; font-family: 'Orbitron', sans-serif; font-size: 24px; font-weight: 800; margin-top: 4px;">--</div>
+                    </div>
+                </div>
+
+                <!-- NOVA Pending Reports Table -->
+                <div style="background: rgba(15, 23, 42, 0.5); border: 1px solid rgba(255, 255, 255, 0.06); border-radius: 12px; overflow: hidden;">
+                    <div style="padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.06); display: flex; justify-content: space-between; align-items: center;">
+                        <h4 style="font-size: 13px; font-weight: 700; color: #e2e8f0; margin: 0;">🚨 Live Moderation Queue</h4>
+                        <span id="novaStatusBadge" style="font-size: 11px; background: rgba(34, 197, 94, 0.2); color: #4ade80; padding: 2px 8px; border-radius: 999px; font-weight: 700;">● Engine Online</span>
+                    </div>
+                    <div style="overflow-x: auto;">
+                        <table style="width: 100%; border-collapse: collapse; font-size: 12px; text-align: left;">
+                            <thead>
+                                <tr style="background: rgba(15, 23, 42, 0.8); color: #94a3b8; text-transform: uppercase; font-size: 10px; letter-spacing: 0.5px;">
+                                    <th style="padding: 10px 14px;">Report ID</th>
+                                    <th style="padding: 10px 14px;">Target Type</th>
+                                    <th style="padding: 10px 14px;">Reason</th>
+                                    <th style="padding: 10px 14px;">Status</th>
+                                    <th style="padding: 10px 14px;">Action</th>
+                                </tr>
+                            </thead>
+                            <tbody id="novaReportsTableBody">
+                                <tr>
+                                    <td colspan="5" style="padding: 24px; text-align: center; color: #64748b;">
+                                        Loading NOVA moderation logs...
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             </section>
 
