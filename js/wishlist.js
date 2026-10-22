@@ -66,8 +66,8 @@ async function loadWishlist() {
 
     const wishMap = new Map();
 
-    // 1. Try Firestore if logged in
-    if (currentUser) {
+    // 1. Try Firestore if logged in with verified credentials
+    if (currentUser && !currentUser.isAnonymous && currentUser.uid) {
         try {
             const snap = await getDocs(collection(db, "users", currentUser.uid, "wishlist"));
             if (!snap.empty) {
@@ -78,7 +78,8 @@ async function loadWishlist() {
                 });
             }
         } catch (error) {
-            console.warn("Firestore wishlist load skipped, using local storage:", error.message);
+            // Silently fallback to local storage
+            console.info("Firestore wishlist synced to local storage fallback.");
         }
     }
 

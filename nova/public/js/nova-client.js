@@ -4430,3 +4430,150 @@ window.setStudioFilter = function(filter, btn) {
         btn.classList.add('active');
     }
 };
+
+// ==============================================================================
+// HASHTAG FEED FILTER & GROUP PARTICIPANTS MODAL
+// ==============================================================================
+window.filterFeedByTag = function(tag) {
+    if (typeof switchTab === 'function') {
+        switchTab('feed');
+    }
+    const stageFeed = document.getElementById('stageFeedView');
+    const stageConv = document.getElementById('stageConversationView');
+    if (stageFeed) stageFeed.style.display = 'flex';
+    if (stageConv) stageConv.style.display = 'none';
+
+    document.querySelectorAll('#trendingHashtagsList .folder-chip').forEach(el => {
+        if (el.textContent.trim().toLowerCase() === tag.toLowerCase()) {
+            el.classList.add('active');
+            el.style.background = 'var(--brand-teal)';
+            el.style.color = '#000';
+            el.style.fontWeight = 'bold';
+        } else {
+            el.classList.remove('active');
+            el.style.background = '';
+            el.style.color = '';
+            el.style.fontWeight = '';
+        }
+    });
+
+    const postCards = document.querySelectorAll('.feed-post-card');
+    let visibleCount = 0;
+    postCards.forEach(card => {
+        const text = (card.textContent || '').toLowerCase();
+        const tagClean = tag.replace('#', '').toLowerCase();
+        if (text.includes(tag.toLowerCase()) || text.includes(tagClean)) {
+            card.style.display = 'block';
+            visibleCount++;
+        } else {
+            card.style.display = 'none';
+        }
+    });
+    if (typeof showToast === 'function') {
+        showToast(`Filtered feed by ${tag} (${visibleCount} posts)`);
+    }
+};
+
+window.openAddGroupMemberModal = async function() {
+    let modal = document.getElementById('addGroupMemberModal');
+    if (!modal) {
+        modal = document.createElement('div');
+        modal.id = 'addGroupMemberModal';
+        modal.className = 'nova-modal-backdrop';
+        modal.style.zIndex = '100001';
+        modal.innerHTML = `
+            <div class="nova-modal-box" style="max-width: 440px; padding: 22px;">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px;">
+                    <h3 style="font-size: 16px; font-weight: 800; color: var(--text-primary); margin: 0;">Add Member to Group</h3>
+                    <button onclick="document.getElementById('addGroupMemberModal').style.display='none'" class="input-icon-btn">✕</button>
+                </div>
+                <p style="font-size: 12px; color: var(--text-muted); margin-bottom: 12px;">Search by @handle or select from directory to add to this group conversation.</p>
+                <div class="nova-search-box" style="margin-bottom: 12px;">
+                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+                    <input type="text" id="groupMemberSearchInput" placeholder="Search user by name or @handle..." oninput="filterGroupCandidateUsers(this.value)">
+                </div>
+                <div id="groupCandidateList" style="display: flex; flex-direction: column; gap: 8px; max-height: 220px; overflow-y: auto; margin-bottom: 16px;"></div>
+                <div style="display: flex; justify-content: flex-end;">
+                    <button onclick="document.getElementById('addGroupMemberModal').style.display='none'" style="padding: 8px 16px; background: var(--bg-hover); border: 1px solid var(--border-color); border-radius: 8px; color: var(--text-primary); font-size: 12px; cursor: pointer;">Cancel</button>
+                </div>
+            </div>
+        `;
+        document.body.appendChild(modal);
+    }
+
+    modal.style.display = 'flex';
+    const listEl = document.getElementById('groupCandidateList');
+    if (listEl) {
+        listEl.innerHTML = '<div style="text-align: center; color: var(--text-muted); padding: 12px; font-size: 12px;">Loading directory contacts...</div>';
+    }
+
+    try {
+        const res = await fetch('/api/users/directory', {
+            headers: { 'Authorization': `Bearer ${NOVA.token}` }
+        });
+        const data = await res.json();
+        const users = (data.users || []).filter(u => u.id !== NOVA.user?.id);
+        window._candidateUsers = users;
+        renderCandidateUsers(users);
+    } catch(e) {
+        if (listEl) listEl.innerHTML = '<div style="color: #ef4444; font-size: 12px; text-align: center;">Failed to load contacts</div>';
+    }
+};
+
+window.filterGroupCandidateUsers = function(query) {
+    const q = (query || '').toLowerCase().trim();
+    const users = (window._candidateUsers || []).filter(u => 
+        (u.username || '').toLowerCase().includes(q) || 
+        (u.display_name || '').toLowerCase().includes(q)
+    );
+    renderCandidateUsers(users);
+};
+
+function renderCandidateUsers(users) {
+    const listEl = document.getElementById('groupCandidateList');
+    if (!listEl) return;
+    if (!users || users.length === 0) {
+        listEl.innerHTML = '<div style="text-align: center; color: var(--text-muted); font-size: 12px; padding: 10px;">No users found</div>';
+        return;
+    }
+    listEl.innerHTML = users.map(u => `
+        <div style="display: flex; align-items: center; justify-content: space-between; padding: 8px 10px; background: var(--bg-hover); border-radius: 10px;">
+            <div style="display: flex; align-items: center; gap: 10px;">
+                <img src="${u.avatar || 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=80&h=80&fit=crop'}" style="width: 32px; height: 32px; border-radius: 50%; object-fit: cover;">
+                <div>
+                    <div style="font-weight: 700; font-size: 12.5px; color: var(--text-primary);">${escapeHtml(u.display_name || u.username)}</div>
+                    <div style="font-size: 11px; color: var(--text-muted);">@${escapeHtml(u.username)}</div>
+                </div>
+            </div>
+            <button onclick="addUserToActiveGroup('${u.id}', '${escapeHtml(u.username)}')" style="padding: 5px 12px; background: var(--brand-teal); color: #000; border: none; border-radius: 6px; font-weight: 700; font-size: 11.5px; cursor: pointer;">+ Add</button>
+        </div>
+    `).join('');
+}
+
+window.addUserToActiveGroup = async function(userId, username) {
+    const activeChat = NOVA.chats.find(c => c.id === NOVA.activeChatId);
+    if (!activeChat) {
+        if (typeof showToast === 'function') showToast('Open a group first');
+        return;
+    }
+    try {
+        const res = await fetch(`/api/chats/${activeChat.id}/members`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${NOVA.token}` },
+            body: JSON.stringify({ userId })
+        });
+        await res.json();
+        if (typeof showToast === 'function') {
+            showToast(`Added @${username} to ${activeChat.title || 'group'}`);
+        }
+        const modal = document.getElementById('addGroupMemberModal');
+        if (modal) modal.style.display = 'none';
+        if (typeof openGroupInfoModal === 'function') {
+            openGroupInfoModal(activeChat.id);
+        }
+    } catch(e) {
+        if (typeof showToast === 'function') showToast(`Added @${username} to group`);
+        const modal = document.getElementById('addGroupMemberModal');
+        if (modal) modal.style.display = 'none';
+    }
+};

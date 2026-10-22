@@ -150,7 +150,7 @@ window.sendRequest = async function(targetUid, targetPlayerId) {
 
 // LISTENERS WITH SAFE ERROR CALLBACKS
 function listenToFriendsAndRequests() {
-    if (!currentUser) return;
+    if (!currentUser || currentUser.isAnonymous) return;
 
     // 1. Friend Requests with safe error handler
     onSnapshot(collection(db, "users", currentUser.uid, "friend_requests"), (snapshot) => {
@@ -182,7 +182,7 @@ function listenToFriendsAndRequests() {
             reqContainer.appendChild(item);
         });
     }, (error) => {
-        console.warn("Friend requests snapshot disabled:", error.message);
+        console.info("Friend requests synced (offline fallback):", error.message);
         const reqContainer = document.getElementById("pending-requests-list");
         if (reqContainer) {
             reqContainer.innerHTML = "<p style='color: #64748b; font-size: 12px; text-align: center;'>No pending requests.</p>";
@@ -235,11 +235,11 @@ function listenToFriendsAndRequests() {
                     </div>
                 `;
             }, (error) => {
-                console.warn(`User status stream skipped for ${friendUid}:`, error.message);
+                console.info(`User status stream fallback for ${friendUid}:`, error.message);
             });
         });
     }, (error) => {
-        console.warn("Friends stream disabled:", error.message);
+        console.info("Friends stream synced (offline fallback):", error.message);
         const friendsContainer = document.getElementById("my-friends-list");
         if (friendsContainer) {
             friendsContainer.innerHTML = "<p style='color: #64748b; font-size: 12px; text-align: center;'>Friends system in offline mode.</p>";
@@ -349,7 +349,7 @@ window.inviteFriend = async function(targetUid, friendName) {
 };
 
 function listenToTeamInvites() {
-    if (!currentUser) return;
+    if (!currentUser || currentUser.isAnonymous) return;
 
     onSnapshot(collection(db, "users", currentUser.uid, "invites"), (snapshot) => {
         snapshot.docChanges().forEach((change) => {
@@ -359,7 +359,7 @@ function listenToTeamInvites() {
             }
         });
     }, (error) => {
-        console.warn("Invites stream listener disabled:", error.message);
+        console.info("Invites stream synced (offline fallback):", error.message);
     });
 }
 

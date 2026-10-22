@@ -917,6 +917,41 @@ module.exports = async (req, res) => {
             return sendJson(res, 201, { chat: newGroup });
         }
 
+        // Chat members: /api/chats/:id/members
+        const chatMembersMatch = pathname.match(/^\/api\/chats\/([^\/]+)\/members$/);
+        if (chatMembersMatch) {
+            const chatId = chatMembersMatch[1];
+            const chat = STORE.chats.find(c => c.id === chatId);
+            if (!chat) return sendJson(res, 404, { error: 'Chat not found' });
+
+            if (req.method === 'GET') {
+                const memberIds = chat.members || [];
+                const members = memberIds.map(uid => {
+                    const u = STORE.users.find(x => x.id === uid) || { id: uid, username: uid, display_name: uid };
+                    return {
+                        id: u.id,
+                        username: u.username,
+                        display_name: u.display_name,
+                        avatar: u.avatar || 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=100&h=100&fit=crop',
+                        role: u.id === chat.created_by ? 'creator' : 'member'
+                    };
+                });
+                return sendJson(res, 200, { members });
+            }
+
+            if (req.method === 'POST') {
+                const body = await parseBody(req);
+                const { userId } = body;
+                if (!userId) return sendJson(res, 400, { error: 'userId is required' });
+                if (!chat.members) chat.members = [];
+                if (!chat.members.includes(userId)) {
+                    chat.members.push(userId);
+                    chat.memberCount = chat.members.length;
+                }
+                return sendJson(res, 200, { ok: true, memberCount: chat.members.length });
+            }
+        }
+
         // Chat messages: /api/chats/:id/messages
         const chatMessagesMatch = pathname.match(/^\/api\/chats\/([^\/]+)\/messages$/);
         if (chatMessagesMatch && req.method === 'GET') {
