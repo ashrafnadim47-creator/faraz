@@ -269,156 +269,54 @@ function autoEscalateToAdmin(ticketId, userQuery) {
 }
 
 // ==========================================================================
-// 💬 INTERACTIVE CHAT UI INJECTION & CONTROLLERS (LEFT-ALIGNED)
+// 💬 IN-PAGE SUPPORT ENGINE (INSIDE HELP / CONTACT SECTION ONLY)
+// Permanently floating widgets removed to avoid obstructing mobile & desktop views.
 // ==========================================================================
-function initSupportChatWidget() {
-    // Only inject floating launcher if not on contact.html
-    if (window.location.pathname.includes("contact.html")) return;
-
-    if (!document.getElementById("supportLauncherPill")) {
-        const pill = document.createElement("div");
-        pill.id = "supportLauncherPill";
-        pill.className = "support-launcher-pill";
-        pill.onclick = toggleSupportChat;
-        pill.innerHTML = `
-            <div class="support-launcher-avatar">
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a8 8 0 0 0-8 8c0 3.36 2.07 6.24 5 7.42V20a2 2 0 0 0 2 2h2a2 2 0 0 0 2-2v-2.58c2.93-1.18 5-4.06 5-7.42a8 8 0 0 0-8-8z"/><path d="M9 10h.01"/><path d="M15 10h.01"/></svg>
-            </div>
-            <span>Support AI</span>
-            <span class="support-online-badge"></span>
-        `;
-        document.body.appendChild(pill);
-    }
-
-    if (!document.getElementById("supportChatModal")) {
-        const modal = document.createElement("div");
-        modal.id = "supportChatModal";
-        modal.className = "support-chat-modal";
-        modal.innerHTML = `
-            <div class="support-chat-header">
-                <div class="support-header-info">
-                    <div class="support-avatar-icon">
-                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a8 8 0 0 0-8 8c0 3.36 2.07 6.24 5 7.42V20a2 2 0 0 0 2 2h2a2 2 0 0 0 2-2v-2.58c2.93-1.18 5-4.06 5-7.42a8 8 0 0 0-8-8z"/><path d="M9 10h.01"/><path d="M15 10h.01"/></svg>
-                    </div>
-                    <div class="support-title-box">
-                        <h4>Faraz Support AI</h4>
-                        <p>● Strict Store Assistant (Online)</p>
-                    </div>
-                </div>
-                <button class="support-close-btn" onclick="toggleSupportChat()" title="Close Support">✕</button>
-            </div>
-            <div class="support-chat-body" id="supportChatBody">
-                <div class="chat-msg agent">
-                    Namaste! Main hoon <strong>Faraz Store Support Agent</strong>.<br><br>
-                    Main aapki Diamond top-ups, Orders tracking, Prime membership aur gaming gear me live madad kar sakta hoon.<br><br>
-                    <em>Aap kya poochna chahte hain? Neeche quick options chun sakte hain ya likhein:</em>
-                    <div class="support-chips">
-                        <button class="support-chip" onclick="sendSupportPreset('Diamond Top-Up rates kya hain?')">
-                            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 3h12l4 6-10 12L2 9z"/></svg>
-                            Diamond Rates
-                        </button>
-                        <button class="support-chip" onclick="sendSupportPreset('Mera order kaise track hoga?')">
-                            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m7.5 4.27 9 5.15"/><path d="M21 8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16Z"/><path d="m3.3 7 8.7 5 8.7-5"/><path d="M12 22V12"/></svg>
-                            Track Order
-                        </button>
-                        <button class="support-chip" onclick="sendSupportPreset('Prime Membership ke benefits?')">
-                            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11.562 3.266a.5.5 0 0 1 .876 0L15.39 8.87a1 1 0 0 0 1.516.294L21.183 5.5a.5.5 0 0 1 .798.519l-2.834 10.269a4 4 0 0 1-3.83 2.942H8.684a4 4 0 0 1-3.829-2.942L2.02 6.019a.5.5 0 0 1 .798-.519l4.276 3.664a1 1 0 0 0 1.516-.294z"/></svg>
-                            Prime VIP
-                        </button>
-                        <button class="support-chip" onclick="sendSupportPreset('Evo M1014 Gun ke baare me batao')">
-                            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.153.433-2.294 1-3a2.5 2.5 0 0 0 2.5 2.5z"/></svg>
-                            Evo Guns
-                        </button>
-                        <button class="support-chip" onclick="sendSupportPreset('Mujhe Admin se baat karni hai')">
-                            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
-                            Talk to Admin
-                        </button>
-                    </div>
-                </div>
-            </div>
-            <div class="support-chat-footer">
-                <input type="text" id="supportChatInput" class="support-chat-input" placeholder="Faraz Store se related sawal poochein..." onkeydown="handleSupportKey(event)">
-                <button class="support-chat-send" onclick="sendSupportMessage()" title="Send">
-                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m22 2-7 20-4-9-9-4Z"/><path d="M22 2 11 13"/></svg>
-                </button>
-            </div>
-        `;
-        document.body.appendChild(modal);
-    }
+export function initInPageSupport() {
+    const container = document.getElementById("inPageChatMessages");
+    if (!container) return;
+    console.log("✅ Faraz Support AI active in Help section.");
 }
 
-function toggleSupportChat() {
-    initSupportChatWidget();
-    const modal = document.getElementById("supportChatModal");
-    if (!modal) return;
-    modal.classList.toggle("active");
-    if (modal.classList.contains("active")) {
-        const input = document.getElementById("supportChatInput");
-        if (input) setTimeout(() => input.focus(), 100);
-    }
-}
-
-function handleSupportKey(e) {
-    if (e.key === "Enter") {
-        sendSupportMessage();
-    }
-}
-
-function sendSupportPreset(text) {
-    const input = document.getElementById("supportChatInput");
-    if (input) {
-        input.value = text;
-        sendSupportMessage();
-    }
-}
-
-function sendSupportMessage() {
-    const input = document.getElementById("supportChatInput");
-    const body = document.getElementById("supportChatBody");
-    if (!input || !body) return;
+window.sendInPageMessage = function() {
+    const input = document.getElementById("inPageAgentInput");
+    const messages = document.getElementById("inPageChatMessages");
+    if (!input || !messages) return;
 
     const userText = input.value.trim();
     if (!userText) return;
 
-    // Append user message
-    const userMsg = document.createElement("div");
-    userMsg.className = "chat-msg user";
-    userMsg.innerText = userText;
-    body.appendChild(userMsg);
+    const userBubble = document.createElement("div");
+    userBubble.className = "agent-bubble user";
+    userBubble.innerText = userText;
+    messages.appendChild(userBubble);
     input.value = "";
-    body.scrollTop = body.scrollHeight;
+    messages.scrollTop = messages.scrollHeight;
 
-    // Simulate smart thinking delay
-    const typingIndicator = document.createElement("div");
-    typingIndicator.className = "chat-msg agent";
-    typingIndicator.id = "typingIndicator";
-    typingIndicator.innerHTML = "<em>Support Agent verifying with strict store rules...</em>";
-    body.appendChild(typingIndicator);
-    body.scrollTop = body.scrollHeight;
+    const typingBubble = document.createElement("div");
+    typingBubble.className = "agent-bubble bot typing-indicator";
+    typingBubble.innerHTML = "<em>Support AI verifying store rules...</em>";
+    messages.appendChild(typingBubble);
+    messages.scrollTop = messages.scrollHeight;
 
     setTimeout(() => {
-        const ind = document.getElementById("typingIndicator");
-        if (ind) ind.remove();
-
+        typingBubble.remove();
         const response = processSupportQuery(userText);
-        const agentMsg = document.createElement("div");
-        agentMsg.className = "chat-msg agent";
-        agentMsg.innerHTML = response.text;
-        body.appendChild(agentMsg);
-        body.scrollTop = body.scrollHeight;
-    }, 400);
-}
+        const botBubble = document.createElement("div");
+        botBubble.className = "agent-bubble bot";
+        botBubble.innerHTML = response.text;
+        messages.appendChild(botBubble);
+        messages.scrollTop = messages.scrollHeight;
+    }, 350);
+};
 
-// Auto-initialize when DOM is ready
-if (document.readyState === "loading") {
-    document.addEventListener("DOMContentLoaded", initSupportChatWidget);
-} else {
-    initSupportChatWidget();
-}
+window.askInPage = function(query) {
+    const input = document.getElementById("inPageAgentInput");
+    if (input) {
+        input.value = query;
+        window.sendInPageMessage();
+    }
+};
 
-// Expose globally
-window.toggleSupportChat = toggleSupportChat;
-window.sendSupportPreset = sendSupportPreset;
-window.sendSupportMessage = sendSupportMessage;
-window.handleSupportKey = handleSupportKey;
 window.processSupportQuery = processSupportQuery;
+window.initInPageSupport = initInPageSupport;

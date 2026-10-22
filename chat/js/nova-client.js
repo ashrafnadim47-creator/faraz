@@ -16,16 +16,43 @@ const NOVA_ENV = {
 };
 
 const _nativeFetch = window.fetch;
-window.fetch = function(input, init) {
+window.fetch = async function(input, init) {
+    let targetUrl = input;
     if (typeof input === 'string') {
         if (input.startsWith('/api/') || input.startsWith('/uploads/')) {
             const base = NOVA_ENV.getApiBase();
             if (base) {
-                return _nativeFetch(base + input, init);
+                targetUrl = base + input;
             }
         }
     }
-    return _nativeFetch(input, init);
+    try {
+        const response = await _nativeFetch(targetUrl, init);
+        // Resilient JSON guard preventing "Unexpected token 'T'" SyntaxErrors
+        const originalJson = response.json.bind(response);
+        response.json = async function() {
+            try {
+                const clone = response.clone();
+                const text = await clone.text();
+                if (!text || text.trim().startsWith('<') || text.trim().startsWith('The page')) {
+                    console.warn('[NOVA API] Intercepted non-JSON response from', targetUrl, text.slice(0, 80));
+                    return { error: 'Invalid response format', details: text.slice(0, 100), ok: false, posts: [], channels: [], chats: [], stories: [], calls: [] };
+                }
+                return JSON.parse(text);
+            } catch (e) {
+                console.warn('[NOVA API JSON Parse Guard]:', e.message);
+                return { error: e.message, ok: false, posts: [], channels: [], chats: [], stories: [], calls: [] };
+            }
+        };
+        return response;
+    } catch (netErr) {
+        console.warn('[NOVA API Network Guard]:', netErr.message);
+        // Return a mock Response object so await res.json() doesn't throw
+        return new Response(JSON.stringify({ error: netErr.message, ok: false, posts: [], channels: [], chats: [], stories: [], calls: [] }), {
+            status: 503,
+            headers: { 'Content-Type': 'application/json' }
+        });
+    }
 };
 
 const NOVA = {
@@ -2794,8 +2821,8 @@ window.loadChannelsTab = async function() {
         const subList = document.getElementById('subscribedChannelsList');
         const expList = document.getElementById('exploreChannelsList');
 
-        const subscribed = channels.filter(c => c.user_role);
-        const explore = channels.filter(c => !c.user_role);
+        const subscribed = channels.filter(c => c.user_role || c.isSubscribed);
+        const explore = channels.filter(c => !c.user_role && !c.isSubscribed);
 
         if (subList) {
             if (subscribed.length === 0) {

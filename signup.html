@@ -33,17 +33,26 @@
             <!-- Form Input Fields -->
             <div class="user-input-group">
                 <label for="name">Full Name</label>
-                <input id="name" type="text" placeholder="Enter your full name" autocomplete="off">
+                <input id="name" type="text" placeholder="Enter your full name" autocomplete="name" required>
+            </div>
+
+            <div class="user-input-group">
+                <label for="username">Username / Handle (@tag)</label>
+                <div style="position: relative;">
+                    <input id="username" type="text" placeholder="e.g. faraz_pro" autocomplete="username" autocapitalize="none" spellcheck="false" required style="padding-left: 32px;">
+                    <span style="position: absolute; left: 14px; top: 50%; transform: translateY(-50%); color: var(--primary); font-weight: 800; font-size: 14px;">@</span>
+                </div>
+                <div id="usernameCheckMsg" style="font-size: 11px; margin-top: 6px; font-weight: 700; min-height: 16px;"></div>
             </div>
 
             <div class="user-input-group">
                 <label for="email">Email Address</label>
-                <input id="email" type="email" placeholder="Enter your email address" autocomplete="off">
+                <input id="email" type="email" placeholder="Enter your email address" autocomplete="email" required>
             </div>
 
             <div class="user-input-group">
                 <label for="password">Password</label>
-                <input id="password" type="password" placeholder="••••••••">
+                <input id="password" type="password" placeholder="••••••••" autocomplete="new-password" minlength="6" required>
             </div>
 
             <!-- Action Submit Trigger -->
@@ -54,7 +63,6 @@
             <!-- Navigation Redirection Links -->
             <div class="user-login-footer-links">
                 <p>Already have an account? <a href="login.html">Sign In</a></p>
-                <a href="index.html" style="display: inline-block; margin-top: 12px; color: #94a3b8; font-size: 12px;">← Return to Home Shop</a>
             </div>
         </div>
 

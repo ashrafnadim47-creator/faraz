@@ -1069,21 +1069,27 @@ body {
 .nova-modal-backdrop {
     position: fixed;
     top: 0; left: 0; right: 0; bottom: 0;
-    background: rgba(0, 0, 0, 0.75);
-    backdrop-filter: blur(8px);
-    z-index: 90;
+    background: rgba(0, 0, 0, 0.78);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    z-index: 100000 !important;
     display: none;
     align-items: center;
     justify-content: center;
+    padding: 16px;
+    box-sizing: border-box;
 }
 .nova-modal-box {
     background: var(--bg-card);
     border: 1px solid var(--border-color);
     border-radius: 20px;
-    padding: 28px;
-    width: 90%;
-    max-width: 460px;
-    box-shadow: var(--shadow-soft);
+    padding: 24px;
+    width: 100%;
+    max-width: 480px;
+    max-height: calc(100dvh - 36px);
+    overflow-y: auto;
+    box-shadow: 0 25px 60px rgba(0, 0, 0, 0.7);
+    box-sizing: border-box;
 }
 
 /* Auth Tabs */
@@ -1117,7 +1123,10 @@ body {
     .conversation-stage { display: none; width: 100%; }
     .nova-app.chat-open .chat-sidebar { display: none; }
     .nova-app.chat-open .conversation-stage { display: flex; }
-    .messages-scroll { padding: 16px 12px; }
+    .nova-app.chat-open .mobile-bottom-nav { display: none !important; }
+    .nova-app.chat-open .conversation-stage { padding-bottom: 0 !important; }
+    .stage-input-bar { padding: 10px 14px; min-height: 60px; gap: 8px; }
+    .messages-scroll { padding: 14px 10px; }
     #mobileBackBtn { display: flex !important; }
 }
 

@@ -1,6 +1,4 @@
-
 import { auth } from "./firebase-config.js";
-
 import {
     signInWithEmailAndPassword
 } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
@@ -23,12 +21,6 @@ if (form && emailInput && passwordInput && loginBtn) {
             return;
         }
 
-        if (!emailInput.checkValidity()) {
-            alert("❌ Please enter a valid email address");
-            emailInput.focus();
-            return;
-        }
-
         // Prevent multiple clicks
         loginBtn.disabled = true;
         loginBtn.textContent = "Signing In...";
@@ -40,14 +32,27 @@ if (form && emailInput && passwordInput && loginBtn) {
                 password
             );
 
-            alert("✅ Login Successful");
+            // Sync with NOVA backend session
+            try {
+                const res = await fetch("/api/auth/login", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ login: email, password })
+                });
+                if (res.ok) {
+                    const data = await res.json();
+                    if (data.token) localStorage.setItem("nova_auth_token", data.token);
+                }
+            } catch (e) {
+                console.warn("NOVA session sync notice:", e.message);
+            }
+
+            alert("✅ Login Successful! Welcome back.");
             window.location.href = "index.html";
 
         } catch (error) {
-            // Keep detailed Firebase errors out of the UI.
             console.error("Login failed:", error);
-
-            alert("❌ Wrong Email or Password");
+            alert("❌ Wrong Email or Password. Please try again.");
 
         } finally {
             loginBtn.disabled = false;
