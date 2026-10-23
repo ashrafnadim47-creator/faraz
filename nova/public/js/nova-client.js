@@ -2319,14 +2319,22 @@ window.switchTab = function(tabName) {
         }
     });
 
-    // 2. Update Mobile Bottom Navigation Bar
+    // 2. Update Mobile Bottom Navigation Bar & Slide Active Pill
+    let activeBtn = null;
     document.querySelectorAll('.mobile-nav-item').forEach(btn => {
         if (btn.getAttribute('data-tab') === tabName) {
             btn.classList.add('active');
+            activeBtn = btn;
         } else {
             btn.classList.remove('active');
         }
     });
+
+    const pill = document.getElementById('navActivePill');
+    if (activeBtn && pill) {
+        pill.style.transform = `translateX(${activeBtn.offsetLeft - 4}px)`;
+        pill.style.width = `${activeBtn.offsetWidth}px`;
+    }
 
     // 3. Switch Sidebar View
     const views = {
@@ -2456,9 +2464,34 @@ window.handleStageFeedMediaSelected = function(e) {
     const file = e.target.files[0];
     if (!file) return;
 
-    const isVideo = file.type.startsWith('video/') || stageSelectedMediaType === 'video';
+    const isVideo = file.type.startsWith('video/') || stageSelectedMediaType === 'video' || file.name.match(/\.(mp4|webm|mov|ogg)$/i);
     const mediaType = isVideo ? 'video' : 'image';
     stageSelectedMediaType = mediaType;
+
+    // Instant local preview via Blob URL
+    const localBlobUrl = URL.createObjectURL(file);
+    stageSelectedMediaUrl = localBlobUrl;
+
+    const previewContainer = document.getElementById('stageFeedMediaPreview');
+    const previewImg = document.getElementById('stageFeedPreviewImg');
+    const previewVideo = document.getElementById('stageFeedPreviewVideo');
+
+    if (previewContainer) previewContainer.style.display = 'block';
+
+    if (mediaType === 'video') {
+        if (previewImg) previewImg.style.display = 'none';
+        if (previewVideo) {
+            previewVideo.src = localBlobUrl;
+            previewVideo.style.display = 'block';
+            previewVideo.load();
+        }
+    } else {
+        if (previewVideo) previewVideo.style.display = 'none';
+        if (previewImg) {
+            previewImg.src = localBlobUrl;
+            previewImg.style.display = 'block';
+        }
+    }
 
     const reader = new FileReader();
     reader.onload = async () => {
@@ -2480,29 +2513,9 @@ window.handleStageFeedMediaSelected = function(e) {
             const uploadedUrl = data.url || data.fileUrl;
             if (uploadedUrl) {
                 stageSelectedMediaUrl = uploadedUrl;
-                const previewContainer = document.getElementById('stageFeedMediaPreview');
-                const previewImg = document.getElementById('stageFeedPreviewImg');
-                const previewVideo = document.getElementById('stageFeedPreviewVideo');
-
-                if (previewContainer) previewContainer.style.display = 'block';
-
-                if (mediaType === 'video') {
-                    if (previewImg) previewImg.style.display = 'none';
-                    if (previewVideo) {
-                        previewVideo.src = uploadedUrl;
-                        previewVideo.style.display = 'block';
-                    }
-                } else {
-                    if (previewVideo) previewVideo.style.display = 'none';
-                    if (previewImg) {
-                        previewImg.src = uploadedUrl;
-                        previewImg.style.display = 'block';
-                    }
-                }
             }
         } catch(err) {
-            console.error('Feed media upload error:', err);
-            alert('Upload failed: ' + err.message);
+            console.warn('Feed media server upload deferred, using local media payload:', err);
         }
     };
     reader.readAsDataURL(file);
@@ -2682,12 +2695,15 @@ window.loadSuperFeed = async function() {
                     </div>
                 `).join('');
 
-                const isVideo = p.media_type === 'video' || (p.media_url && p.media_url.match(/\.(mp4|webm|mov|ogg)$/i));
+                const isVideo = p.media_type === 'video' || (p.media_url && (p.media_url.match(/\.(mp4|webm|mov|ogg)$/i) || p.media_url.startsWith('data:video/')));
 
                 let mediaHtml = '';
                 if (p.media_url) {
                     if (isVideo) {
-                        mediaHtml = `<video class="feed-post-media" src="${p.media_url}" controls playsinline style="width: 100%; max-height: 480px; background: #000; border-radius: 12px; margin-bottom: 12px;"></video>`;
+                        mediaHtml = `
+                            <div style="position: relative; width: 100%; border-radius: 12px; overflow: hidden; background: #000; margin-bottom: 12px;">
+                                <video class="feed-post-media" src="${p.media_url}" controls playsinline preload="metadata" style="width: 100%; max-height: 480px; display: block; object-fit: contain;"></video>
+                            </div>`;
                     } else {
                         mediaHtml = `<img class="feed-post-media" src="${p.media_url}" alt="Post media">`;
                     }

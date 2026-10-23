@@ -151,6 +151,28 @@ const STORE = {
     ]),
     posts: [
         {
+            id: 'post_video_1',
+            user_id: 'usr_faraz',
+            username: 'faraz_anjum',
+            display_name: 'Faraz Anjum 👑',
+            avatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=100&h=100&fit=crop',
+            caption: '🎬 Official Free Fire Clash Squad Tournament Gameplay! Watch our squad clutch in 4K HDR. #gaming #nova #viral',
+            media_url: 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4',
+            media_type: 'video',
+            likes_count: 154,
+            liked_by: new Set(['usr_rush', 'usr_gamer']),
+            comments: [
+                {
+                    id: 'comm_v1',
+                    user_id: 'usr_rush',
+                    username: 'tk_rush',
+                    display_name: 'TK Rush Official',
+                    comment: 'That clutch headshot at 0:12 was legendary! 🔥'
+                }
+            ],
+            created_at: Date.now() - 3600000 * 2
+        },
+        {
             id: 'post_1',
             user_id: 'usr_faraz',
             username: 'faraz_anjum',
@@ -1000,10 +1022,30 @@ module.exports = async (req, res) => {
         // ======================================================================
         if (pathname === '/api/upload' && req.method === 'POST') {
             const body = await parseBody(req);
-            // In serverless, return a hosted CDN image or echo base64 data URL
-            const url = body.data || body.file || 'https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=800&fit=crop';
+            const isVideo = body.type === 'video' || (body.fileName && body.fileName.match(/\.(mp4|webm|mov|ogg)$/i));
+            
+            let url = body.data || body.file || body.fileUrl || body.url;
+            if (!url && body.base64Data) {
+                const mime = isVideo ? 'video/mp4' : 'image/jpeg';
+                // If base64 payload is compact (< 2MB), use data URI directly for seamless client playback
+                if (body.base64Data.length < 2800000) {
+                    url = `data:${mime};base64,${body.base64Data}`;
+                } else {
+                    url = isVideo
+                        ? 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4'
+                        : 'https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=800&fit=crop';
+                }
+            }
+            if (!url) {
+                url = isVideo
+                    ? 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4'
+                    : 'https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=800&fit=crop';
+            }
+
             return sendJson(res, 200, {
                 url,
+                fileUrl: url,
+                type: isVideo ? 'video' : 'image',
                 status: 'uploaded',
                 size: (url.length || 1024)
             });

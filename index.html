@@ -29,6 +29,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600;800;900&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/glassy-carousel.css">
 </head>
 
 <body>
@@ -250,6 +251,81 @@
                 </div>
             </div>
         </section>
+
+        
+        <!-- 🎬 GLASSY 3D ENTERTAINMENT CAROUSEL & SPOTIFY SOUNDTRACK LOUNGE -->
+        <section class="glassy-carousel-section" id="glassySoundtrackLounge">
+            <div class="carousel-header-title">
+                <div class="offer-badge glow-purple" style="display: inline-flex; margin-bottom: 10px;">
+                    <span class="pulse-dot"></span> IMMERSIVE 3D SOUNDTRACK & TRAILER LOUNGE
+                </div>
+                <h2 class="carousel-title-main">
+                    Glassy Carousel <span class="carousel-title-highlight">Animation</span>
+                </h2>
+                <p class="carousel-subtitle">Swipe or click cards to spin 3D perspective • Stream Spotify audio soundtracks • Watch 4K HDR trailers</p>
+            </div>
+
+            <!-- 3D Stage -->
+            <div class="carousel-stage-container">
+                <div class="carousel-cards-track" id="glassyCarouselTrack">
+                    <!-- Injected by js/glassy-carousel.js -->
+                </div>
+            </div>
+
+            <!-- Spotify Glassy Music Player Bar -->
+            <div class="spotify-glassy-bar">
+                <div class="sp-controls-left">
+                    <button class="sp-btn" onclick="window.carouselPrev()" title="Previous Track">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><polygon points="19 20 9 12 19 4 19 20"/><line x1="5" y1="19" x2="5" y2="5" stroke="currentColor" stroke-width="2.5"/></svg>
+                    </button>
+                    <button class="sp-btn sp-btn-play" id="spPlayBtn" onclick="window.toggleSpotifyPlay()" title="Play / Pause">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+                    </button>
+                    <button class="sp-btn" onclick="window.carouselNext()" title="Next Track">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 4 15 12 5 20 5 4"/><line x1="19" y1="5" x2="19" y2="19" stroke="currentColor" stroke-width="2.5"/></svg>
+                    </button>
+                </div>
+
+                <div class="sp-track-center">
+                    <img id="spTrackArt" class="sp-track-art" src="https://images.unsplash.com/photo-1534447677768-be436bb09401?w=100&h=100&fit=crop" alt="Track Art">
+                    <div class="sp-track-details">
+                        <div id="spTrackName" class="sp-track-name">Dune: Part Two</div>
+                        <div id="spTrackArtist" class="sp-track-artist">Paul Atreides War Horn • Hans Zimmer</div>
+                    </div>
+                    <!-- Equalizer Sound Wave -->
+                    <div class="sp-sound-wave" id="spSoundWave">
+                        <div class="sp-wave-bar"></div>
+                        <div class="sp-wave-bar"></div>
+                        <div class="sp-wave-bar"></div>
+                        <div class="sp-wave-bar"></div>
+                        <div class="sp-wave-bar"></div>
+                    </div>
+                </div>
+
+                <div class="sp-tools-right">
+                    <button class="sp-btn" onclick="window.openTrailerModal()" title="Watch 4K Trailer" style="font-size: 11px; width: auto; padding: 0 14px; border-radius: 9999px; gap: 6px;">
+                        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="23 7 16 12 23 17 23 7"/><rect x="1" y="5" width="15" height="14" rx="2" ry="2"/></svg>
+                        <span>Trailer</span>
+                    </button>
+                    <input type="range" class="sp-volume-slider" min="0" max="1" step="0.05" value="0.8" oninput="window.setSpotifyVolume(this.value)" title="Volume">
+                </div>
+            </div>
+        </section>
+
+        <!-- 4K HDR Trailer Video Modal -->
+        <div class="trailer-modal-backdrop" id="trailerModal" onclick="if(event.target === this) window.closeTrailerModal()">
+            <div class="trailer-modal-box">
+                <div class="trailer-modal-header">
+                    <div>
+                        <div class="trailer-badge">🔴 TRAILER • 4K HDR</div>
+                        <div id="trailerTitle" style="font-size: 16px; font-weight: 800; color: #fff; margin-top: 2px;">Dune: Part Two</div>
+                        <div id="trailerDesc" style="font-size: 11.5px; color: #94a3b8;">Directed by Denis Villeneuve • Epic Sci-Fi</div>
+                    </div>
+                    <button class="trailer-close-btn" onclick="window.closeTrailerModal()">✕ Close</button>
+                </div>
+                <video id="trailerVideo" class="trailer-video-element" controls playsinline></video>
+            </div>
+        </div>
 
         <!-- 👑 SPECIAL LUCK ROYALE BANNER SECTION -->
         <section class="home-section">
