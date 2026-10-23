@@ -80,8 +80,81 @@
 
     let currentIndex = 0;
     let isPlaying = false;
-    const audioElement = new Audio();
-    audioElement.preload = 'metadata';
+    let audioElement;
+    try {
+        audioElement = new Audio();
+        audioElement.preload = 'metadata';
+    } catch(e) {
+        audioElement = { src: '', volume: 0.8, paused: true, play: () => Promise.resolve(), pause: () => {}, addEventListener: () => {} };
+    }
+
+    // ── Define ALL window.* functions UP FRONT so they exist even if initCarousel fails ──
+    window.carouselNext = function() {
+        currentIndex = (currentIndex + 1) % TRACKS.length;
+        updateCardsPosition();
+        loadTrack(currentIndex);
+        if (isPlaying) audioElement.play().catch(() => {});
+    };
+
+    window.carouselPrev = function() {
+        currentIndex = (currentIndex - 1 + TRACKS.length) % TRACKS.length;
+        updateCardsPosition();
+        loadTrack(currentIndex);
+        if (isPlaying) audioElement.play().catch(() => {});
+    };
+
+    window.selectCarouselCard = function(idx) {
+        currentIndex = idx;
+        updateCardsPosition();
+        loadTrack(currentIndex);
+        if (isPlaying) audioElement.play().catch(() => {});
+    };
+
+    window.toggleSpotifyPlay = function() {
+        const playBtn = document.getElementById('spPlayBtn');
+        const wave = document.getElementById('spSoundWave');
+        if (audioElement.paused) {
+            audioElement.play().then(() => {
+                isPlaying = true;
+                if (playBtn) playBtn.innerHTML = '<svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/></svg>';
+                if (wave) wave.classList.add('playing');
+            }).catch(() => {
+                isPlaying = true;
+                if (playBtn) playBtn.innerHTML = '<svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/></svg>';
+                if (wave) wave.classList.add('playing');
+            });
+        } else {
+            audioElement.pause();
+            isPlaying = false;
+            if (playBtn) playBtn.innerHTML = '<svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg>';
+            if (wave) wave.classList.remove('playing');
+        }
+    };
+
+    window.setSpotifyVolume = function(val) {
+        audioElement.volume = Math.max(0, Math.min(1, parseFloat(val)));
+    };
+
+    window.openTrailerModal = function(idx) {
+        const t = TRACKS[idx !== undefined ? idx : currentIndex] || TRACKS[0];
+        const modal = document.getElementById('trailerModal');
+        const titleEl = document.getElementById('trailerTitle');
+        const descEl = document.getElementById('trailerDesc');
+        const videoEl = document.getElementById('trailerVideo');
+        if (!modal) return;
+        if (titleEl) titleEl.innerText = t.title + ' (' + t.year + ')';
+        if (descEl) descEl.innerText = 'Directed by ' + t.director + ' • ' + t.genre + ' • ★ ' + t.rating;
+        if (videoEl) { videoEl.src = t.trailerUrl; videoEl.play().catch(() => {}); }
+        modal.style.display = 'flex';
+    };
+
+    window.closeTrailerModal = function() {
+        const modal = document.getElementById('trailerModal');
+        const videoEl = document.getElementById('trailerVideo');
+        if (modal) modal.style.display = 'none';
+        if (videoEl) { videoEl.pause(); videoEl.src = ''; }
+    };
+    // ── End of up-front window.* definitions ──
 
     function initCarousel() {
         const track = document.getElementById('glassyCarouselTrack');
@@ -145,102 +218,19 @@
         });
     }
 
-    window.selectCarouselCard = function(idx) {
-        currentIndex = idx;
-        updateCardsPosition();
-        loadTrack(currentIndex);
-        if (isPlaying) {
-            audioElement.play().catch(() => {});
-        }
-    };
-
-    window.carouselNext = function() {
-        currentIndex = (currentIndex + 1) % TRACKS.length;
-        updateCardsPosition();
-        loadTrack(currentIndex);
-        if (isPlaying) audioElement.play().catch(() => {});
-    };
-
-    window.carouselPrev = function() {
-        currentIndex = (currentIndex - 1 + TRACKS.length) % TRACKS.length;
-        updateCardsPosition();
-        loadTrack(currentIndex);
-        if (isPlaying) audioElement.play().catch(() => {});
-    };
-
     function loadTrack(idx) {
         const t = TRACKS[idx];
         if (!t) return;
-
         const art = document.getElementById('spTrackArt');
         const name = document.getElementById('spTrackName');
         const artist = document.getElementById('spTrackArtist');
-
         if (art) art.src = t.poster;
         if (name) name.innerText = t.title;
         if (artist) artist.innerText = t.soundtrackName;
-
         audioElement.src = t.audioUrl;
     }
 
-    window.toggleSpotifyPlay = function() {
-        const playBtn = document.getElementById('spPlayBtn');
-        const wave = document.getElementById('spSoundWave');
-
-        if (audioElement.paused) {
-            audioElement.play().then(() => {
-                isPlaying = true;
-                if (playBtn) playBtn.innerHTML = '<svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/></svg>';
-                if (wave) wave.classList.add('playing');
-            }).catch(e => {
-                // If local audio playback is blocked, synthesize ambient audio
-                isPlaying = true;
-                if (playBtn) playBtn.innerHTML = '<svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/></svg>';
-                if (wave) wave.classList.add('playing');
-            });
-        } else {
-            audioElement.pause();
-            isPlaying = false;
-            if (playBtn) playBtn.innerHTML = '<svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg>';
-            if (wave) wave.classList.remove('playing');
-        }
-    };
-
-    window.setSpotifyVolume = function(val) {
-        audioElement.volume = parseFloat(val);
-    };
-
-    audioElement.addEventListener('ended', () => {
-        window.carouselNext();
-    });
-
-    // 4K Trailer Modal
-    window.openTrailerModal = function(idx) {
-        const t = TRACKS[idx] || TRACKS[currentIndex];
-        const modal = document.getElementById('trailerModal');
-        const titleEl = document.getElementById('trailerTitle');
-        const descEl = document.getElementById('trailerDesc');
-        const videoEl = document.getElementById('trailerVideo');
-
-        if (!modal) return;
-        if (titleEl) titleEl.innerText = `${t.title} (${t.year})`;
-        if (descEl) descEl.innerText = `Directed by ${t.director} • ${t.genre} • ★ ${t.rating}`;
-        if (videoEl) {
-            videoEl.src = t.trailerUrl;
-            videoEl.play().catch(() => {});
-        }
-        modal.style.display = 'flex';
-    };
-
-    window.closeTrailerModal = function() {
-        const modal = document.getElementById('trailerModal');
-        const videoEl = document.getElementById('trailerVideo');
-        if (modal) modal.style.display = 'none';
-        if (videoEl) {
-            videoEl.pause();
-            videoEl.src = '';
-        }
-    };
+    audioElement.addEventListener('ended', () => { window.carouselNext(); });
 
     // Auto-init on DOMContentLoaded
     if (document.readyState === 'loading') {
