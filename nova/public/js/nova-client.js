@@ -4593,3 +4593,96 @@ window.addUserToActiveGroup = async function(userId, username) {
         if (modal) modal.style.display = 'none';
     }
 };
+
+// ==============================================================================
+// SPOTIFY-STYLE PLAYER — toggleSpotifyPlay / setSpotifyVolume / openTrailerModal
+// ==============================================================================
+(function() {
+    let _spotifyAudio = null;
+    let _spotifyPlaying = false;
+
+    function _getOrCreateAudio() {
+        if (_spotifyAudio) return _spotifyAudio;
+        // Try to find an existing audio element on the page first
+        const existing = document.getElementById('spotifyAudioEl') || document.querySelector('audio[data-spotify]');
+        if (existing) { _spotifyAudio = existing; return _spotifyAudio; }
+        // Create a new audio element
+        _spotifyAudio = new Audio();
+        _spotifyAudio.id = 'spotifyAudioEl';
+        _spotifyAudio.setAttribute('data-spotify', '1');
+        _spotifyAudio.loop = true;
+        _spotifyAudio.volume = 0.7;
+        // Use the local soundtrack if it exists, otherwise silence
+        _spotifyAudio.src = 'audio/soundtrack_1.mp3';
+        document.body.appendChild(_spotifyAudio);
+        return _spotifyAudio;
+    }
+
+    window.toggleSpotifyPlay = function() {
+        const audio = _getOrCreateAudio();
+        const playBtn = document.getElementById('spotifyPlayBtn') ||
+                        document.querySelector('[onclick*="toggleSpotifyPlay"]');
+        if (_spotifyPlaying) {
+            audio.pause();
+            _spotifyPlaying = false;
+            if (playBtn) playBtn.innerHTML = '▶';
+            // Stop equalizer animation
+            document.querySelectorAll('.eq-bar').forEach(b => b.style.animationPlayState = 'paused');
+            if (typeof showToast === 'function') showToast('⏸ Paused');
+        } else {
+            audio.play().catch(() => {
+                if (typeof showToast === 'function') showToast('🎵 Starting player...');
+            });
+            _spotifyPlaying = true;
+            if (playBtn) playBtn.innerHTML = '⏸';
+            // Start equalizer animation
+            document.querySelectorAll('.eq-bar').forEach(b => b.style.animationPlayState = 'running');
+            if (typeof showToast === 'function') showToast('▶ Now Playing');
+        }
+    };
+
+    window.setSpotifyVolume = function(val) {
+        const audio = _getOrCreateAudio();
+        const v = parseFloat(val);
+        if (!isNaN(v)) {
+            audio.volume = Math.max(0, Math.min(1, v / 100));
+        }
+    };
+
+    window.openTrailerModal = function(videoSrc) {
+        let modal = document.getElementById('trailerModal');
+        if (!modal) {
+            modal = document.createElement('div');
+            modal.id = 'trailerModal';
+            modal.style.cssText = [
+                'position:fixed','inset:0','z-index:999999',
+                'background:rgba(0,0,0,0.92)',
+                'display:flex','align-items:center','justify-content:center',
+                'flex-direction:column','gap:12px'
+            ].join(';');
+            modal.innerHTML = `
+                <video id="trailerVideo" controls autoplay style="max-width:92vw;max-height:80vh;border-radius:14px;outline:none;box-shadow:0 8px 40px rgba(0,0,0,0.8);"></video>
+                <button onclick="closeTrailerModal()" style="padding:10px 28px;background:rgba(255,255,255,0.12);border:1px solid rgba(255,255,255,0.25);border-radius:10px;color:#fff;font-size:14px;font-weight:700;cursor:pointer;backdrop-filter:blur(6px);">✕ Close</button>
+            `;
+            modal.addEventListener('click', function(e) {
+                if (e.target === modal) window.closeTrailerModal();
+            });
+            document.body.appendChild(modal);
+        }
+        const vid = modal.querySelector('#trailerVideo');
+        if (vid) {
+            vid.src = videoSrc || 'media/trailer_4k.mp4';
+            vid.play().catch(() => {});
+        }
+        modal.style.display = 'flex';
+    };
+
+    window.closeTrailerModal = function() {
+        const modal = document.getElementById('trailerModal');
+        if (modal) {
+            const vid = modal.querySelector('#trailerVideo');
+            if (vid) { vid.pause(); vid.src = ''; }
+            modal.style.display = 'none';
+        }
+    };
+})();
